@@ -1,5 +1,6 @@
 import React from 'react'
-import { TABLE_X } from '@gm/table-x'
+import { TableXUtil } from '@gm/table-x'
+const { TABLE_X } = TableXUtil
 
 const WrapContext = React.createContext(null)
 const CellKeyContext = React.createContext(null)

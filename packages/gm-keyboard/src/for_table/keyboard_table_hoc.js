@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { getColumnKey } from '@gm/table/src/util'
+import { getColumnKey } from './util'
 import { Table } from '@gm/table'
 import _ from 'lodash'
 import Wrap from '../core/wrap'

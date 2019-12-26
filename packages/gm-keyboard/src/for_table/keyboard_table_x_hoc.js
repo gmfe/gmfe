@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { getColumnKey } from '@gm/table-x/src/util'
+import { getColumnKey } from './util'
 import { TableX } from '@gm/table-x'
 import _ from 'lodash'
 import Wrap from '../core/wrap'

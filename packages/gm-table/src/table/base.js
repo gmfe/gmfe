@@ -7,8 +7,7 @@ import { SortHeader } from '../util'
 import ReactTable from 'react-table-v6'
 import { findDOMNode } from 'react-dom'
 import SVGEmpty from '../../svg/empty.svg'
-import { Flex } from '@gm/react'
-import EVENT_TYPE from '@gm/react/src/event_type'
+import { Flex, EVENT_TYPE } from '@gm/react'
 import { warn } from 'gm-util'
 
 class BaseTable extends React.Component {

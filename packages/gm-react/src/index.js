@@ -15,6 +15,8 @@ import {
 } from './deprecated/quick'
 // 废弃的结束
 
+import EVENT_TYPE from './event_type'
+
 import Pagination from './component/pagination/pagination'
 import PaginationText from './component/pagination/pagination_text'
 import PaginationV2 from './component/pagination/pagination_v2'
@@ -156,6 +158,7 @@ export {
   PaginationFuck,
   // 废弃的结束
 
+  EVENT_TYPE,
   Pagination,
   PaginationV2,
   Form,

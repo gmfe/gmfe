@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Flex } from '@gm/react'
+import { Flex, EVENT_TYPE } from '@gm/react'
 import classNames from 'classnames'
 import _ from 'lodash'
-import EVENT_TYPE from '@gm/react/src/event_type'
 import Context from './context'
 
 const Framework = props => {
