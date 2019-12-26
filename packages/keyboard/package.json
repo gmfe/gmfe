@@ -1,0 +1,42 @@
+{
+  "name": "@gmfe/keyboard",
+  "version": "0.0.2",
+  "description": "",
+  "author": "liyatang <liyatang@qq.com>",
+  "homepage": "https://github.com/gmfe/gmfe#readme",
+  "license": "ISC",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmfe/gmfe.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/gmfe/gmfe/issues"
+  },
+  "peerDependencies": {
+    "@gmfe/react": "^0.0.1",
+    "@gmfe/table": "^0.0.1",
+    "@gmfe/table-x": "^0.0.1",
+    "classnames": "^2.2.5",
+    "gm-util": "^5.12.3",
+    "lodash": "^4.17.14",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@gmfe/react": "^0.0.2",
+    "@gmfe/table": "^0.0.2",
+    "@gmfe/table-x": "^0.0.2",
+    "classnames": "^2.2.5",
+    "gm-util": "^5.12.3",
+    "lodash": "^4.17.14",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
