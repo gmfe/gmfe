@@ -1,4 +1,4 @@
-import { getLocale } from '../../locales'
+import { getLocale } from '@gm/locales'
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'

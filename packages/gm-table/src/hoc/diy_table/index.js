@@ -1,5 +1,5 @@
 import React from 'react'
-import { getLocale } from '@gm/react/locales'
+import { getLocale } from '@gm/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { Storage, Modal, Popover } from '@gm/react'

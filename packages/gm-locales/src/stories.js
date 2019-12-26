@@ -1,18 +1,19 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { setLocale } from './index'
-import { Storage } from '../src'
 import { observable } from 'mobx'
 
+const l = localStorage.getItem('_react-gm_' + 'lng')
+
 const store = observable({
-  lng: Storage.get('lng') || 'zh'
+  lng: (l ? JSON.parse(l) : '') || 'zh'
 })
 
-storiesOf('locale', module).add('default', () => (
+storiesOf('locales|locales', module).add('default', () => (
   <select
     value={store.lng}
     onChange={e => {
-      Storage.set('lng', e.target.value)
+      localStorage.setItem('_react-gm_' + 'lng', JSON.stringify(e.target.value))
       setLocale(e.target.value)
       store.lng = e.target.value
     }}

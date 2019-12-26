@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import moment from 'moment'
 
-import { getLocale } from '../../locales'
+import { getLocale } from '@gm/locales'
 import { setTimes } from './util'
 
 /** 左侧选择参数列表 */

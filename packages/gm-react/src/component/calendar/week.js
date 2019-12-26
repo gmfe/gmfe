@@ -1,4 +1,4 @@
-import { getLocale } from '../../locales'
+import { getLocale } from '@gm/locales'
 import React from 'react'
 import _ from 'lodash'
 import Flex from '../flex'

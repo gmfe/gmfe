@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { Flex, Popover } from '@gm/react'
-import { getLocale } from '@gm/react/locales'
+import { getLocale } from '@gm/locales'
 import PropTypes from 'prop-types'
 import SVGRemove from '../../../svg/remove.svg'
 

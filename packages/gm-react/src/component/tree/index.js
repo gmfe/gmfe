@@ -1,4 +1,4 @@
-import { getLocale } from '../../locales'
+import { getLocale } from '@gm/locales'
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Flex from '../flex'

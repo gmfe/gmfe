@@ -1,4 +1,4 @@
-import { getLocale } from '../../locales'
+import { getLocale } from '@gm/locales'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../modal'
@@ -233,6 +233,7 @@ Dialog.propTypes = {
   children: PropTypes.any,
   _from: PropTypes.string
 }
+
 Dialog.defaultProps = {
   show: false,
   title: getLocale('提示'),

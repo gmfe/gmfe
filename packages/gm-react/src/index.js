@@ -100,7 +100,6 @@ import { PopupContentConfirm } from './component/popup'
 import Validator from './validator'
 
 import { Select, Option } from './component/select'
-import { setLocale } from './locales'
 
 import Carousel from './component/carousel/carousel'
 import { Box, BoxForm, BoxTable, BoxPanel } from './component/box'
@@ -233,7 +232,6 @@ export {
   Drawer,
   Nav,
   ImagePreview,
-  setLocale,
   EditableText,
   FlipNumber,
   Price,

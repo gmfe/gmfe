@@ -1,5 +1,5 @@
 import React from 'react'
-import { getLocale } from '@gm/react/locales'
+import { getLocale } from '@gm/locales'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import _ from 'lodash'

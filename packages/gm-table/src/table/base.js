@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import { getLocale } from '@gm/react/locales'
+import { getLocale } from '@gm/locales'
 import _ from 'lodash'
 import { SortHeader } from '../util'
 import ReactTable from 'react-table-v6'

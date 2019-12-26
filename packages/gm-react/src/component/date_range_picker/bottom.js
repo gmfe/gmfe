@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { getLocale } from '../../locales'
+import { getLocale } from '@gm/locales'
 import Flex from '../flex'
 import TimeSpanPicker from '../time_span/time_span_picker'
 import { setTimes } from './util'
