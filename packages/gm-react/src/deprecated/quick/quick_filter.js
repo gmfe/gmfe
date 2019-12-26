@@ -6,12 +6,11 @@ import Collapse from '../../component/collapse'
 import classNames from 'classnames'
 import SVGUp from '../../../svg/up.svg'
 import SVGDown from '../../../svg/down.svg'
-import { withDeprecated } from '../../util'
 
 class QuickFilter extends React.Component {
   constructor(props) {
     super(props)
-
+    console.warn('Deprecated')
     this.state = {
       expand: props.expand
     }
@@ -82,4 +81,4 @@ QuickFilter.defaultProps = {
   expand: false
 }
 
-export default withDeprecated('Quick deprecated, use Box instead.')(QuickFilter)
+export default QuickFilter

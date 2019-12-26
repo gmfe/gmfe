@@ -5,7 +5,7 @@ import { Table } from '@gm/table'
 import _ from 'lodash'
 import Wrap from '../core/wrap'
 import { CellKeyContext } from '../core/util'
-import { devWarn } from '@gm/react/src/util'
+import { devWarn } from 'gm-util'
 
 // TableX 和 Table 有差异，所以独立文件
 

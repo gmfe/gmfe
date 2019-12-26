@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import Base from './base'
-import { warn, devWarn } from '../../util'
+import { warn, devWarn } from 'gm-util'
 
 /** 列表组件 */
 class List extends React.Component {

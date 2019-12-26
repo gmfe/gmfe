@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Affix from '../affix'
 import _ from 'lodash'
 import Button from '../button'
-import { warn, devWarnForHook } from '../../util'
+import { warn, devWarnForHook } from 'gm-util'
 
 /** 聚合多个表单，统一处理 submit */
 const FormGroup = ({

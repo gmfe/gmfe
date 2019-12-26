@@ -5,9 +5,13 @@ import Flex from '../../component/flex'
 import _ from 'lodash'
 import SVGDown from '../../../svg/down.svg'
 import SVGUp from '../../../svg/up.svg'
-import { withDeprecated } from '../../util'
 
 class QuickDetail extends React.Component {
+  constructor(props) {
+    super(props)
+    console.warn('Deprecated')
+  }
+
   state = {
     show: false
   }
@@ -72,6 +76,11 @@ QuickDetail.childContextTypes = {
 }
 
 class QuickDetailFirst extends React.Component {
+  constructor(props) {
+    super(props)
+    console.warn('Deprecated')
+  }
+
   render() {
     const { data } = this.props
 
@@ -98,6 +107,11 @@ QuickDetailFirst.propTypes = {
 }
 
 class QuickDetailSecond extends React.Component {
+  constructor(props) {
+    super(props)
+    console.warn('Deprecated')
+  }
+
   render() {
     const { data, nameWidth } = this.props
     const { show } = this.context
@@ -132,6 +146,11 @@ QuickDetailSecond.contextTypes = {
 }
 
 class QuickDetailThird extends React.Component {
+  constructor(props) {
+    super(props)
+    console.warn('Deprecated')
+  }
+
   render() {
     const { result, process, unit } = this.props
 
@@ -188,4 +207,4 @@ Object.assign(QuickDetail, {
   QuickDetailThird
 })
 
-export default withDeprecated('Quick deprecated, use Box instead.')(QuickDetail)
+export default QuickDetail

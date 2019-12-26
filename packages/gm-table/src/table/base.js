@@ -9,7 +9,7 @@ import { findDOMNode } from 'react-dom'
 import SVGEmpty from '../../svg/empty.svg'
 import { Flex } from '@gm/react'
 import EVENT_TYPE from '@gm/react/src/event_type'
-import { warn } from '@gm/react/src/util'
+import { warn } from 'gm-util'
 
 class BaseTable extends React.Component {
   refTable = React.createRef()

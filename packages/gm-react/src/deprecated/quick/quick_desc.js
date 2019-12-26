@@ -2,9 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Flex from '../../component/flex'
 import classNames from 'classnames'
-import { withDeprecated } from '../../util'
 
 class QuickDesc extends React.Component {
+  constructor(props) {
+    super(props)
+    console.warn('Deprecated')
+  }
+
   render() {
     const { left, right, leftFlex, rightFlex, children } = this.props
 
@@ -54,4 +58,4 @@ QuickDesc.propTypes = {
   className: PropTypes.string
 }
 
-export default withDeprecated('Quick deprecated, use Box instead.')(QuickDesc)
+export default QuickDesc

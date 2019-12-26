@@ -5,7 +5,7 @@ import { TableX } from '@gm/table-x'
 import _ from 'lodash'
 import Wrap from '../core/wrap'
 import { CellKeyContext } from '../core/util'
-import { devWarn } from '@gm/react/src/util'
+import { devWarn } from 'gm-util'
 
 function keyboardTableXHOC(Component) {
   /**

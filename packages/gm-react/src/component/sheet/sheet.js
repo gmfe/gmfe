@@ -12,7 +12,7 @@ import SheetSelect from './sheet_select'
 import SheetBatchAction from './sheet_batch_action'
 import Loading from '../loading'
 import Flex from '../flex'
-import { warn } from '../../util'
+import { warn } from 'gm-util'
 
 class Sheet extends React.Component {
   constructor(props) {

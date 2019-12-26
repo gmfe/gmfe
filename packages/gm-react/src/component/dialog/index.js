@@ -6,6 +6,7 @@ import _ from 'lodash'
 import classNames from 'classnames'
 import LayoutRoot from '../layout_root'
 import EVENT_TYPE from '../../event_type'
+import { warn } from 'gm-util'
 
 let DialogStatics = {}
 DialogStatics = {
@@ -95,7 +96,7 @@ class Dialog extends React.Component {
 
   componentDidMount() {
     if (this.props._from !== 'DialogStatics') {
-      console.warn('Use Dialog Static instead of Component')
+      warn('Use Dialog Static instead of Component')
     }
   }
 

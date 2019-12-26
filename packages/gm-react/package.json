@@ -20,8 +20,7 @@
   "peerDependencies": {
     "big.js": "^5.2.2",
     "classnames": "^2.2.5",
-    "gm-util": "^5.11.0",
-    "hoist-non-react-statics": "^3.3.0",
+    "gm-util": "^5.12.3",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
@@ -31,8 +30,7 @@
   "devDependencies": {
     "big.js": "^5.2.2",
     "classnames": "^2.2.5",
-    "gm-util": "^5.11.0",
-    "hoist-non-react-statics": "^3.3.0",
+    "gm-util": "^5.12.3",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",

@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import Validator from '../../validator'
 import { WrapContext } from './util'
-// import { devWarn } from '../../util'
 
 class Form extends React.Component {
   constructor(props) {
@@ -12,20 +11,6 @@ class Form extends React.Component {
     this.state = {
       canValidate: false
     }
-
-    // devWarn(() => {
-    //   let i = 0
-    //   props.onSubmit && i++
-    //   props.onSubmitValidated && i++
-    //   props.hasButtonInGroup && i++
-    //   if (i === 0) {
-    //     console.warn('请提供 onSubmit or onSubmitValidated or hasButtonInGroup')
-    //   } else if (i > 1) {
-    //     console.warn(
-    //       '请仅提供以下一项 onSubmit or onSubmitValidated or hasButtonInGroup'
-    //     )
-    //   }
-    // })
   }
 
   apiDoValidate = () => {

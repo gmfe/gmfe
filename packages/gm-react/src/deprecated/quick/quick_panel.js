@@ -1,15 +1,18 @@
 import { getLocale } from '../../locales'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Flex from '../../component/flex'
 import Collapse from '../../component/collapse'
 import classNames from 'classnames'
 import SVGUp from '../../../svg/up.svg'
 import SVGDown from '../../../svg/down.svg'
-import { withDeprecated } from '../../util'
 
 const QuickPanel = props => {
   const [isCollapse, setIsCollapse] = useState(props.in)
+
+  useEffect(() => {
+    console.warn('Deprecated')
+  }, [])
 
   const handleCollapse = () => {
     setIsCollapse(!isCollapse)
@@ -72,4 +75,4 @@ QuickPanel.defaultProps = {
   in: true
 }
 
-export default withDeprecated('Quick deprecated, use Box instead.')(QuickPanel)
+export default QuickPanel
