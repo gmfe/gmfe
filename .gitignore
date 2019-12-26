@@ -5,3 +5,4 @@ node_modules/
 .stylelintcache
 .eslintcache
 yarn-error.log
+lerna-debug.log

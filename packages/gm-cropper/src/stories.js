@@ -1,5 +1,5 @@
 import React from 'react'
-import Cropper from './'
+import { Cropper } from './'
 import { Uploader } from '@gm/react'
 
 export const readme = () => {

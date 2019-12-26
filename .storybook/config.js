@@ -13,7 +13,7 @@ import './style.less'
 // 引入 react-gm 样式
 import '../packages/gm-react/src/index.less'
 // 引入 frame 样式
-// import '../frame/style.less'
+import '../packages/gm-frame/src/index.less'
 // 引入 react-table 样式
 // import 'react-table-v6/react-table.css'
 // import '../table/style.less'
@@ -34,7 +34,7 @@ const reqs = [
   // require.context('../keyboard', true, /stories\.js$/),
   // require.context('../sortable', true, /stories\.js$/),
   require.context('../packages/gm-cropper', true, /stories\.js$/),
-  // require.context('../frame', true, /stories\.js$/),
+  require.context('../packages/gm-frame', true, /stories\.js$/),
   // require.context('../locales', true, /stories\.js$/)
 ]
 

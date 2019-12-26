@@ -7,5 +7,4 @@ yarn.lock
 .stylelintcache
 .eslintcache
 yarn-error.log
-
-
+lerna-debug.log
