@@ -115,6 +115,8 @@ import Tabs from './component/tabs/tabs'
 
 import Steps from './component/steps'
 
+import Selection from './component/selection'
+
 Object.assign(Sheet, {
   SheetColumn,
   SheetAction,
@@ -258,5 +260,6 @@ export {
   Col,
   Row,
   Tabs,
-  Steps
+  Steps,
+  Selection
 }

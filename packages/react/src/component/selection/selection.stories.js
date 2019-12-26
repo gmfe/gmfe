@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Selection from './'
 
-storiesOf('内部|Selection', module)
+storiesOf('Selection', module)
   .add('default', () => (
     <Selection
       onSelect={selected => console.log(selected)}

@@ -31,6 +31,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const reqs = [
+  require.context('../packages/locales', true, /stories\.js$/),
   require.context('../packages/react', true, /stories\.js$/),
   require.context('../packages/table', true, /stories\.js$/),
   require.context('../packages/table-x', true, /stories\.js$/),
@@ -38,7 +39,7 @@ const reqs = [
   require.context('../packages/sortable', true, /stories\.js$/),
   require.context('../packages/cropper', true, /stories\.js$/),
   require.context('../packages/frame', true, /stories\.js$/),
-  require.context('../packages/locales', true, /stories\.js$/)
+  require.context('../packages/business', true, /stories\.js$/)
 ]
 
 addDecorator(

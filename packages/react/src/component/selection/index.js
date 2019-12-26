@@ -6,7 +6,6 @@ import SVGCloseCircle from '../../../svg/close-circle.svg'
 import IconDownUp from '../icon_down_up'
 
 // TODO multiple
-/** 内部用 选择区域 */
 class Selection extends React.Component {
   refInput = React.createRef()
 
