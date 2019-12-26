@@ -1,0 +1,136 @@
+.gm-calendar {
+  width: 199px;
+  overflow: hidden;
+  border: 1px solid @gm-border-color;
+  background: white;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+
+  .gm-calendar-head {
+    height: 32px;
+
+    .gm-calendar-head-icon {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      display: inline-block;
+      color: @gm-color-fourth;
+    }
+
+    .gm-calendar-head-text {
+      font-weight: bold;
+      line-height: 30px;
+      height: 30px;
+      text-align: center;
+
+      &:hover {
+        color: @brand-primary;
+      }
+    }
+
+    .gm-calendar-head-year-icon {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  .gm-calendar-yaers-or-months {
+    position: absolute;
+    color: black;
+    top: 37px;
+    bottom: 5px;
+    background-color: white;
+  }
+
+  .gm-calendar-year-or-month {
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    margin: 9px 7px;
+    cursor: pointer;
+    border: 1px solid white;
+
+    &.active {
+      border: 1px solid @brand-primary;
+      background-color: white;
+      color: @brand-primary;
+    }
+
+    &:hover {
+      background-color: @brand-primary;
+      color: white;
+    }
+  }
+
+  .gm-calendar-year-or-month-change {
+    color: @gm-color-third;
+  }
+
+  .gm-calendar-week {
+    height: 24px;
+  }
+
+  .gm-calendar-day {
+    color: black;
+    display: inline-block;
+    text-align: center;
+    line-height: 24px;
+    width: 28px;
+    height: 27px;
+    margin: 1px 0;
+    border: 2px solid white;
+
+    &:hover:not(.gm-calendar-day-disabled):not(.active):not(.gm-calendar-day-old):not(.gm-calendar-day-new) {
+      background-color: @brand-primary;
+      color: white;
+    }
+
+    &.gm-calendar-day-old,
+    &.gm-calendar-day-new {
+      color: @gm-color-third;
+    }
+
+    &.gm-calendar-day-now:not(.gm-calendar-day-old):not(.gm-calendar-day-new) {
+      color: @brand-primary;
+      outline: 1px solid @brand-primary;
+      outline-offset: -3px;
+    }
+
+    &.gm-calendar-day-will:not(.active) {
+      outline: 1px solid @brand-primary;
+      outline-offset: -3px;
+    }
+
+    &.active:not(.gm-calendar-day-old):not(.gm-calendar-day-new) {
+      background-color: #d7e8fc;
+      color: black;
+      border-left: none;
+      border-right: none;
+    }
+
+    &.gm-calendar-day-hover:not(.gm-calendar-day-old):not(.gm-calendar-day-new):not(.gm-calendar-day-disabled) {
+      background-color: #d7e8fc;
+      color: black;
+      border-left: none;
+      border-right: none;
+      transition: background-color 0.2s ease;
+    }
+
+    &.gm-calendar-day-begin:not(.gm-calendar-day-old):not(.gm-calendar-day-new),
+    &.gm-calendar-day-end:not(.gm-calendar-day-old):not(.gm-calendar-day-new),
+    &.gm-calendar-day-hover-end:not(.gm-calendar-day-old):not(.gm-calendar-day-new) {
+      background-color: @brand-primary;
+      color: white;
+      border: 2px solid white;
+    }
+
+    &.gm-calendar-day-disabled {
+      color: @gm-color-third;
+      cursor: not-allowed;
+    }
+  }
+}

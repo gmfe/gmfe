@@ -1,0 +1,49 @@
+.gm-carousel-fade {
+  position: relative;
+
+  &-item {
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+
+    &-active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &-footer {
+    bottom: 5px;
+    height: 10px;
+    position: absolute;
+    list-style-type: none;
+    padding-inline-start: 0;
+
+    &-li {
+      float: left;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      background-color: #000;
+      opacity: 0.3;
+      margin: 5px;
+
+      &-hover {
+        background-color: #fff;
+        opacity: 0.6;
+        border: 0;
+      }
+
+      &::after {
+        clear: both;
+        content: '.';
+        display: block;
+        width: 0;
+        height: 0;
+        visibility: hidden;
+      }
+    }
+  }
+}

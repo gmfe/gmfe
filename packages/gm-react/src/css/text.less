@@ -1,0 +1,120 @@
+.gm-text {
+  color: @gm-color-first !important;
+}
+
+.gm-text-red {
+  color: red !important;
+}
+
+.gm-text-primary {
+  color: @brand-primary !important;
+}
+
+.gm-text-desc {
+  color: @gm-color-fourth !important;
+}
+
+.gm-text-black {
+  color: black !important;
+}
+
+.gm-text-white {
+  color: white !important;
+}
+
+.gm-text-hover-primary {
+  &:hover {
+    color: @brand-primary !important;
+  }
+}
+
+.gm-text-helper {
+  color: @gm-color-second !important;
+  font-size: 12px !important;
+}
+
+.gm-text-bold {
+  font-weight: bold;
+}
+
+// 会和上面重复
+.gm-text-first {
+  color: @gm-color-first !important;
+}
+
+.gm-text-second {
+  color: @gm-color-second !important;
+}
+
+.gm-text-third {
+  color: @gm-color-third !important;
+}
+
+.gm-text-fourth {
+  color: @gm-color-fourth !important;
+}
+
+.gm-text-ellipsis {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+}
+
+.gm-text-no-ellipsis {
+  white-space: normal;
+}
+
+.gm-text-bold {
+  font-weight: bold;
+}
+
+// gm-font-xx 慢慢废弃
+.gm-font-24,
+.gm-text-24 {
+  font-size: 24px !important;
+}
+
+.gm-font-20,
+.gm-text-20 {
+  font-size: 20px !important;
+}
+
+.gm-font-18,
+.gm-text-18 {
+  font-size: 18px !important;
+}
+
+.gm-font-16,
+.gm-text-16 {
+  font-size: 16px !important;
+}
+
+.gm-font-14,
+.gm-text-14 {
+  font-size: 14px !important;
+}
+
+.gm-font-12,
+.gm-text-12 {
+  font-size: 12px !important;
+}
+
+.gm-line-height-1 {
+  line-height: 1;
+}
+
+.gm-placeholder-text {
+  &::placeholder {
+    color: @gm-color-fourth;
+  }
+}
+
+.gm-decoration-none {
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:focus {
+    text-decoration: none;
+  }
+}

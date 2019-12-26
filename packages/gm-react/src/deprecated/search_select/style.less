@@ -1,0 +1,97 @@
+.gm-search-select {
+  vertical-align: middle;
+  position: relative;
+  border: 1px solid @gm-border-color;
+  background-color: white;
+  min-height: 30px;
+  border-radius: @gm-border-radius;
+
+  .gm-search-select-input {
+    padding: 5px 10px;
+    overflow-x: auto;
+
+    input {
+      padding: 0;
+      border: none;
+      box-shadow: none;
+      min-width: 50px;
+      width: 100%;
+      outline: none;
+    }
+
+    .selected {
+      background-color: @gm-back-body-bg;
+      padding: 0 5px;
+      margin-right: 5px;
+      border-radius: 4px;
+      position: relative;
+
+      .close {
+        right: -5px;
+        line-height: 1;
+        font-size: 15px;
+        padding-left: 2px;
+      }
+    }
+
+    .gm-trigger {
+      position: static;
+
+      .gm-trigger-popup {
+        left: 0;
+        right: 0;
+
+        .list-group {
+          width: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+          z-index: 1;
+          margin-bottom: 0;
+
+          .list-group-item {
+            cursor: pointer;
+            border: none;
+            padding: 5px 10px;
+
+            &:first-child {
+              border-top: none;
+            }
+
+            &.active.line-selected {
+              background-color: @gm-list-bg-hover;
+            }
+
+            &.line-selected {
+              background-color: @gm-list-bg-hover;
+            }
+          }
+
+          .list-group-label {
+            .list-group-label-item {
+              padding: 5px 10px;
+              border-top: 1px solid @gm-border-color;
+              background-color: @gray-lighter;
+            }
+
+            .list-group-item {
+              padding: 5px 22px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.gm-search-select-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    input {
+      cursor: not-allowed;
+    }
+
+    button.close {
+      cursor: not-allowed;
+    }
+  }
+}

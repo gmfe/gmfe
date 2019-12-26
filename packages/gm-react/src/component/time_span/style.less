@@ -1,0 +1,46 @@
+.gm-time-span {
+  width: 390px;
+  overflow: hidden;
+  border: 1px solid @gm-border-color;
+  background: white;
+  padding: 10px 0;
+
+  .gm-time-span-list {
+    width: 130px;
+    padding: 0 5px;
+
+    .gm-time-span-list-cell {
+      color: black;
+      text-align: center;
+      cursor: pointer;
+      height: 22px;
+      margin: 2px 5px;
+      line-height: 22px;
+      border: 1px solid transparent;
+
+      &:hover {
+        background-color: @brand-primary;
+        color: white;
+      }
+
+      &.active {
+        border: 1px solid @brand-primary;
+      }
+
+      &.disabled {
+        background: white;
+        color: @gm-color-second;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.gm-time-span-picker {
+  vertical-align: middle;
+  display: inline-block;
+
+  .gm-time-span {
+    border: none;
+  }
+}

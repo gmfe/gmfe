@@ -1,0 +1,39 @@
+.gm-nprogress {
+  transition: all 200ms ease;
+  height: 2px;
+  background: @brand-primary;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+.gm-nprogress-loading {
+  animation: gm-nprogress-loading 1s linear;
+  animation-fill-mode: forwards;
+}
+
+.gm-nprogress-completed {
+  transform: translateX(0);
+  visibility: hidden;
+}
+
+@keyframes gm-nprogress-loading {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  20% {
+    transform: translateX(-50%);
+  }
+
+  50% {
+    transform: translateX(-20%);
+  }
+
+  100% {
+    transform: translateX(-10%);
+  }
+}

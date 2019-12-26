@@ -1,0 +1,93 @@
+//cover bootstrap.style for checkbox
+// 这样写好点
+label.gm-checkbox,
+label.gm-checkbox.checkbox-inline {
+  padding-left: 0;
+  margin-left: 0;
+
+  &.checkbox-inline {
+    padding-right: 10px;
+  }
+}
+
+.gm-checkbox {
+  font-weight: normal;
+  margin: 0;
+  cursor: pointer;
+
+  &.disabled {
+    cursor: not-allowed;
+    color: @gm-color-fourth;
+
+    input + span {
+      background: #eee;
+    }
+
+    input:checked + span {
+      border: 1px solid @gm-border-color;
+      background: #eee;
+
+      &::after {
+        border-left: 2px solid @gm-border-color;
+        border-bottom: 2px solid @gm-border-color;
+      }
+    }
+  }
+
+  input {
+    display: none;
+  }
+
+  input + span {
+    position: relative;
+    top: 2px;
+    padding: 0;
+    background-color: #fff;
+    min-height: 0 !important;
+    margin-right: 5px;
+    -webkit-appearance: none;
+    border: 1px solid @gm-border-color;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    transition: background-color 0.1s linear;
+    border-radius: @gm-border-radius;
+  }
+
+  input + span::after {
+    opacity: 0;
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    top: 3px;
+    left: 2px;
+    background: transparent;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+    transition: opacity 0.1s linear;
+  }
+
+  input:checked + span {
+    border: 1px solid @brand-primary;
+    background-color: @brand-primary;
+  }
+
+  input:checked + span::after {
+    opacity: 1;
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    top: 3px;
+    left: 2px;
+    background-color: transparent;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+    transition: opacity 0.1s linear;
+  }
+}

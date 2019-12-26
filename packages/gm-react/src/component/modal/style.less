@@ -1,0 +1,145 @@
+.gm-modal-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  &.gm-modal-mask-opacity {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+.gm-modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  outline: 0;
+
+  .gm-modal-dialog {
+    position: relative;
+    background-color: white;
+    margin: 10px;
+    width: auto;
+
+    .gm-modal-close {
+      font-size: 16px;
+      padding: 10px;
+      position: absolute;
+      top: 3px;
+      right: 5px;
+    }
+
+    .gm-modal-title-wrap {
+      font-size: 16px;
+      padding: 10px 20px 10px 20px;
+      border-bottom: 1px solid @gm-border-color;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      .gm-modal-title {
+        border-left: 3px solid @brand-primary;
+        height: 18px;
+        line-height: 18px;
+        padding-left: 5px;
+      }
+    }
+    // 这里不能用overflow: auto. 不希望content出现滚动条
+    .gm-modal-content {
+      padding: 10px;
+    }
+  }
+
+  &.gm-modal-clean {
+    .gm-modal-dialog {
+      background: transparent;
+
+      .gm-modal-close {
+        display: none;
+      }
+
+      .gm-modal-content {
+        padding: 0;
+      }
+    }
+  }
+
+  &.gm-modal-right-side {
+    .gm-modal-dialog {
+      margin: 0 0 0 auto;
+      height: 100%;
+      overflow: hidden;
+
+      .gm-modal-content {
+        padding: 0;
+        height: 100%;
+        overflow: auto;
+      }
+    }
+
+    .gm-modal-dialog-has-title {
+      .gm-modal-content {
+        height: ~'calc(100% - 41px)';
+      }
+    }
+  }
+
+  .gm-modal-type {
+    width: 390px;
+    padding: 20px 30px 20px 30px;
+    margin: 30px auto;
+    font-size: 14px;
+    border: 1px solid @gm-border-color;
+    border-radius: 6px;
+
+    .gm-modal-type-title {
+      font-size: 16px;
+      line-height: 16px;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .gm-modal {
+    .gm-modal-lg {
+      width: 600px;
+      margin: 100px auto 20px;
+    }
+
+    .gm-modal-md {
+      width: 600px;
+      margin: 100px auto 20px;
+    }
+
+    .gm-modal-sm {
+      width: 300px;
+      margin: 100px auto 20px;
+    }
+  }
+}
+
+// 限制移动端最大宽度,防止隐藏close按钮
+@media (max-device-width: 766px) and (min-device-width: 0) {
+  .gm-modal {
+    .gm-modal-dialog {
+      max-width: 96vw;
+      overflow: auto !important;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .gm-modal {
+    .gm-modal-lg {
+      width: 900px;
+    }
+  }
+}

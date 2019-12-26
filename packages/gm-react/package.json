@@ -1,0 +1,44 @@
+{
+  "name": "@gm/react",
+  "version": "0.0.1",
+  "description": "> TODO: description",
+  "author": "liyatang <liyatang@qq.com>",
+  "homepage": "https://github.com/gmfe/gm#readme",
+  "license": "ISC",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmfe/gm.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/gmfe/gm/issues"
+  },
+  "peerDependencies": {
+    "@svgr/webpack": "^4.3.2",
+    "big.js": "^5.2.2",
+    "classnames": "^2.2.5",
+    "gm-util": "^5.11.0",
+    "hoist-non-react-statics": "^3.3.0",
+    "lodash": "^4.17.14",
+    "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^4.3.2",
+    "big.js": "^5.2.2",
+    "classnames": "^2.2.5",
+    "gm-util": "^5.11.0",
+    "hoist-non-react-statics": "^3.3.0",
+    "lodash": "^4.17.14",
+    "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}

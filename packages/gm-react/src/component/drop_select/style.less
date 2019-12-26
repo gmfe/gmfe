@@ -1,0 +1,69 @@
+.gm-dropselect {
+  vertical-align: middle;
+}
+
+.gm-dropselect-wrap {
+  height: 0;
+  overflow: visible;
+  position: relative;
+  z-index: 10000;
+}
+
+.gm-dropselect-wrap .gm-dropselect-list-wrap {
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+  background-color: #fff;
+  border-top: none;
+  position: absolute;
+  width: 100%;
+  cursor: default;
+  max-height: 230px;
+  overflow-y: auto;
+}
+
+.gm-dropselect-list-wrap .gm-dropselect-list li {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid @list-group-border;
+}
+
+.gm-dropselect-list li:not(.gm-dropselect-title):hover {
+  background-color: @list-group-hover-bg;
+}
+
+.gm-dropselect-list-wrap .gm-dropselect-list {
+  margin-bottom: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.gm-dropselect-list-wrap .gm-dropselect-item {
+  line-height: 32px;
+  font-size: 12px;
+  height: 45px;
+
+  &.active {
+    background-color: @list-group-hover-bg;
+  }
+}
+
+.gm-dropselect-list-wrap .gm-dropselect-list .gm-dropselect-title {
+  overflow: hidden;
+  background-color: @gray-lighter;
+}
+
+.gm-dropselect-list-wrap .gm-dropselect-list li div {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.gm-ellipsis {
+  display: block !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

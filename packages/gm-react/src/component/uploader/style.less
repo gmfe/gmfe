@@ -1,0 +1,24 @@
+.gm-uploader {
+  display: inline-block;
+
+  .gm-uploader-input[type='file'] {
+    display: none;
+  }
+
+  .gm-uploader-default {
+    width: 64px;
+    height: 64px;
+    font-size: 30px;
+    border: 1px dashed fadeout(@gm-frame-border-color, 50%);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+
+    .gm-uploader-default {
+      .gm-disabled();
+    }
+  }
+}

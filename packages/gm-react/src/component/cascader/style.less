@@ -1,0 +1,118 @@
+.gm-cascader {
+  position: relative;
+  vertical-align: middle;
+
+  input {
+    padding-right: 20px;
+  }
+
+  &.gm-cascader-close {
+    input {
+      padding-right: 32px;
+    }
+  }
+
+  .gm-cascader-icon {
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 14px;
+    line-height: 1;
+    top: 8px;
+    color: @gm-color-third;
+    margin: auto 0;
+    cursor: pointer;
+  }
+
+  .gm-cascader-close-icon {
+    display: none;
+    right: 20px;
+  }
+
+  .gm-cascader-up-small,
+  .gm-cascader-down-small {
+    right: 5px;
+    display: none;
+  }
+
+  .gm-cascader-down-small {
+    display: block;
+  }
+
+  &:hover {
+    .gm-cascader-close-icon {
+      display: block;
+    }
+  }
+
+  &.gm-popover-active {
+    .gm-cascader-down-small {
+      display: none;
+    }
+
+    .gm-cascader-up-small {
+      display: block;
+    }
+  }
+}
+
+.gm-cascader-list {
+  height: 250px;
+
+  .list-group {
+    border: 1px solid @gm-border-color;
+    min-width: 120px;
+
+    &:not(:first-child) {
+      border-left: none;
+    }
+
+    .list-group-item {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+    }
+  }
+}
+
+.gm-cascader-select {
+  &.disabled {
+    .selected {
+      opacity: 0.6;
+    }
+  }
+
+  .gm-cascader-input input[disabled] {
+    cursor: not-allowed;
+    background-color: #fff;
+  }
+
+  .gm-cascader-select-input {
+    padding: 5px 0 5px 10px;
+
+    input {
+      padding: 0;
+      padding-right: 20px;
+      border: none;
+      box-shadow: none;
+      width: 100%;
+      outline: none;
+      height: auto;
+    }
+
+    .selected {
+      background-color: @list-group-hover-bg;
+      padding: 0 5px;
+      margin-right: 12px;
+      border-radius: 4px;
+
+      .close {
+        right: -5px;
+        line-height: 1;
+        font-size: 15px;
+        padding-left: 2px;
+      }
+    }
+  }
+}
