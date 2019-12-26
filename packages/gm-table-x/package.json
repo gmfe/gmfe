@@ -1,6 +1,6 @@
 {
   "name": "@gm/table-x",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gm#readme",
@@ -31,8 +31,8 @@
     "sortablejs": "^1.10.1"
   },
   "devDependencies": {
-    "@gm/locales": "^0.0.1",
-    "@gm/react": "^0.0.1",
+    "@gm/locales": "^0.0.2",
+    "@gm/react": "^0.0.2",
     "classnames": "^2.2.5",
     "gm-util": "^5.12.3",
     "lodash": "^4.17.14",

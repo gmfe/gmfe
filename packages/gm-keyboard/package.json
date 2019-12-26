@@ -1,6 +1,6 @@
 {
   "name": "@gm/keyboard",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gm#readme",
@@ -29,9 +29,9 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@gm/react": "^0.0.1",
-    "@gm/table": "^0.0.1",
-    "@gm/table-x": "^0.0.1",
+    "@gm/react": "^0.0.2",
+    "@gm/table": "^0.0.2",
+    "@gm/table-x": "^0.0.2",
     "classnames": "^2.2.5",
     "gm-util": "^5.12.3",
     "lodash": "^4.17.14",

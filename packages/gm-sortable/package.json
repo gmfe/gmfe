@@ -1,6 +1,6 @@
 {
   "name": "@gm/sortable",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gm#readme",
@@ -26,7 +26,7 @@
     "sortablejs": "^1.10.1"
   },
   "devDependencies": {
-    "@gm/react": "^0.0.1",
+    "@gm/react": "^0.0.2",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
