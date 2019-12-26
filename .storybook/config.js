@@ -15,10 +15,10 @@ import '../packages/gm-react/src/index.less'
 // 引入 frame 样式
 import '../packages/gm-frame/src/index.less'
 // 引入 react-table 样式
-// import 'react-table-v6/react-table.css'
-// import '../table/style.less'
+import 'react-table-v6/react-table.css'
+import '../packages/gm-table/src/index.less'
 // tablex
-// import '../table_x/style.less'
+import '../packages/gm-table-x/src/index.less'
 // image
 import '../packages/gm-cropper/src/index.less'
 
@@ -29,12 +29,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 const reqs = [
   require.context('../packages/gm-react', true, /stories\.js$/),
-  // require.context('../table', true, /stories\.js$/),
-  // require.context('../table_x', true, /stories\.js$/),
-  // require.context('../keyboard', true, /stories\.js$/),
+  require.context('../packages/gm-table', true, /stories\.js$/),
+  require.context('../packages/gm-table-x', true, /stories\.js$/),
+  require.context('../packages/gm-keyboard', true, /stories\.js$/),
   // require.context('../sortable', true, /stories\.js$/),
   require.context('../packages/gm-cropper', true, /stories\.js$/),
-  require.context('../packages/gm-frame', true, /stories\.js$/),
+  require.context('../packages/gm-frame', true, /stories\.js$/)
   // require.context('../locales', true, /stories\.js$/)
 ]
 
