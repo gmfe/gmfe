@@ -15,7 +15,10 @@ import {
 } from './deprecated/quick'
 // 废弃的结束
 
+// 库之间用
 import EVENT_TYPE from './event_type'
+import PaginationBase from './component/pagination/base'
+// 库之间用结束
 
 import Pagination from './component/pagination/pagination'
 import PaginationText from './component/pagination/pagination_text'
@@ -110,9 +113,6 @@ import IconDownUp from './component/icon_down_up'
 import { Col, Row } from './component/grid'
 import Tabs from './component/tabs/tabs'
 
-import ManagePagination from './business/manage_pagination'
-import ManagePaginationV2 from './business/manage_pagination/v2'
-
 import Steps from './component/steps'
 
 Object.assign(Sheet, {
@@ -157,7 +157,11 @@ export {
   PaginationFuck,
   // 废弃的结束
 
+  // 库之间用
   EVENT_TYPE,
+  PaginationBase,
+  // 库之间用结束
+
   Pagination,
   PaginationV2,
   Form,
@@ -254,7 +258,5 @@ export {
   Col,
   Row,
   Tabs,
-  ManagePagination,
-  ManagePaginationV2,
   Steps
 }
