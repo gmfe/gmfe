@@ -1,11 +1,12 @@
 {
   "name": "@gm/table-x",
   "version": "0.0.1",
-  "description": "> TODO: description",
+  "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gm#readme",
   "license": "ISC",
   "main": "src/index.js",
+  "module": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gm.git"
