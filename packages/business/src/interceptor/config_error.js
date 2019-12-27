@@ -2,13 +2,14 @@ import React from 'react'
 import { RequestInterceptor } from 'gm-util'
 import { Tip } from '@gmfe/react'
 
-const useErrorInterceptor = () => {
-  const showMsg = (shower, msgs) => {
-    shower({
-      children: msgs.map((msg, i) => <div key={i}> {msg} </div>),
-      time: 5000
-    })
-  }
+const showMsg = (shower, msgs) => {
+  shower({
+    children: msgs.map((msg, i) => <div key={i}> {msg} </div>),
+    time: 5000
+  })
+}
+
+function configError() {
   const errorInterceptor = {
     response(json, config) {
       if (!config.sucCode.includes(json.code)) {
@@ -26,6 +27,8 @@ const useErrorInterceptor = () => {
       showMsg(Tip.danger.bind(Tip), msg)
     }
   }
+
   RequestInterceptor.add(errorInterceptor)
 }
-export default useErrorInterceptor
+
+export default configError

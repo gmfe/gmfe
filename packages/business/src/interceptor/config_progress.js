@@ -1,8 +1,8 @@
 import { RequestInterceptor } from 'gm-util'
 import { NProgress } from '@gmfe/react'
 
-const useProgressInterceptor = () => {
-  const progressInterceptor = {
+function configProgress() {
+  RequestInterceptor.add({
     request() {
       NProgress.start()
     },
@@ -12,8 +12,7 @@ const useProgressInterceptor = () => {
     responseError() {
       NProgress.done()
     }
-  }
-  RequestInterceptor.add(progressInterceptor)
+  })
 }
 
-export default useProgressInterceptor
+export default configProgress
