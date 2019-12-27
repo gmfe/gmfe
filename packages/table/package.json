@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/table",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -33,8 +33,8 @@
     "react-table-v6": "6.8.6"
   },
   "devDependencies": {
-    "@gmfe/locales": "^0.0.3",
-    "@gmfe/react": "^0.0.3",
+    "@gmfe/locales": "^0.0.4",
+    "@gmfe/react": "^0.0.4",
     "react-beautiful-dnd": "^10.1.0"
   },
   "gitHead": "6ba63efd5108a3751dd8b2a88438aff191a75874"
