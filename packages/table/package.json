@@ -28,12 +28,14 @@
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
+    "react-beautiful-dnd": "^10.1.0",
     "react-dom": "^16.12.0",
     "react-table-v6": "6.8.6"
   },
   "devDependencies": {
     "@gmfe/locales": "^0.0.3",
-    "@gmfe/react": "^0.0.3"
+    "@gmfe/react": "^0.0.3",
+    "react-beautiful-dnd": "^10.1.0"
   },
   "gitHead": "6ba63efd5108a3751dd8b2a88438aff191a75874"
 }
