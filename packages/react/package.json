@@ -5,6 +5,9 @@
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "src/index.js",
   "module": "src/index.js",
   "repository": {
@@ -31,5 +34,6 @@
   },
   "devDependencies": {
     "@gmfe/locales": "^0.0.3"
-  }
+  },
+  "gitHead": "6ba63efd5108a3751dd8b2a88438aff191a75874"
 }
