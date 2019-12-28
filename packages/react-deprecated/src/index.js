@@ -1,4 +1,3 @@
-import ImportLead from './import_lead'
 import SearchSelect from './search_select/search.select'
 import FilterSearchSelect from './search_select/filter.search.select'
 import TreeSelect from './tree_select'
@@ -10,13 +9,10 @@ import {
   QuickFilter,
   QuickTab,
   QuickDesc,
-  QuickDetail
+  QuickDetailThird
 } from './quick'
 
-const { QuickDetailFirst, QuickDetailSecond, QuickDetailThird } = QuickDetail
-
 export {
-  ImportLead,
   SearchSelect,
   FilterSearchSelect,
   TreeSelect,
@@ -26,8 +22,5 @@ export {
   QuickFilter,
   QuickTab,
   QuickDesc,
-  QuickDetail,
-  QuickDetailFirst,
-  QuickDetailSecond,
   QuickDetailThird
 }
