@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -32,7 +32,7 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gmfe/locales": "^1.0.1"
+    "@gmfe/locales": "^1.0.2"
   },
   "gitHead": "f0eb06df5c6eb937f35e2e4478de8a6028aee946"
 }
