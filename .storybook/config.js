@@ -1,16 +1,9 @@
-// init lng
-import { setLocale } from '../packages/locales/src/index'
 import React from 'react'
+import './i18n'
 import { configure, addDecorator } from '@storybook/react'
 import { withInfo } from '@storybook/addon-info'
 import { Observer } from 'mobx-react'
 import { LayoutRoot } from '../packages/react/src/index'
-
-// TODO 没有效果，因为存在部分 getLocale 比 setLocale 还早，得像个办法了
-let lng = localStorage.getItem('_react-gm_lng')
-lng = JSON.parse(lng)
-console.log('lng', lng)
-setLocale(lng)
 
 import './style.less'
 // 引入 react-gm 样式
