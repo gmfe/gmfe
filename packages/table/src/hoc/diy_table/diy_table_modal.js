@@ -8,7 +8,10 @@ import PropTypes from 'prop-types'
 const DiyTableModal = ({ columns, onSave, diyGroupSorting }) => {
   const [diyCols, setDiyCols] = useState(columns)
   const [showCols, setShowCols] = useState(
-    _.sortBy(columns.filter(o => o.show), 'diySortNumber')
+    _.sortBy(
+      columns.filter(o => o.show),
+      'diySortNumber'
+    )
   )
 
   const onColsChange = (key, curShow) => {
@@ -24,7 +27,12 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting }) => {
     if (curItem.show) {
       // TODO 如果做排序,就curItem就push到最后
       // 把当前项增加到排序列表中
-      setShowCols(_.sortBy(_diyCols.filter(o => o.show), 'diySortNumber'))
+      setShowCols(
+        _.sortBy(
+          _diyCols.filter(o => o.show),
+          'diySortNumber'
+        )
+      )
     } else {
       // 把当前项从排序列表去掉
       const _showCols = showCols.slice()

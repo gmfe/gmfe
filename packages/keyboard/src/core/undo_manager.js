@@ -18,7 +18,7 @@ const UndoManager = function() {
   let callback
 
   // functions
-  let execute = function(command, action) {
+  const execute = function(command, action) {
     if (!command || typeof command[action] !== 'function') {
       return this
     }

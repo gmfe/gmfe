@@ -1,109 +1,91 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import classNames from 'classnames'
 import { Flex } from '@gmfe/react'
 import Context from './context'
 
-class FullTab extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      active: props.active || 0
+const FullTab = ({
+  tabs,
+  active,
+  onChange,
+  isStatic,
+  className,
+  children,
+  ...rest
+}) => {
+  const [activeIndex, setActiveIndex] = useState(active || 0)
+
+  useEffect(() => {
+    if (active !== undefined && active !== activeIndex) {
+      setActiveIndex(active)
     }
-  }
+  }, [active])
 
-  componentWillReceiveProps(nextProps) {
-    if ('active' in nextProps) {
-      this.setState({
-        active: nextProps.active
-      })
-    }
-  }
-
-  handleTab(i) {
-    const { onChange } = this.props
-
-    if ('active' in this.props) {
+  const handleTab = i => {
+    if (onChange) {
       onChange(i)
     } else {
-      this.setState({
-        active: i
-      })
+      setActiveIndex(i)
     }
   }
 
-  render() {
-    const {
-      tabs,
-      children,
-      isStatic,
-      active,
-      onChange, // eslint-disable-line
-      ...rest
-    } = this.props
+  const tabPanels = _.map(React.Children.toArray(children), (child, i) => (
+    <div
+      key={i}
+      className={classNames({
+        hidden: activeIndex !== i
+      })}
+    >
+      {child}
+    </div>
+  ))
 
-    const activeTab = this.state.active
-    const tabPanels = _.map(React.Children.toArray(children), (child, i) => (
-      <div
-        key={i}
-        className={classNames({
-          hidden: activeTab !== i
-        })}
-      >
-        {child}
-      </div>
-    ))
+  console.log('redner')
 
-    return (
-      <Context.Consumer>
-        {({ leftWidth }) => (
-          <div
-            {...rest}
-            className={classNames(
-              'gm-framework-full-tabs gm-framework-content-full',
-              this.props.className
-            )}
-          >
-            {tabs.length > 1 && (
-              <Flex
-                column
-                justifyEnd
-                className='gm-framework-full-tabs-list-box'
+  return (
+    <Context.Consumer>
+      {({ leftWidth }) => (
+        <div
+          {...rest}
+          className={classNames(
+            'gm-framework-full-tabs gm-framework-content-full',
+            className
+          )}
+        >
+          {tabs.length > 1 && (
+            <Flex column justifyEnd className='gm-framework-full-tabs-list-box'>
+              <div
+                className='gm-framework-full-tabs-list'
+                style={{
+                  left: leftWidth
+                }}
               >
-                <div
-                  className='gm-framework-full-tabs-list'
-                  style={{
-                    left: leftWidth
-                  }}
-                >
-                  <Flex alignEnd className='gm-framework-full-tabs-list-inner'>
-                    {_.map(tabs, (tab, i) => (
-                      <div
-                        key={i}
-                        className={classNames('gm-framework-full-tabs-item', {
-                          active: i === activeTab
-                        })}
-                        onClick={this.handleTab.bind(this, i)}
-                      >
-                        {tab}
-                      </div>
-                    ))}
-                  </Flex>
-                </div>
-              </Flex>
-            )}
-            <div className='gm-framework-full-tabs-content'>
-              {isStatic ? tabPanels : tabPanels[activeTab]}
-            </div>
+                <Flex alignEnd className='gm-framework-full-tabs-list-inner'>
+                  {_.map(tabs, (tab, i) => (
+                    <div
+                      key={i}
+                      className={classNames('gm-framework-full-tabs-item', {
+                        active: i === activeIndex
+                      })}
+                      onClick={() => handleTab(i)}
+                    >
+                      {tab}
+                    </div>
+                  ))}
+                </Flex>
+              </div>
+            </Flex>
+          )}
+          <div className='gm-framework-full-tabs-content'>
+            {isStatic ? tabPanels : tabPanels[activeIndex]}
           </div>
-        )}
-      </Context.Consumer>
-    )
-  }
+        </div>
+      )}
+    </Context.Consumer>
+  )
 }
 
-// 如果有active，则一定有handleChange
 FullTab.propTypes = {
   tabs: PropTypes.array.isRequired,
   onChange: PropTypes.func,

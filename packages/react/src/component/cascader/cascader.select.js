@@ -63,8 +63,8 @@ class CascaderSelect extends React.Component {
   }
 
   uniq(selected) {
-    let obj = {}
-    let result = []
+    const obj = {}
+    const result = []
     _.each(selected, value => {
       const key = _.map(value, v => v.value).join(',')
       if (!obj[key]) {
@@ -76,7 +76,7 @@ class CascaderSelect extends React.Component {
   }
 
   handleChange(value) {
-    let result = []
+    const result = []
     this.setState({
       cascaderValue: value
     })

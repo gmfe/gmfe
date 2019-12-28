@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Flex from '../../component/flex'
+import { Flex } from '@gmfe/react'
 import _ from 'lodash'
 
 class TreeSelect extends React.Component {

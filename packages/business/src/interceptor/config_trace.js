@@ -17,6 +17,7 @@ const requestUrl = '//trace.guanmai.cn/api/logs/request/'
 const requestEnvUrl = '//trace.guanmai.cn/api/logs/environment/'
 let _platform = ''
 
+/* eslint-disable */
 function getExtension() {
   return {
     branch: window.____fe_branch,
@@ -36,6 +37,7 @@ function getExtension() {
     enterTime
   }
 }
+/* eslint-enable */
 
 function feedEnv(data) {
   data.extension = {

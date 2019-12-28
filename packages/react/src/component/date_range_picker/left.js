@@ -9,10 +9,34 @@ import { setTimes } from './util'
 
 /** 左侧选择参数列表 */
 const quickList = [
-  { range: [[0, 'day'], [0, 'day']], text: getLocale('今天') },
-  { range: [[-1, 'day'], [-1, 'day']], text: getLocale('昨天') },
-  { range: [[-6, 'day'], [0, 'day']], text: getLocale('近7天') },
-  { range: [[-29, 'day'], [0, 'day']], text: getLocale('近30天') }
+  {
+    range: [
+      [0, 'day'],
+      [0, 'day']
+    ],
+    text: getLocale('今天')
+  },
+  {
+    range: [
+      [-1, 'day'],
+      [-1, 'day']
+    ],
+    text: getLocale('昨天')
+  },
+  {
+    range: [
+      [-6, 'day'],
+      [0, 'day']
+    ],
+    text: getLocale('近7天')
+  },
+  {
+    range: [
+      [-29, 'day'],
+      [0, 'day']
+    ],
+    text: getLocale('近30天')
+  }
 ]
 
 const Left = props => {

@@ -78,7 +78,7 @@ class Flex extends React.Component {
       className
     )
 
-    let s = Object.assign({}, style)
+    const s = Object.assign({}, style)
     if (flex) {
       s.flex = typeof flex === 'boolean' ? 1 : flex
       s.WebKitFlex = typeof flex === 'boolean' ? 1 : flex

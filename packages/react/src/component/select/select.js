@@ -126,7 +126,7 @@ class Select extends React.Component {
         selected={value}
         onSelect={this.handleChange}
         willActiveIndex={willActiveIndex}
-        className={'gm-border-0'}
+        className='gm-border-0'
         style={{
           maxHeight: '250px',
           ...listStyle

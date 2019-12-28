@@ -1,10 +1,10 @@
 import { getLocale } from '@gmfe/locales'
 import React from 'react'
 import PropTypes from 'prop-types'
-import Flex from '../../component/flex'
+import { Flex } from '@gmfe/react'
 import _ from 'lodash'
-import SVGDown from '../../../svg/down.svg'
-import SVGUp from '../../../svg/up.svg'
+import SVGDown from '../../svg/down.svg'
+import SVGUp from '../../svg/up.svg'
 
 class QuickDetail extends React.Component {
   constructor(props) {

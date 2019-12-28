@@ -103,7 +103,7 @@ class FlipNumber extends React.Component {
     }
     const startTime = window.performance.now()
     const tick = now => {
-      let timeConsuming = now - startTime
+      const timeConsuming = now - startTime
       draw(timeConsuming / duration)
       if (timeConsuming < duration)
         this.requestId = window.requestAnimationFrame(tick)

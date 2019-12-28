@@ -30,7 +30,7 @@ storiesOf('框架|FrameWork', module).add('default', () => (
         />
       }
     >
-      <FullTab tabs={['按订单查看', '按商品查看']}>
+      <FullTab tabs={['按订单查看', '按商品查看']} active={1}>
         <div>按订单查看</div>
         <div>按商品查看</div>
       </FullTab>

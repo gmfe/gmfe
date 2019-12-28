@@ -1,7 +1,7 @@
 import React from 'react'
 import LayoutRoot from '../layout_root'
 
-const NProgress = () => <div className={'gm-nprogress gm-nprogress-loading'} />
+const NProgress = () => <div className='gm-nprogress gm-nprogress-loading' />
 
 let timer = null
 let reqLength = 0

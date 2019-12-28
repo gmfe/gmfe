@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
-import Dropper from '../../component/dropper/index.js'
+import { Dropper } from '@gmfe/react'
 
 class ImportLead extends React.Component {
   constructor(props) {
@@ -89,7 +89,7 @@ class ImportLead extends React.Component {
               onDrop={this.handleDrop}
               accept='.xlsx'
             >
-              <button className='btn btn-primary btn-sm'>{'上传xlsx'}</button>
+              <button className='btn btn-primary btn-sm'>上传xlsx</button>
             </Dropper>
             &nbsp;&nbsp;&nbsp;&nbsp;
             {!this.props.disableSubmit && (
@@ -98,13 +98,13 @@ class ImportLead extends React.Component {
                 className='btn btn-primary btn-sm'
                 onClick={this.handleSubmit}
               >
-                {'提交'}
+                提交
               </button>
             )}
             &nbsp;&nbsp;&nbsp;&nbsp;
             {fileTempUrl ? (
               <a href={fileTempUrl} target='blank'>
-                {'模板下载'}
+                模板下载
               </a>
             ) : (
               undefined

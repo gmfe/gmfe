@@ -1,20 +1,3 @@
-// 废弃的
-import ImportLead from './deprecated/import_lead'
-import SearchSelect from './deprecated/search_select/search.select'
-import FilterSearchSelect from './deprecated/search_select/filter.search.select'
-import TreeSelect from './deprecated/tree_select'
-import Trigger from './deprecated/trigger'
-import PaginationFuck from './deprecated/pagination_fuck/pagination_fuck'
-
-import {
-  QuickPanel,
-  QuickFilter,
-  QuickTab,
-  QuickDesc,
-  QuickDetail
-} from './deprecated/quick'
-// 废弃的结束
-
 // 库之间用
 import EVENT_TYPE from './event_type'
 import PaginationBase from './component/pagination/base'
@@ -146,24 +129,13 @@ Object.assign(Select, {
   Option
 })
 
-const { QuickDetailFirst, QuickDetailSecond, QuickDetailThird } = QuickDetail
-
 export {
-  // 废弃的
-  ImportLead,
-  SearchSelect,
-  FilterSearchSelect,
-  TreeSelect,
-  Trigger,
-  PaginationText,
-  PaginationFuck,
-  // 废弃的结束
-
   // 库之间用
   EVENT_TYPE,
   PaginationBase,
   // 库之间用结束
 
+  PaginationText,
   Pagination,
   PaginationV2,
   Form,
@@ -208,14 +180,6 @@ export {
   DropDown,
   DropDownItems,
   DropDownItem,
-  QuickPanel,
-  QuickFilter,
-  QuickTab,
-  QuickDesc,
-  QuickDetail,
-  QuickDetailFirst,
-  QuickDetailSecond,
-  QuickDetailThird,
   Validator,
   Radio,
   RadioGroup,

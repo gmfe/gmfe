@@ -1,11 +1,10 @@
 import { getLocale } from '@gmfe/locales'
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import Flex from '../../component/flex'
-import Collapse from '../../component/collapse'
+import { Flex, Collapse } from '@gmfe/react'
 import classNames from 'classnames'
-import SVGUp from '../../../svg/up.svg'
-import SVGDown from '../../../svg/down.svg'
+import SVGUp from '../../svg/up.svg'
+import SVGDown from '../../svg/down.svg'
 
 const QuickPanel = props => {
   const [isCollapse, setIsCollapse] = useState(props.in)

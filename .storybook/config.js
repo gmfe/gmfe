@@ -15,6 +15,7 @@ setLocale(lng)
 import './style.less'
 // 引入 react-gm 样式
 import '../packages/react/src/index.less'
+import '../packages/react-deprecated/src/index.less'
 // 引入 frame 样式
 import '../packages/frame/src/index.less'
 // 引入 react-table 样式
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV !== 'production') {
 const reqs = [
   require.context('../packages/locales', true, /stories\.js$/),
   require.context('../packages/react', true, /stories\.js$/),
+  require.context('../packages/react-deprecated', true, /stories\.js$/),
   require.context('../packages/table', true, /stories\.js$/),
   require.context('../packages/table-x', true, /stories\.js$/),
   require.context('../packages/keyboard', true, /stories\.js$/),

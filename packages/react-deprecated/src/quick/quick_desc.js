@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Flex from '../../component/flex'
+import { Flex } from '@gmfe/react'
 import classNames from 'classnames'
 
 class QuickDesc extends React.Component {

@@ -3,7 +3,6 @@ import { storiesOf } from '@storybook/react'
 import Pagination from './pagination'
 import PaginationV2 from './pagination_v2'
 import { observable } from 'mobx'
-import PaginationFuck from '../../deprecated/pagination_fuck/pagination_fuck'
 
 const store = observable({
   data: {
@@ -65,23 +64,6 @@ storiesOf('Pagination', module)
       nextDisabled
     />
   ))
-  .add('废弃 PaginationFuck', () => {
-    return (
-      <div>
-        {/* 带分页 */}
-        <PaginationFuck
-          pagination={fuckStore.data}
-          onChange={data => fuckStore.setData(data)}
-        />
-        {/* 不带分页 */}
-        <PaginationFuck
-          pagination={fuckStore.data}
-          onChange={data => fuckStore.setData(data)}
-          showCount={false}
-        />
-      </div>
-    )
-  })
 
 storiesOf('PaginationV2', module)
   .addParameters({

@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/react",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -21,7 +21,6 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
-    "@gmfe/locales": "^0.0.1",
     "@svgr/webpack": "^4.3.2",
     "big.js": "^5.2.2",
     "classnames": "^2.2.5",
@@ -32,8 +31,8 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
-  "devDependencies": {
-    "@gmfe/locales": "^0.0.4"
+  "dependencies": {
+    "@gmfe/locales": "^1.0.0"
   },
   "gitHead": "6ba63efd5108a3751dd8b2a88438aff191a75874"
 }

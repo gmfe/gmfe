@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 function getColumnKey(column) {
   // 如果是字符串就取 accessor
   if (_.isString(column.accessor)) {

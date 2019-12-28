@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import classNames from 'classnames'
-import Flex from '../../component/flex'
-import SVGLeftSmall from '../../../svg/left-small.svg'
-import SVGRightSmall from '../../../svg/right-small.svg'
+import { Flex } from '@gmfe/react'
+import SVGLeftSmall from '../../svg/left-small.svg'
+import SVGRightSmall from '../../svg/right-small.svg'
 
 const initState = {
   pages: [

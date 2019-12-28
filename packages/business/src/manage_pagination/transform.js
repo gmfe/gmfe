@@ -1,4 +1,4 @@
-import {PaginationBase} from '@gmfe/react'
+import { PaginationBase } from '@gmfe/react'
 import PropTypes from 'prop-types'
 import React from 'react'
 

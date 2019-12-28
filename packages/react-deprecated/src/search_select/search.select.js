@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import Flex from '../../component/flex'
+import { Flex } from '@gmfe/react'
 import classNames from 'classnames'
 import Trigger from '../trigger'
 // 略复杂了，脱离初衷，应该把单选和多选版本分开，改代码请周知
