@@ -35,6 +35,5 @@
     "@gmfe/react": "^1.0.2",
     "@gmfe/table": "^1.0.4",
     "@gmfe/table-x": "^1.0.4"
-  },
-  "gitHead": "e402042fd04b17f602d729bc5732b04554bc6d39"
+  }
 }

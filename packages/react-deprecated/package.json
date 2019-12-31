@@ -27,6 +27,5 @@
   },
   "dependencies": {
     "@gmfe/locales": "^1.0.2"
-  },
-  "gitHead": "f0eb06df5c6eb937f35e2e4478de8a6028aee946"
+  }
 }
