@@ -1,0 +1,44 @@
+name: doc
+
+# event type（此处我们选择 push，且仅当 push 到 master 分支触发）
+on:
+  push:
+    branches:
+      - master
+      - feature-actions
+
+# 任务列表
+jobs:
+  # 任务名称
+  release:
+    # 在何种平台执行，可选 windows-latest/ubuntu-latest/macOS-latest 等
+    runs-on: ubuntu-latest
+
+    # 为了加速构建，我们使用同一个包含 Node.js 的容器运行所有命令
+    container:
+      image: thonatos/github-actions-nodejs
+
+    # 这里定义了任务运行过程中的各个步骤
+    steps:
+      # 环境
+      - run: |
+          npm -v
+          node -v
+          yarn -v
+          git config --global user.email "actions@github.com"
+          git config --global user.name "actions"
+
+      - run: |
+          pwd
+          git clone https://github.com/gmfe/gmfe.git
+          cd gmfe
+
+          yarn
+          npm run build
+          ls | grep -v docs | xargs rm -rf
+          rm -rf .github && rm -rf .storybook
+          git add  --all
+          git commit -m 'build docs'
+
+          pwd
+          git push 'https://liyatang%40qq.com:${{secrets.PASSWORD}}@github.com/gmfe/gmfe-docs.git' master:master -f

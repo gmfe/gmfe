@@ -8,3 +8,4 @@ yarn.lock
 .eslintcache
 yarn-error.log
 lerna-debug.log
+docs
