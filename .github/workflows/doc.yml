@@ -34,6 +34,7 @@ jobs:
           cd gmfe
 
           yarn
+          lerna boostrap
           npm run build
           ls | grep -v docs | xargs rm -rf
           rm -rf .github && rm -rf .storybook
