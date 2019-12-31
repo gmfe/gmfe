@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - master
-      - feature-actions
 
 # 任务列表
 jobs:
@@ -31,15 +30,15 @@ jobs:
       - run: |
           pwd
           git clone https://github.com/gmfe/gmfe.git
-          cd gmfe
 
+      - run: |
+          cd gmfe
           yarn
-          lerna boostrap
+          npx lerna bootstrap
           npm run build
           ls | grep -v docs | xargs rm -rf
           rm -rf .github && rm -rf .storybook
           git add  --all
           git commit -m 'build docs'
-
           pwd
           git push 'https://liyatang%40qq.com:${{secrets.PASSWORD}}@github.com/gmfe/gmfe-docs.git' master:master -f
