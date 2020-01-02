@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const SelectCell = ({ selectType, keyField, row, isSelectorDisable }) => {
-  console.log('render SelectCell')
-
   const value = row.original[keyField]
 
   return (
@@ -14,8 +12,6 @@ const SelectCell = ({ selectType, keyField, row, isSelectorDisable }) => {
       {({ selected, onSelect }) => {
         const isChecked = selected.includes(value)
         const disabled = isSelectorDisable(row)
-
-        console.log('SelectContext.Consumer', selected)
 
         if (selectType === 'checkbox') {
           return (

@@ -67,7 +67,6 @@ function selectTableXHOC(Component) {
     }
 
     const handleSelect = selected => {
-      console.log('data.length', data.length)
       onSelect(selected)
     }
 
@@ -75,7 +74,7 @@ function selectTableXHOC(Component) {
       onSelect(!isSelectAll ? _.map(canSelectData, v => v[keyField]) : [])
     }
 
-    // 监听 columns 即可，其他都是死的。 isSelectorDisable 呢？
+    // columns 即可，其他都是死的。 isSelectorDisable 呢？
     const newColumns = useMemo(() => {
       return getNewColumns(
         columns,
@@ -89,7 +88,6 @@ function selectTableXHOC(Component) {
     return (
       <SelectContext.Provider
         value={{
-          dataLength: data.length,
           selected,
           onSelect: handleSelect,
           isSelectAll,
