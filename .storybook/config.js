@@ -24,18 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
   whyDidYouRender(React)
 }
 
-const reqs = [
-  require.context('../packages/locales', true, /stories\.js$/),
-  require.context('../packages/react', true, /stories\.js$/),
-  require.context('../packages/react-deprecated', true, /stories\.js$/),
-  require.context('../packages/table', true, /stories\.js$/),
-  require.context('../packages/table-x', true, /stories\.js$/),
-  require.context('../packages/keyboard', true, /stories\.js$/),
-  require.context('../packages/sortable', true, /stories\.js$/),
-  require.context('../packages/cropper', true, /stories\.js$/),
-  require.context('../packages/frame', true, /stories\.js$/),
-  require.context('../packages/business', true, /stories\.js$/)
-]
+const reqs = [require.context('../packages', true, /stories\.js$/)]
 
 addDecorator(
   withInfo({
