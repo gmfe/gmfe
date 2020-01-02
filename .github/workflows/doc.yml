@@ -36,9 +36,8 @@ jobs:
           yarn
           npx lerna bootstrap
           npm run build
-          ls | grep -v docs | xargs rm -rf
-          rm -rf .github && rm -rf .storybook
-          git add  --all
+          rm -rf .github && rm -rf .storybook && rm -rf packages
+          git add --all
           git commit -m 'build docs'
-          pwd
+          ls
           git push 'https://liyatang%40qq.com:${{secrets.PASSWORD}}@github.com/gmfe/gmfe-docs.git' master:master -f
