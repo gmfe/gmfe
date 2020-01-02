@@ -67,7 +67,6 @@ const TableXVirtualized = ({
   virtualizedHeight,
   virtualizedItemSize,
   refVirtualized,
-  initialScrollOffset,
 
   ...rest
 }) => {
@@ -170,7 +169,6 @@ const TableXVirtualized = ({
         itemData={itemData}
         itemSize={itemSize}
         innerElementType={Container}
-        initialScrollOffset={initialScrollOffset}
         className='gm-table-x-virtualized'
       >
         {RenderRow}
@@ -202,8 +200,7 @@ TableXVirtualized.propTypes = {
   /** 行的高度 */
   virtualizedItemSize: PropTypes.oneOfType([PropTypes.number, PropTypes.func])
     .isRequired,
-  refVirtualized: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-  initialScrollOffset: PropTypes.number
+  refVirtualized: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
 }
 
 TableXVirtualized.defaultProps = {

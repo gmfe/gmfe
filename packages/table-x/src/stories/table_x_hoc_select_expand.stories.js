@@ -124,7 +124,7 @@ const SubSelectTableTableX = selectTableXHOC(subTableXHOC(TableX))
 storiesOf('TableX|HOC select expand', module)
   .add('select', () => (
     <SelectTableX
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       keyField='id'
       selected={store.selected}
@@ -134,7 +134,7 @@ storiesOf('TableX|HOC select expand', module)
   .add('select batchActionBar', () => (
     <div style={{ paddingTop: '100px' }}>
       <SelectTableX
-        data={store.data}
+        data={store.data.slice()}
         columns={columns}
         keyField='id'
         selected={store.selected}
@@ -145,7 +145,7 @@ storiesOf('TableX|HOC select expand', module)
   ))
   .add('fixed select', () => (
     <SelectTableX
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       keyField='id'
       selected={store.selected}
@@ -156,7 +156,7 @@ storiesOf('TableX|HOC select expand', module)
   .add('select radio', () => (
     <SelectTableX
       selectType='radio'
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       keyField='id'
       selected={store.selected}
@@ -165,7 +165,7 @@ storiesOf('TableX|HOC select expand', module)
   ))
   .add('select isSelectorDisable', () => (
     <SelectTableX
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       keyField='id'
       selected={store.selected}
@@ -175,7 +175,7 @@ storiesOf('TableX|HOC select expand', module)
   ))
   .add('expand', () => (
     <ExpandTableX
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       SubComponent={() => {
         return <div>adsfa</div>
@@ -184,7 +184,7 @@ storiesOf('TableX|HOC select expand', module)
   ))
   .add('fixed expand', () => (
     <ExpandTableX
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       SubComponent={() => {
         return <div>adsfa</div>
@@ -194,7 +194,7 @@ storiesOf('TableX|HOC select expand', module)
   ))
   .add('expand select', () => (
     <SelectExpandTableX
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       keyField='id'
       selected={store.selected}
@@ -206,7 +206,7 @@ storiesOf('TableX|HOC select expand', module)
   ))
   .add('expand select sub table', () => (
     <SelectExpandTableX
-      data={store.data}
+      data={store.data.slice()}
       columns={columns}
       keyField='id'
       selected={store.selected}
@@ -214,7 +214,7 @@ storiesOf('TableX|HOC select expand', module)
       SubComponent={() => {
         return (
           <SubSelectTableTableX
-            data={store.data}
+            data={store.data.slice()}
             columns={columns}
             keyField='id'
             selected={store.selected}

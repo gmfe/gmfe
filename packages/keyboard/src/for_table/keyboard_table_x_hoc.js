@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { getColumnKey } from './util'
 import { TableX } from '@gmfe/table-x'
@@ -14,7 +14,7 @@ function keyboardTableXHOC(Component) {
    * and 如果是 fixed，则需要提供 width，focus 的时候如果在 fixed 遮挡则需要滚动到可视区域，这时候就要用到 width 了
    * */
   const KeyboardTableXHOC = props => {
-    const { id, onAddRow, onBeforeDispatch, onScroll, ...tableProps } = props
+    const { id, onAddRow, onBeforeDispatch, ...tableProps } = props
     const { data, columns } = tableProps
 
     // 检测下 columns
@@ -37,11 +37,6 @@ function keyboardTableXHOC(Component) {
         })
       }, [])
     })
-
-    // 使用 useRef 不至于渲染次数多
-    // 默认 null，只有发现 refVirtualized 的时候才会有真正的值
-    const refVirtualized = useRef(null)
-    const refInitialScrollOffset = useRef(0)
 
     // Cell 会产生 新组件，所以需要 useMemo
     const { newColumns, columnKeys } = useMemo(() => {
@@ -89,14 +84,6 @@ function keyboardTableXHOC(Component) {
       })
     }, [columns])
 
-    const handleScroll = e => {
-      onScroll && onScroll(e)
-      // 如果存在，证明用了虚拟列表
-      if (refVirtualized.current) {
-        refInitialScrollOffset.current = e.target.scrollTop
-      }
-    }
-
     return (
       <Wrap
         id={id}
@@ -109,19 +96,7 @@ function keyboardTableXHOC(Component) {
         onAddRow={onAddRow}
         onBeforeDispatch={onBeforeDispatch}
       >
-        <Component
-          {...tableProps}
-          id={id}
-          columns={newColumns}
-          onScroll={handleScroll}
-          refVirtualized={ref => {
-            refVirtualized.current = ref
-            if (tableProps.refVirtualized) {
-              refVirtualized.refVirtualized.current = ref
-            }
-          }}
-          initialScrollOffset={refInitialScrollOffset.current}
-        />
+        <Component {...tableProps} id={id} columns={newColumns} />
       </Wrap>
     )
   }

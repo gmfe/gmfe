@@ -350,8 +350,8 @@ const virtualizedColumn = [
     accessor: 'name'
   }
 ]
-// storybook 有问题，所以提出来这里
-const VirtualWrap = observer(() => {
+
+const VirtualizedWrap = observer(() => {
   const limit = 5
   const height =
     TABLE_X.HEIGHT_HEAD_TR +
@@ -387,7 +387,7 @@ storiesOf('TableX|HOC', module)
       }}
     />
   ))
-  .add('virtualized', () => <VirtualWrap />)
+  .add('virtualized', () => <VirtualizedWrap />)
   .add('edit', () => <EditTableX data={store.data} columns={editColumns} />)
   .add('diy', () => {
     return (
