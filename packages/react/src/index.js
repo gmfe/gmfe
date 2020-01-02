@@ -99,6 +99,7 @@ import Tabs from './component/tabs/tabs'
 import Steps from './component/steps'
 
 import Selection from './component/selection'
+import TreeV2 from './component/tree_v2'
 
 Object.assign(Sheet, {
   SheetColumn,
@@ -225,5 +226,6 @@ export {
   Row,
   Tabs,
   Steps,
-  Selection
+  Selection,
+  TreeV2
 }
