@@ -7,6 +7,7 @@ import { keyboardTableXHOC, KCInput, KCMoreSelect } from './'
 import {
   TableXVirtualized,
   editTableXHOC,
+  selectTableXHOC,
   fixedColumnsTableXHOC,
   TableXUtil
 } from '@gmfe/table-x'
@@ -14,7 +15,7 @@ import _ from 'lodash'
 
 const { OperationHeader, EditOperation, TABLE_X } = TableXUtil
 const KeyboardTable = keyboardTableXHOC(
-  fixedColumnsTableXHOC(editTableXHOC(TableXVirtualized))
+  fixedColumnsTableXHOC(selectTableXHOC(editTableXHOC(TableXVirtualized)))
 )
 
 const data = [
@@ -61,7 +62,13 @@ const data = [
 ]
 
 const store = observable({
+  selected: [],
+  setSelect(selected) {
+    console.log(selected)
+    this.selected = selected
+  },
   data: _.times(10, () => ({
+    id: '' + Math.random(),
     position: null,
     name: '',
     age: null,
@@ -72,6 +79,7 @@ const store = observable({
   })),
   addList() {
     this.data.push({
+      id: '' + Math.random(),
       position: null,
       name: '',
       age: null,
@@ -251,6 +259,10 @@ const Wrap = observer(() => {
         virtualizedItemSize={TableXUtil.TABLE_X.HEIGHT_TR}
         data={store.data.slice()} // 记得 slice 下，否则增加数据不会 刷新
         columns={columns}
+        fixedSelect
+        keyField={'id'}
+        selected={store.selected.slice()}
+        onSelect={selected => store.setSelect(selected)}
       />
     </div>
   )

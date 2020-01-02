@@ -24,7 +24,10 @@ if (process.env.NODE_ENV !== 'production') {
   whyDidYouRender(React)
 }
 
-const reqs = [require.context('../packages', true, /stories\.js$/)]
+const reqs = [
+  require.context('../packages', true, /stories\.js$/),
+  require.context('../demo', true, /stories\.js$/)
+]
 
 addDecorator(
   withInfo({
