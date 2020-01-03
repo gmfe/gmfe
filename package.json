@@ -1,6 +1,12 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "start": "start-storybook",
+    "build": "build-storybook -c .storybook -o docs",
+    "prebuild": "rm -rf docs; mkdir docs;",
+    "publish": "lerna publish --force-publish"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -18,11 +24,6 @@
       "stylelint --cache --fix",
       "git add"
     ]
-  },
-  "scripts": {
-    "start": "start-storybook",
-    "build": "build-storybook -c .storybook -o docs",
-    "prebuild": "rm -rf docs; mkdir docs;"
   },
   "browserslist": [
     "iOS >= 8",
