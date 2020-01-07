@@ -164,6 +164,7 @@ function diyTableHOC(Component) {
               width: referOfWidth.noCell,
               accessor: '_setting', // 不重要,随便写
               id: '__setting', // 不重要,随便写
+              fixed: 'left', // 改为默认固定
               Cell: () => null // 只是用来占据空间
             },
             ...this.notDiyCols,

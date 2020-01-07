@@ -22,7 +22,7 @@ const ExpandSelectTable = selectTableV2HOC(ExpandTable)
 const SelectSubTable = selectTableV2HOC(subTableHOC(Table))
 const SubTable = subTableHOC(Table)
 const DiyFixedSelectTable = selectTableV2HOC(
-  fixedColumnsTableHOC(diyTableHOC(Table))
+  diyTableHOC(fixedColumnsTableHOC(Table))
 )
 
 const isDisable = ({ total_money }) => total_money === 111 // 不能选的行
@@ -220,8 +220,8 @@ storiesOf('Table|Table HOC', module)
       info: {
         text: `
 HOC 可以相互组合使用，但是请注意使用顺序!
-从里到外：diyTableHOC => fixedColumnsTableHOC => expandTableHOC => selectTableV2HOC
-- fixed columns。可能会改变 columns 的顺序。
+从里到外：fixedColumnsTableHOC => diyTableHOC => expandTableHOC => selectTableV2HOC
+- fixed   columns。可能会改变 columns 的顺序,必须先调用。
 - diy。   会在最前面增加一个【表头设置】column。 会改变原有 columns 的 show 熟悉，影响column的展现。
 - expand。会在最前面增加一个【expand】column。
 - select。会在最前面添加一个【CheckBox】column。
@@ -584,14 +584,16 @@ HOC 可以相互组合使用，但是请注意使用顺序!
         },
         {
           Header: '状态',
-          minWidth: 200,
+          fixed: 'left',
+          width: 200,
           diySortNumber: 300, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
           accessor: 'status',
           diyGroupName: '基础字段'
         },
         {
           Header: '供应商户ID',
-          minWidth: 200,
+          fixed: 'left',
+          width: 200,
           diySortNumber: 400, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
           accessor: 'supplier_customer_id',
           diyGroupName: '基础字段'
