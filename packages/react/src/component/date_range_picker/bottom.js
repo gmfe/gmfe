@@ -2,21 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { getLocale } from '@gmfe/locales'
 import Flex from '../flex'
 import TimeSpanPicker from '../time_span/time_span_picker'
-import { setTimes } from './util'
+import { setTimes, renderTime } from './util'
 
-const Bottom = props => {
+const TimeRangeSelect = props => {
   const {
     begin,
     end,
     enabledTimeSelect,
-    onSelectDateAndTime,
     beginTimeSelect,
     endTimeSelect,
     onSelect,
-    renderTime,
     timeSpan
   } = props
 
@@ -56,7 +53,7 @@ const Bottom = props => {
     if (type === 'begin') {
       if (beginTimeSelect && beginTimeSelect.disabledSpan) {
         const date = setTimes(begin, time)
-        return beginTimeSelect.disabledSpan(date)
+        return beginTimeSelect.disabledSpan(date, { begin, end })
       }
       return false
     }
@@ -70,24 +67,23 @@ const Bottom = props => {
       }
 
       if (endTimeSelect && endTimeSelect.disabledSpan) {
-        return endTimeSelect.disabledSpan(date) || !isAfterBeginTime
+        return (
+          endTimeSelect.disabledSpan(date, { begin, end }) || !isAfterBeginTime
+        )
       }
       return !isAfterBeginTime
     }
   }
 
   const renderTimeSelect = type => {
-    let timeProps = null
     const isDisabled = enabledTimeSelect && begin && end
     let time = null
 
     if (type === 'begin') {
-      timeProps = beginTimeSelect
       time = begin
     }
 
     if (type === 'end') {
-      timeProps = endTimeSelect
       time = end
     }
 
@@ -96,11 +92,10 @@ const Bottom = props => {
         <TimeSpanPicker
           date={time}
           onChange={value => handleTimeSelect(value, type)}
-          max={timeProps && timeProps.max}
-          min={timeProps && timeProps.min}
           span={timeSpan}
           disabledSpan={date => handleDisabledSpan(date, type)}
           renderItem={renderTime}
+          enabledEndTimeOfDay
           isInPopup
         >
           <button className='gm-date-range-picker-bottom-time'>
@@ -115,10 +110,7 @@ const Bottom = props => {
     <Flex
       alignCenter
       justifyBetween
-      className='gm-border-top'
-      style={{
-        padding: ' 10px 10px 10px 70px'
-      }}
+      style={{ height: '25px', margin: '0px 5px 8px 15px' }}
     >
       <div className='gm-text-bold gm-date-range-picker-bottom-text'>
         <span>{b}</span>
@@ -127,21 +119,11 @@ const Bottom = props => {
         <span>{e}</span>
         {enabledTimeSelect && renderTimeSelect('end')}
       </div>
-      {enabledTimeSelect && (
-        <button
-          className='btn btn-primary'
-          disabled={(begin && !end) || (!begin && end)}
-          onClick={onSelectDateAndTime}
-          style={{ height: '24px', lineHeight: '24px', padding: '0px 10px' }}
-        >
-          {getLocale('确定')}
-        </button>
-      )}
     </Flex>
   )
 }
 
-Bottom.propTypes = {
+TimeRangeSelect.propTypes = {
   begin: PropTypes.object,
   end: PropTypes.object,
   enabledTimeSelect: PropTypes.bool,
@@ -151,17 +133,13 @@ Bottom.propTypes = {
   timeSpan: PropTypes.number,
   beginTimeSelect: PropTypes.shape({
     defaultTime: PropTypes.object,
-    max: PropTypes.object,
-    min: PropTypes.object,
     /** 禁用时间段函数，传入参数为Date对象，返回时间段 */
     disabledSpan: PropTypes.func
   }),
   endTimeSelect: PropTypes.shape({
     defaultTime: PropTypes.object,
-    max: PropTypes.object,
-    min: PropTypes.object,
     disabledSpan: PropTypes.funcxs
   })
 }
 
-export default Bottom
+export default TimeRangeSelect
