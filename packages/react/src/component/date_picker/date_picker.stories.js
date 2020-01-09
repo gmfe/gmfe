@@ -17,6 +17,7 @@ const disabledStore1 = observable(datepickerStatus)
 const disabledStore2 = observable(datepickerStatus)
 const disabledStore3 = observable(datepickerStatus)
 const withNoInputStatus = observable(datepickerStatus)
+const addTimeStore = observable(datepickerStatus)
 
 storiesOf('DatePicker', module)
   .add('一般形式', () => (
@@ -77,4 +78,13 @@ storiesOf('DatePicker', module)
           : '请点击选择'}
       </span>
     </DatePicker>
+  ))
+
+  .add('增加时间选择', () => (
+    <DatePicker
+      date={addTimeStore.date}
+      placeholder='请选择日期'
+      onChange={date => addTimeStore.setDate(date)}
+      enabledTimeSelect
+    />
   ))

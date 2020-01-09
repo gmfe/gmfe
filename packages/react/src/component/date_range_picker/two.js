@@ -83,14 +83,14 @@ const Two = props => {
   }
 
   return (
-    <Flex className='gm-padding-lr-10 gm-padding-tb-5'>
+    <Flex className='gm-padding-5'>
       <RangeCalendar
         className='gm-border-0 gm-date-range-picker-overlay-calendar'
         begin={begin}
         end={end}
         willActiveSelected={will}
         onWillActiveSelected={handleWillChange}
-        onSelect={onSelect}
+        onSelect={(begin, end) => onSelect(begin, end, true)}
         min={min}
         max={max}
         disabledDate={disabledDate}
@@ -98,14 +98,13 @@ const Two = props => {
         hoverDay={hoverDay}
         onHoverDay={setHoverDay}
       />
-      <div className='gm-date-range-picker-gap gm-border-bottom' />
       <RangeCalendar
         className='gm-border-0 gm-date-range-picker-overlay-calendar'
         begin={begin}
         end={end}
         willActiveSelected={will_end}
         onWillActiveSelected={handleWillChangeByEnd}
-        onSelect={onSelect}
+        onSelect={(begin, end) => onSelect(begin, end, true)}
         min={min}
         max={max}
         disabledDate={disabledDate}

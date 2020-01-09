@@ -1,5 +1,5 @@
 .gm-calendar {
-  width: 199px;
+  width: 226px;
   overflow: hidden;
   border: 1px solid @gm-border-color;
   background: white;
@@ -72,17 +72,21 @@
 
   .gm-calendar-week {
     height: 24px;
+    padding: 0 2px;
+  }
+
+  .gm-calendar-content {
+    padding: 0 4px;
   }
 
   .gm-calendar-day {
     color: black;
     display: inline-block;
     text-align: center;
-    line-height: 24px;
-    width: 28px;
-    height: 27px;
-    margin: 1px 0;
-    border: 2px solid white;
+    line-height: 25px;
+    width: 31px;
+    margin: -1px 0;
+    border: 3px solid white;
 
     &:hover:not(.gm-calendar-day-disabled):not(.active):not(.gm-calendar-day-old):not(.gm-calendar-day-new) {
       background-color: @brand-primary;
@@ -97,12 +101,12 @@
     &.gm-calendar-day-now:not(.gm-calendar-day-old):not(.gm-calendar-day-new) {
       color: @brand-primary;
       outline: 1px solid @brand-primary;
-      outline-offset: -3px;
+      outline-offset: -4px;
     }
 
     &.gm-calendar-day-will:not(.active) {
       outline: 1px solid @brand-primary;
-      outline-offset: -3px;
+      outline-offset: -4px;
     }
 
     &.active:not(.gm-calendar-day-old):not(.gm-calendar-day-new) {
