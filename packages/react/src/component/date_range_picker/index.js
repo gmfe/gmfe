@@ -92,7 +92,8 @@ class DateRangePicker extends React.Component {
         b = _begin.format('YYYY-MM-DD')
 
         if (enabledTimeSelect) {
-          b += _begin.format(' HH:mm')
+          b += ' '
+          b += renderTime(_begin)
         }
       }
 
