@@ -2,12 +2,41 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { getLocale } from '@gmfe/locales'
 
 import Flex from '../flex'
 import Two from './two'
 import Left from './left'
-import Bottom from './bottom'
+import TimeRangeSelect from './bottom'
 import { setTimes, getTimeCells } from './util'
+
+const Bottom = props => {
+  const { begin, end, enabledTimeSelect, onSelectDateAndTime } = props
+
+  if (!enabledTimeSelect) {
+    return null
+  }
+
+  return (
+    <Flex justifyEnd className='gm-border-top gm-padding-10'>
+      <button
+        className='btn btn-primary gm-padding-lr-15'
+        disabled={(begin && !end) || (!begin && end)}
+        onClick={onSelectDateAndTime}
+        style={{ height: '30px' }}
+      >
+        {getLocale('确定')}
+      </button>
+    </Flex>
+  )
+}
+
+Bottom.propTypes = {
+  enabledTimeSelect: PropTypes.bool,
+  begin: PropTypes.object,
+  end: PropTypes.object,
+  onSelectDateAndTime: PropTypes.func
+}
 
 /**
  * 日期段选择
@@ -20,12 +49,12 @@ const Overlay = props => {
     onOK,
     min,
     max,
+    timeSpan,
     disabledDate,
     enabledTimeSelect,
     beginTimeSelect,
     endTimeSelect,
-    renderTime,
-    timeSpan
+    customQuickSelectList
   } = props
 
   // 日期选择
@@ -33,7 +62,7 @@ const Overlay = props => {
   const [_end, setEnd] = useState(end)
 
   // 首次展示 取第一个 可选 时间点
-  const getDefaultTimes = (timeSelect, type) => {
+  const getDefaultTimes = (timeSelect, type, begin, end) => {
     const cells = getTimeCells(timeSpan)
     if (type === 'end') {
       cells.reverse()
@@ -56,7 +85,9 @@ const Overlay = props => {
       const dMax = max ? moment(max) : moment().endOf('day')
 
       const index = _.findIndex(cells, cell => {
-        const disabled = disabledSpan ? disabledSpan(cell) : false
+        const disabled = disabledSpan
+          ? disabledSpan(cell, { begin, end })
+          : false
         return moment(cell) <= dMax && moment(cell) >= dMin && !disabled
       })
       return cells[index]
@@ -64,8 +95,8 @@ const Overlay = props => {
   }
 
   const defaultTimes = {
-    begin: getDefaultTimes(beginTimeSelect, 'begin'),
-    end: getDefaultTimes(endTimeSelect, 'end')
+    begin: getDefaultTimes(beginTimeSelect, 'begin', _begin, _end),
+    end: getDefaultTimes(endTimeSelect, 'end', _begin, _end)
   }
 
   const handleSelect = (begin, end) => {
@@ -75,12 +106,12 @@ const Overlay = props => {
     // 未完成日期选择，选择时需设定该日期时间点
     if (enabledTimeSelect && !(_begin && _end)) {
       if (begin) {
-        const time = defaultTimes.begin
+        const time = getDefaultTimes(beginTimeSelect, 'begin', begin, end)
         b = setTimes(begin, time)
       }
 
       if (end) {
-        const time = defaultTimes.end
+        const time = getDefaultTimes(endTimeSelect, 'end', begin, end)
         e = setTimes(end, time)
       }
     }
@@ -99,7 +130,7 @@ const Overlay = props => {
   }
 
   return (
-    <div className='gm-date-range-picker-overlay gm-border-0'>
+    <Flex column className='gm-date-range-picker-overlay gm-border-0'>
       <Flex>
         <Left
           begin={_begin}
@@ -107,29 +138,36 @@ const Overlay = props => {
           onSelect={enabledTimeSelect ? handleSelect : onOK}
           enabledTimeSelect={enabledTimeSelect}
           defaultTimes={defaultTimes}
+          customQuickSelectList={customQuickSelectList}
         />
-        <Two
-          begin={_begin}
-          end={_end}
-          onSelect={handleSelect}
-          min={min}
-          max={max}
-          disabledDate={disabledDate}
-          enabledTimeSelect={enabledTimeSelect}
-        />
+        <Flex column>
+          <Two
+            begin={_begin}
+            end={_end}
+            onSelect={handleSelect}
+            min={min}
+            max={max}
+            disabledDate={disabledDate}
+            enabledTimeSelect={enabledTimeSelect}
+          />
+          <TimeRangeSelect
+            begin={_begin}
+            end={_end}
+            enabledTimeSelect={enabledTimeSelect}
+            beginTimeSelect={beginTimeSelect}
+            endTimeSelect={endTimeSelect}
+            onSelect={handleSelect}
+            timeSpan={timeSpan}
+          />
+        </Flex>
       </Flex>
       <Bottom
         begin={_begin}
         end={_end}
         enabledTimeSelect={enabledTimeSelect}
-        beginTimeSelect={beginTimeSelect}
-        endTimeSelect={endTimeSelect}
-        onSelect={handleSelect}
-        renderTime={renderTime}
-        timeSpan={timeSpan}
         onSelectDateAndTime={handleSelectDateAndTime}
       />
-    </div>
+    </Flex>
   )
 }
 
@@ -144,6 +182,7 @@ Overlay.propTypes = {
   enabledTimeSelect: PropTypes.bool,
   renderTime: PropTypes.func,
   timeSpan: PropTypes.number,
+  customQuickSelectList: PropTypes.array,
   beginTimeSelect: PropTypes.shape({
     defaultTime: PropTypes.object,
     max: PropTypes.object,
