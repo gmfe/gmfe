@@ -7,6 +7,7 @@ import classNames from 'classnames'
 import SVGCalendar from '../../../svg/calendar.svg'
 import Selection from '../selection'
 import moment from 'moment'
+import { renderTime } from './util'
 
 /**
  * DateRangePicker -- 日期段选择
@@ -56,8 +57,8 @@ class DateRangePicker extends React.Component {
       enabledTimeSelect,
       beginTimeSelect,
       endTimeSelect,
-      renderTime,
       timeSpan,
+      customQuickSelectList,
       ...rest
     } = this.props
 
@@ -73,8 +74,8 @@ class DateRangePicker extends React.Component {
         enabledTimeSelect={enabledTimeSelect}
         beginTimeSelect={beginTimeSelect}
         endTimeSelect={endTimeSelect}
-        renderTime={renderTime}
         timeSpan={timeSpan}
+        customQuickSelectList={customQuickSelectList}
       />
     )
 
@@ -97,10 +98,10 @@ class DateRangePicker extends React.Component {
 
       if (item.end) {
         const _end = moment(item.end)
-        e = _end.format('YYYY-MM-DD')
+        e = _end.format('YYYY-MM-DD ')
 
         if (enabledTimeSelect) {
-          e += _end.format(' HH:mm')
+          e += renderTime(_end)
         }
       }
 
@@ -163,10 +164,20 @@ DateRangePicker.propTypes = {
   canClear: PropTypes.bool,
   className: PropTypes.string,
 
+  /** 自定义禁止左侧快速选择某个项, 不传该参数默认原始选择列表, array格式如下，以 day 为粒度，从当前日期推算
+   * [{ range:[], text: string }, ...], range表示开始与结束日期距离当前日期的天数，如下：
+   * [{
+   *  range: [
+   *    [0, 'day'],
+   *    [0, 'day']
+   *  ],
+   *  text: getLocale('今天')
+   * }, ...]
+   */
+  customQuickSelectList: PropTypes.array,
+
   /** 时间选择 */
   enabledTimeSelect: PropTypes.bool,
-  /** 默认格式为 HH:mm */
-  renderTime: PropTypes.func,
   /** 默认30分钟 */
   timeSpan: PropTypes.number,
 
@@ -191,7 +202,6 @@ DateRangePicker.propTypes = {
 DateRangePicker.defaultProps = {
   onChange: _.noop,
   enabledTimeSelect: false,
-  renderTime: value => moment(value).format('HH:mm'),
   timeSpan: 30 * 60 * 1000
 }
 

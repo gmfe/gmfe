@@ -13,7 +13,16 @@ import { Flex } from '../../index'
  * */
 
 const TimeSpan = props => {
-  const { selected, renderItem, disabledSpan, onSelect, min, max, span } = props
+  const {
+    selected,
+    renderItem,
+    disabledSpan,
+    onSelect,
+    min,
+    max,
+    span,
+    enabledEndTimeOfDay
+  } = props
   // 一天起始时间点
   const beginTime = moment().startOf('day')
   const endTime = moment().endOf('day')
@@ -25,6 +34,10 @@ const TimeSpan = props => {
     while (time <= endTime) {
       cells.push(time)
       time = moment(time + span)
+    }
+
+    if (enabledEndTimeOfDay) {
+      cells.push(moment().endOf('day'))
     }
 
     // 三部分展示
@@ -130,7 +143,10 @@ TimeSpan.propTypes = {
   /** 渲染时间文本展示格式，默认为HH:mm */
   renderItem: PropTypes.func,
   /** 点击选择回调，传入参数为Date对象 */
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+
+  /** 不知道取啥名字, 目前是日期组件选择时间为了展示 24:00 用 */
+  enabledEndTimeOfDay: PropTypes.bool
 }
 TimeSpan.defaultProps = {
   min: moment()
@@ -140,6 +156,7 @@ TimeSpan.defaultProps = {
     .endOf('day')
     .toDate(),
   span: 30 * 60 * 1000,
+  enabledEndTime: false,
   renderItem: value => moment(value).format('HH:mm'),
   onSelect: _.noop
 }
