@@ -40,7 +40,19 @@ const quickList = [
 ]
 
 const Left = props => {
-  const { onSelect, begin, end, enabledTimeSelect, defaultTimes } = props
+  const {
+    end,
+    begin,
+    onSelect,
+    defaultTimes,
+    enabledTimeSelect,
+    customQuickSelectList
+  } = props
+
+  let list = quickList
+  if (customQuickSelectList && customQuickSelectList.length) {
+    list = customQuickSelectList
+  }
 
   const handleClick = item => {
     const [b, e] = item.range
@@ -84,7 +96,7 @@ const Left = props => {
 
   return (
     <div className='gm-border-right gm-margin-top-10' style={{ width: '70px' }}>
-      {_.map(quickList, item => (
+      {_.map(list, item => (
         <div
           key={item.text}
           className={classNames(
@@ -108,7 +120,8 @@ Left.propTypes = {
   end: PropTypes.object,
   enabledTimeSelect: PropTypes.bool,
   /** 开始与结束默认时间, { begin, end } */
-  defaultTimes: PropTypes.object
+  defaultTimes: PropTypes.object,
+  customQuickSelectList: PropTypes.array
 }
 
 export default Left

@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react'
 import DateRangePicker from './index'
 import { observable } from 'mobx'
 import moment from 'moment'
+import { getLocale } from '@gmfe/locales'
 
 const store = observable({
   begin: new Date(),
@@ -17,6 +18,8 @@ const _store = {
   begin: null,
   end: null,
   changeDate(begin, end) {
+    const value = moment(end).format('YYYY-MM-DD')
+    console.log(moment(end).add(1, 'ms').isSame(moment(value).add(1, 'd')))
     this.begin = begin
     this.end = end
   }
@@ -42,7 +45,42 @@ const disabledBegin = date => {
   return moment(date).isSameOrBefore(moment(date).hour(11))
 }
 
+const lastDaysofLastMonth = moment().add(-1, 'month').endOf('month')
+const diffDays = moment().diff(lastDaysofLastMonth, 'days')
+const lastMonthDays = moment(lastDaysofLastMonth.format('YYYY-MM'), 'YYYY-MM').daysInMonth()
+const quickList = [
+  {
+    range: [
+      [0, 'day'],
+      [0, 'day']
+    ],
+    text: getLocale('今天')
+  },
+  {
+    range: [
+      [-(lastMonthDays + diffDays), 'day'],
+      [-(diffDays + 1), 'day']
+    ],
+    text: getLocale('上个月')
+  }
+]
+
 storiesOf('DateRangePicker', module)
+  .add('说明', () => <div />, {
+    info: {
+      text: `
+        额外增加时间选择功能说明：
+
+        时间选择展示以 00:00 ～ 24:00 表示一天
+
+        24:00的返回形式为moment(date).endOf('day'),与第二天 00:00 相差 1ms
+
+        调用方传给后台时需要自行加一层判断转换成 第二天的00:00
+
+        若需要自定义 日期展示格式, 也需要自行处理这个情况
+      `
+    }
+  })
   .add('default', () => (
     <DateRangePicker
       begin={storeNull.begin}
@@ -132,6 +170,7 @@ storiesOf('DateRangePicker', module)
         end={store1.end}
         onChange={(begin, end) => store1.changeDate(begin, end)}
         enabledTimeSelect
+        customQuickSelectList={quickList}
       />
     )
   })

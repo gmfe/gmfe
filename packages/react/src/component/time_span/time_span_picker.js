@@ -21,6 +21,7 @@ const TimeSpanPicker = props => {
     onChange,
     className,
     isInPopup,
+    enabledEndTimeOfDay,
     ...rest
   } = props
 
@@ -43,6 +44,7 @@ const TimeSpanPicker = props => {
       onSelect={handleSelectTime}
       disabledSpan={disabledSpan}
       renderItem={renderItem}
+      enabledEndTimeOfDay={enabledEndTimeOfDay}
     />
   )
 
@@ -85,7 +87,10 @@ TimeSpanPicker.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   children: PropTypes.any,
-  isInPopup: PropTypes.bool
+  isInPopup: PropTypes.bool,
+
+  /** 不知道取啥名字, 目前是日期组件选择时间为了展示 24:00 用 */
+  enabledEndTimeOfDay: PropTypes.bool
 }
 
 TimeSpanPicker.defaultProps = {
