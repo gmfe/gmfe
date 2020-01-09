@@ -5,7 +5,11 @@
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "src/index.js",
+  "module": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
