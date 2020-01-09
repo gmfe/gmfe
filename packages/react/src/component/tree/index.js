@@ -8,6 +8,7 @@ import _ from 'lodash'
 import classNames from 'classnames'
 import Bottom from './bottom'
 import List from './list'
+import SearchSvg from '../../../svg/search.svg'
 
 const filterWithQuery = (list, query, withFilter) => {
   let processList
@@ -116,6 +117,9 @@ const Tree = ({
       )}
       {withFilter && (
         <div className='gm-tree-filter'>
+          <i className='gm-text-desc gm-text-16 gm-line-height-1'>
+            <SearchSvg />
+          </i>
           <input
             disabled={disabled}
             type='text'
@@ -124,7 +128,6 @@ const Tree = ({
             onChange={handleQuery}
             placeholder={placeholder}
           />
-          <i className='glyphicon glyphicon-search gm-text-desc' />
         </div>
       )}
 

@@ -5,6 +5,7 @@ import Flex from '../flex'
 import { Checkbox, CheckboxGroup } from '../checkbox'
 import { pinYinFilter } from 'gm-util'
 import _ from 'lodash'
+import SearchSvg from '../../../svg/search.svg'
 
 class Box extends React.Component {
   constructor(props) {
@@ -63,6 +64,9 @@ class Box extends React.Component {
 
         {withFilter ? (
           <div className='gm-transfer-box-filter'>
+            <i className='gm-text-desc gm-text-16 gm-line-height-1'>
+              <SearchSvg />
+            </i>
             <input
               type='text'
               className='form-control'
@@ -71,7 +75,6 @@ class Box extends React.Component {
               onChange={this.handleQuery}
               placeholder={placeholder}
             />
-            <i className='glyphicon glyphicon-search gm-text-desc' />
           </div>
         ) : null}
         <Flex flex column className='gm-bg gm-transfer-box-list gm-overflow-y'>
