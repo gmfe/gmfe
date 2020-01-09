@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/table-x",
-  "version": "2.0.3",
+  "version": "2.0.5-beta.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -33,9 +33,9 @@
     "sortablejs": "^1.10.1"
   },
   "devDependencies": {
-    "@gmfe/react": "^2.0.3"
+    "@gmfe/react": "^2.0.5-beta.0"
   },
   "dependencies": {
-    "@gmfe/locales": "^2.0.3"
+    "@gmfe/locales": "^2.0.5-beta.0"
   }
 }
