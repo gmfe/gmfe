@@ -7,6 +7,7 @@ import classNames from 'classnames'
 const Sortable = ({
   data,
   onChange,
+  onChangeKey,
   renderItem,
   tag,
   options = {},
@@ -14,8 +15,15 @@ const Sortable = ({
 }) => {
   const handleChange = order => {
     order = _.map(order, v => JSON.parse(v))
-    const newData = _.sortBy(data.slice(), v => order.indexOf(v.value))
-    onChange(newData)
+
+    if (onChange) {
+      const newData = _.sortBy(data.slice(), v => order.indexOf(v.value))
+      onChange(newData)
+    }
+
+    if (onChangeKey) {
+      onChangeKey(order)
+    }
   }
 
   const items = _.map(data, (v, index) => (
@@ -48,7 +56,8 @@ const Sortable = ({
 Sortable.propTypes = {
   /** [{value, text, ...}, {value, text, ...}] */
   data: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  onChangeKey: PropTypes.func,
   renderItem: PropTypes.func,
   /** 支持 ref */
   tag: PropTypes.node,
