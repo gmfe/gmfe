@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { storiesOf } from '@storybook/react'
 import { observable } from 'mobx'
 import classNames from 'classnames'
-import { Sortable } from './index'
+import { Sortable, GroupSortable } from './index'
+import { Flex } from '@gmfe/react'
 
 const store = observable({
   data: [
@@ -31,7 +32,35 @@ const store = observable({
   disabled: false,
   setData(data) {
     this.data = data
-  }
+  },
+  groupData: [
+    [
+      {
+        value: 0,
+        text: '大白菜'
+      },
+      {
+        value: 1,
+        text: '牛肉'
+      }
+    ],
+    [
+      {
+        value: '2',
+        text: '鸡肉'
+      }
+    ],
+    [
+      {
+        value: 3,
+        text: '鸭肉'
+      },
+      {
+        value: 4,
+        text: '大闸蟹'
+      }
+    ]
+  ]
 })
 
 const Wrap = React.forwardRef(({ className, ...rest }, ref) => (
@@ -122,3 +151,30 @@ storiesOf('Sortable|Sortable', module)
       onChange={data => store.setData(data)}
     />
   ))
+
+storiesOf('Sortable|GroupSortable', module).add('default', () => (
+  <GroupSortable
+    data={store.groupData.slice()}
+    onChange={newData => {
+      console.log('onChange', newData)
+      store.groupData = newData
+    }}
+    renderItem={item => (
+      <div className='gm-border gm-margin-5 gm-padding-5'>
+        {item.text} {item.value}
+      </div>
+    )}
+    // tag={Wrap}
+  >
+    {items => (
+      <div>
+        {_.map(items, (item, i) => (
+          <div key={i}>
+            {item}
+            {i < items.length - 1 && <hr />}
+          </div>
+        ))}
+      </div>
+    )}
+  </GroupSortable>
+))
