@@ -1,6 +1,7 @@
 import React from 'react'
 import Group from '../packages/sortable/src/group'
 import _ from 'lodash'
+import Flex from '../packages/react/src/component/flex'
 
 import { observable } from 'mobx'
 
@@ -28,16 +29,17 @@ export const demo = () => {
       >
         {Coms => {
           return (
-            <div className='gm-padding-10'>
+            <Flex className='gm-padding-10'>
               {_.map(Coms, (Com, i) => {
                 return (
-                  <div key={i} className='gm-inline-block'>
+                  <Flex key={i}>
                     {Com}
-                    <hr />
-                  </div>
+
+                    <div>asfasfd</div>
+                  </Flex>
                 )
               })}
-            </div>
+            </Flex>
           )
         }}
       </Group>
