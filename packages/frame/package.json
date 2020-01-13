@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/frame",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -30,6 +30,6 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@gmfe/react": "^2.2.0"
+    "@gmfe/react": "^2.2.1"
   }
 }
