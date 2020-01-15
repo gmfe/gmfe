@@ -287,6 +287,7 @@ class Base extends React.Component {
     const {
       isInPopup,
       disabled,
+      disabledClose,
       selected,
       multiple,
       placeholder,
@@ -344,12 +345,16 @@ class Base extends React.Component {
                         className='gm-cursor gm-more-select-clear-btn'
                       />
                     ) : (
-                      <SVGCloseCircle
-                        onClick={
-                          disabled ? _.noop : this.handleClear.bind(this, item)
-                        }
-                        className='gm-cursor gm-more-select-clear-btn'
-                      />
+                      !disabledClose && ( // 是否不显示清除按钮，仅单选可用
+                        <SVGCloseCircle
+                          onClick={
+                            disabled
+                              ? _.noop
+                              : this.handleClear.bind(this, item)
+                          }
+                          className='gm-cursor gm-more-select-clear-btn'
+                        />
+                      )
                     )}
                   </Flex>
                 ))
@@ -407,6 +412,8 @@ Base.propTypes = {
 
   // 状态
   disabled: PropTypes.bool,
+  /** 单选禁止显示关闭按钮 */
+  disabledClose: PropTypes.bool,
 
   // 列表 搜索
   onSearch: PropTypes.func, // searchValue, data

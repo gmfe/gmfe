@@ -114,6 +114,16 @@ storiesOf('MoreSelect', module)
       }}
     />
   ))
+  .add('disabledClose', () => (
+    <MoreSelect
+      disabledClose
+      data={store.data}
+      selected={store.selected}
+      onSelect={selected => {
+        store.setSelected(selected)
+      }}
+    />
+  ))
   .add('内容多的时候', () => (
     <div style={{ width: '200px' }}>
       <MoreSelect
