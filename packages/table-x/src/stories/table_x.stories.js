@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { TableX, TableXUtil } from '../index'
 import { observable } from 'mobx/lib/mobx'
 import moment from 'moment'
+import {observer} from 'mobx-react'
 
 const { SortHeader, EditButton } = TableXUtil
 
@@ -220,7 +221,7 @@ const groupColumns = [
 
 const sortColumnsBackEnd = [
   {
-    Header: () => (
+    Header: observer(() => (
       <div>
         建单时间
         <SortHeader
@@ -228,15 +229,13 @@ const sortColumnsBackEnd = [
           onChange={type => store.setSortTime(type)}
         />
       </div>
-    ),
-    accessor: 'submit_time',
-    disableSortBy: true
+    )),
+    accessor: 'submit_time'
   },
   {
     Header: '供应商信息',
     accessor: data => data.supplier_name,
-    id: 'supplier_name',
-    disableSortBy: true
+    id: 'supplier_name'
   },
   {
     Header: '入库金额',
@@ -244,8 +243,7 @@ const sortColumnsBackEnd = [
     Cell: cellProps => {
       const { row } = cellProps
       return <div>{row.original.total_money}</div>
-    },
-    disableSortBy: true
+    }
   }
 ]
 
@@ -282,8 +280,8 @@ Table 切 TableX 关注点：
       <TableX data={[]} columns={columns} className='gm-margin-10' tiled />
     </div>
   ))
-  .add('后台排序', () => (
-    <TableX data={store.data} columns={sortColumnsBackEnd} />
+  .add('排序', () => (
+    <TableX data={store.data.slice()} columns={sortColumnsBackEnd} />
   ))
   .add('limit height', () => (
     <TableX
