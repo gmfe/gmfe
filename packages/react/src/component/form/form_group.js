@@ -14,6 +14,7 @@ const FormGroup = ({
   formRefs,
   onSubmit,
   saveText,
+  actions,
   onSubmitValidated,
   ...rest
 }) => {
@@ -82,9 +83,10 @@ const FormGroup = ({
         >
           {saveText}
         </Button>
+        {actions}
       </>
     ),
-    [disabled]
+    [disabled, actions]
   )
 
   useEffect(() => {
@@ -115,7 +117,8 @@ FormGroup.propTypes = {
   onCancel: PropTypes.func,
   disabled: PropTypes.bool,
   /** save按钮文案，默认保存 */
-  saveText: PropTypes.string
+  saveText: PropTypes.string,
+  actions: PropTypes.element
 }
 
 FormGroup.defaultProps = {
