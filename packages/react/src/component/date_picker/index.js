@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import Calendar from '../calendar/calendar'
 import classNames from 'classnames'
 import Popover from '../popover'
 import _ from 'lodash'
 import SVGCalendar from '../../../svg/calendar.svg'
 import Selection from '../selection'
+
+import Overlay from './overlay'
 
 /**
  * DatePicker -- 日期选择
@@ -81,6 +82,22 @@ class DatePicker extends React.Component {
     })
   }
 
+  renderSelected = date => {
+    const { renderDate, enabledTimeSelect } = this.props
+    if (!date) {
+      return ''
+    }
+
+    if (renderDate) {
+      return renderDate(date)
+    }
+
+    if (enabledTimeSelect) {
+      return moment(date).format('YYYY-MM-DD HH:mm')
+    }
+    return moment(date).format('YYYY-MM-DD')
+  }
+
   render() {
     const {
       date,
@@ -94,20 +111,23 @@ class DatePicker extends React.Component {
       renderDate,
       popoverType,
       onKeyDown,
+      timeLimit,
+      enabledTimeSelect,
       children,
       ...rest
     } = this.props
     const { willActiveSelected } = this.state
 
     const popup = (
-      <Calendar
-        className='gm-border-0'
-        selected={date}
+      <Overlay
+        date={date}
         onSelect={this.handleSelectDate}
         willActiveSelected={willActiveSelected}
         min={min}
         max={max}
         disabledDate={disabledDate}
+        timeLimit={timeLimit}
+        enabledTimeSelect={enabledTimeSelect}
       />
     )
 
@@ -129,7 +149,7 @@ class DatePicker extends React.Component {
             selected={date}
             onSelect={onChange}
             disabled={disabled}
-            renderSelected={renderDate}
+            renderSelected={this.renderSelected}
             className={classNames('gm-datepicker', className)}
             placeholder={placeholder}
             funIcon={<SVGCalendar />}
@@ -160,18 +180,35 @@ DatePicker.propTypes = {
   /** 定义不可选择的日期，传入参数为Date对象，返回true or false */
   disabledDate: PropTypes.func,
   /** 定义日期框内value的展示形式，传入参数为Date对象，返回展示格式，如定义value展示为 'xx月-xx日‘ */
+  /** 若有时间选择，需带上时间 */
   renderDate: PropTypes.func,
 
   popoverType: PropTypes.oneOf(['focus', 'realFocus']),
 
   className: PropTypes.string,
   style: PropTypes.object,
-  onKeyDown: PropTypes.func
+  onKeyDown: PropTypes.func,
+
+  /** 时间选择 */
+  enabledTimeSelect: PropTypes.bool,
+  /** 时间点选择限制 - 默认值, 禁用时间段 */
+  timeLimit: PropTypes.shape({
+    /** 默认开始时间, HH:mm 格式, 没有默认展示为第一个可选时间点 */
+    defaultTime: PropTypes.object,
+    /** 禁用时间段函数，传入参数为Date对象，返回bool */
+    disabledSpan: PropTypes.func,
+    /** 时间间隔, 默认30分钟 */
+    timeSpan: PropTypes.number
+  })
 }
 
 DatePicker.defaultProps = {
-  renderDate: date => (date ? moment(date).format('YYYY-MM-DD') : ''),
-  onKeyDown: _.noop
+  onKeyDown: _.noop,
+  timeLimit: {
+    timeSpan: 30 * 60 * 1000,
+    renderTime: time => moment(time).format('HH:mm')
+  },
+  enabledTimeSelect: false
 }
 
 export default DatePicker

@@ -61,7 +61,7 @@ const Overlay = props => {
   const [_end, setEnd] = useState(end)
 
   // 首次展示 取第一个 可选 时间点
-  const getDefaultTimes = (timeSelect, type, begin, end) => {
+  const getFirstSelectTime = (timeSelect, type, begin, end) => {
     const cells = getTimeCells(timeSpan)
     if (type === 'end') {
       cells.reverse()
@@ -94,24 +94,20 @@ const Overlay = props => {
     }
   }
 
-  const defaultTimes = {
-    begin: getDefaultTimes(beginTimeSelect, 'begin', _begin, _end),
-    end: getDefaultTimes(endTimeSelect, 'end', _begin, _end)
-  }
-
-  const handleSelect = (begin, end) => {
+  const handleSelect = (begin, end, updateEndTime) => {
     let b = begin
     let e = end
 
-    // 未完成日期选择，选择时需设定该日期时间点
-    if (enabledTimeSelect && !(_begin && _end)) {
-      if (begin) {
-        const time = getDefaultTimes(beginTimeSelect, 'begin', begin, end)
+    if (enabledTimeSelect) {
+      // 未完成日期选择，需要得到所选日期的展示时间
+      if (begin && !(_begin && _end)) {
+        const time = getFirstSelectTime(beginTimeSelect, 'begin', begin, end)
         b = setTimes(begin, time)
       }
 
-      if (end) {
-        const time = getDefaultTimes(endTimeSelect, 'end', begin, end)
+      // 结束时间可能与开始时间选择相关，通过传入字段决定是否更新
+      if (end && updateEndTime) {
+        const time = getFirstSelectTime(endTimeSelect, 'end', begin, end)
         e = setTimes(end, time)
       }
     }
@@ -127,6 +123,11 @@ const Overlay = props => {
 
   const handleSelectDateAndTime = () => {
     onOK(_begin, _end)
+  }
+
+  const defaultTimes = {
+    begin: getFirstSelectTime(beginTimeSelect, 'begin', _begin, _end),
+    end: getFirstSelectTime(endTimeSelect, 'end', _begin, _end)
   }
 
   return (

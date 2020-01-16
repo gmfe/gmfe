@@ -31,9 +31,14 @@ const TimeRangeSelect = props => {
   const handleTimeSelect = (time, type) => {
     let b = begin
     let e = end
+    let updateEndTime = false
 
     if (type === 'begin') {
       b = setTimes(begin, time)
+      // 选择开始时间后，结束时间可选范围可能有变动，判断当前给出的结束时间是否需要更新
+      updateEndTime =
+        (endTimeSelect && endTimeSelect.disabledSpan(end, { begin: b, end })) ||
+        false
     }
 
     if (type === 'end') {
@@ -45,7 +50,7 @@ const TimeRangeSelect = props => {
       e = setTimes(end, time)
     }
 
-    onSelect(b, e)
+    onSelect(b, e, updateEndTime)
   }
 
   // 做一步处理，防止不同日期可选时间段不同
