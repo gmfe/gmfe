@@ -67,7 +67,7 @@ const Wrap = React.forwardRef(({ className, ...rest }, ref) => (
   <div
     {...rest}
     ref={ref}
-    className={classNames('gm-border gm-padding-10', className)}
+    className={classNames('gm-border gm-padding-10 gm-flex', className)}
   />
 ))
 
@@ -164,7 +164,13 @@ storiesOf('Sortable|GroupSortable', module).add('default', () => (
         {item.text} {item.value}
       </div>
     )}
-    // tag={Wrap}
+    itemProps={{
+      style: {
+        backgroundColor: 'yellow',
+        margin: '5px'
+      }
+    }}
+    tag={Wrap}
   >
     {items => (
       <div>

@@ -7,6 +7,7 @@ const GroupSortable = ({
   data,
   onChange,
   renderItem,
+  itemProps,
   tag,
   options,
   children
@@ -48,6 +49,7 @@ const GroupSortable = ({
         groupValues={_.map(subData, v => v.value)}
         onChange={handleSubChange}
         renderItem={renderItem}
+        itemProps={itemProps}
         tag={tag}
         options={{
           group: 'group',
