@@ -119,7 +119,7 @@ function unSelectAll(list, selectedValues) {
 export {
   getUnLeafValues,
   getLeafValues,
-  filterGroupList,
+  filterGroupListLeaf,
   filterWithQuery,
   listToFlatFilterWithGroupSelected,
   unSelectAll

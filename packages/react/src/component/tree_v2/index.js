@@ -2,7 +2,12 @@ import { getLocale } from '@gmfe/locales'
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Flex from '../flex'
-import { getLeafValues, getUnLeafValues, filterWithQuery } from './util'
+import {
+  getLeafValues,
+  getUnLeafValues,
+  filterWithQuery,
+  filterGroupListLeaf
+} from './util'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Bottom from './bottom'
@@ -116,6 +121,15 @@ const TreeV2 = ({
       />
     </Flex>
   )
+}
+
+TreeV2.selectedValues2SelectedList = (list, selectValues) => {
+  // 注意是 cloneDeep
+  const selectedList = filterGroupListLeaf(_.cloneDeep(list), v =>
+    selectValues.includes(v.value)
+  )
+
+  return selectedList
 }
 
 TreeV2.propTypes = {

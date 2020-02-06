@@ -134,6 +134,26 @@ export const flat = () => (
   </div>
 )
 
+export const selectedValues2SelectedList = () => {
+  return (
+    <div>
+      <Wrap />
+      <button
+        onClick={() => {
+          console.log(
+            TreeV2.selectedValues2SelectedList(
+              json.data,
+              store.selectedValues.slice()
+            )
+          )
+        }}
+      >
+        selectedValues2SelectedList
+      </button>
+    </div>
+  )
+}
+
 export default {
   title: 'TreeV2'
 }
