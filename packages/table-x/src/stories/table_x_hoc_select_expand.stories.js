@@ -170,7 +170,7 @@ storiesOf('TableX|HOC select expand', module)
       keyField='id'
       selected={store.selected}
       onSelect={selected => store.setSelected(selected)}
-      isSelectorDisable={item => item.index === 1}
+      isSelectorDisable={item => item.total_money === 176}
     />
   ))
   .add('expand', () => (
