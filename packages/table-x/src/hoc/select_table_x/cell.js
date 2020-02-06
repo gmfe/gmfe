@@ -11,7 +11,7 @@ const SelectCell = ({ selectType, keyField, row, isSelectorDisable }) => {
     <SelectContext.Consumer>
       {({ selected, onSelect }) => {
         const isChecked = selected.includes(value)
-        const disabled = isSelectorDisable(row)
+        const disabled = isSelectorDisable(row.original)
 
         if (selectType === 'checkbox') {
           return (
