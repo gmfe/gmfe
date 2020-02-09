@@ -60,9 +60,11 @@
 
     .rt-tr {
       min-height: 60px;
+
       .rt-td {
         align-items: center;
         display: flex;
+
         .gm-react-table-td-content {
           width: 100%;
         }
@@ -265,7 +267,7 @@
         user-select: none;
         padding: 5px;
 
-        &:before {
+        &::before {
           content: '\2022'; //圆点
           font-size: 16px;
           margin-right: 2px;
@@ -341,6 +343,7 @@
 .gm-react-table-no-data {
   .rt-table {
     z-index: 1;
+
     .rt-tbody {
       visibility: hidden;
       height: 120px;
@@ -355,9 +358,6 @@
 }
 
 .gm-react-edit-table.ReactTable {
-  border: none;
-  border-bottom: 1px solid fadeout(@gm-frame-border-color, 50%);
-
   &.-striped .rt-tbody {
     .rt-tr {
       background-color: white;
