@@ -32,13 +32,16 @@ const More = props => {
   )
 }
 
-const FormPanel = ({ title, right, children, ...rest }) => {
+const FormPanel = ({ title, left, right, children, ...rest }) => {
   return (
     <div {...rest} className='gm-form-panel'>
       <Flex flex justifyBetween alignEnd className='gm-form-panel-header'>
         <Flex>
           <div className='gm-form-panel-header-tag' />
           <div className='gm-form-panel-header-title'>{title}</div>
+        </Flex>
+        <Flex column none>
+          {left}
         </Flex>
         <Flex flex />
         <Flex column none>
@@ -55,6 +58,7 @@ FormPanel.More = More
 
 FormPanel.propTypes = {
   title: PropTypes.string,
+  left: PropTypes.element,
   right: PropTypes.element
 }
 
