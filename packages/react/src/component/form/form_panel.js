@@ -33,7 +33,7 @@ const More = props => {
   )
 }
 
-const FormPanel = ({ title, right, children, ...rest }) => {
+const FormPanel = ({ title, left, right, children, showBorder, ...rest }) => {
   return (
     <div {...rest} className='gm-form-panel'>
       <Flex flex justifyBetween alignEnd className='gm-form-panel-header'>
@@ -41,12 +41,15 @@ const FormPanel = ({ title, right, children, ...rest }) => {
           <div className='gm-form-panel-header-tag' />
           <div className='gm-form-panel-header-title'>{title}</div>
         </Flex>
+        <Flex column none>
+          {left}
+        </Flex>
         <Flex flex />
         <Flex column none>
           {right}
         </Flex>
       </Flex>
-      <div className='gm-form-panel-border' />
+      {showBorder ? <div className='gm-form-panel-border' /> : null}
       <div className='gm-form-panel-content'>{children}</div>
     </div>
   )
@@ -56,7 +59,13 @@ FormPanel.More = More
 
 FormPanel.propTypes = {
   title: PropTypes.string,
-  right: PropTypes.element
+  left: PropTypes.element,
+  right: PropTypes.element,
+  showBorder: PropTypes.bool
+}
+
+FormPanel.defaultProps = {
+  showBorder: true
 }
 
 export default FormPanel

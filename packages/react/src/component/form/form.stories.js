@@ -378,6 +378,14 @@ FormItem 包住表单元素
       >
         <FormPanel
           title='店铺设置'
+          left={
+            <button
+              className='btn btn-primary gm-margin-left-10'
+              onClick={() => console.log('搜索')}
+            >
+              搜索
+            </button>
+          }
           right={
             <Button
               onClick={() => console.log('删除')}
@@ -511,6 +519,7 @@ FormItem 包住表单元素
 
         <FormPanel
           title='店铺设置'
+          left={<span className='gm-margin-left-10' onClick={() => console.log('搜索')}>搜索</span>}
           right={<span onClick={() => console.log('删除')}>删除</span>}
         >
           <Form
