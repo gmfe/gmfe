@@ -293,10 +293,11 @@ Table 切 TableX 关注点：
     />
   ))
   .add('edit button', () => <TableX data={store.data} columns={editColumns} />)
-  .add('isTrDisable', () => (
+  .add('isTrDisable && isTrHighlight', () => (
     <TableX
       data={store.data}
       columns={columns}
       isTrDisable={(item, index) => index % 2 === 0}
+      isTrHighlight={(item, index) => index === 0}
     />
   ))
