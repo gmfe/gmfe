@@ -20,7 +20,7 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
-    "@gmfe/react": "^1.0.0"
+    "@gmfe/react": "^2.0.0"
   },
   "devDependencies": {
     "@gmfe/react": "^2.2.12"
