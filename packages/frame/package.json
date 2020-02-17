@@ -21,7 +21,7 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
-    "@gmfe/react": "^1.0.0",
+    "@gmfe/react": "^2.0.0",
     "classnames": "^2.2.5",
     "gm-util": "^5.11.0",
     "lodash": "^4.17.14",

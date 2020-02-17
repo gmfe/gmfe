@@ -328,7 +328,7 @@ const EditTableX = editTableXHOC(TableX)
 const DiyTableX = diyTableXHOC(TableX)
 
 const virtualizedStore = observable({
-  data: _.times(2, index => ({
+  data: _.times(20, index => ({
     id: index,
     name: 'lalalla'
   })),
@@ -352,6 +352,9 @@ const virtualizedColumn = [
 ]
 
 const VirtualizedWrap = observer(() => {
+  const [highLightIndex, setIndex] = React.useState(-1)
+  const ref = React.useRef(null)
+
   const limit = 5
   const height =
     TABLE_X.HEIGHT_HEAD_TR +
@@ -361,8 +364,18 @@ const VirtualizedWrap = observer(() => {
     <div>
       <div>
         <button onClick={() => virtualizedStore.addData()}>+1 data</button>
+        <button
+          onClick={() => {
+            setIndex(10)
+            ref.current.scrollToItem(11, 'center')
+          }}
+        >
+          滚到第10行
+        </button>
       </div>
       <TableXVirtualized
+        refVirtualized={ref}
+        isTrHighlight={(item, index) => index === highLightIndex}
         data={virtualizedStore.data.slice()}
         columns={virtualizedColumn}
         virtualizedHeight={height}

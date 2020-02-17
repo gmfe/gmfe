@@ -25,7 +25,8 @@ const RenderRow = React.memo(({ data, index, style }) => {
     SubComponent,
     keyField,
     totalWidth,
-    isTrDisable
+    isTrDisable,
+    isTrHighlight
   } = data
 
   const row = rows[index]
@@ -40,6 +41,7 @@ const RenderRow = React.memo(({ data, index, style }) => {
       style={style}
       totalWidth={totalWidth}
       isTrDisable={isTrDisable}
+      isTrHighlight={isTrHighlight}
     />
   )
 }, areEqual)
@@ -63,6 +65,7 @@ const TableXVirtualized = ({
   tiled,
   onScroll,
   isTrDisable,
+  isTrHighlight,
 
   virtualizedHeight,
   virtualizedItemSize,
@@ -146,7 +149,8 @@ const TableXVirtualized = ({
     SubComponent,
     keyField,
     totalWidth,
-    isTrDisable
+    isTrDisable,
+    isTrHighlight
   }
 
   return (
@@ -190,6 +194,8 @@ TableXVirtualized.propTypes = {
   tiled: PropTypes.bool,
   /** 当前行是否disable */
   isTrDisable: PropTypes.func,
+  /** 当前行是否高亮 */
+  isTrHighlight: PropTypes.func,
   onScroll: PropTypes.func,
   className: PropTypes.string,
   style: PropTypes.object,
@@ -206,7 +212,8 @@ TableXVirtualized.propTypes = {
 TableXVirtualized.defaultProps = {
   keyField: 'value',
   tiled: false,
-  isTrDisable: () => false
+  isTrDisable: () => false,
+  isTrHighlight: () => false
 }
 
 export default TableXVirtualized

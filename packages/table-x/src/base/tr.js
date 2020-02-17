@@ -9,7 +9,8 @@ const Tr = ({
   keyField,
   style,
   totalWidth,
-  isTrDisable
+  isTrDisable,
+  isTrHighlight
 }) => {
   const gp = row.getRowProps()
 
@@ -17,6 +18,7 @@ const Tr = ({
     ...gp,
     className: classNames('gm-table-x-tr', {
       'gm-table-x-tr-disable': isTrDisable(row.original, row.index),
+      'gm-table-x-tr-highlight': isTrHighlight(row.original, row.index),
       'gm-table-x-tr-odd': row.index % 2 === 0,
       'gm-table-x-tr-even': row.index % 2 !== 0
     })
@@ -47,7 +49,8 @@ Tr.propTypes = {
   keyField: PropTypes.string.isRequired,
   style: PropTypes.object.isRequired,
   totalWidth: PropTypes.number.isRequired,
-  isTrDisable: PropTypes.func
+  isTrDisable: PropTypes.func,
+  isTrHighlight: PropTypes.func
 }
 
 export default React.memo(Tr)

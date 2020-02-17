@@ -20,6 +20,7 @@ const TableX = ({
   tiled,
   onScroll,
   isTrDisable,
+  isTrHighlight,
   ...rest
 }) => {
   // diy fixed(最新rc12不支持column.show,自己实现)
@@ -78,6 +79,7 @@ const TableX = ({
         style={style}
         totalWidth={totalWidth}
         isTrDisable={isTrDisable}
+        isTrHighlight={isTrHighlight}
       />
     )
   }
@@ -123,6 +125,8 @@ TableX.propTypes = {
   tiled: PropTypes.bool,
   /** 当前行是否disable */
   isTrDisable: PropTypes.func,
+  /** 当前行是否高亮 */
+  isTrHighlight: PropTypes.func,
   onScroll: PropTypes.func,
   className: PropTypes.string,
   style: PropTypes.object
@@ -131,7 +135,8 @@ TableX.propTypes = {
 TableX.defaultProps = {
   keyField: 'value',
   tiled: false,
-  isTrDisable: () => false
+  isTrDisable: () => false,
+  isTrHighlight: () => false
 }
 
 export default TableX
