@@ -116,6 +116,53 @@ const TitleWrap = observer(() => {
   )
 })
 
+const RenderItemWrap = observer(() => {
+  return (
+    <div style={{ height: '500px', display: 'flex' }}>
+      <TreeV2
+        style={{ width: '300px', marginRight: '30px' }}
+        list={json.data}
+        selectedValues={store.selectedValues.slice()}
+        onSelectValues={values => store.setSelectedValues(values)}
+        title='叶子节点 renderLeafItem'
+        renderLeafItem={data => (
+          <div>
+            <span
+              style={{
+                backgroundColor: '#56a3f2',
+                color: 'white',
+                padding: '1px',
+                borderRadius: '2px'
+              }}
+            >
+              上架
+            </span>
+            {data.text}
+          </div>
+        )}
+      />
+
+      <TreeV2
+        style={{ width: '300px' }}
+        list={json.data}
+        selectedValues={store.selectedValues.slice()}
+        onSelectValues={values => store.setSelectedValues(values)}
+        title='非叶子节点 renderGroupfItem'
+        renderGroupItem={data => (
+          <div>
+            <img
+              src='https://img.guanmai.cn/product_pic/cdd0870bc403069b.jpeg'
+              style={{ width: '30px', height: '30px' }}
+              alt=''
+            />
+            {`${data.text}`}
+          </div>
+        )}
+      />
+    </div>
+  )
+})
+
 export const Default = () => (
   <div>
     <Wrap />
@@ -131,6 +178,12 @@ export const title = () => (
 export const flat = () => (
   <div>
     <FlatWrap />
+  </div>
+)
+
+export const renderItem = () => (
+  <div>
+    <RenderItemWrap />
   </div>
 )
 

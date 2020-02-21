@@ -18,7 +18,9 @@ const Item = ({
   isSelected,
   onSelect,
   flatItem: { isLeaf, level, data },
-  style
+  style,
+  renderLeafItem,
+  renderGroupItem
 }) => {
   const handleGroup = e => {
     e.stopPropagation()
@@ -58,7 +60,7 @@ const Item = ({
         className='gm-padding-left-5'
       />
       <Flex flex column block onClick={handleName}>
-        {data.text}
+        {isLeaf ? renderLeafItem(data) : renderGroupItem(data)}
       </Flex>
     </Flex>
   )
@@ -74,7 +76,13 @@ Item.propTypes = {
     level: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired
   }),
-  style: PropTypes.object.isRequired
+  style: PropTypes.object.isRequired,
+  renderLeafItem: PropTypes.func,
+  renderGroupItem: PropTypes.func
+}
+Item.defaultProps = {
+  renderLeafItem: data => data.text,
+  renderGroupItem: data => data.text
 }
 
 const List = ({
@@ -83,7 +91,9 @@ const List = ({
   onGroupSelect,
   selectedValues,
   onSelectValues,
-  listHeight
+  listHeight,
+  renderLeafItem,
+  renderGroupItem
 }) => {
   const flatList = useMemo(() => {
     return listToFlatFilterWithGroupSelected(list, groupSelected)
@@ -118,6 +128,8 @@ const List = ({
         isSelected={isSelected}
         flatItem={flatItem}
         style={style}
+        renderLeafItem={renderLeafItem}
+        renderGroupItem={renderGroupItem}
       />
     )
   }
@@ -139,7 +151,9 @@ List.propTypes = {
   onGroupSelect: PropTypes.func.isRequired,
   selectedValues: PropTypes.array.isRequired,
   onSelectValues: PropTypes.func.isRequired,
-  listHeight: PropTypes.number.isRequired
+  listHeight: PropTypes.number.isRequired,
+  renderLeafItem: PropTypes.func,
+  renderGroupItem: PropTypes.func
 }
 
 export default List

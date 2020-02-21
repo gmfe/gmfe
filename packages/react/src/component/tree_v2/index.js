@@ -36,6 +36,8 @@ const TreeV2 = ({
   onSelectValues,
   placeholder,
   withFilter,
+  renderLeafItem,
+  renderGroupItem,
   className,
   ...rest
 }) => {
@@ -110,6 +112,8 @@ const TreeV2 = ({
             onGroupSelect={handleGroupSelect}
             selectedValues={selectedValues}
             onSelectValues={onSelectValues}
+            renderLeafItem={renderLeafItem}
+            renderGroupItem={renderGroupItem}
           />
         )}
       </div>
@@ -141,6 +145,8 @@ TreeV2.propTypes = {
   title: PropTypes.string,
   /** 过滤函数，默认自带，不需要就 false */
   withFilter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+  renderLeafItem: PropTypes.func,
+  renderGroupItem: PropTypes.func,
   placeholder: PropTypes.string,
 
   className: PropTypes.string,
