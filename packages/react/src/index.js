@@ -59,6 +59,7 @@ import MultipleFilterSelect from './component/filter_select/multiple.filter.sele
 import MoreSelect from './component/more_select'
 import Nav from './component/nav'
 import { Transfer, TransferGroup } from './component/transfer'
+import TransferV2 from './component/transfer_v2'
 import Tree from './component/tree'
 import ImagePreview from './component/image_preview'
 import Mask from './component/mask'
@@ -190,6 +191,7 @@ export {
   Option,
   Transfer,
   TransferGroup,
+  TransferV2,
   Tree,
   FilterSelect,
   MultipleFilterSelect,
