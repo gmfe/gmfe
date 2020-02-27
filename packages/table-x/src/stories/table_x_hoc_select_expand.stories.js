@@ -113,6 +113,11 @@ const store = observable({
   setSelected(selected) {
     console.log(selected)
     this.selected = selected
+  },
+  expanded: { 2: true, 3: true },
+  setExpanded(expanded) {
+    console.log(expanded)
+    this.expanded = expanded
   }
 })
 
@@ -173,12 +178,23 @@ storiesOf('TableX|HOC select expand', module)
       isSelectorDisable={item => item.total_money === 176}
     />
   ))
-  .add('expand', () => (
+  .add('调用方控制的 expand', () => (
+    <ExpandTableX
+      data={store.data.slice()}
+      columns={columns}
+      expanded={store.expanded}
+      onExpand={obj => store.setExpanded(obj)}
+      SubComponent={() => {
+        return <div style={{ height: '50px' }}>这是是展开的</div>
+      }}
+    />
+  ))
+  .add('常规的 expand', () => (
     <ExpandTableX
       data={store.data.slice()}
       columns={columns}
       SubComponent={() => {
-        return <div>adsfa</div>
+        return <div style={{ height: '50px' }}>这是是展开的</div>
       }}
     />
   ))
