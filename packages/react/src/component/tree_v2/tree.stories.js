@@ -163,6 +163,52 @@ const RenderItemWrap = observer(() => {
   )
 })
 
+const AdvanceFilterWrap = observer(() => {
+  return (
+    <div style={{ height: '500px', width: '300px' }}>
+      <TreeV2
+        list={json.data}
+        selectedValues={store.selectedValues.slice()}
+        onSelectValues={values => store.setSelectedValues(values)}
+        title='lalala'
+        withFilter={(list, query) => {
+          let result = list
+
+          let label
+          let search = query
+          if (query.startsWith('label:')) {
+            const arr = query.split(' ')
+            if (arr[0]) {
+              label = arr[0].slice('label:'.length)
+              search = arr[1]
+            }
+          }
+
+          console.log(label, search)
+
+          if (label || search) {
+            result = TreeV2.filterGroupList(result, v => {
+              let flag = true
+              if (label && v.label !== label) {
+                flag = false
+              }
+              if (search && !v.text.includes(search)) {
+                flag = false
+              }
+
+              console.log(flag)
+
+              return flag
+            })
+          }
+
+          return result
+        }}
+      />
+    </div>
+  )
+})
+
 export const Default = () => (
   <div>
     <Wrap />
@@ -184,6 +230,12 @@ export const flat = () => (
 export const renderItem = () => (
   <div>
     <RenderItemWrap />
+  </div>
+)
+
+export const advanceFilter = () => (
+  <div>
+    <AdvanceFilterWrap />
   </div>
 )
 
@@ -241,11 +293,11 @@ const json = {
         {
           value: 'B119099',
           children: [
-            { value: 'C4125709', text: '腿肉（冷鲜）' },
-            { value: 'C4125717', text: '肉片（冷鲜）' },
-            { value: 'C4125676', text: '带皮五花肉（冷鲜）' },
-            { value: 'C4125698', text: '去皮五花肉（冷鲜）' },
-            { value: 'C4125706', text: '瘦肉（冷鲜）' }
+            { value: 'C4125709', text: '腿肉（冷鲜）', label: 'A' },
+            { value: 'C4125717', text: '肉片（冷鲜）', label: 'B' },
+            { value: 'C4125676', text: '带皮五花肉（冷鲜）', label: 'C' },
+            { value: 'C4125698', text: '去皮五花肉（冷鲜）', label: 'D' },
+            { value: 'C4125706', text: '瘦肉（冷鲜）', label: 'E' }
           ],
           text: '冷鲜肉'
         }
@@ -258,8 +310,8 @@ const json = {
         {
           value: 'B34032',
           children: [
-            { value: 'C1292441', text: '中排骨' },
-            { value: 'C3125818', text: '保鲜筒子骨' },
+            { value: 'C1292441', text: '中排骨', label: 'A' },
+            { value: 'C3125818', text: '保鲜筒子骨', label: 'B' },
             { value: 'C1292444', text: '排骨 不砍' },
             { value: 'C1292448', text: '棒骨（带肉）' },
             { value: 'C1292443', text: '仔排' },

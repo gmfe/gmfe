@@ -6,6 +6,7 @@ import {
   getLeafValues,
   getUnLeafValues,
   filterWithQuery,
+  filterGroupList,
   filterGroupListLeaf
 } from './util'
 import _ from 'lodash'
@@ -127,6 +128,8 @@ const TreeV2 = ({
   )
 }
 
+// 哎呀，暴露了两个方法出去，请小心
+TreeV2.filterGroupList = filterGroupList
 TreeV2.selectedValues2SelectedList = (list, selectValues) => {
   // 注意是 cloneDeep
   const selectedList = filterGroupListLeaf(_.cloneDeep(list), v =>
