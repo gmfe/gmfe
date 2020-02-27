@@ -61,9 +61,16 @@ function expandTableXHOC(Component) {
     data,
     SubComponent,
     fixedExpand,
+    expanded: expandedFromProps,
+    onExpand,
     ...rest
   }) => {
-    const [expanded, setExpanded] = useState({})
+    // expanded状态是否由调用方控制
+    const isControlByProps = expandedFromProps !== undefined
+
+    const [expanded, setExpanded] = isControlByProps
+      ? [expandedFromProps, onExpand]
+      : useState({})
 
     const isExpandAll = _.filter(expanded, v => v).length === data.length
 
@@ -77,14 +84,14 @@ function expandTableXHOC(Component) {
       } else {
         const newExpanded = {}
         _.each(data, (v, i) => {
-          newExpanded[i] = {}
+          newExpanded[i] = true
         })
         setExpanded(newExpanded)
       }
     }
 
     const renderSubComponent = row => {
-      const isExpanded = !!expanded[row.index]
+      const isExpanded = expanded[row.index]
       if (!isExpanded) {
         return null
       }
@@ -119,7 +126,10 @@ function expandTableXHOC(Component) {
   ExpandTableX.propTypes = {
     ...TableX.propTypes,
     fixedExpand: PropTypes.bool,
-    SubComponent: PropTypes.func.isRequired
+    SubComponent: PropTypes.func.isRequired,
+    /** 传了expanded，组件expand交由外部props控制，则必须也要传onExpand。 */
+    expanded: PropTypes.object,
+    onExpand: PropTypes.func
   }
 
   return ExpandTableX
