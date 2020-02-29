@@ -8,7 +8,7 @@ yarn-error.log
 .stylelintcache
 .eslintcache
 *.less.json
-config/local.js
-build/
+
+docs/
 
 packages/qiniu-image/node/token.js
