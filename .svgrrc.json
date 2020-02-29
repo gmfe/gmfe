@@ -1,8 +1,0 @@
-{
-  "icon": true,
-  "expandProps": "start",
-  "svgProps": {
-    "fill": "currentColor",
-    "className": "{'gm-svg-icon ' + (props.className || '')}"
-  }
-}

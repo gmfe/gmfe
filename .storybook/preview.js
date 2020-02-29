@@ -1,11 +1,10 @@
 import React from 'react'
 import './i18n'
-import { configure, addDecorator } from '@storybook/react'
+import { addDecorator } from '@storybook/react'
 import { withInfo } from '@storybook/addon-info'
 import { Observer } from 'mobx-react'
-import { LayoutRoot } from '../packages/react/src/index'
+import { LayoutRoot } from '../packages/react/src'
 
-import './style.less'
 // 引入 react-gm 样式
 import '../packages/react/src/index.less'
 import '../packages/react-deprecated/src/index.less'
@@ -24,26 +23,20 @@ if (process.env.NODE_ENV !== 'production') {
   whyDidYouRender(React)
 }
 
-const reqs = [
-  require.context('../packages', true, /stories\.js$/),
-  require.context('../demo', true, /stories\.js$/)
-]
-
 addDecorator(
   withInfo({
     inline: true,
     header: false,
+    source: false,
     styles: stylesheet => {
       return {
         ...stylesheet,
         infoBody: {
           ...stylesheet.infoBody,
+          borderTop: '1px solid #ccc',
+          color: '#444',
           padding: '10px',
           fontWeight: 'normal'
-        },
-        source: {
-          ...stylesheet.source,
-          marginBottom: '10px'
         }
       }
     }
@@ -56,5 +49,3 @@ addDecorator(storeFn => (
     <LayoutRoot />
   </React.Fragment>
 ))
-
-configure(reqs, module)
