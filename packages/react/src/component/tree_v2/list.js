@@ -5,17 +5,14 @@ import Flex from '../flex'
 import { Checkbox } from '../checkbox'
 import SVGPlus from '../../../svg/plus.svg'
 import SVGMinus from '../../../svg/minus.svg'
-import {
-  listToFlatFilterWithGroupSelected,
-  unSelectAll,
-  getLeafValues
-} from './util'
+import { listToFlatFilterWithGroupSelected, getLeafValues } from './util'
 import { FixedSizeList } from 'react-window'
 
 const Item = ({
   isGrouped,
   onGroup,
   isSelected,
+  isIndeterminate,
   onSelect,
   flatItem: { isLeaf, level, data },
   style,
@@ -57,9 +54,10 @@ const Item = ({
       <Checkbox
         checked={isSelected}
         onChange={handleRadio}
+        indeterminate={isIndeterminate}
         className='gm-padding-left-5'
       />
-      <Flex flex column block onClick={handleName}>
+      <Flex flex column onClick={handleName}>
         {isLeaf ? renderLeafItem(data) : renderGroupItem(data)}
       </Flex>
     </Flex>
@@ -70,6 +68,7 @@ Item.propTypes = {
   isGrouped: PropTypes.bool.isRequired,
   onGroup: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
+  isIndeterminate: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
   flatItem: PropTypes.shape({
     isLeaf: PropTypes.bool.isRequired,
@@ -117,7 +116,23 @@ const List = ({
   const Row = ({ index, style }) => {
     const flatItem = flatList[index]
     const isGrouped = groupSelected.includes(flatItem.data.value)
-    const isSelected = !unSelectAll([flatItem.data], selectedValues)
+
+    const selectedLeafValues = _.intersection(
+      selectedValues,
+      flatItem.leafValues
+    )
+
+    let isSelected
+    let isIndeterminate
+    if (flatItem.isLeaf) {
+      isSelected = selectedValues.includes(flatItem.data.value)
+      isIndeterminate = false
+    } else {
+      isSelected =
+        flatItem.leafValues.length !== 0 &&
+        flatItem.leafValues.length === selectedLeafValues.length
+      isIndeterminate = selectedLeafValues.length !== 0 && !isSelected
+    }
 
     return (
       <Item
@@ -126,6 +141,7 @@ const List = ({
         onGroup={handleGroup}
         onSelect={handleSelect}
         isSelected={isSelected}
+        isIndeterminate={isIndeterminate}
         flatItem={flatItem}
         style={style}
         renderLeafItem={renderLeafItem}

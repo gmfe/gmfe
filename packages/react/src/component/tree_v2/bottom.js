@@ -12,10 +12,16 @@ const Bottom = ({ list, selectedValues, onChange }) => {
 
   const checkedAll =
     leafValues.length !== 0 && leafValues.length === selectedValues.length
+  const isIndeterminate =
+    selectedValues.length !== 0 && selectedValues.length < leafValues.length
 
   return (
     <Flex justifyBetween alignCenter className='gm-border-top gm-padding-5'>
-      <Checkbox checked={checkedAll} onChange={() => onChange(!checkedAll)}>
+      <Checkbox
+        checked={checkedAll}
+        indeterminate={isIndeterminate}
+        onChange={() => onChange(!checkedAll)}
+      >
         {getLocale('全选')}
       </Checkbox>
       <div className='gm-padding-lr-5 gm-text-desc'>

@@ -26,12 +26,46 @@ const store = observable({
   },
   checked: false,
   setChecked(checked) {
+    console.log('setChecked', checked)
     this.checked = checked
   }
 })
 
 storiesOf('Radio', module)
   .add('default', () => (
+    <div>
+      <div>
+        <h1>常规</h1>
+        <Radio checked>radio</Radio>
+        <Radio>radio</Radio>
+      </div>
+      <div>
+        <h1>disabled</h1>
+        <Radio checked disabled>
+          radio
+        </Radio>
+        <Radio disabled>radio</Radio>
+      </div>
+      <div>
+        <h1>inline</h1>
+        <Radio checked inline>
+          radio
+        </Radio>
+        <Radio inline>radio</Radio>
+      </div>
+      <div>
+        <h1>block</h1>
+        <Radio
+          block
+          checked={store.checked}
+          onChange={() => store.setChecked(!store.checked)}
+        >
+          radio
+        </Radio>
+      </div>
+    </div>
+  ))
+  .add('RadioGroup', () => (
     <RadioGroup
       name='city'
       value={store.value}
@@ -43,41 +77,4 @@ storiesOf('Radio', module)
         </Radio>
       ))}
     </RadioGroup>
-  ))
-  .add('inline', () => (
-    <RadioGroup
-      name='city'
-      inline
-      value={store.value}
-      onChange={value => store.setValue(value)}
-    >
-      {store.data.map(v => (
-        <Radio key={v.value} value={v.value} disabled={v.disabled}>
-          {v.text}
-        </Radio>
-      ))}
-    </RadioGroup>
-  ))
-  .add('col', () => (
-    <RadioGroup
-      name='city'
-      inline
-      value={store.value}
-      onChange={value => store.setValue(value)}
-      col={2}
-    >
-      {store.data.map(v => (
-        <Radio key={v.value} value={v.value} disabled={v.disabled}>
-          {v.text}
-        </Radio>
-      ))}
-    </RadioGroup>
-  ))
-  .add('单个', () => (
-    <Radio
-      checked={store.checked}
-      onChange={() => store.setChecked(!store.checked)}
-    >
-      啦啦啦
-    </Radio>
   ))

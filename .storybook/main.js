@@ -8,6 +8,26 @@ const webpackFinal = config => {
     return filepath.includes('/node_modules/')
   }
 
+  config.module.rules[3] = {
+    test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/,
+    loader:
+      './node_modules/@storybook/core/node_modules/file-loader/dist/cjs.js',
+    query: { name: 'static/media/[name].[hash:8].[ext]' }
+  }
+
+  config.module.rules.push({
+    test: /(glyphicons-halflings-regular|iconfont)\.(woff|woff2|ttf|eot|svg)($|\?)/,
+    use: [
+      {
+        loader: 'url-loader',
+        options: {
+          limit: 1024,
+          name: 'static/media/font/[name].[hash:8].[ext]'
+        }
+      }
+    ]
+  })
+
   config.module.rules.push({
     test: /\.less$/,
     use: [
@@ -30,7 +50,7 @@ const webpackFinal = config => {
   })
 
   config.module.rules.unshift({
-    test: /\.svg$/,
+    test: /svg\/(\w|\W)+\.svg$/,
     use: [
       {
         loader: '@svgr/webpack',
@@ -51,6 +71,6 @@ const webpackFinal = config => {
 
 module.exports = {
   addons: ['@storybook/addon-storysource/register'],
-  stories: ['../packages/**/*.stories.js', '../demo/**/*.stories.js'],
+  stories: ['../packages/**/*stories.js', '../demo/**/*.stories.js'],
   webpackFinal
 }

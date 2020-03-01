@@ -55,7 +55,8 @@ function listToFlat(
       result.push({
         isLeaf: !item.children,
         level,
-        data: item
+        data: item,
+        leafValues: getLeafValues(item.children || [])
       })
     }
 

@@ -12,6 +12,7 @@ class Radio extends React.Component {
       onClick,
       children,
       inline,
+      block,
       name,
       disabled,
       className,
@@ -24,7 +25,8 @@ class Radio extends React.Component {
         className={classNames(
           'gm-radio',
           {
-            'radio-inline': inline,
+            'gm-radio-inline': inline,
+            'gm-radio-block': block,
             disabled
           },
           className
@@ -35,7 +37,7 @@ class Radio extends React.Component {
           className='gm-input-radio'
           name={name}
           value={value}
-          checked={checked}
+          checked={checked || false}
           onChange={onChange}
           onClick={onClick}
           disabled={disabled}
@@ -56,10 +58,11 @@ Radio.propTypes = {
   checked: PropTypes.bool,
   onChange: PropTypes.func,
   value: PropTypes.any,
-  name: PropTypes.string,
-  inline: PropTypes.bool,
-  disabled: PropTypes.bool,
   children: PropTypes.any,
+  disabled: PropTypes.bool,
+  inline: PropTypes.bool,
+  block: PropTypes.bool,
+  name: PropTypes.string,
   onClick: PropTypes.func,
   className: PropTypes.string,
   style: PropTypes.object

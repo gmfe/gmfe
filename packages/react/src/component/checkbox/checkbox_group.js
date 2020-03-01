@@ -29,10 +29,7 @@ class CheckboxGroup extends React.Component {
     const childList = React.Children.toArray(children)
 
     return (
-      <div
-        {...rest}
-        className={classNames('gm-checkbox-group checkbox', className)}
-      >
+      <div {...rest} className={classNames('gm-checkbox-group', className)}>
         {_.map(childList, (child, i) => {
           return React.cloneElement(child, {
             index: i,
@@ -63,7 +60,6 @@ CheckboxGroup.propTypes = {
 }
 
 CheckboxGroup.defaultProps = {
-  value: [],
   onChange: _.noop
 }
 
