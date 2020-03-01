@@ -85,7 +85,7 @@ const Two = props => {
   return (
     <Flex className='gm-padding-5'>
       <RangeCalendar
-        className='gm-border-0 gm-date-range-picker-overlay-calendar'
+        className='gm-date-range-picker-overlay-calendar'
         begin={begin}
         end={end}
         willActiveSelected={will}
@@ -99,7 +99,7 @@ const Two = props => {
         onHoverDay={setHoverDay}
       />
       <RangeCalendar
-        className='gm-border-0 gm-date-range-picker-overlay-calendar'
+        className='gm-date-range-picker-overlay-calendar'
         begin={begin}
         end={end}
         willActiveSelected={will_end}
