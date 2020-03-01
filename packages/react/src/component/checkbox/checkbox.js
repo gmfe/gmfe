@@ -15,6 +15,7 @@ class Checkbox extends React.Component {
       block,
       disabled,
       col,
+      indeterminate,
       style,
       className,
       ...rest
@@ -29,8 +30,9 @@ class Checkbox extends React.Component {
         className={classNames(
           'gm-checkbox',
           {
-            'checkbox-inline': inline,
-            'gm-block': block,
+            'gm-checkbox-indeterminate': !checked && indeterminate,
+            'gm-checkbox-inline': inline,
+            'gm-checkbox-block': block,
             disabled
           },
           className
@@ -40,7 +42,7 @@ class Checkbox extends React.Component {
           type='checkbox'
           name={name}
           value={value}
-          checked={checked}
+          checked={checked || false}
           onChange={onChange}
           disabled={disabled}
         />
@@ -61,13 +63,17 @@ Checkbox.propTypes = {
   checked: PropTypes.bool,
   onChange: PropTypes.func,
   value: PropTypes.any,
-  name: PropTypes.string,
-  inline: PropTypes.bool,
   disabled: PropTypes.bool,
   children: PropTypes.any,
-  // 如果需要整行可点，则
+  /** 半选状态，只控制样式。checked false 才有效 */
+  indeterminate: PropTypes.bool,
+  inline: PropTypes.bool,
+  /** 如果需要整行可点，则 */
   block: PropTypes.bool,
+  /** 配合 group 用 */
   col: PropTypes.number,
+  /** input name */
+  name: PropTypes.string,
   className: PropTypes.string,
   style: PropTypes.object
 }

@@ -37,38 +37,47 @@ const store = observable({
 
 storiesOf('Checkbox', module)
   .add('default', () => (
-    <CheckboxGroup
-      name='city'
-      value={store.value}
-      onChange={value => store.setValue(value)}
-    >
-      {store.data.map(v => (
-        <Checkbox key={v.value} value={v.value} disabled={v.disabled}>
-          {v.text}
+    <div>
+      <div>
+        <h1>默认</h1>
+        <Checkbox checked>选中 checked true</Checkbox>
+        <Checkbox>checked false</Checkbox>
+        <Checkbox indeterminate>checked indeterminate</Checkbox>
+      </div>
+      <div>
+        <h1>disabled</h1>
+        <Checkbox checked disabled>
+          checked true
         </Checkbox>
-      ))}
-    </CheckboxGroup>
-  ))
-  .add('inline', () => (
-    <CheckboxGroup
-      name='city'
-      inline
-      value={store.value}
-      onChange={value => store.setValue(value)}
-    >
-      {store.data.map(v => (
-        <Checkbox key={v.value} value={v.value} disabled={v.disabled}>
-          {v.text}
+        <Checkbox disabled>checked false</Checkbox>
+        <Checkbox indeterminate disabled>
+          checked indeterminate
         </Checkbox>
-      ))}
-    </CheckboxGroup>
+      </div>
+      <div>
+        <h1>inline</h1>
+        <Checkbox checked inline>
+          checked true
+        </Checkbox>
+        <Checkbox inline>checked false</Checkbox>
+      </div>
+      <div>
+        <h1>block 整行都可以点</h1>
+        <Checkbox
+          block
+          checked={store.checked}
+          onChange={() => store.setChecked(!store.checked)}
+        >
+          checked
+        </Checkbox>
+      </div>
+    </div>
   ))
-  .add('block', () => (
+  .add('CheckboxGroup', () => (
     <CheckboxGroup
       name='city'
       value={store.value}
       onChange={value => store.setValue(value)}
-      block
     >
       {store.data.map(v => (
         <Checkbox key={v.value} value={v.value} disabled={v.disabled}>
@@ -91,12 +100,4 @@ storiesOf('Checkbox', module)
         </Checkbox>
       ))}
     </CheckboxGroup>
-  ))
-  .add('单个', () => (
-    <Checkbox
-      checked={store.checked}
-      onChange={() => store.setChecked(!store.checked)}
-    >
-      啦啦啦
-    </Checkbox>
   ))
