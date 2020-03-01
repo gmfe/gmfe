@@ -63,9 +63,9 @@ const Overlay = props => {
   }
 
   return (
-    <Flex column>
+    <Flex column className='gm-date-picker'>
       <Calendar
-        className='gm-border-0'
+        className='gm-date-picker'
         selected={selectedDate}
         onSelect={value => handleSelect(value, 'date')}
         willActiveSelected={willActiveSelected}

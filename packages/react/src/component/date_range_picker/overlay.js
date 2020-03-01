@@ -131,7 +131,7 @@ const Overlay = props => {
   }
 
   return (
-    <Flex column className='gm-date-range-picker-overlay gm-border-0'>
+    <Flex column className='gm-date-range-picker-overlay'>
       <Flex>
         <Left
           begin={_begin}

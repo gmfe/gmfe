@@ -113,6 +113,7 @@ const TimeSpan = props => {
   return (
     <Flex row className='gm-time-span'>
       {_.map(cells, (cell, index) => {
+        if (!cell.length) return null // 时间间隔比较大时，某一列无数据的情况
         return (
           <Flex
             className={classNames({
