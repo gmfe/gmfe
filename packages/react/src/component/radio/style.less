@@ -12,20 +12,20 @@
     padding-right: 10px;
   }
 
-  input {
+  .gm-radio-input {
     display: none;
   }
 
   &.disabled {
     cursor: not-allowed;
 
-    input + span {
+    .gm-radio-input + .gm-radio-span {
       cursor: not-allowed;
       border: 1px solid @gm-border-color;
       background: #eee;
     }
 
-    input:checked + span {
+    .gm-radio-input:checked + .gm-radio-span {
       border: 1px solid @gm-border-color;
 
       &::after {
@@ -34,7 +34,7 @@
     }
   }
 
-  input + span {
+  .gm-radio-input + .gm-radio-span {
     margin-right: 5px;
     top: 2px;
     -webkit-appearance: none;
@@ -46,7 +46,7 @@
     height: 14px;
   }
 
-  input:checked + span {
+  .gm-radio-input:checked + .gm-radio-span {
     border: 1px solid @brand-primary;
 
     &::after {

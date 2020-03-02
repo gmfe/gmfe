@@ -39,6 +39,7 @@ class Checkbox extends React.Component {
         )}
       >
         <input
+          className='gm-checkbox-input'
           type='checkbox'
           name={name}
           value={value}
@@ -46,7 +47,7 @@ class Checkbox extends React.Component {
           onChange={onChange}
           disabled={disabled}
         />
-        <span />
+        <span className='gm-checkbox-span' />
         {children}
       </label>
     )

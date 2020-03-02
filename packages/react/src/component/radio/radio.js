@@ -34,7 +34,7 @@ class Radio extends React.Component {
       >
         <input
           type='radio'
-          className='gm-input-radio'
+          className='gm-radio-input'
           name={name}
           value={value}
           checked={checked || false}
@@ -42,7 +42,7 @@ class Radio extends React.Component {
           onClick={onClick}
           disabled={disabled}
         />
-        <span />
+        <span className='gm-radio-span' />
         {children}
       </label>
     )

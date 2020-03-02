@@ -18,12 +18,10 @@
   },
   "lint-staged": {
     "./packages/**/*.js": [
-      "eslint --cache --fix",
-      "git add"
+      "eslint --cache --fix"
     ],
     "./packages/**/*.less": [
-      "stylelint --cache --fix",
-      "git add"
+      "stylelint --cache --fix"
     ]
   },
   "browserslist": {
