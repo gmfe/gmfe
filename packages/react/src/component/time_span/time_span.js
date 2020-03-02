@@ -109,9 +109,10 @@ const TimeSpan = props => {
   }
 
   const cells = getTimeCells()
+  const totalWidth = _.filter(cells, cell => cell.length).length * 130
 
   return (
-    <Flex row className='gm-time-span'>
+    <Flex row className='gm-time-span' style={{ width: `${totalWidth}px` }}>
       {_.map(cells, (cell, index) => {
         if (!cell.length) return null // 时间间隔比较大时，某一列无数据的情况
         return (
