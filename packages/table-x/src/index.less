@@ -17,6 +17,7 @@
     // 性能考虑
     z-index: 1;
     transform: translateZ(0);
+    display: block; // 覆盖table 默认display
 
     .gm-table-x-tr {
       display: flex;
@@ -59,6 +60,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      display: block; // 覆盖thead 默认display
 
       .gm-table-x-tr {
         min-height: 46px;
@@ -66,6 +68,8 @@
     }
 
     .gm-table-x-tbody {
+      display: block; // 覆盖tbody 默认display
+
       .gm-table-x-tr-group {
         .gm-table-x-tr-even {
           .gm-table-x-td {
@@ -261,7 +265,15 @@
   border: 1px solid @brand-primary;
   background: @gm-back-body-bg;
 
-  .gm-table-x-th,
+  .gm-table-x-th {
+    background: @gm-back-body-bg !important;
+    border-bottom: 1px solid @gm-table-x-border-color;
+
+    &:first-child {
+      border-bottom: transparent !important;
+    }
+  }
+
   .gm-table-x-td {
     border-bottom: 1px solid @gm-table-x-border-color;
     background: transparent !important;

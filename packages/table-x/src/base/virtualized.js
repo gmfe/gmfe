@@ -118,15 +118,15 @@ const TableXVirtualized = ({
   const Container = React.useMemo(() => {
     return React.forwardRef(({ children, style, ...rest }, ref) => {
       return (
-        <div
+        <table
           ref={ref}
           {...rest}
           {...tableProps}
           style={{ ...style, minWidth: totalWidth + 'px' }}
         >
           <THead headerGroups={headerGroups} totalWidth={totalWidth} />
-          <div {...tableBodyProps}>{children}</div>
-        </div>
+          <tbody {...tableBodyProps}>{children}</tbody>
+        </table>
       )
     })
   }, [columns, totalWidth])

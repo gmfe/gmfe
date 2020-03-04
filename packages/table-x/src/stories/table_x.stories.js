@@ -28,11 +28,14 @@ const initData = [
     supplier_customer_id: 'LDP20180117',
     submit_time: '2018-07-25',
     status: 2,
-    supplier_name: '',
+    supplier_name: '-',
     date_time: '2018-07-25',
     delta_money: 0,
     settle_supplier_id: 'T10953',
-    address: null
+    address:  {
+      value: 33,
+      text: '西乡fdsfsdf9'
+    }
   },
   {
     total_money: 176,

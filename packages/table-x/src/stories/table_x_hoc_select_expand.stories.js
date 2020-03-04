@@ -5,7 +5,8 @@ import {
   selectTableXHOC,
   expandTableXHOC,
   TableX,
-  subTableXHOC
+  subTableXHOC,
+  TableXVirtualized, TableXUtil,
 } from '../index'
 
 const initData = [
@@ -124,7 +125,7 @@ const store = observable({
 const SelectTableX = selectTableXHOC(TableX)
 const ExpandTableX = expandTableXHOC(TableX)
 const SelectExpandTableX = selectTableXHOC(expandTableXHOC(TableX))
-const SubSelectTableTableX = selectTableXHOC(subTableXHOC(TableX))
+const SubSelectTableTableX = selectTableXHOC(subTableXHOC(TableXVirtualized))
 
 storiesOf('TableX|HOC select expand', module)
   .add('select', () => (
@@ -235,6 +236,8 @@ storiesOf('TableX|HOC select expand', module)
             keyField='id'
             selected={store.selected}
             onSelect={selected => store.setSelected(selected)}
+            virtualizedHeight={200}
+            virtualizedItemSize={TableXUtil.TABLE_X.HEIGHT_TR}
           />
         )
       }}
