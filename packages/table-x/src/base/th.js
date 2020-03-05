@@ -25,19 +25,15 @@ const Th = ({ column, totalWidth }) => {
   }
 
   return (
-    <div {...thProps}>
-      <div>
-        {column.render('Header')}
-        {column.canSort && (
-          <SortHeader
-            {...column.getSortByToggleProps()}
-            type={
-              column.isSorted ? (column.isSortedDesc ? 'desc' : 'asc') : null
-            }
-          />
-        )}
-      </div>
-    </div>
+    <th {...thProps}>
+      {column.render('Header')}
+      {column.canSort && (
+        <SortHeader
+          {...column.getSortByToggleProps()}
+          type={column.isSorted ? (column.isSortedDesc ? 'desc' : 'asc') : null}
+        />
+      )}
+    </th>
   )
 }
 

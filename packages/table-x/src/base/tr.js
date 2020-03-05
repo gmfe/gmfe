@@ -29,11 +29,11 @@ const Tr = ({
 
   return (
     <div className='gm-table-x-tr-group' data-id={dataId} style={style}>
-      <div {...props}>
+      <tr {...props}>
         {row.cells.map((cell, cellIndex) => (
           <Td key={cellIndex} cell={cell} totalWidth={totalWidth} />
         ))}
-      </div>
+      </tr>
       {SubComponent && (
         <div className='gm-table-x-sub'>{SubComponent(row)}</div>
       )}

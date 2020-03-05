@@ -97,17 +97,17 @@ const TableX = ({
       )}
       onScroll={handleScroll}
     >
-      <div {...tableProps}>
+      <table {...tableProps}>
         <THead headerGroups={headerGroups} totalWidth={totalWidth} />
-        <div {...tableBodyProps}>
+        <tbody {...tableBodyProps}>
           {_.map(rows, row =>
             RenderRow({
               index: row.index,
               style: {}
             })
           )}
-        </div>
-      </div>
+        </tbody>
+      </table>
       {loading && <Loading />}
       {!loading && data.length === 0 && <Empty />}
     </div>

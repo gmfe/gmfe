@@ -25,7 +25,7 @@ const Td = ({ cell, totalWidth }) => {
       totalWidth - cell.column.totalLeft - cell.column.totalWidth
   }
 
-  return <div {...tdProps}>{cell.render('Cell')}</div>
+  return <td {...tdProps}>{cell.render('Cell')}</td>
 }
 
 Td.whyDidYouRender = true
