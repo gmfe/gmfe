@@ -70,14 +70,14 @@
     .gm-table-x-tbody {
       display: block; // 覆盖tbody 默认display
 
-      .gm-table-x-tr-group {
-        .gm-table-x-tr-even {
+      .gm-table-x-tr {
+        &.gm-table-x-tr-even {
           .gm-table-x-td {
             background: @gm-back-body-bg;
           }
         }
 
-        .gm-table-x-tr-odd {
+        &.gm-table-x-tr-odd {
           .gm-table-x-td {
             background: white;
           }
@@ -108,12 +108,10 @@
 
       // 拖拽的时候没有hover效果
       &:not(.gm-table-x-sortable-active) {
-        .gm-table-x-tr-group {
-          .gm-table-x-tr {
-            &:hover {
-              .gm-table-x-td {
-                background-color: @table-bg-hover;
-              }
+        .gm-table-x-tr {
+          &:hover {
+            .gm-table-x-td {
+              background-color: @table-bg-hover;
             }
           }
         }

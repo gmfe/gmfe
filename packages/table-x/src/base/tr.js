@@ -12,10 +12,9 @@ const Tr = ({
   isTrDisable,
   isTrHighlight
 }) => {
-  const gp = row.getRowProps()
-
   const props = {
-    ...gp,
+    ...row.getRowProps(),
+    style,
     className: classNames('gm-table-x-tr', {
       'gm-table-x-tr-disable': isTrDisable(row.original, row.index),
       'gm-table-x-tr-highlight': isTrHighlight(row.original, row.index),
@@ -28,16 +27,14 @@ const Tr = ({
   const dataId = row.original[keyField]
 
   return (
-    <div className='gm-table-x-tr-group' data-id={dataId} style={style}>
-      <tr {...props}>
+    <>
+      <tr data-id={dataId} {...props}>
         {row.cells.map((cell, cellIndex) => (
           <Td key={cellIndex} cell={cell} totalWidth={totalWidth} />
         ))}
       </tr>
-      {SubComponent && (
-        <div className='gm-table-x-sub'>{SubComponent(row)}</div>
-      )}
-    </div>
+      {SubComponent && SubComponent(row)}
+    </>
   )
 }
 
