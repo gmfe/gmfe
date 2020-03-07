@@ -7,6 +7,7 @@ import classNames from 'classnames'
 import LayoutRoot from '../layout_root'
 import EVENT_TYPE from '../../event_type'
 import { warn } from 'gm-util'
+import Button from '../button'
 
 let DialogStatics = {}
 DialogStatics = {
@@ -192,23 +193,13 @@ class Dialog extends React.Component {
         <div className='gm-gap-10' />
         <div className='text-right'>
           {type !== 'alert' && cancelBtn && !isLoading && (
-            <button className='btn btn-default' onClick={this.handleCancel}>
-              {cancelBtn}
-            </button>
+            <Button onClick={this.handleCancel}>{cancelBtn}</Button>
           )}
           <div className='gm-gap-10' />
           {OKBtn && (
-            <button
-              className='btn btn-primary'
-              disabled={isLoading}
-              onClick={!isLoading ? this.handleOk : null}
-            >
-              {isLoading ? (
-                <i className='glyphicon glyphicon-refresh glyphicon-spin' />
-              ) : (
-                OKBtn
-              )}
-            </button>
+            <Button type='primary' onClick={this.handleOk} loading={isLoading}>
+              OKBtn
+            </Button>
           )}
         </div>
       </Modal>

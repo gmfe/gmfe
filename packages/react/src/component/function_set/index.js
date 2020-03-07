@@ -9,7 +9,7 @@ import _ from 'lodash'
 const Default = props => {
   const { disabled, active } = props
   return (
-    <Button className='btn-primary btn-plain' disabled={disabled}>
+    <Button type='primary' plain disabled={disabled}>
       更多功能 &nbsp;
       <IconDownUp active={active} />
     </Button>

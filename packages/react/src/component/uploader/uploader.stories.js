@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Uploader from './'
 import { observable } from 'mobx'
-
+import Button from '../button'
 const { DefaultImage } = Uploader
 
 const store = observable({
@@ -26,7 +26,7 @@ storiesOf('Uploader', module)
   ))
   .add('自定义', () => (
     <Uploader onUpload={(files, e) => console.log(files, e)} accept='.xlsx'>
-      <button className='btn btn-default'>自定义</button>
+      <Button>自定义</Button>
     </Uploader>
   ))
   .add('+图片', () => (

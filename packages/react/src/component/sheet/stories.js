@@ -4,6 +4,7 @@ import { Sheet, SheetColumn, SheetAction, SheetSelect } from './index'
 import { observable } from 'mobx'
 import _ from 'lodash'
 import Pagination from '../pagination/pagination'
+import Button from '../button'
 
 const list = [
   {
@@ -163,12 +164,7 @@ storiesOf('Sheet', module)
       <SheetAction>
         {(eList, i) => (
           <div>
-            <button
-              className='btn btn-xs btn-default gm-marginRight5'
-              onClick={() => window.alert('dosomething')}
-            >
-              删除
-            </button>
+            <Button onClick={() => window.alert('dosomething')}>删除</Button>
           </div>
         )}
       </SheetAction>

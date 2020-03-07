@@ -1,7 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { Popover, PopupContentConfirm, Flex, InputNumberV2 } from '@gmfe/react'
+import {
+  Popover,
+  PopupContentConfirm,
+  Flex,
+  InputNumberV2,
+  Button
+} from '@gmfe/react'
 import _ from 'lodash'
 import { getLocale } from '@gmfe/locales'
 import SVGMinusSquare from '../svg/minus-square.svg'
@@ -205,16 +211,13 @@ const OperationRowEdit = ({
     </OperationCell>
   ) : (
     <OperationCell>
-      <span className='btn-link gm-inline-block gm-cursor' onClick={handleSave}>
+      <Button type='link' onClick={handleSave}>
         保存
-      </span>
+      </Button>
       <span className='gm-padding-lr-5'>|</span>
-      <span
-        className='btn-link gm-inline-block gm-cursor'
-        onClick={handleCancel}
-      >
+      <Button type='link' onClick={handleCancel}>
         取消
-      </span>
+      </Button>
     </OperationCell>
   )
 }

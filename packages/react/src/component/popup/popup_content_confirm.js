@@ -30,18 +30,15 @@ const PopupContentConfirm = props => {
       <div className='gm-popup-content-confirm-content'>
         {children}
         <div className='gm-popup-content-confirm-button'>
-          <button
-            className='btn btn-default gm-margin-right-5'
-            onClick={onCancel}
-          >
+          <Button className='gm-margin-right-5' onClick={onCancel}>
             取消
-          </button>
+          </Button>
           {type === 'delete' ? (
-            <Button className='btn btn-danger' onClick={onDelete}>
+            <Button type='danger' onClick={onDelete}>
               删除
             </Button>
           ) : (
-            <Button className='btn btn-primary' onClick={onSave}>
+            <Button type='primary' onClick={onSave}>
               保存
             </Button>
           )}

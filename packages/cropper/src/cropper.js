@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import CropperJS from 'cropperjs'
-import { Flex, Modal } from '@gmfe/react'
+import { Flex, Modal, Button } from '@gmfe/react'
 
 const defaultOptions = {
   aspectRatio: 1,
@@ -60,13 +60,13 @@ const Cropper = ({ file, url, options, croppedOptions, onCancel, onOK }) => {
         </div>
       </Flex>
       <div className='text-right gm-margin-top-10'>
-        <button className='btn btn-default' onClick={onCancel}>
+        <Button onClick={onCancel}>
           取消
-        </button>
+        </Button>
         <div className='gm-gap-10' />
-        <button className='btn btn-primary' onClick={handleOK}>
+        <Button type='primary' onClick={handleOK}>
           确定
-        </button>
+        </Button>
       </div>
     </div>
   )

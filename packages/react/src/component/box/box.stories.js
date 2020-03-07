@@ -6,6 +6,7 @@ import BoxForm from './box_form'
 import BoxPanel from './box_panel'
 import { FormItem, FormBlock, FormButton } from '../form'
 import Price from '../price'
+import { Button } from '../../index'
 
 storiesOf('Box', module)
   .add('Box', () => (
@@ -61,11 +62,11 @@ storiesOf('Box', module)
             </FormBlock>
           </BoxForm.More>
           <FormButton>
-            <button className='btn btn-primary' type='submit'>
+            <Button type='primary' htmlType='submit'>
               搜索
-            </button>
+            </Button>
             <BoxForm.More>
-              <button className='btn btn-link'>重置</button>
+              <Button type='link'>重置</Button>
             </BoxForm.More>
           </FormButton>
         </BoxForm>

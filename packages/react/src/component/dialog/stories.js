@@ -1,12 +1,12 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Dialog from './index'
+import { Button } from '../../index'
 
 storiesOf('Dialog', module)
   .add('default', () => (
     <div>
-      <button
-        className='btn btn-default'
+      <Button
         onClick={() => {
           Dialog.alert({
             children: 'alert'
@@ -21,9 +21,8 @@ storiesOf('Dialog', module)
         }}
       >
         alert
-      </button>
-      <button
-        className='btn btn-default'
+      </Button>
+      <Button
         onClick={() => {
           Dialog.confirm({
             children: 'confirm',
@@ -39,9 +38,8 @@ storiesOf('Dialog', module)
         }}
       >
         confirm
-      </button>
-      <button
-        className='btn btn-default'
+      </Button>
+      <Button
         onClick={() => {
           Dialog.confirm({
             title: 'title',
@@ -60,9 +58,8 @@ storiesOf('Dialog', module)
         }}
       >
         confirm with loading state
-      </button>
-      <button
-        className='btn btn-default'
+      </Button>
+      <Button
         onClick={() => {
           Dialog.prompt({
             children: 'sssss',
@@ -83,7 +80,7 @@ storiesOf('Dialog', module)
         }}
       >
         prompt
-      </button>
+      </Button>
     </div>
   ))
   .add('dialog to dialog', () => {
@@ -121,12 +118,8 @@ storiesOf('Dialog', module)
     }
     return (
       <>
-        <button onClick={openSyncDialog1} className='btn btn-default'>
-          sync
-        </button>
-        <button onClick={openAsyncDialog1} className='btn btn-default'>
-          async
-        </button>
+        <Button onClick={openSyncDialog1}>sync</Button>
+        <Button onClick={openAsyncDialog1}>async</Button>
       </>
     )
   })

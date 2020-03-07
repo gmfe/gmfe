@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-
+import Button from '../button'
 import { getLocale } from '@gmfe/locales'
 import Flex from '../flex'
 import Calendar from '../calendar/calendar'
@@ -85,14 +85,15 @@ const Overlay = props => {
           justifyEnd
           className='gm-border-top gm-padding-lr-10 gm-padding-tb-5'
         >
-          <button
-            className='btn btn-primary gm-padding-lr-20'
+          <Button
+            type='primary'
+            className='gm-padding-lr-20'
             disabled={!selectedDate}
             onClick={() => onSelect(selectedDate)}
             style={{ height: '28px' }}
           >
             {getLocale('确定')}
-          </button>
+          </Button>
         </Flex>
       )}
     </Flex>

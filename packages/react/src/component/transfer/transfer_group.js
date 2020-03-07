@@ -7,6 +7,7 @@ import Box from './box'
 import classNames from 'classnames'
 import { getLeaf, filterGroupList } from '../tree/util'
 import Tree from '../tree'
+import Button from '../button'
 
 class TransferGroup extends React.Component {
   constructor(props) {
@@ -110,22 +111,19 @@ class TransferGroup extends React.Component {
             alignCenter
             className='gm-transfer-operation'
           >
-            <button
-              type='button'
+            <Button
               disabled={leftSelectedValues.length === 0}
-              className='btn btn-default btn-block gm-margin-bottom-5'
+              className='gm-margin-bottom-5'
               onClick={this.handleToRightClick}
             >
               &gt;
-            </button>
-            <button
-              type='button'
+            </Button>
+            <Button
               disabled={rightSelectedValues.length === 0}
-              className='btn btn-default btn-block'
               onClick={this.handleToLeftClick}
             >
               &lt;
-            </button>
+            </Button>
           </Flex>
           <div className='gm-gap-5' />
           <Box

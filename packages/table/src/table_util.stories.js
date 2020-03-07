@@ -4,7 +4,7 @@ import { selectTableV2HOC, Table, TableUtil } from './index'
 import { observable } from 'mobx'
 import { Observer } from 'mobx-react'
 import _ from 'lodash'
-import { PopupContentConfirm } from '@gmfe/react'
+import { PopupContentConfirm, Button } from '@gmfe/react'
 const SelectTable = selectTableV2HOC(Table)
 
 const {
@@ -227,7 +227,7 @@ storiesOf('Table|TableUtil', module)
           Header: OperationHeader,
           Cell: cellProps => (
             <OperationCell>
-              <button className='btn btn-primary'>删除</button>
+              <Button type='primary'>删除</Button>
               {cellProps.original.id}
             </OperationCell>
           )

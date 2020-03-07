@@ -7,6 +7,7 @@ import { findDOMNode } from 'react-dom'
 import _ from 'lodash'
 import Flex from '../flex'
 import EVENT_TYPE from '../../event_type'
+import Button from '../button'
 
 class Modal extends React.Component {
   constructor(props) {
@@ -103,20 +104,16 @@ class Modal extends React.Component {
 
             <Flex justifyEnd>
               {type === 'confirm' && (
-                <button
-                  className='btn btn-sm btn-default'
-                  onClick={this.handleCancel}
-                >
-                  {getLocale('取消')}
-                </button>
+                <Button onClick={this.handleCancel}>{getLocale('取消')}</Button>
               )}
               <div className='gm-gap-10' />
-              <button
-                className={classNames('btn btn-sm btn-primary', okBtnClassName)}
+              <Button
+                type='primary'
+                className={okBtnClassName}
                 onClick={this.handleOk}
               >
                 {getLocale('确认')}
-              </button>
+              </Button>
             </Flex>
           </div>
         </div>

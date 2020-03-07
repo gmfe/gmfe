@@ -1,16 +1,107 @@
-.gm-button {
-  .gm-button-loading {
+.gm-btn {
+  height: 30px;
+  border-radius: 2px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.33;
+  user-select: none;
+
+  &.gm-btn-default {
+    .gm-btn-variants(@gm-color-first, white);
+
+    border-color: @gm-border-color;
+
+    &.gm-btn-plain {
+      border-color: @gm-border-color;
+    }
+  }
+
+  &.gm-btn-primary {
+    .gm-btn-variants(white, @gm-color-primary);
+  }
+
+  &.gm-btn-success {
+    .gm-btn-variants(white, @gm-color-success);
+  }
+
+  &.gm-btn-danger {
+    .gm-btn-variants(white, @gm-color-danger);
+  }
+
+  &.gm-btn-link {
+    background: transparent;
+    border-color: transparent;
+    color: @gm-color-link;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.disabled,
+    &[disabled] {
+      cursor: not-allowed;
+      border-color: transparent;
+      color: @gm-color-disabled;
+    }
+  }
+
+  &.gm-btn-large {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  &.gm-btn-block {
+    display: block;
+    width: 100%;
+  }
+
+  .gm-btn-loading {
     display: inline-block;
-    animation: gm-rotating 1s linear infinite;
+    margin-right: 5px;
+    animation: gm-btn-rotating 1s linear infinite;
   }
 }
 
-@keyframes gm-rotating {
+@keyframes gm-btn-rotating {
   0% {
     transform: rotate(0);
   }
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.gm-btn-variants(@color; @brand;) {
+  background: @brand;
+  border-color: @brand;
+  color: @color;
+
+  &.gm-btn-plain {
+    background: white;
+    border-color: @brand;
+    color: @brand;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  &:hover {
+    background: darken(@brand, 10%);
+  }
+
+  &.disabled,
+  &[disabled] {
+    background: @gm-bg-disabled;
+    border-color: @gm-border-color;
+    color: @gm-color-disabled;
+    cursor: not-allowed;
   }
 }

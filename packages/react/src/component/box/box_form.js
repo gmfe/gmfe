@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Form } from '../form'
 import Flex from '../flex'
 import IconDownUp from '../icon_down_up'
+import Button from '../button'
 
 const BoxFormContext = React.createContext({
   open: false
@@ -41,12 +42,13 @@ const BoxForm = props => {
             </Form>
           </BoxFormContext.Provider>
         </Flex>
-        <button
-          className='btn btn-link gm-padding-right-0'
+        <Button
+          type='link'
+          className='gm-padding-right-0'
           onClick={handleToggle}
         >
           {open ? '收起' : ''}高级筛选 <IconDownUp active={open} />
-        </button>
+        </Button>
       </Flex>
     </div>
   )

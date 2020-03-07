@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Popover from './index'
+import Button from '../button'
 
 const renderPopup = () => {
   return (
@@ -17,85 +18,83 @@ storiesOf('Popover', module).add('default', () => (
     <div>四种行为 focus click hover realFocus</div>
     <div>
       <Popover popup={renderPopup()}>
-        <button className='btn btn-default'>focus me default</button>
+        <Button>focus me default</Button>
       </Popover>
       <Popover type='click' popup={renderPopup()}>
-        <button className='btn btn-default'>click me</button>
+        <Button>click me</Button>
       </Popover>
       <Popover showArrow type='hover' popup={renderPopup()}>
-        <button className='btn btn-default'>hover me</button>
+        <Button>hover me</Button>
       </Popover>
       <Popover showArrow type='realFocus' popup={renderPopup()}>
-        <button className='btn btn-default'>realFocus me</button>
+        <Button>realFocus me</Button>
       </Popover>
     </div>
     <div>各种位置</div>
     <div>
       <Popover popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(default)</button>
+        <Button>focus me(default)</Button>
       </Popover>
       <Popover right popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(right)</button>
+        <Button>focus me(right)</Button>
       </Popover>
       <Popover center popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(center)</button>
+        <Button>focus me(center)</Button>
       </Popover>
     </div>
     <div>
       <Popover top popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(top)</button>
+        <Button>focus me(top)</Button>
       </Popover>
       <Popover right top popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(right top)</button>
+        <Button>focus me(right top)</Button>
       </Popover>
       <Popover center top popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(center top)</button>
+        <Button>focus me(center top)</Button>
       </Popover>
     </div>
 
     <div>偏移位置</div>
     <div>
       <Popover offset={20} popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(20)</button>
+        <Button>focus me(20)</Button>
       </Popover>
       <Popover offset={-20} popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(-20)</button>
+        <Button>focus me(-20)</Button>
       </Popover>
       <Popover right offset={20} popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(right 20)</button>
+        <Button>focus me(right 20)</Button>
       </Popover>
       <Popover right top offset={20} popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(right top 20)</button>
+        <Button>focus me(right top 20)</Button>
       </Popover>
       <Popover center offset={20} popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(center 20)</button>
+        <Button>focus me(center 20)</Button>
       </Popover>
       <Popover showArrow offset={20} popup={renderPopup()}>
-        <button className='btn btn-default'>showArrow(offset 20)</button>
+        <Button>showArrow(offset 20)</Button>
       </Popover>
     </div>
 
     <div>加角标</div>
     <div>
       <Popover top showArrow popup={renderPopup()}>
-        <button className='btn btn-default'>showArrow toptoptoptop</button>
+        <Button>showArrow toptoptoptop</Button>
       </Popover>
       <Popover showArrow right popup={renderPopup()}>
-        <button className='btn btn-default'>showArrow right</button>
+        <Button>showArrow right</Button>
       </Popover>
       <Popover showArrow arrowLeft='0px' popup={renderPopup()}>
-        <button className='btn btn-default'>showArrow arrowLeft 0</button>
+        <Button>showArrow arrowLeft 0</Button>
       </Popover>
     </div>
     <div>disabled</div>
     <div>
       <Popover disabled popup={renderPopup()}>
-        <button className='btn btn-default'>focus me(disabled)</button>
+        <Button>focus me(disabled)</Button>
       </Popover>
       <Popover popup={renderPopup()}>
-        <button disabled className='btn btn-default'>
-          focus me(inner disabled)
-        </button>
+        <Button disabled>focus me(inner disabled)</Button>
       </Popover>
     </div>
   </div>

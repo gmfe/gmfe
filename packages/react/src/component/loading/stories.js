@@ -3,6 +3,8 @@ import { storiesOf } from '@storybook/react'
 import Loading from './index'
 import LoadingChunk from './loading_chunk'
 import LoadingFullScreen from './loading_full_screen'
+import Button from '../button'
+
 storiesOf('Loading', module)
   .add('default', () => <Loading />)
   .add('size', () => <Loading size={100} />)
@@ -29,8 +31,7 @@ storiesOf('Loading', module)
     </LoadingChunk>
   ))
   .add('LoadingFullScreen', () => (
-    <button
-      className='btn btn-default'
+    <Button
       onClick={() => {
         LoadingFullScreen.render({
           text: '拼命加载中...'
@@ -41,5 +42,5 @@ storiesOf('Loading', module)
       }}
     >
       整页加载
-    </button>
+    </Button>
   ))
