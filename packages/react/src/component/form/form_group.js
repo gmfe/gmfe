@@ -65,22 +65,11 @@ const FormGroup = ({
       <>
         {onCancel && (
           <>
-            <Button
-              type='button'
-              className='btn btn-default'
-              onClick={onCancel}
-            >
-              {getLocale('取消')}
-            </Button>
+            <Button onClick={onCancel}>{getLocale('取消')}</Button>
             <div className='gm-gap-10' />
           </>
         )}
-        <Button
-          disabled={disabled}
-          type='button'
-          onClick={handleSubmit}
-          className='btn btn-primary'
-        >
+        <Button type='primary' disabled={disabled} onClick={handleSubmit}>
           {saveText}
         </Button>
         {actions}

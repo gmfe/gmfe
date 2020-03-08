@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import SVGCheckDetail from '../../svg/check-detail.svg'
 import React from 'react'
-import { PopupContentConfirm, Popover } from '@gmfe/react'
+import { PopupContentConfirm, Popover, Button } from '@gmfe/react'
 import SVGDelete from '../../svg/delete.svg'
 import SVGPen from '../../svg/pen.svg'
 
@@ -131,16 +131,13 @@ const OperationRowEdit = ({
     </OperationCell>
   ) : (
     <OperationCell>
-      <span className='btn-link gm-inline-block gm-cursor' onClick={handleSave}>
+      <Button type='link' onClick={handleSave}>
         保存
-      </span>
+      </Button>
       <span className='gm-padding-lr-5'>|</span>
-      <span
-        className='btn-link gm-inline-block gm-cursor'
-        onClick={handleCancel}
-      >
+      <Button type='link' onClick={handleCancel}>
         取消
-      </span>
+      </Button>
     </OperationCell>
   )
 }

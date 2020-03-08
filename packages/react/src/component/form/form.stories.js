@@ -17,7 +17,8 @@ import {
   CheckboxGroup,
   Checkbox,
   InputNumberV2,
-  Flex
+  Flex,
+  Button
 } from '../../index'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
@@ -203,9 +204,9 @@ storiesOf('Form', module)
           <div>（这里演示多个 children 的情况）</div>
         </FormItem>
         <FormButton>
-          <button className='btn btn-primary' type='submit'>
+          <Button type='primary' htmlType='submit'>
             提交
-          </button>
+          </Button>
         </FormButton>
       </Form>
     ),
@@ -299,9 +300,9 @@ FormItem 包住表单元素
         </FormItem>
 
         <FormButton>
-          <button className='btn btn-primary' type='submit'>
+          <Button type='primary' htmlType='submit'>
             提交
-          </button>
+          </Button>
         </FormButton>
       </Form>
     ),
@@ -378,12 +379,11 @@ FormItem 包住表单元素
         <FormPanel
           title='店铺设置'
           right={
-            <button
-              className='btn btn-default'
+            <Button
               onClick={() => console.log('删除')}
             >
               删除
-            </button>
+            </Button>
           }
         >
           <Form

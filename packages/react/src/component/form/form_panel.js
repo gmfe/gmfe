@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Flex from '../flex'
 import IconDownUp from '../icon_down_up'
+import Button from '../button'
 
 const More = props => {
   const [open, setOpen] = useState(false)
@@ -19,13 +20,13 @@ const More = props => {
           paddingBottom: open ? '10px' : '20px'
         }}
       >
-        <button
-          type='button'
-          className='btn-link gm-padding-right-0'
+        <Button
+          type='link'
+          className='gm-padding-right-0'
           onClick={handleToggle}
         >
           {open ? '收起' : '展开'}更多设置 <IconDownUp active={open} />
-        </button>
+        </Button>
       </div>
       {open ? props.children : null}
     </>

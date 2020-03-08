@@ -5,6 +5,7 @@ import _ from 'lodash'
 import Flex from '../flex'
 import Box from './box'
 import classNames from 'classnames'
+import Button from '../button'
 
 class Transfer extends React.Component {
   constructor(props) {
@@ -102,22 +103,19 @@ class Transfer extends React.Component {
             alignCenter
             className='gm-transfer-operation'
           >
-            <button
-              type='button'
+            <Button
               disabled={disabled || leftSelectedValues.length === 0}
-              className='btn btn-default btn-block gm-margin-bottom-5'
+              className='gm-margin-bottom-5'
               onClick={this.handleToRightClick}
             >
               &gt;
-            </button>
-            <button
-              type='button'
+            </Button>
+            <Button
               disabled={disabled || rightSelectedValues.length === 0}
-              className='btn btn-default btn-block'
               onClick={this.handleToLeftClick}
             >
               &lt;
-            </button>
+            </Button>
           </Flex>
           <div className='gm-gap-5' />
 

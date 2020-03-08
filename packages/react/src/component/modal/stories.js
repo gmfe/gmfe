@@ -3,11 +3,12 @@ import { storiesOf } from '@storybook/react'
 import Modal from './index'
 import CleanModal from './clean_modal'
 import RightSideModal from './right_side_modal'
+import Button from '../button'
 
 storiesOf('Modal', module)
   .add('default', () => (
-    <button
-      className='btn btn-primary'
+    <Button
+      type='primary'
       onClick={() => {
         Modal.render({
           children: '我是内容',
@@ -17,11 +18,11 @@ storiesOf('Modal', module)
       }}
     >
       modal
-    </button>
+    </Button>
   ))
   .add('size', () => (
-    <button
-      className='btn btn-primary'
+    <Button
+      type='primary'
       onClick={() => {
         Modal.render({
           size: 'lg',
@@ -32,11 +33,11 @@ storiesOf('Modal', module)
       }}
     >
       size
-    </button>
+    </Button>
   ))
   .add('noContentPadding', () => (
-    <button
-      className='btn btn-primary'
+    <Button
+      type='primary'
       onClick={() => {
         Modal.render({
           noContentPadding: true,
@@ -48,11 +49,11 @@ storiesOf('Modal', module)
       }}
     >
       noContentPadding
-    </button>
+    </Button>
   ))
   .add('opacityMask', () => (
-    <button
-      className='btn btn-primary'
+    <Button
+      type='primary'
       onClick={() => {
         Modal.render({
           opacityMask: true,
@@ -64,11 +65,11 @@ storiesOf('Modal', module)
       }}
     >
       opacityMask
-    </button>
+    </Button>
   ))
   .add('CleanModal', () => (
-    <button
-      className='btn btn-primary'
+    <Button
+      type='primary'
       onClick={() => {
         CleanModal.render({
           children: <div className='gm-text-white'>啦啦啦</div>,
@@ -77,11 +78,11 @@ storiesOf('Modal', module)
       }}
     >
       CleanModal
-    </button>
+    </Button>
   ))
   .add('RightSideModal', () => (
-    <button
-      className='btn btn-primary'
+    <Button
+      type='primary'
       onClick={() => {
         RightSideModal.render({
           title: 'asdf',
@@ -91,5 +92,5 @@ storiesOf('Modal', module)
       }}
     >
       RightSideModal
-    </button>
+    </Button>
   ))

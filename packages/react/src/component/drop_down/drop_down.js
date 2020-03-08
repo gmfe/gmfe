@@ -1,33 +1,25 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Popover from '../popover'
+import Button from '../button'
 
-class DropDown extends React.Component {
-  constructor(props) {
-    super(props)
+const DropDown = ({
+  children,
+  className,
+  popup,
+  split,
+  right,
+  cartClassName,
+  ...rest
+}) => {
+  const refPopover = useRef(null)
 
-    this.refTrigger = null
-
-    this.handlePopupClick = ::this.handlePopupClick
+  const handlePopupClick = () => {
+    refPopover.current.apiDoSetActive(false)
   }
 
-  handlePopupClick() {
-    setTimeout(() => {
-      this.refTrigger.click()
-    }, 0)
-  }
-
-  renderSplit() {
-    const {
-      children,
-      className,
-      popup,
-      right, split, // eslint-disable-line
-      cartClassName,
-      ...rest
-    } = this.props
-
+  if (split) {
     return (
       <div
         {...rest}
@@ -38,69 +30,41 @@ class DropDown extends React.Component {
       >
         {children}
         <Popover
+          ref={refPopover}
           animName
           type='click'
           right
           popup={
-            <div
-              className='gm-dropdown-split-popup'
-              onClick={this.handlePopupClick}
-            >
+            <div className='gm-dropdown-split-popup' onClick={handlePopupClick}>
               {popup}
             </div>
           }
         >
-          <button
-            type='button'
-            ref={ref => (this.refTrigger = ref)}
-            className={classNames(
-              'btn btn-default dropdown-toggle',
-              cartClassName
-            )}
-          >
+          <Button className={classNames(cartClassName)}>
             <span className='caret' />
-          </button>
+          </Button>
         </Popover>
       </div>
     )
   }
 
-  render() {
-    const {
-      children,
-      className,
-      popup,
-      split,
-      right,
-      cartClassName, // eslint-disable-line
-      ...rest
-    } = this.props
-
-    if (split) {
-      return this.renderSplit()
-    }
-
-    return (
-      <Popover
-        animName='fade-in-bottom'
-        type='click'
-        right={right}
-        popup={
-          <div className='gm-dropdown-popup' onClick={this.handlePopupClick}>
-            {popup}
-          </div>
-        }
-      >
-        <div
-          {...rest}
-          ref={ref => (this.refTrigger = ref)}
-          className={classNames('gm-dropdown btn-group', className)}
-        >
-          {children}
+  return (
+    <Popover
+      ref={refPopover}
+      animName='fade-in-bottom'
+      type='click'
+      right={right}
+      popup={
+        <div className='gm-dropdown-popup' onClick={handlePopupClick}>
+          {popup}
         </div>
-      </Popover>
-    )
-  }
+      }
+    >
+      <div {...rest} className={classNames('gm-dropdown btn-group', className)}>
+        {children}
+      </div>
+    </Popover>
+  )
 }
 
 DropDown.propTypes = {

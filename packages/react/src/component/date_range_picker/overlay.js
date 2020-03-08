@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { getLocale } from '@gmfe/locales'
-
+import Button from '../button'
 import Flex from '../flex'
 import Two from './two'
 import Left from './left'
@@ -18,14 +18,14 @@ const Bottom = props => {
 
   return (
     <Flex justifyEnd className='gm-border-top gm-padding-10'>
-      <button
-        className='btn btn-primary gm-padding-lr-15'
+      <Button
+        type='primary'
+        className='gm-padding-lr-20'
         disabled={(begin && !end) || (!begin && end)}
         onClick={onSelectDateAndTime}
-        style={{ height: '30px' }}
       >
         {getLocale('确定')}
-      </button>
+      </Button>
     </Flex>
   )
 }

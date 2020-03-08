@@ -25,7 +25,7 @@ class DropDownItem extends React.Component {
         )}
         onClick={this.handleClick}
       >
-        <a href='javascript:;'>{children}</a>
+        <a>{children}</a>
       </li>
     )
   }
@@ -34,7 +34,7 @@ class DropDownItem extends React.Component {
 DropDownItem.propTypes = {
   active: PropTypes.bool,
   disabled: PropTypes.bool,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
   children: PropTypes.any,
   className: PropTypes.string,
   style: PropTypes.object

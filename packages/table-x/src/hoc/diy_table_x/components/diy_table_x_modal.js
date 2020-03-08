@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Flex, Modal } from '@gmfe/react'
+import { Flex, Modal, Button } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './modal_selector'
 import List from './modal_list'
@@ -73,13 +73,11 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting }) => {
         </div>
       </Flex>
       <Flex justifyEnd className='gm-padding-10'>
-        <button className='btn btn-default btn-sm' onClick={() => Modal.hide()}>
-          取消
-        </button>
+        <Button onClick={() => Modal.hide()}>取消</Button>
         <div className='gm-gap-10' />
-        <button className='btn btn-primary btn-sm' onClick={handleSave}>
+        <Button type='primary' onClick={handleSave}>
           保存
-        </button>
+        </Button>
       </Flex>
     </div>
   )

@@ -5,16 +5,29 @@ import classNames from 'classnames'
 import { is } from 'gm-util'
 import Loading from '../loading'
 
-/**
- * 原生 button 在处理异步事情的时候，容易造成重复点击。
- *
- * 使用 Button 可以方便解决该类问题，还有 loading UI。
- * */
-const Button = props => {
+const Button = ({
+  type,
+  plain,
+  size,
+  block,
+  disabled,
+  onClick,
+  loading,
+  href,
+  children,
+  htmlType,
+  className,
+  ...rest
+}) => {
   const [isLoading, setIsLoading] = useState(false)
 
+  const loadFlag = loading || isLoading
+
   const handleClick = e => {
-    const { onClick } = props
+    if (loadFlag) {
+      return
+    }
+
     const result = onClick(e)
 
     if (!is.promise(result)) {
@@ -23,38 +36,46 @@ const Button = props => {
 
     setIsLoading(true)
 
-    Promise.resolve(result)
-      .then(() => {
-        setIsLoading(false)
-      })
-      .catch(() => {
-        setIsLoading(false)
-      })
+    Promise.resolve(result).finally(() => {
+      setIsLoading(false)
+    })
   }
-
-  const {
-    onClick, // eslint-disable-line
-    children,
-    className,
-    disabled,
-    ...rest
-  } = props
+  const Tag = type === 'link' && href ? 'a' : 'button'
 
   return (
-    <button
+    <Tag
       {...rest}
-      className={classNames('gm-button btn btn-default', className)}
-      disabled={isLoading || disabled}
+      type={htmlType}
+      href={href}
+      className={classNames(
+        `gm-btn gm-btn-${type}`,
+        {
+          'gm-btn-block': block,
+          [`gm-btn-${size}`]: size,
+          'gm-btn-plain': type !== 'link' && plain
+        },
+        className
+      )}
+      disabled={loadFlag || disabled}
       onClick={handleClick}
     >
-      {isLoading && <Loading className='gm-inline-block' size={12} />}
+      {loadFlag && <Loading className='gm-btn-loading' size={12} />}
       {children}
-    </button>
+    </Tag>
   )
 }
 
 // 只封装了 loading
 Button.propTypes = {
+  type: PropTypes.oneOf(['default', 'primary', 'success', 'danger', 'link']),
+  plain: PropTypes.bool,
+  size: PropTypes.oneOf(['large']),
+  block: PropTypes.bool,
+  /** 原生的 type */
+  htmlType: PropTypes.string,
+  loading: PropTypes.bool,
+  /** type 为 link 才有用 */
+  href: PropTypes.string,
   /** 返回 Promise 才有 loading */
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
@@ -63,6 +84,8 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
+  type: 'default',
+  htmlType: 'button',
   onClick: _.noop
 }
 

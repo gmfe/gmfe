@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Flex, Popover } from '@gmfe/react'
+import { Flex, Popover, Button } from '@gmfe/react'
 import { getLocale } from '@gmfe/locales'
 import PropTypes from 'prop-types'
 import SVGRemove from '../../svg/remove.svg'
@@ -19,19 +19,21 @@ const BatchActionBar = props => {
   // 如果pure = true,不展示[勾选所有页内容]按钮
   if (!pure) {
     selectAllBtn = isSelectAll ? (
-      <button
-        className='btn btn-primary gm-margin-left-20'
+      <Button
+        type='primary'
+        className='gm-margin-left-20'
         onClick={() => toggleSelectAll(false)}
       >
         {getLocale('勾选当前页内容')}
-      </button>
+      </Button>
     ) : (
-      <button
-        className='btn btn-primary gm-margin-left-20'
+      <Button
+        type='primary'
+        className='gm-margin-left-20'
         onClick={() => toggleSelectAll(true)}
       >
         {getLocale('勾选所有页内容')}
-      </button>
+      </Button>
     )
   }
 
