@@ -41,8 +41,6 @@ const FullTab = ({
     </div>
   ))
 
-  console.log('redner')
-
   return (
     <Context.Consumer>
       {({ leftWidth }) => (
