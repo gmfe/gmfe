@@ -5,7 +5,8 @@ import _ from 'lodash'
 import Flex from '../flex'
 import Box from './box'
 import classNames from 'classnames'
-import { getLeaf, filterGroupList } from '../tree/util'
+import { getLeaf } from '../tree/util'
+import { filterGroupListLeaf } from '../../common/util'
 import Tree from '../tree'
 import Button from '../button'
 
@@ -85,7 +86,7 @@ class TransferGroup extends React.Component {
     })
 
     // 左边是group数据
-    const leftList = filterGroupList(list, v => {
+    const leftList = filterGroupListLeaf(list, v => {
       return !_.includes(selectedValues, v.value)
     })
 

@@ -1,31 +1,13 @@
 import _ from 'lodash'
 import { pinYinFilter } from 'gm-util'
-
-// 过滤整个 list 的 leaf，predicate 提供断言
-function filterGroupListLeaf(list, predicate) {
-  return _.filter(list, function(d) {
-    if (d.children) {
-      d.children = filterGroupListLeaf(d.children, predicate)
-    }
-
-    if (d.children) {
-      return !!d.children.length
-    } else {
-      return predicate(d)
-    }
-  })
-}
-
-function filterGroupList(list, predicate) {
-  return filterGroupListLeaf(_.cloneDeep(list), predicate)
-}
+import { filterGroupListLeaf } from '../../common/util'
 
 // 这里做一层 cache
 const _cache = []
 const filterWithQuery = (list, query, withFilter) => {
   let processList
   if (withFilter === true) {
-    processList = filterGroupList(list, v => {
+    processList = filterGroupListLeaf(list, v => {
       const field = `${query}______${v.text}`
       if (_cache[field] === undefined) {
         _cache[field] = pinYinFilter([v], query, v => v.text).length > 0
@@ -120,8 +102,6 @@ function unSelectAll(list, selectedValues) {
 export {
   getUnLeafValues,
   getLeafValues,
-  filterGroupList,
-  filterGroupListLeaf,
   filterWithQuery,
   listToFlatFilterWithGroupSelected,
   unSelectAll

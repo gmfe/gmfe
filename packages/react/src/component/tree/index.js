@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Flex from '../flex'
 import { pinYinFilter } from 'gm-util'
-import { getLeaf, getUnLeafValues, filterGroupList } from './util'
+import { getLeaf, getUnLeafValues } from './util'
+import { filterGroupListLeaf } from '../../common/util'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Bottom from './bottom'
@@ -13,7 +14,7 @@ import SearchSvg from '../../../svg/search.svg'
 const filterWithQuery = (list, query, withFilter) => {
   let processList
   if (withFilter === true) {
-    processList = filterGroupList(list, v => {
+    processList = filterGroupListLeaf(list, v => {
       return pinYinFilter([v], query, v => v.name).length > 0
     })
   } else if (withFilter) {
