@@ -198,7 +198,7 @@ class Dialog extends React.Component {
           <div className='gm-gap-10' />
           {OKBtn && (
             <Button type='primary' onClick={this.handleOk} loading={isLoading}>
-              OKBtn
+              {OKBtn}
             </Button>
           )}
         </div>
