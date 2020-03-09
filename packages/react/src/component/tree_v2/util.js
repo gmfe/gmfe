@@ -99,10 +99,38 @@ function unSelectAll(list, selectedValues) {
   return !!unSelected
 }
 
+/**
+ * 获取滚动高度,需要标明虚拟列表每项的高度 height ,因为用 scrollTo 滚动
+ * @param {object} item 搜索项
+ * @param {number} height 虚拟列表中每项的高度
+ * @param {number} box_height 容器的高度
+ * @param {object} list 搜索的数据
+ */
+function getItemOffsetHeight(item, height, box_height, list) {
+  const flat = listToFlat(
+    list,
+    () => true,
+    () => true
+  )
+
+  let count = 0
+  let flatItem = null
+  do {
+    flatItem = flat[count++]
+  } while (flatItem.data.value !== item.value && count !== flat.length)
+  // 最大限制高度
+  const limit_height = flat.length * height - box_height
+  // 限制高度
+  const item_scroll_height =
+    (count - 1) * height < limit_height ? (count - 1) * height : limit_height
+  return count === flat.length ? 0 : item_scroll_height
+}
+
 export {
   getUnLeafValues,
   getLeafValues,
   filterWithQuery,
   listToFlatFilterWithGroupSelected,
-  unSelectAll
+  unSelectAll,
+  getItemOffsetHeight
 }
