@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/react",
-  "version": "2.5.0",
+  "version": "2.5.6-alpha.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -32,6 +32,6 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gmfe/locales": "^2.5.0"
+    "@gmfe/locales": "^2.5.6-alpha.0"
   }
 }
