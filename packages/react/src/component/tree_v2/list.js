@@ -1,12 +1,13 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
+import classNames from 'classnames'
 import Flex from '../flex'
 import { Checkbox } from '../checkbox'
-import SVGPlus from '../../../svg/plus.svg'
-import SVGMinus from '../../../svg/minus.svg'
 import { listToFlatFilterWithGroupSelected, getLeafValues } from './util'
 import { FixedSizeList } from 'react-window'
+import SVGExpand from '../../../svg/expand.svg'
+import SVGCloseup from '../../../svg/closeup.svg'
 
 const Item = ({
   isGrouped,
@@ -17,7 +18,9 @@ const Item = ({
   flatItem: { isLeaf, level, data },
   style,
   renderLeafItem,
-  renderGroupItem
+  renderGroupItem,
+  active,
+  onActive
 }) => {
   const handleGroup = e => {
     e.stopPropagation()
@@ -28,18 +31,11 @@ const Item = ({
     onSelect(data, !isSelected)
   }
 
-  const handleName = () => {
-    if (isLeaf) {
-      onSelect(data, !isSelected)
-    } else {
-      onGroup(data, !isGrouped)
-    }
-  }
-
   return (
     <Flex
       alignCenter
-      className='gm-tree-v2-list-item'
+      onClick={onActive}
+      className={classNames('gm-tree-v2-list-item', active && 'active')}
       style={{
         ...style,
         paddingLeft: `calc(${level}em + 5px)`
@@ -47,7 +43,11 @@ const Item = ({
     >
       {!isLeaf && (
         <div className='gm-padding-left-5' onClick={handleGroup}>
-          {isGrouped ? <SVGMinus /> : <SVGPlus />}
+          {isGrouped ? (
+            <SVGCloseup className='gm-tree-v2-list-item-btn' />
+          ) : (
+            <SVGExpand className='gm-tree-v2-list-item-btn' />
+          )}
         </div>
       )}
       {level > 0 && isLeaf && <div style={{ width: '2em' }} />}
@@ -57,7 +57,7 @@ const Item = ({
         indeterminate={isIndeterminate}
         className='gm-padding-left-5'
       />
-      <Flex flex column onClick={handleName}>
+      <Flex flex column>
         {isLeaf ? renderLeafItem(data) : renderGroupItem(data)}
       </Flex>
     </Flex>
@@ -77,11 +77,14 @@ Item.propTypes = {
   }),
   style: PropTypes.object.isRequired,
   renderLeafItem: PropTypes.func,
-  renderGroupItem: PropTypes.func
+  renderGroupItem: PropTypes.func,
+  onActive: PropTypes.func.isRequired,
+  active: PropTypes.bool
 }
 Item.defaultProps = {
   renderLeafItem: data => data.text,
-  renderGroupItem: data => data.text
+  renderGroupItem: data => data.text,
+  active: false
 }
 
 const List = ({
@@ -92,8 +95,10 @@ const List = ({
   onSelectValues,
   listHeight,
   renderLeafItem,
-  renderGroupItem
+  renderGroupItem,
+  onActiveValues
 }) => {
+  const [active, setActive] = useState(-1)
   const flatList = useMemo(() => {
     return listToFlatFilterWithGroupSelected(list, groupSelected)
   }, [list, groupSelected])
@@ -110,6 +115,11 @@ const List = ({
     } else {
       onSelectValues(_.difference(selectedValues, values))
     }
+  }
+
+  const handleActive = (item, index) => {
+    setActive(active === index ? -1 : index)
+    onActiveValues(active === index ? null : item.data.value)
   }
 
   // eslint-disable-next-line
@@ -146,6 +156,8 @@ const List = ({
         style={style}
         renderLeafItem={renderLeafItem}
         renderGroupItem={renderGroupItem}
+        active={index === active}
+        onActive={handleActive.bind(this, flatItem, index)}
       />
     )
   }
@@ -169,7 +181,8 @@ List.propTypes = {
   onSelectValues: PropTypes.func.isRequired,
   listHeight: PropTypes.number.isRequired,
   renderLeafItem: PropTypes.func,
-  renderGroupItem: PropTypes.func
+  renderGroupItem: PropTypes.func,
+  onActiveValues: PropTypes.func.isRequired
 }
 
 export default List

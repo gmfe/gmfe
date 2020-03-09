@@ -85,6 +85,7 @@ const Wrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={key => console.table(key)}
         title='lalala '
       />
     </div>
@@ -98,6 +99,7 @@ const FlatWrap = observer(() => {
         list={flatData}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={(item, index) => console.table(index, item)}
       />
     </div>
   )
@@ -111,6 +113,7 @@ const TitleWrap = observer(() => {
         list={flatData}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={(item, index) => console.table(index, item)}
       />
     </div>
   )
@@ -124,6 +127,7 @@ const RenderItemWrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={(item, index) => console.table(index, item)}
         title='叶子节点 renderLeafItem'
         renderLeafItem={data => (
           <div>
@@ -147,6 +151,7 @@ const RenderItemWrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={(item, index) => console.table(index, item)}
         title='非叶子节点 renderGroupfItem'
         renderGroupItem={data => (
           <div>
@@ -170,6 +175,7 @@ const AdvanceFilterWrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={(item, index) => console.table(index, item)}
         title='lalala'
         withFilter={(list, query) => {
           let result = list
