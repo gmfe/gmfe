@@ -16,5 +16,23 @@
     cursor: pointer;
     padding: 0 10px 0 5px;
     height: 28px;
+
+    &:hover {
+      background-color: @gm-list-bg-hover;
+    }
+  }
+
+  .gm-tree-v2-list-item-expand {
+    position: relative;
+    top: 2px;
+    font-size: 14px;
+  }
+
+  .gm-tree-v2-list-item-close:extend(.gm-tree-v2-list-item-expand) {
+    color: @gm-color-primary
+  }
+
+  .active {
+    background-color: @gm-list-bg-hover;
   }
 }
