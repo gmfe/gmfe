@@ -16,5 +16,23 @@
     cursor: pointer;
     padding: 0 10px 0 5px;
     height: 28px;
+
+    &-close, &-expand {
+      position: relative;
+      top: 2px;
+      font-size: 14px;
+    }
+
+    &-close {
+      color: @gm-color-primary
+    }
+
+    &:hover {
+      background-color: @gm-list-bg-hover;
+    }
+  }
+
+  .active {
+    background-color: @gm-list-bg-hover;
   }
 }
