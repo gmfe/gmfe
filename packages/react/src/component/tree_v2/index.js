@@ -40,6 +40,9 @@ const TreeV2 = ({
   renderLeafItem,
   renderGroupItem,
   className,
+  showAllBtn,
+  diyFilter,
+  onActiveValues,
   ...rest
 }) => {
   const refList = useRef(null)
@@ -104,6 +107,7 @@ const TreeV2 = ({
           />
         </div>
       )}
+      {diyFilter}
       <div className='gm-flex-flex' ref={refList}>
         {!!listHeight && (
           <List
@@ -115,15 +119,18 @@ const TreeV2 = ({
             onSelectValues={onSelectValues}
             renderLeafItem={renderLeafItem}
             renderGroupItem={renderGroupItem}
+            onActiveValues={onActiveValues}
           />
         )}
       </div>
 
-      <Bottom
-        list={list}
-        selectedValues={selectedValues}
-        onChange={handleSelectAll}
-      />
+      {showAllBtn ? (
+        <Bottom
+          list={list}
+          selectedValues={selectedValues}
+          onChange={handleSelectAll}
+        />
+      ) : null}
     </Flex>
   )
 }
@@ -144,6 +151,7 @@ TreeV2.propTypes = {
   list: PropTypes.array.isRequired,
   selectedValues: PropTypes.array.isRequired,
   onSelectValues: PropTypes.func.isRequired,
+  onActiveValues: PropTypes.func,
 
   title: PropTypes.string,
   /** 过滤函数，默认自带，不需要就 false */
@@ -151,6 +159,8 @@ TreeV2.propTypes = {
   renderLeafItem: PropTypes.func,
   renderGroupItem: PropTypes.func,
   placeholder: PropTypes.string,
+  showAllBtn: PropTypes.bool,
+  diyFilter: PropTypes.element,
 
   className: PropTypes.string,
   style: PropTypes.object
@@ -158,7 +168,9 @@ TreeV2.propTypes = {
 
 TreeV2.defaultProps = {
   withFilter: true,
-  placeholder: getLocale('搜索')
+  showAllBtn: true,
+  placeholder: getLocale('搜索'),
+  onActiveValues: () => {}
 }
 
 export default TreeV2
