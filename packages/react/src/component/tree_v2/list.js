@@ -1,12 +1,17 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
+import classNames from 'classnames'
 import Flex from '../flex'
 import { Checkbox } from '../checkbox'
-import SVGPlus from '../../../svg/plus.svg'
-import SVGMinus from '../../../svg/minus.svg'
-import { listToFlatFilterWithGroupSelected, getLeafValues } from './util'
+import {
+  listToFlatFilterWithGroupSelected,
+  getLeafValues,
+  listToFlat
+} from './util'
 import { FixedSizeList } from 'react-window'
+import SVGExpand from '../../../svg/expand.svg'
+import SVGCloseup from '../../../svg/closeup.svg'
 
 const Item = ({
   isGrouped,
@@ -17,7 +22,9 @@ const Item = ({
   flatItem: { isLeaf, level, data },
   style,
   renderLeafItem,
-  renderGroupItem
+  renderGroupItem,
+  active,
+  onActive
 }) => {
   const handleGroup = e => {
     e.stopPropagation()
@@ -28,18 +35,14 @@ const Item = ({
     onSelect(data, !isSelected)
   }
 
-  const handleName = () => {
-    if (isLeaf) {
-      onSelect(data, !isSelected)
-    } else {
-      onGroup(data, !isGrouped)
-    }
+  const handleActive = () => {
+    onActive(data)
   }
 
   return (
     <Flex
       alignCenter
-      className='gm-tree-v2-list-item'
+      className={classNames('gm-tree-v2-list-item', active && 'active')}
       style={{
         ...style,
         paddingLeft: `calc(${level}em + 5px)`
@@ -47,7 +50,11 @@ const Item = ({
     >
       {!isLeaf && (
         <div className='gm-padding-left-5' onClick={handleGroup}>
-          {isGrouped ? <SVGMinus /> : <SVGPlus />}
+          {isGrouped ? (
+            <SVGCloseup className='gm-tree-v2-list-item-close' />
+          ) : (
+            <SVGExpand className='gm-tree-v2-list-item-expand' />
+          )}
         </div>
       )}
       {level > 0 && isLeaf && <div style={{ width: '2em' }} />}
@@ -57,7 +64,13 @@ const Item = ({
         indeterminate={isIndeterminate}
         className='gm-padding-left-5'
       />
-      <Flex flex column onClick={handleName}>
+      <Flex
+        flex
+        column
+        onClick={handleActive}
+        justifyCenter
+        style={{ height: '100%' }}
+      >
         {isLeaf ? renderLeafItem(data) : renderGroupItem(data)}
       </Flex>
     </Flex>
@@ -77,11 +90,14 @@ Item.propTypes = {
   }),
   style: PropTypes.object.isRequired,
   renderLeafItem: PropTypes.func,
-  renderGroupItem: PropTypes.func
+  renderGroupItem: PropTypes.func,
+  onActive: PropTypes.func.isRequired,
+  active: PropTypes.bool
 }
 Item.defaultProps = {
   renderLeafItem: data => data.text,
-  renderGroupItem: data => data.text
+  renderGroupItem: data => data.text,
+  active: false
 }
 
 const List = ({
@@ -92,8 +108,25 @@ const List = ({
   onSelectValues,
   listHeight,
   renderLeafItem,
-  renderGroupItem
+  renderGroupItem,
+  onActiveValues,
+  indeterminateList,
+  activeValue,
+  listRef
 }) => {
+  const [active, setActive] = useState(null)
+  useEffect(() => {
+    // 定位时，将定位项设置为 active 项
+    const flat = listToFlat(
+      list,
+      () => true,
+      () => true
+    )
+    const data = _.filter(flat, item => item.data.value === activeValue)
+    const values = data.length > 0 ? getLeafValues([data[0].data]) : null
+    onActiveValues(values)
+    setActive(activeValue)
+  }, [activeValue])
   const flatList = useMemo(() => {
     return listToFlatFilterWithGroupSelected(list, groupSelected)
   }, [list, groupSelected])
@@ -110,6 +143,14 @@ const List = ({
     } else {
       onSelectValues(_.difference(selectedValues, values))
     }
+  }
+
+  const handleActive = data => {
+    console.log(data)
+    const values = getLeafValues([data])
+
+    setActive(data.value)
+    onActiveValues(values)
   }
 
   // eslint-disable-next-line
@@ -141,17 +182,24 @@ const List = ({
         onGroup={handleGroup}
         onSelect={handleSelect}
         isSelected={isSelected}
-        isIndeterminate={isIndeterminate}
+        isIndeterminate={
+          indeterminateList.length > 0
+            ? _.includes(indeterminateList, flatItem.data.value)
+            : isIndeterminate
+        }
         flatItem={flatItem}
         style={style}
         renderLeafItem={renderLeafItem}
         renderGroupItem={renderGroupItem}
+        active={flatItem.data.value === active}
+        onActive={handleActive}
       />
     )
   }
 
   return (
     <FixedSizeList
+      ref={listRef}
       height={listHeight}
       itemCount={flatList.length}
       itemSize={28}
@@ -169,7 +217,11 @@ List.propTypes = {
   onSelectValues: PropTypes.func.isRequired,
   listHeight: PropTypes.number.isRequired,
   renderLeafItem: PropTypes.func,
-  renderGroupItem: PropTypes.func
+  renderGroupItem: PropTypes.func,
+  onActiveValues: PropTypes.func.isRequired,
+  indeterminateList: PropTypes.array,
+  activeValue: PropTypes.string,
+  listRef: PropTypes.object
 }
 
 export default List

@@ -1,6 +1,7 @@
 import React from 'react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
+import { pinYinFilter } from 'gm-util'
 import TreeV2 from './'
 
 const store = observable({
@@ -85,6 +86,7 @@ const Wrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={data => console.table(data)}
         title='lalala '
       />
     </div>
@@ -98,6 +100,34 @@ const FlatWrap = observer(() => {
         list={flatData}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={data => console.table(data)}
+      />
+    </div>
+  )
+})
+
+const FindFilterWrap = observer(() => {
+  const handleFind = (data, searchText) => {
+    const find_list = pinYinFilter(data, searchText, v => v.text)
+    let res = find_list
+    _.forEach(data, item => {
+      if (item.children && item.children.length) {
+        res = _.concat(res, handleFind(item.children, searchText))
+      }
+    })
+    return res
+  }
+
+  return (
+    <div style={{ height: '500px', width: '300px' }}>
+      <TreeV2
+        list={json.data}
+        selectedValues={store.selectedValues.slice()}
+        onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={data => console.table(data)}
+        title='lalala '
+        withFindFilter={handleFind}
+        withFilter={false}
       />
     </div>
   )
@@ -111,6 +141,7 @@ const TitleWrap = observer(() => {
         list={flatData}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={data => console.table(data)}
       />
     </div>
   )
@@ -124,6 +155,7 @@ const RenderItemWrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={data => console.table(data)}
         title='叶子节点 renderLeafItem'
         renderLeafItem={data => (
           <div>
@@ -147,6 +179,7 @@ const RenderItemWrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={data => console.table(data)}
         title='非叶子节点 renderGroupfItem'
         renderGroupItem={data => (
           <div>
@@ -170,6 +203,7 @@ const AdvanceFilterWrap = observer(() => {
         list={json.data}
         selectedValues={store.selectedValues.slice()}
         onSelectValues={values => store.setSelectedValues(values)}
+        onActiveValues={data => console.table(data)}
         title='lalala'
         withFilter={(list, query) => {
           let result = list
@@ -224,6 +258,12 @@ export const title = () => (
 export const flat = () => (
   <div>
     <FlatWrap />
+  </div>
+)
+
+export const findFilter = () => (
+  <div>
+    <FindFilterWrap />
   </div>
 )
 
