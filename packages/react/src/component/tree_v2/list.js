@@ -34,7 +34,6 @@ const Item = ({
   return (
     <Flex
       alignCenter
-      onClick={onActive}
       className={classNames('gm-tree-v2-list-item', active && 'active')}
       style={{
         ...style,
@@ -57,7 +56,13 @@ const Item = ({
         indeterminate={isIndeterminate}
         className='gm-padding-left-5'
       />
-      <Flex flex column>
+      <Flex
+        flex
+        column
+        onClick={onActive}
+        justifyCenter
+        style={{ height: '100%' }}
+      >
         {isLeaf ? renderLeafItem(data) : renderGroupItem(data)}
       </Flex>
     </Flex>
