@@ -18,12 +18,13 @@ const Item = props => {
   } = props
 
   const renderItem = item => {
+    const hasChildren = item.children && item.children.length
     return (
       <div className='gm-position-relative'>
-        {item.text}
-        {item.children && item.children.length && (
-          <SVGRightSmall className='gm-level-list-item-right' />
-        )}
+        <div className={`${hasChildren ? 'gm-margin-right-10' : ''}`}>
+          {item.text}
+        </div>
+        {hasChildren && <SVGRightSmall className='gm-level-list-item-right' />}
       </div>
     )
   }

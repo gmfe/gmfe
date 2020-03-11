@@ -6,9 +6,12 @@ import { observable } from 'mobx'
 const data = [
   {
     value: 'A',
-    text: '广州',
+    text: '广州越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀',
     children: [
-      { value: 1, text: '越秀' },
+      {
+        value: 1,
+        text: '越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀越秀'
+      },
       { value: 2, text: '荔湾' },
       { value: 3, text: '天河' },
       { value: 4, text: '海珠' },
