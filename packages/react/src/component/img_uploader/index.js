@@ -19,6 +19,7 @@ function ImgUploader(props) {
     contentSize,
     desc,
     className,
+    children,
     ...rest
   } = props
 
@@ -84,19 +85,21 @@ function ImgUploader(props) {
             )}
           </Uploader>
         ))}
-        <Uploader
-          disabled={disabled}
-          accept={accept}
-          onUpload={handleUploader}
-          multiple={multiple}
-        >
-          <DefaultImage
-            style={{
-              width: contentSize.width,
-              height: contentSize.height
-            }}
-          />
-        </Uploader>
+        {children || (
+          <Uploader
+            disabled={disabled}
+            accept={accept}
+            onUpload={handleUploader}
+            multiple={multiple}
+          >
+            <DefaultImage
+              style={{
+                width: contentSize.width,
+                height: contentSize.height
+              }}
+            />
+          </Uploader>
+        )}
       </Flex>
 
       {desc && <div className='gm-text-desc gm-margin-5'>{desc}</div>}

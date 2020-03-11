@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/gmfe/gmfe/issues"
   },
-  "devDependencies": {
-    "qiniu": "^7.3.0"
+  "peerDependencies": {
+    "gm-util": "^5.12.3"
   }
 }

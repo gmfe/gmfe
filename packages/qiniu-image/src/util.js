@@ -1,9 +1,15 @@
-const config = {
-  uploadUrl: 'https://upload-z2.qiniup.com/',
-  domain: 'https://image.document.guanmai.cn',
-  tokenUrl: '',
-  timeout: 24 * 3600 * 1000 // 24 个小时
-}
+import { Request } from 'gm-util'
+
+const getTokenDefault = () =>
+  Request('/gm_wheat/qiniu_token')
+    .get()
+    .then(json => {
+      if (!json.code) {
+        return json.data
+      } else {
+        throw new Error(`error ${json.msg}`)
+      }
+    })
 
 function getUploadImageName(blob) {
   const { type } = blob
@@ -22,22 +28,12 @@ if (_cacheTime) {
   _cacheTime = new Date(_cacheTime)
 }
 
-async function getToken() {
+async function getToken(options) {
   // 留 2h buffer
-  if (_token && new Date() - _cacheTime < config.timeout - 2 * 3600 * 1000) {
+  if (_token && new Date() - _cacheTime < options.timeout - 2 * 3600 * 1000) {
     return _token
   }
-
-  const res = await window.fetch('/gm_wheat/qiniu_token', {
-    headers: { 'X-Guanmai-Client': 'GmStation' }
-  })
-
-  if (res.ok) {
-    const json = await res.json()
-    _token = json.data
-  } else {
-    throw new Error(`error ${res.status} ${res.statusText}`)
-  }
+  _token = await options.getToken()
   _cacheTime = new Date()
 
   window.localStorage.setItem(TOKEN_KEY, _token)
@@ -73,4 +69,10 @@ function urlSafeBase64Encode(v) {
   return v.replace(/\//g, '_').replace(/\+/g, '-')
 }
 
-export { getUploadImageName, getToken, request, urlSafeBase64Encode, config }
+export {
+  getUploadImageName,
+  getToken,
+  request,
+  urlSafeBase64Encode,
+  getTokenDefault
+}
