@@ -19,7 +19,7 @@ export const UploadImage = () => {
 
           console.log(e.target.files)
           const file = e.target.files[0]
-          uploadImage(file).then(url => {
+          uploadImage(file).then(({ url }) => {
             console.log(url)
           })
         }}
