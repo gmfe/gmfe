@@ -69,7 +69,7 @@ class LevelList extends React.Component {
         willActiveSelected={willActiveSelected[i]}
         onListItemMouseEnter={this.handleListItemMouseEnter.bind(this, i)}
         style={{
-          paddingTop: gaps[i] ? gaps[i] * 25 : 0
+          paddingTop: gaps[i] ? gaps[i] * 30 : 0
         }}
       />
     ))
