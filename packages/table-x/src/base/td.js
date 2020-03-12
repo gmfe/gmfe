@@ -3,6 +3,19 @@ import { getColumnStyle } from '../util'
 import PropTypes from 'prop-types'
 import React from 'react'
 
+// cell.render('Cell') 是一个react组件,如果这个组件return undefined,那就就会报错
+// 这里是为了兼容 cell.render('Cell') 返回undefined的情况
+class TdCatchErr extends React.Component {
+  componentDidCatch(error, errorInfo) {
+    console.warn(error)
+    console.warn(errorInfo.componentStack)
+  }
+
+  render() {
+    return this.props.children
+  }
+}
+
 const Td = ({ cell, totalWidth }) => {
   const cp = cell.getCellProps()
   const tdProps = {
@@ -25,7 +38,11 @@ const Td = ({ cell, totalWidth }) => {
       totalWidth - cell.column.totalLeft - cell.column.totalWidth
   }
 
-  return <td {...tdProps}>{cell.render('Cell')}</td>
+  return (
+    <td {...tdProps}>
+      <TdCatchErr>{cell.render('Cell')}</TdCatchErr>
+    </td>
+  )
 }
 
 Td.whyDidYouRender = true
