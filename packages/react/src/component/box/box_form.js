@@ -3,9 +3,11 @@ import { Form } from '../form'
 import Flex from '../flex'
 import IconDownUp from '../icon_down_up'
 import Button from '../button'
+import _ from 'lodash'
 
 const BoxFormContext = React.createContext({
-  open: false
+  open: false,
+  onHasMore: _.noop
 })
 
 const More = props => {
@@ -22,10 +24,15 @@ const More = props => {
 }
 
 const BoxForm = props => {
+  const [hasMore, setHasMore] = useState(false)
   const [open, setOpen] = useState(false)
 
   const handleToggle = () => {
     setOpen(!open)
+  }
+
+  const handleHasMore = () => {
+    setHasMore(true)
   }
 
   return (
@@ -34,7 +41,8 @@ const BoxForm = props => {
         <Flex flex column>
           <BoxFormContext.Provider
             value={{
-              open
+              open,
+              onHasMore: handleHasMore
             }}
           >
             <Form inline={!open} {...props}>
@@ -42,13 +50,15 @@ const BoxForm = props => {
             </Form>
           </BoxFormContext.Provider>
         </Flex>
-        <Button
-          type='link'
-          className='gm-padding-right-0'
-          onClick={handleToggle}
-        >
-          {open ? '收起' : ''}高级筛选 <IconDownUp active={open} />
-        </Button>
+        {hasMore && (
+          <Button
+            type='link'
+            className='gm-padding-right-0'
+            onClick={handleToggle}
+          >
+            {open ? '收起' : ''}高级筛选 <IconDownUp active={open} />
+          </Button>
+        )}
       </Flex>
     </div>
   )
