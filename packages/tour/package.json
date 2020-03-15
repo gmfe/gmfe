@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/tour",
-  "version": "2.4.6",
+  "version": "2.7.0",
   "description": "> TODO: description",
   "author": "zhongsink <zhongink@gmail.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -21,15 +21,15 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
+    "classnames": "^2.2.5",
+    "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "classnames": "^2.2.5",
-    "lodash": "^4.17.14",
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
-    "@gmfe/table-x": "^2.4.6",
-    "@gmfe/react": "^2.4.6"
+    "@gmfe/react": "^2.7.0",
+    "@gmfe/table-x": "^2.7.0"
   }
 }
