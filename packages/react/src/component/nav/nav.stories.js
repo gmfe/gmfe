@@ -39,6 +39,54 @@ const data = [
     ]
   },
   {
+    link: 'merchandise',
+    name: '商品',
+    sub: [
+      {
+        name: '商品管理',
+        sub: [
+          {
+            link: 'merchandise/manage/sale',
+            name: '报价单管理'
+          }
+        ],
+        link: 'merchandise/manage'
+      }
+    ]
+  },
+  {
+    link: 'merchandise',
+    name: '商品',
+    sub: [
+      {
+        name: '商品管理',
+        sub: [
+          {
+            link: 'merchandise/manage/sale',
+            name: '报价单管理'
+          }
+        ],
+        link: 'merchandise/manage'
+      }
+    ]
+  },
+  {
+    link: 'merchandise',
+    name: '商品',
+    sub: [
+      {
+        name: '商品管理',
+        sub: [
+          {
+            link: 'merchandise/manage/sale',
+            name: '报价单管理'
+          }
+        ],
+        link: 'merchandise/manage'
+      }
+    ]
+  },
+  {
     link: 'supply_chain',
     name: '供应链',
     sub: [
@@ -76,27 +124,29 @@ const data = [
 
 const store = observable({
   selected: 'supply_chain/order/list',
-  setSelect (selected) {
+  setSelect(selected) {
     this.selected = selected.link
   }
 })
 
 storiesOf('Nav', module).add('default', () => (
-  <Nav
-    logo={
-      <img
-        src='https://js.guanmai.cn/static_storage/json/common/logo/default/logo.pure.png'
-        style={{
-          maxHeight: '35px',
-          maxWidth: '80px'
-        }}
-        alt=''
-      />
-    }
-    data={data}
-    selected={store.selected}
-    onSelect={store.setSelect.bind(store)}
-  >
-    点击显示 loading
-  </Nav>
+  <div style={{ height: '400px' }}>
+    <Nav
+      logo={
+        <img
+          src='https://js.guanmai.cn/static_storage/json/common/logo/default/logo.pure.png'
+          style={{
+            maxHeight: '35px',
+            maxWidth: '80px'
+          }}
+          alt=''
+        />
+      }
+      data={data}
+      selected={store.selected}
+      onSelect={store.setSelect.bind(store)}
+    >
+      点击显示 loading
+    </Nav>
+  </div>
 ))

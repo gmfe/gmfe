@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -12,21 +13,51 @@ A.propTypes = {
   href: PropTypes.string.isRequired
 }
 
-const Popup = props => {
-  const { data, selected, onSelect } = props
+const Portal = props => {
+  const refEl = useRef(document.createElement('div'))
+
+  useEffect(() => {
+    const container = document.getElementById('gmNavPopupContainer')
+    container.append(refEl.current)
+  }, [])
+
+  return ReactDOM.createPortal(props.children, refEl.current)
+}
+
+const Popup = ({ parentRect, data, selected, onSelect }) => {
+  const refDom = useRef(null)
+  const [marginTop, setMarginTop] = useState(0)
+
+  useEffect(() => {
+    const offsetHeight = refDom.current.offsetHeight
+
+    const diff =
+      parentRect.y + offsetHeight - document.documentElement.clientHeight
+
+    if (diff > 0) {
+      setMarginTop(-diff)
+    }
+  }, [])
 
   return (
-    <div className='gm-nav-popup'>
+    <div
+      ref={refDom}
+      className='gm-nav-popup'
+      style={{
+        marginTop: marginTop + 'px',
+        top: parentRect.top
+      }}
+    >
       <Flex>
         {_.map(data, (v, i) => (
           <div key={i} className='gm-nav-two' style={v.style}>
-            <div className='gm-nav-two-title'>{v.name}</div>
+            {!!v.name && <div className='gm-nav-two-title'>{v.name}</div>}
             <div>
               {_.map(v.sub, (s, si) => (
                 <A
                   key={si}
                   href={s.link}
-                  className={classNames('gm-nav-there', {
+                  className={classNames('gm-nav-three', {
                     active: selected.startsWith(s.link)
                   })}
                   onClick={e => {
@@ -46,6 +77,7 @@ const Popup = props => {
 }
 
 Popup.propTypes = {
+  parentRect: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
   selected: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired
@@ -55,10 +87,18 @@ const Item = props => {
   const {
     data: { icon, name, link, sub },
     selected,
-    onSelect
+    onSelect,
+    showActive
   } = props
 
-  const [show, setShow] = useState(false)
+  const ref = useRef(null)
+  const [rect, setRect] = useState(null)
+
+  useEffect(() => {
+    if (showActive === link) {
+      setRect(ref.current.getBoundingClientRect())
+    }
+  }, [showActive])
 
   const handleClick = e => {
     e.preventDefault()
@@ -68,31 +108,43 @@ const Item = props => {
 
   const handleSelect = data => {
     onSelect(data)
-    handleMouseLeave()
+    setRect(null)
   }
 
-  const handleMouseOver = () => {
-    setShow(true)
+  const handleMouseEnter = e => {
+    setRect(ref.current.getBoundingClientRect())
   }
 
   const handleMouseLeave = () => {
-    setShow(false)
+    setRect(null)
   }
 
   return (
     <div
+      ref={ref}
       className={classNames('gm-nav-one-box', {
         active: selected.startsWith(link)
       })}
-      onMouseOver={handleMouseOver}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <A href={link} className='gm-nav-one' onClick={handleClick}>
         <div className='gm-nav-one-icon'>{icon}</div>
         <div className='gm-nav-one-text'>{name}</div>
       </A>
-      <div className='gm-nav-one-triangle' />
-      {show && <Popup data={sub} onSelect={handleSelect} selected={selected} />}
+      {sub && <div className='gm-nav-one-triangle' />}
+      {sub && (
+        <Portal>
+          {rect && (
+            <Popup
+              parentRect={rect}
+              data={sub}
+              onSelect={handleSelect}
+              selected={selected}
+            />
+          )}
+        </Portal>
+      )}
     </div>
   )
 }
@@ -100,7 +152,8 @@ const Item = props => {
 Item.propTypes = {
   data: PropTypes.object.isRequired,
   selected: PropTypes.string.isRequired,
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
+  showActive: PropTypes.string.isRequired
 }
 
 const Nav = props => {
@@ -110,6 +163,7 @@ const Nav = props => {
     data,
     selected,
     onSelect,
+    showActive,
     other,
     className,
     style,
@@ -117,7 +171,7 @@ const Nav = props => {
   } = props
 
   return (
-    <div {...rest} className={classNames('gm-nav', className)}>
+    <Flex column {...rest} className={classNames('gm-nav', className)}>
       <div
         className={classNames('gm-nav-logo', {
           active: logoActive
@@ -125,25 +179,40 @@ const Nav = props => {
       >
         {logo}
       </div>
-      {_.map(data, (one, i) => (
-        <Item key={i} data={one} onSelect={onSelect} selected={selected} />
-      ))}
-      <div className='gm-nav-other'>{other}</div>
-    </div>
+      <Flex flex column className='gm-nav-content'>
+        {_.map(data, (one, i) => (
+          <Item
+            key={i}
+            data={one}
+            onSelect={onSelect}
+            selected={selected}
+            showActive={showActive}
+          />
+        ))}
+        <div style={{ height: '100px' }} />
+        {other}
+      </Flex>
+      <div id='gmNavPopupContainer' />
+    </Flex>
   )
 }
 
+Nav.Item = Item
 Nav.propTypes = {
   logo: PropTypes.element,
   logoActive: PropTypes.bool,
   /**
    * 三级菜单，其中 2 级有个 style
    * [{link, name, icon, sub: [{link, name, style, sub: [{link, name}]}]}]
+   * sub 没有的话就没有 popup
    * */
   data: PropTypes.array.isRequired,
+  /** pathname */
   selected: PropTypes.string.isRequired,
+  /** 直接吐 item */
   onSelect: PropTypes.func.isRequired,
-
+  /** 控制 浮层的线上，如商品库传 merchandise */
+  showActive: PropTypes.string,
   other: PropTypes.element,
   className: PropTypes.string,
   style: PropTypes.object

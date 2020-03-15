@@ -1,0 +1,35 @@
+{
+  "name": "@gmfe/tour",
+  "version": "2.4.6",
+  "description": "> TODO: description",
+  "author": "zhongsink <zhongink@gmail.com>",
+  "homepage": "https://github.com/gmfe/gmfe#readme",
+  "license": "ISC",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmfe/gmfe.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/gmfe/gmfe/issues"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "classnames": "^2.2.5",
+    "lodash": "^4.17.14",
+    "styled-components": "^5.0.1"
+  },
+  "devDependencies": {
+    "@gmfe/table-x": "^2.4.6",
+    "@gmfe/react": "^2.4.6"
+  }
+}

@@ -40,39 +40,50 @@ Inner.propTypes = {
   className: PropTypes.string
 }
 
-const FunctionSet = props => {
-  const { data, right, disabled, children } = props
-  const refPopover = React.createRef()
+class FunctionSet extends React.Component {
+  refPopover = React.createRef()
 
-  const handleSelect = selected => {
+  apiDoSetActive = active => {
+    this.refPopover.current.apiDoSetActive(active)
+  }
+
+  handleSelect = selected => {
     // 只有 onClick 才有意义
     if (!selected.onClick) {
       return
     }
-    refPopover.current.apiDoSetActive(false)
+    this.refPopover.current.apiDoSetActive(false)
     selected.onClick()
   }
 
-  const newData = _.filter(data, d => d.show !== false)
+  render() {
+    const { data, right, disabled, children } = this.props
 
-  if (newData.length === 0) {
-    return null
+    const newData = _.filter(data, d => d.show !== false)
+
+    if (newData.length === 0) {
+      return null
+    }
+
+    return (
+      <Popover
+        ref={this.refPopover}
+        popup={
+          <Overlay
+            data={newData}
+            onSelect={this.handleSelect}
+            isReverse={right}
+          />
+        }
+        right={right}
+        type='hover'
+        disabled={disabled}
+        pureContainer
+      >
+        <Inner disabled={disabled}>{children}</Inner>
+      </Popover>
+    )
   }
-
-  return (
-    <Popover
-      ref={refPopover}
-      popup={
-        <Overlay data={newData} onSelect={handleSelect} isReverse={right} />
-      }
-      right={right}
-      type='hover'
-      disabled={disabled}
-      pureContainer
-    >
-      <Inner disabled={disabled}>{children}</Inner>
-    </Popover>
-  )
 }
 
 FunctionSet.propTypes = {
