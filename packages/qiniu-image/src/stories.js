@@ -1,5 +1,5 @@
 import React from 'react'
-import { uploadImage, watermark } from './'
+import { uploadImage, watermark, mixedWatermark } from './'
 
 export const ReadMe = () => {
   return (
@@ -41,6 +41,32 @@ export const Watermark = () => {
         image:
           'https://js.guanmai.cn/static_storage/json/common/logo/default/logo.pure.png'
       })}
+      style={{ width: '300px', height: '300px', objectFit: 'container' }}
+    />
+  )
+}
+
+export const MixedWatermark = () => {
+  return (
+    <img
+      src={mixedWatermark(bigImg, [
+        {
+          image:
+            'https://js.guanmai.cn/static_storage/json/common/logo/default/logo.pure.png',
+          gravity: true,
+          North: true,
+          dy: -10,
+          dx: 0
+        },
+        {
+          image:
+            'https://js.guanmai.cn/static_storage/json/common/logo/default/logo.pure.png',
+          gravity: true,
+          SouthWest: true,
+          dy: 80,
+          dx: 30
+        }
+      ])}
       style={{ width: '300px', height: '300px', objectFit: 'container' }}
     />
   )

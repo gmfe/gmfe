@@ -4,7 +4,16 @@ import {
   imageView2,
   imageMogr2,
   watermark,
+  mixedWatermark,
   pipeline
 } from './process'
 
-export { uploadImage, imageSlim, imageView2, imageMogr2, watermark, pipeline }
+export {
+  uploadImage,
+  imageSlim,
+  imageView2,
+  imageMogr2,
+  watermark,
+  mixedWatermark,
+  pipeline
+}

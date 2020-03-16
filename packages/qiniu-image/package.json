@@ -21,6 +21,7 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
-    "gm-util": "^5.12.3"
+    "gm-util": "^5.12.3",
+    "lodash": "^4.17.15"
   }
 }
