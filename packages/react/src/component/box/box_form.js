@@ -13,7 +13,9 @@ const BoxFormContext = React.createContext({
 const More = props => {
   return (
     <BoxFormContext.Consumer>
-      {({ open }) => {
+      {({ open, onHasMore }) => {
+        onHasMore(true)
+
         if (!open) {
           return null
         }
@@ -32,7 +34,9 @@ const BoxForm = props => {
   }
 
   const handleHasMore = () => {
-    setHasMore(true)
+    if (!hasMore) {
+      setHasMore(true)
+    }
   }
 
   return (
