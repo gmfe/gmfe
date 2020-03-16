@@ -18,7 +18,7 @@ const Item = props => {
   } = props
 
   const renderItem = item => {
-    const hasChildren = item.children && item.children.length
+    const hasChildren = item.children && !!item.children.length
     return (
       <div className='gm-position-relative'>
         <div className={`${hasChildren ? 'gm-margin-right-10' : ''}`}>
