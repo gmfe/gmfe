@@ -73,7 +73,7 @@ function mixedWatermark(url, options) {
         ...option,
         image: urlSafeBase64Encode(option.image)
       }
-      return s + getFunStr('', '', option)
+      return s + getFunStr(null, '', option)
     },
     ''
   )
