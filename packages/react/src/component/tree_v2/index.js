@@ -142,7 +142,7 @@ const TreeV2 = ({
   }
 
   const newGS = query ? queryGroupSelected : groupSelected
-  console.log(findIndex)
+
   return (
     <Flex {...rest} column className={classNames('gm-tree-v2', className)}>
       {title && (
