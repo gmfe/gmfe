@@ -69,7 +69,25 @@ function urlSafeBase64Encode(v) {
   return v.replace(/\//g, '_').replace(/\+/g, '-')
 }
 
+function getOptionWithSafeBase64Encode(option) {
+  let opt = { ...option }
+  if (opt.image) {
+    opt = {
+      ...opt,
+      image: urlSafeBase64Encode(opt.image)
+    }
+  }
+  if (opt.text) {
+    opt = {
+      ...opt,
+      text: urlSafeBase64Encode(opt.text)
+    }
+  }
+  return opt
+}
+
 export {
+  getOptionWithSafeBase64Encode,
   getUploadImageName,
   getToken,
   request,

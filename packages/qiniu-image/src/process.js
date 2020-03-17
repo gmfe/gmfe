@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { urlSafeBase64Encode } from './util'
+import { getOptionWithSafeBase64Encode } from './util'
 
 // 说明见 https://developer.qiniu.com/dora/api/3683/img-directions-for-use
 
@@ -44,13 +44,8 @@ function imageMogr2(url, option) {
 }
 
 function watermark(url, option) {
-  if (option.image) {
-    option = {
-      ...option,
-      image: urlSafeBase64Encode(option.image)
-    }
-  }
-  return getFunStr(url, 'watermark', option)
+  const opt = getOptionWithSafeBase64Encode(option)
+  return getFunStr(url, 'watermark', opt)
 }
 
 /*
@@ -69,11 +64,8 @@ function mixedWatermark(url, options) {
     options,
     (s, option) => {
       delete option.mode
-      option = {
-        ...option,
-        image: urlSafeBase64Encode(option.image)
-      }
-      return s + getFunStr(null, '', option)
+      const opt = getOptionWithSafeBase64Encode(option)
+      return s + getFunStr(null, '', opt)
     },
     ''
   )
