@@ -470,11 +470,14 @@ storiesOf('Table|TableUtil', module)
                 {
                   name: '批量删除',
                   show: false,
+                  type: 'delete',
                   onClick: () =>
                     window.alert('批量删除' + store.selected.join(','))
                 },
+                { name: '批量打印', type: 'business' },
                 {
                   name: '批量修改单价',
+                  type: 'edit',
                   onClick: () =>
                     window.alert('批量修改这些' + store.selected.join(','))
                 }

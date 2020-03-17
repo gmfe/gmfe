@@ -6,8 +6,11 @@ import {
   expandTableXHOC,
   TableX,
   subTableXHOC,
-  TableXVirtualized, TableXUtil,
+  TableXVirtualized,
+  TableXUtil
 } from '../index'
+
+const { BatchActionBar } = TableXUtil
 
 const initData = [
   {
@@ -145,7 +148,15 @@ storiesOf('TableX|HOC select expand', module)
         keyField='id'
         selected={store.selected}
         onSelect={selected => store.setSelected(selected)}
-        batchActionBar={<div>BatchActionBar</div>}
+        batchActionBar={
+          <BatchActionBar
+            batchActions={[
+              { name: '批量删除', type: 'delete' },
+              { name: '批量修改', type: 'edit' },
+              { name: '批量打印', type: 'business' }
+            ]}
+          />
+        }
       />
     </div>
   ))
