@@ -71,6 +71,21 @@ const webpackFinal = config => {
 
 module.exports = {
   addons: ['@storybook/addon-storysource/register'],
-  stories: ['../packages/**/*stories.js', '../demo/**/*.stories.js'],
+  // 写清晰一点，否则容易碰到 node_modules 里的 stories
+  stories: [
+    '../packages/business/src/**/*stories.js',
+    '../packages/cropper/src/**/*stories.js',
+    '../packages/frame/src/**/*stories.js',
+    '../packages/keyboard/src/**/*stories.js',
+    '../packages/locales/src/**/*stories.js',
+    '../packages/qiniu-image/src/**/*stories.js',
+    '../packages/react/src/**/*stories.js',
+    '../packages/react-deprecated/src/**/*stories.js',
+    '../packages/sortable/src/**/*stories.js',
+    '../packages/table/src/**/*stories.js',
+    '../packages/table-x/src/**/*stories.js',
+    '../packages/tour/src/**/*stories.js',
+    '../demo/**/*stories.js'
+  ],
   webpackFinal
 }

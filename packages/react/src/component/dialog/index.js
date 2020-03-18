@@ -6,7 +6,7 @@ import _ from 'lodash'
 import classNames from 'classnames'
 import LayoutRoot from '../layout_root'
 import EVENT_TYPE from '../../event_type'
-import { warn } from 'gm-util'
+import { warn } from '@gm-common/tool'
 import Button from '../button'
 
 let DialogStatics = {}

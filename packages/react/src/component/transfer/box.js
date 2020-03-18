@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Flex from '../flex'
 import { Checkbox, CheckboxGroup } from '../checkbox'
-import { pinYinFilter } from 'gm-util'
+import { pinYinFilter } from '@gm-common/tool'
 import _ from 'lodash'
 import SearchSvg from '../../../svg/search.svg'
 

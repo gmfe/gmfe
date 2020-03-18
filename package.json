@@ -53,7 +53,6 @@
     "eslint": "^6.8.0",
     "eslint-plugin-gm-react-app": "^1.1.1",
     "file-loader": "^5.1.0",
-    "gm-util": "^5.12.3",
     "husky": "^4.2.3",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",

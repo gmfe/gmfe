@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
-import { createChainedFunction, getScrollTop, getScrollLeft } from 'gm-util'
+import { createChainedFunction, getScrollTop, getScrollLeft } from '@gm-common/tool'
 import LayoutRoot from '../layout_root'
 import Popup from '../popup/popup'
 import _ from 'lodash'

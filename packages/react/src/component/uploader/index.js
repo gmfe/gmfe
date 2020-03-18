@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
-import { is } from 'gm-util'
+import { is } from '@gm-common/tool'
 import classNames from 'classnames'
 import SVGPlus from '../../../svg/plus.svg'
 import Flex from '../flex'

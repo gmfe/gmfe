@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import classNames from 'classnames'
-import { createChainedFunction, contains } from 'gm-util'
+import { createChainedFunction, contains } from '@gm-common/tool'
 
 class Trigger extends React.Component {
   constructor(props) {

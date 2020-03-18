@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import { Storage, Flex } from '@gmfe/react'
 import Transform from './transform'
-import { warn } from 'gm-util'
+import { warn } from '@gm-common/tool'
 
 class ManagePaginationV2 extends React.Component {
   constructor(props) {

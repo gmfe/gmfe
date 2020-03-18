@@ -9,6 +9,19 @@ class Base extends React.Component {
 
   _isUnMounted = false
 
+  apiDoSelectWillActive = () => {
+    const flatList = this.getFlatData()
+
+    const { willActiveIndex } = this.props
+    if (
+      willActiveIndex !== null &&
+      willActiveIndex !== undefined &&
+      willActiveIndex < flatList.length
+    ) {
+      this.handleSelect(flatList[willActiveIndex])
+    }
+  }
+
   doScrollToSelected = selector => {
     // 找第一个即可
     if (!this._isUnMounted) {
@@ -17,6 +30,10 @@ class Base extends React.Component {
         $active.scrollIntoViewIfNeeded()
       }
     }
+  }
+
+  getFlatData = () => {
+    return _.flatMap(this.data, v => v.children)
   }
 
   componentWillUnmount() {

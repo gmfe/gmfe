@@ -5,7 +5,7 @@ import { TableX } from '@gmfe/table-x'
 import _ from 'lodash'
 import Wrap from '../core/wrap'
 import { CellKeyContext } from '../core/util'
-import { devWarn } from 'gm-util'
+import { devWarn } from '@gm-common/tool'
 
 function keyboardTableXHOC(Component) {
   /**
