@@ -21,21 +21,18 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "dependencies": {
+    "@gm-common/tool": "^1.0.0",
+    "@gmfe/locales": "^2.7.1",
     "@gmfe/react": "^2.0.0",
     "classnames": "^2.2.5",
-    "gm-util": "^5.12.3",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
     "react-table": "7.0.0-rc.11",
     "react-window": "^1.8.5",
     "sortablejs": "^1.10.1"
-  },
-  "devDependencies": {
-    "@gmfe/react": "^2.7.1"
-  },
-  "dependencies": {
-    "@gmfe/locales": "^2.7.1"
   }
 }

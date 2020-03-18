@@ -21,15 +21,14 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
-    "@gmfe/react": "^2.0.0",
-    "classnames": "^2.2.5",
-    "gm-util": "^5.11.0",
-    "lodash": "^4.17.14",
-    "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
-  "devDependencies": {
-    "@gmfe/react": "^2.7.1"
+  "dependencies": {
+    "@gm-common/tool": "^1.0.0",
+    "@gmfe/react": "^2.0.0",
+    "classnames": "^2.2.5",
+    "lodash": "^4.17.14",
+    "prop-types": "^15.7.2"
   }
 }

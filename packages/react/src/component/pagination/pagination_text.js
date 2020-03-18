@@ -1,7 +1,7 @@
 import { getLocale } from '@gmfe/locales'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { warn } from 'gm-util'
+import { warn } from '@gm-common/tool'
 
 class WithCount extends React.Component {
   render() {

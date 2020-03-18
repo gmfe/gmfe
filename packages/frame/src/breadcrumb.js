@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import { isPathMatch, is } from 'gm-util'
+import { isPathMatch, is } from '@gm-common/tool'
 
 function nav2BreadCrumb(props) {
   const { breadcrumbs, pathname, navConfig } = props

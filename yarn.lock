@@ -6001,11 +6001,6 @@ globjoin@^0.1.4:
   resolved "https://registry.npmjs.org/globjoin/-/globjoin-0.1.4.tgz#2f4494ac8919e3767c5cbb691e9f463324285d43"
   integrity sha1-L0SUrIkZ43Z8XLtpHp9GMyQoXUM=
 
-gm-util@^5.12.3:
-  version "5.12.3"
-  resolved "https://registry.npmjs.org/gm-util/-/gm-util-5.12.3.tgz#e0effd09b38d91e22d4b09d31f6a431ba1bbca9c"
-  integrity sha512-oymrzYo5MeU+iI7K3pOS2aNKpDjHVdRULgre24zNTIFrrD8ljm3deTm2cefpDRIOkH/A5vEOjqW39xTzR9BgnA==
-
 gonzales-pe@^4.2.4:
   version "4.2.4"
   resolved "https://registry.npmjs.org/gonzales-pe/-/gonzales-pe-4.2.4.tgz#356ae36a312c46fe0f1026dd6cb539039f8500d2"

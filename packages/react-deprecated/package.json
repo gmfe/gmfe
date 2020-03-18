@@ -19,13 +19,9 @@
   "bugs": {
     "url": "https://github.com/gmfe/gmfe/issues"
   },
-  "peerDependencies": {
-    "@gmfe/react": "^2.0.0"
-  },
-  "devDependencies": {
-    "@gmfe/react": "^2.7.1"
-  },
   "dependencies": {
-    "@gmfe/locales": "^2.7.1"
+    "@gm-common/tool": "^1.0.0",
+    "@gmfe/locales": "^2.7.1",
+    "@gmfe/react": "^2.0.0"
   }
 }

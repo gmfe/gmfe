@@ -1,4 +1,5 @@
-import { UUID, RequestInterceptor } from 'gm-util'
+import { RequestInterceptor } from 'gm-util'
+import { UUID } from '@gm-common/tool'
 
 const configHeaders = (name, version) => {
   const CLIENT_ID = '_CLIENT_ID'

@@ -6,7 +6,7 @@ import { Storage, Modal, Popover } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import { getColumnKey, referOfWidth } from '../../util'
 import Table from '../../table'
-import { devWarn } from 'gm-util'
+import { devWarn } from '@gm-common/tool'
 import DiyTableModal from './diy_table_modal'
 
 /**

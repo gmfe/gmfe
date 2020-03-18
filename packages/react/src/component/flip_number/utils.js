@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { is } from 'gm-util'
+import { is } from '@gm-common/tool'
 
 function formatNum(number, decimals, useGroup) {
   return number.toLocaleString(undefined, {

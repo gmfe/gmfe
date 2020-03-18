@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { pinYinFilter } from 'gm-util'
+import { pinYinFilter } from '@gm-common/tool'
 import { filterGroupListLeaf } from '../../common/util'
 
 // 这里做一层 cache
