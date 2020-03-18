@@ -1,9 +1,23 @@
 import React from 'react'
 import _ from 'lodash'
 import { Flex, Popover, Button } from '@gmfe/react'
+import styled from 'styled-components'
 import { getLocale } from '@gmfe/locales'
 import PropTypes from 'prop-types'
 import SVGRemove from '../../svg/remove.svg'
+import SVGDelete from '../../svg/delete.svg'
+import SVGEdit from '../../svg/edit-pen.svg'
+import SVGBusiness from '../../svg/business.svg'
+
+const ICON_MAP = {
+  delete: <SVGDelete />,
+  edit: <SVGEdit />,
+  business: <SVGBusiness />
+}
+
+const Icon = styled.span`
+  padding-right: 4px;
+`
 
 const BatchActionBar = props => {
   const {
@@ -75,6 +89,7 @@ const BatchActionBar = props => {
               style={{ marginLeft: '30px' }}
               key={o.name}
             >
+              {ICON_MAP[o.type] && <Icon>{ICON_MAP[o.type]}</Icon>}
               {o.name}
             </div>
           )
