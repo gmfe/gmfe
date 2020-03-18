@@ -117,6 +117,7 @@ const FormItem = withWrapContext(
 FormItem.propTypes = {
   /** 占用栏数 */
   col: PropTypes.oneOf([1, 2, 3]),
+  disabledCol: PropTypes.bool,
   /** 顾名思义。请不要包含:，此为组件控制 */
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   /** 提示信息 */

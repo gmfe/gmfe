@@ -153,7 +153,7 @@ Item.propTypes = {
   data: PropTypes.object.isRequired,
   selected: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
-  showActive: PropTypes.string.isRequired
+  showActive: PropTypes.string
 }
 
 const Nav = props => {
