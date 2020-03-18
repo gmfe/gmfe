@@ -1,4 +1,4 @@
-import { getUploadImageName, getToken, request, getTokenDefault } from './util'
+import { getUploadImageName, getToken, request } from './util'
 /**
  *
  * @param {*} blob Blob
@@ -9,11 +9,15 @@ async function uploadImage(blob, opts = {}) {
     prefix: opts.prefix || '',
     uploadUrl: 'https://upload-z2.qiniup.com/',
     domain: 'https://image.document.guanmai.cn',
-    getToken: opts.getToken || getTokenDefault,
+    getToken: opts.getToken,
     timeout: opts.timeout || 24 * 3600 * 1000 // 24 个小时
   }
   if (!blob.type.startsWith('image/')) {
     throw new Error('need image')
+  }
+
+  if (!opts.getToken) {
+    throw new Error('need getToken')
   }
 
   const token = await getToken(options)

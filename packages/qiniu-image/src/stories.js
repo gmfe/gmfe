@@ -9,6 +9,17 @@ export const ReadMe = () => {
   )
 }
 
+const getToken = () =>
+  Request('/gm_wheat/qiniu_token')
+    .get()
+    .then(json => {
+      if (!json.code) {
+        return json.data
+      } else {
+        throw new Error(`error ${json.msg}`)
+      }
+    })
+
 export const UploadImage = () => {
   return (
     <div>
@@ -19,7 +30,7 @@ export const UploadImage = () => {
 
           console.log(e.target.files)
           const file = e.target.files[0]
-          uploadImage(file).then(({ url }) => {
+          uploadImage(file, { getToken }).then(({ url }) => {
             console.log(url)
           })
         }}

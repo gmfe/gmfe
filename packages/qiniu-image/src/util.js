@@ -1,16 +1,3 @@
-import { Request } from 'gm-util'
-
-const getTokenDefault = () =>
-  Request('/gm_wheat/qiniu_token')
-    .get()
-    .then(json => {
-      if (!json.code) {
-        return json.data
-      } else {
-        throw new Error(`error ${json.msg}`)
-      }
-    })
-
 function getUploadImageName(blob) {
   const { type } = blob
   const suf = type.split('/').pop()
@@ -91,6 +78,5 @@ export {
   getUploadImageName,
   getToken,
   request,
-  urlSafeBase64Encode,
-  getTokenDefault
+  urlSafeBase64Encode
 }
