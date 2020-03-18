@@ -20,6 +20,7 @@ function ImgUploader(props) {
     desc,
     className,
     children,
+    imgRender,
     ...rest
   } = props
 
@@ -68,14 +69,18 @@ function ImgUploader(props) {
                 height: contentSize.height
               }}
             >
-              <img
-                src={item}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain'
-                }}
-              />
+              {imgRender ? (
+                imgRender(item)
+              ) : (
+                <img
+                  src={item}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain'
+                  }}
+                />
+              )}
             </DefaultImage>
             {!disabled && (
               <SvgCloseCircle
@@ -108,7 +113,7 @@ function ImgUploader(props) {
 }
 
 ImgUploader.propTypes = {
-  /** [url, url] */
+  /** list */
   data: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
   /** 上传按钮回调，参数是 files，返回 promise resolve 回 [url] */
@@ -125,6 +130,8 @@ ImgUploader.propTypes = {
   }),
   /** 描述 */
   desc: PropTypes.string,
+  /** return element */
+  imgRender: PropTypes.func,
 
   className: PropTypes.string,
   style: PropTypes.object
