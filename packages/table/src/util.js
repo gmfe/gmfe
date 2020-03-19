@@ -6,7 +6,8 @@ import {
   PopupContentConfirm,
   Flex,
   InputNumberV2,
-  Button
+  Button,
+  Input
 } from '@gmfe/react'
 import _ from 'lodash'
 import { getLocale } from '@gmfe/locales'
@@ -291,10 +292,6 @@ const EditContentInput = ({
     closePopup()
   }
 
-  const handleCancel = () => {
-    closePopup()
-  }
-
   const handleInputFocus = e => {
     e.target && e.target.select()
   }
@@ -309,31 +306,23 @@ const EditContentInput = ({
   }
 
   return (
-    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-5'>
-      <Flex alignCenter style={{ width: '64%' }}>
-        <input
+    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-10'>
+      <Flex alignCenter>
+        <Input
           {...rest}
           ref={inputRef}
           className='form-control'
-          type='text'
+          style={{ width: '150px' }}
           value={val}
           onFocus={handleInputFocus}
           onKeyDown={handleInputKeyDown}
           onChange={e => setVal(e.target.value)}
         />
-        <div className='gm-gap-5' />
-        {suffixText}
+        {suffixText && <div className='gm-margin-left-5'>{suffixText}</div>}
       </Flex>
-      <span
-        className='gm-text-primary gm-margin-left-10 gm-cursor'
-        onClick={handleCancel}
-      >
-        {getLocale('取消')}
-      </span>
-      <span className='gm-padding-lr-10 gm-text-desc'>|</span>
-      <span className='gm-text-primary gm-cursor' onClick={handleSave}>
+      <Button type='primary' onClick={handleSave} className='gm-margin-left-10'>
         {getLocale('保存')}
-      </span>
+      </Button>
     </Flex>
   )
 }
