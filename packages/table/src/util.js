@@ -247,15 +247,16 @@ function getColumnKey(column) {
   return null
 }
 
-const EditButton = props => {
+const EditButton = ({ popupRender, right }) => {
   const refPopover = useRef(null)
   const closePopup = () => refPopover.current.apiDoSetActive(false)
 
   return (
     <Popover
       ref={refPopover}
-      right
-      popup={props.popupRender(closePopup)}
+      popup={popupRender(closePopup)}
+      right={right}
+      offset={right ? 2 : -8}
       showArrow
       animName={false}
     >
@@ -267,7 +268,8 @@ const EditButton = props => {
 }
 
 EditButton.propTypes = {
-  popupRender: PropTypes.func.isRequired
+  popupRender: PropTypes.func.isRequired,
+  right: PropTypes.bool
 }
 
 const EditContentInput = ({
@@ -366,10 +368,6 @@ const EditContentInputNumber = ({
     closePopup()
   }
 
-  const handleCancel = () => {
-    closePopup()
-  }
-
   const handleInputFocus = e => {
     e.target && e.target.select()
   }
@@ -388,7 +386,7 @@ const EditContentInputNumber = ({
   }
 
   return (
-    <Flex alignCenter className='gm-padding-tb-5 gm-padding-lr-10'>
+    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-10'>
       <Flex alignCenter>
         <InputNumberV2
           {...rest}
@@ -400,19 +398,11 @@ const EditContentInputNumber = ({
           onKeyDown={handleInputKeyDown}
           onChange={handleChange}
         />
-        <div className='gm-gap-5' />
-        {suffixText}
+        {suffixText && <div className='gm-margin-left-5'>{suffixText}</div>}
       </Flex>
-      <span
-        className='gm-text-primary gm-margin-left-10 gm-cursor'
-        onClick={handleCancel}
-      >
-        {getLocale('取消')}
-      </span>
-      <span className='gm-padding-lr-10 gm-text-desc'>|</span>
-      <span className='gm-text-primary gm-cursor' onClick={handleSave}>
+      <Button type='primary' className='gm-margin-left-10' onClick={handleSave}>
         {getLocale('保存')}
-      </span>
+      </Button>
     </Flex>
   )
 }
