@@ -166,7 +166,7 @@ const editColumns = [
     Cell: () => (
       <div>
         <input type='text' />
-        <EditButton popupRender={() => <div>lalala</div>} />
+        <EditButton popupRender={() => <div>lalala123j4123;lk4j;132lkj4;lk12j34;lk123j;4lkj123;l4kj;</div>} />
       </div>
     )
   }

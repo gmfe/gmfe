@@ -6,7 +6,8 @@ import {
   PopupContentConfirm,
   Flex,
   InputNumberV2,
-  Button
+  Button,
+  Input
 } from '@gmfe/react'
 import _ from 'lodash'
 import { getLocale } from '@gmfe/locales'
@@ -16,6 +17,7 @@ import SVGDelete from '../svg/delete.svg'
 import SVGPen from '../svg/pen.svg'
 import SVGCheckDetail from '../svg/check-detail.svg'
 import SVGEditPen from '../svg/edit-pen.svg'
+import OperationIconTip from './operation_icon_tip'
 
 const OperationHeader = <div className='text-center'>操作</div>
 
@@ -31,7 +33,9 @@ OperationCell.propTypes = {
 }
 
 const OperationDetail = ({ href, open, onClick, className, ...rest }) => {
+  const tipRef = useRef()
   const handleClick = e => {
+    tipRef.current.apiDoSetActive()
     onClick && onClick(e)
 
     if (href) {
@@ -44,16 +48,18 @@ const OperationDetail = ({ href, open, onClick, className, ...rest }) => {
   }
 
   return (
-    <div
-      {...rest}
-      onClick={handleClick}
-      className={classNames(
-        'gm-inline-block gm-cursor gm-padding-5 gm-text-14 gm-text gm-text-hover-primary',
-        className
-      )}
-    >
-      <SVGCheckDetail />
-    </div>
+    <OperationIconTip tip={getLocale('详情')} ref={tipRef}>
+      <div
+        {...rest}
+        onClick={handleClick}
+        className={classNames(
+          'gm-inline-block gm-cursor gm-padding-5 gm-text-14 gm-text gm-text-hover-primary',
+          className
+        )}
+      >
+        <SVGCheckDetail />
+      </div>
+    </OperationIconTip>
   )
 }
 
@@ -69,7 +75,8 @@ OperationDetail.propTypes = {
 
 const OperationDelete = props => {
   const { title, onClick, className, children, ...rest } = props
-  const refPopover = React.createRef()
+  const refPopover = useRef()
+  const refTooltip = useRef()
 
   const handleDelete = () => {
     refPopover.current.apiDoSetActive(false)
@@ -91,6 +98,10 @@ const OperationDelete = props => {
     </PopupContentConfirm>
   )
 
+  const handleRemoveTip = () => {
+    refTooltip.current.apiDoSetActive()
+  }
+
   return (
     <Popover ref={refPopover} right popup={popup} showArrow>
       <div
@@ -100,7 +111,11 @@ const OperationDelete = props => {
           className
         )}
       >
-        <SVGDelete />
+        <OperationIconTip tip={getLocale('删除')} ref={refTooltip}>
+          <div onClick={handleRemoveTip}>
+            <SVGDelete />
+          </div>
+        </OperationIconTip>
       </div>
     </Popover>
   )
@@ -201,12 +216,14 @@ const OperationRowEdit = ({
 
   return !isEditing ? (
     <OperationCell>
-      <span className='gm-padding-5'>
-        <SVGPen
-          className='gm-inline-block gm-cursor gm-text-14 gm-text gm-text-hover-primary'
-          onClick={handleClick}
-        />
-      </span>
+      <OperationIconTip tip={getLocale('编辑')}>
+        <span className='gm-padding-5'>
+          <SVGPen
+            className='gm-inline-block gm-cursor gm-text-14 gm-text gm-text-hover-primary'
+            onClick={handleClick}
+          />
+        </span>
+      </OperationIconTip>
       {children}
     </OperationCell>
   ) : (
@@ -247,15 +264,16 @@ function getColumnKey(column) {
   return null
 }
 
-const EditButton = props => {
+const EditButton = ({ popupRender, right }) => {
   const refPopover = useRef(null)
   const closePopup = () => refPopover.current.apiDoSetActive(false)
 
   return (
     <Popover
       ref={refPopover}
-      right
-      popup={props.popupRender(closePopup)}
+      popup={popupRender(closePopup)}
+      right={right}
+      offset={right ? 2 : -8}
       showArrow
       animName={false}
     >
@@ -267,7 +285,8 @@ const EditButton = props => {
 }
 
 EditButton.propTypes = {
-  popupRender: PropTypes.func.isRequired
+  popupRender: PropTypes.func.isRequired,
+  right: PropTypes.bool
 }
 
 const EditContentInput = ({
@@ -289,10 +308,6 @@ const EditContentInput = ({
     closePopup()
   }
 
-  const handleCancel = () => {
-    closePopup()
-  }
-
   const handleInputFocus = e => {
     e.target && e.target.select()
   }
@@ -307,31 +322,23 @@ const EditContentInput = ({
   }
 
   return (
-    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-5'>
-      <Flex alignCenter style={{ width: '64%' }}>
-        <input
+    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-10'>
+      <Flex alignCenter>
+        <Input
           {...rest}
           ref={inputRef}
           className='form-control'
-          type='text'
+          style={{ width: '150px' }}
           value={val}
           onFocus={handleInputFocus}
           onKeyDown={handleInputKeyDown}
           onChange={e => setVal(e.target.value)}
         />
-        <div className='gm-gap-5' />
-        {suffixText}
+        {suffixText && <div className='gm-margin-left-5'>{suffixText}</div>}
       </Flex>
-      <span
-        className='gm-text-primary gm-margin-left-10 gm-cursor'
-        onClick={handleCancel}
-      >
-        {getLocale('取消')}
-      </span>
-      <span className='gm-padding-lr-10 gm-text-desc'>|</span>
-      <span className='gm-text-primary gm-cursor' onClick={handleSave}>
+      <Button type='primary' onClick={handleSave} className='gm-margin-left-10'>
         {getLocale('保存')}
-      </span>
+      </Button>
     </Flex>
   )
 }
@@ -366,10 +373,6 @@ const EditContentInputNumber = ({
     closePopup()
   }
 
-  const handleCancel = () => {
-    closePopup()
-  }
-
   const handleInputFocus = e => {
     e.target && e.target.select()
   }
@@ -388,7 +391,7 @@ const EditContentInputNumber = ({
   }
 
   return (
-    <Flex alignCenter className='gm-padding-tb-5 gm-padding-lr-10'>
+    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-10'>
       <Flex alignCenter>
         <InputNumberV2
           {...rest}
@@ -400,19 +403,11 @@ const EditContentInputNumber = ({
           onKeyDown={handleInputKeyDown}
           onChange={handleChange}
         />
-        <div className='gm-gap-5' />
-        {suffixText}
+        {suffixText && <div className='gm-margin-left-5'>{suffixText}</div>}
       </Flex>
-      <span
-        className='gm-text-primary gm-margin-left-10 gm-cursor'
-        onClick={handleCancel}
-      >
-        {getLocale('取消')}
-      </span>
-      <span className='gm-padding-lr-10 gm-text-desc'>|</span>
-      <span className='gm-text-primary gm-cursor' onClick={handleSave}>
+      <Button type='primary' className='gm-margin-left-10' onClick={handleSave}>
         {getLocale('保存')}
-      </span>
+      </Button>
     </Flex>
   )
 }
