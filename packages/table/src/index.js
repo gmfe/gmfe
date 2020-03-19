@@ -25,6 +25,7 @@ import {
   referOfWidth,
   EditButton
 } from './util'
+import OperationIconTip from './operation_icon_tip'
 
 const TableUtil = {
   OperationHeader,
@@ -32,6 +33,7 @@ const TableUtil = {
   OperationDetail,
   OperationCell,
   OperationRowEdit,
+  OperationIconTip,
   SortHeader,
   EditTableOperation,
   EditContentInputNumber,

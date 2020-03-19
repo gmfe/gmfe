@@ -16,6 +16,7 @@ import {
   OperationDetail,
   OperationCell,
   OperationRowEdit,
+  OperationIconTip,
   EditButton,
   EditOperation,
   SortHeader
@@ -32,7 +33,7 @@ const TableXUtil = {
   OperationDetail,
   OperationCell,
   OperationRowEdit,
-
+  OperationIconTip,
   EditButton,
   EditOperation
 }

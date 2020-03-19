@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import Popover from '../popover'
 import classNames from 'classnames'
 import SVGQuestionCircle from '../../../svg/question-circle-o.svg'
 
-const ToolTip = props => {
+const ToolTip = (props, ref) => {
   const {
     popup,
     children,
@@ -19,6 +19,7 @@ const ToolTip = props => {
   return (
     <Popover
       top={top}
+      ref={ref}
       type='hover'
       right={right}
       offset={-8}
@@ -55,4 +56,4 @@ ToolTip.defaultProps = {
   showArrow: true
 }
 
-export default ToolTip
+export default forwardRef(ToolTip)
