@@ -113,7 +113,7 @@ const OperationDelete = props => {
           className
         )}
       >
-        <OperationIconTip tip={getLocale('删除')}>
+        <OperationIconTip tip={getLocale('删除')} ref={refTip}>
           <div onClick={handleRemoveTip}>
             <SVGDelete />
           </div>
