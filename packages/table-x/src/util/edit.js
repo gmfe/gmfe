@@ -7,16 +7,18 @@ import SVGPlusSquare from '../../svg/plus-square.svg'
 import SVGMinusSquare from '../../svg/minus-square.svg'
 import { OperationCell } from './operation'
 
-const EditButton = props => {
+const EditButton = ({ popupRender, right }) => {
   const refPopover = useRef(null)
   const closePopup = () => refPopover.current.apiDoSetActive(false)
 
   return (
     <Popover
       ref={refPopover}
-      right
-      popup={props.popupRender(closePopup)}
+      right={right}
+      popup={popupRender(closePopup)}
+      offset={right ? 2 : -24}
       showArrow
+      arrowLeft={right ? 0 : 26}
       animName={false}
     >
       <span className='gm-table-x-edit-button'>
@@ -27,7 +29,8 @@ const EditButton = props => {
 }
 
 EditButton.propTypes = {
-  popupRender: PropTypes.func.isRequired
+  popupRender: PropTypes.func.isRequired,
+  right: PropTypes.bool
 }
 
 const EditOperation = props => {

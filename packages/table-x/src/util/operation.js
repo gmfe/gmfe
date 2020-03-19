@@ -1,12 +1,40 @@
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import SVGCheckDetail from '../../svg/check-detail.svg'
-import React from 'react'
-import { PopupContentConfirm, Popover, Button } from '@gmfe/react'
+import React, { cloneElement, useRef } from 'react'
+import { PopupContentConfirm, Popover, Button, ToolTip } from '@gmfe/react'
+import styled from 'styled-components'
 import SVGDelete from '../../svg/delete.svg'
 import SVGPen from '../../svg/pen.svg'
+import { getLocale } from '@gmfe/locales'
+
+const IconTip = styled.div`
+  padding: 8px;
+`
 
 const OperationHeader = () => <div className='text-center'>操作</div>
+
+const OperationIconTip = ({ tip, children }) => {
+  const tipRef = useRef()
+
+  const handleClick = fc => {
+    tipRef.current.apiDoSetActive()
+    fc && fc()
+  }
+
+  return (
+    <ToolTip popup={<IconTip>{tip}</IconTip>} showArrow ref={tipRef}>
+      {cloneElement(children, {
+        onClick: () => handleClick(children.props.onClick)
+      })}
+    </ToolTip>
+  )
+}
+
+OperationIconTip.propTypes = {
+  tip: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired
+}
 
 const OperationCell = props => (
   <div {...props} className={classNames('text-center', props.className)} />
@@ -31,16 +59,18 @@ const OperationDetail = ({ href, open, onClick, className, ...rest }) => {
   }
 
   return (
-    <div
-      {...rest}
-      onClick={handleClick}
-      className={classNames(
-        'gm-inline-block gm-cursor gm-padding-5 gm-text-14 gm-text gm-text-hover-primary',
-        className
-      )}
-    >
-      <SVGCheckDetail />
-    </div>
+    <OperationIconTip tip={getLocale('详情')}>
+      <div
+        {...rest}
+        onClick={handleClick}
+        className={classNames(
+          'gm-inline-block gm-cursor gm-padding-5 gm-text-14 gm-text gm-text-hover-primary',
+          className
+        )}
+      >
+        <SVGCheckDetail />
+      </div>
+    </OperationIconTip>
   )
 }
 
@@ -56,7 +86,7 @@ OperationDetail.propTypes = {
 
 const OperationDelete = props => {
   const { title, onClick, className, children, ...rest } = props
-  const refPopover = React.createRef()
+  const refPopover = useRef()
 
   const handleDelete = () => {
     refPopover.current.apiDoSetActive(false)
@@ -87,7 +117,11 @@ const OperationDelete = props => {
           className
         )}
       >
-        <SVGDelete />
+        <OperationIconTip tip={getLocale('删除')}>
+          <div>
+            <SVGDelete />
+          </div>
+        </OperationIconTip>
       </div>
     </Popover>
   )
@@ -121,12 +155,14 @@ const OperationRowEdit = ({
 
   return !isEditing ? (
     <OperationCell>
-      <span className='gm-padding-5'>
-        <SVGPen
-          className='gm-inline-block gm-cursor gm-text-14 gm-text gm-text-hover-primary'
-          onClick={handleClick}
-        />
-      </span>
+      <OperationIconTip tip={getLocale('编辑')}>
+        <span className='gm-padding-5'>
+          <SVGPen
+            className='gm-inline-block gm-cursor gm-text-14 gm-text gm-text-hover-primary'
+            onClick={handleClick}
+          />
+        </span>
+      </OperationIconTip>
       {children}
     </OperationCell>
   ) : (
@@ -154,5 +190,6 @@ export {
   OperationDelete,
   OperationDetail,
   OperationCell,
-  OperationRowEdit
+  OperationRowEdit,
+  OperationIconTip
 }

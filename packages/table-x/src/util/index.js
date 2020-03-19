@@ -12,7 +12,8 @@ import {
   OperationDelete,
   OperationDetail,
   OperationCell,
-  OperationRowEdit
+  OperationRowEdit,
+  OperationIconTip
 } from './operation'
 import { EditButton, EditOperation } from './edit'
 
@@ -178,6 +179,7 @@ export {
   OperationDetail,
   OperationCell,
   OperationRowEdit,
+  OperationIconTip,
   EditButton,
   EditOperation,
   BatchActionBar,
