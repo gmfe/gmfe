@@ -9,7 +9,7 @@ const Tip = styled.div`
 
 const OperationIconTip = ({ children, tip }, ref) => {
   return (
-    <ToolTip center showArrow popup={<Tip>{tip}</Tip>} ref={ref}>
+    <ToolTip showArrow popup={<Tip>{tip}</Tip>} ref={ref}>
       {children}
     </ToolTip>
   )

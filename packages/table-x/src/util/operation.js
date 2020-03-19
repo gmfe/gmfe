@@ -16,7 +16,7 @@ const OperationHeader = () => <div className='text-center'>操作</div>
 
 const OperationIconTip = forwardRef(({ tip, children }, ref) => {
   return (
-    <ToolTip center popup={<IconTip>{tip}</IconTip>} showArrow ref={ref}>
+    <ToolTip popup={<IconTip>{tip}</IconTip>} showArrow ref={ref}>
       {children}
     </ToolTip>
   )
