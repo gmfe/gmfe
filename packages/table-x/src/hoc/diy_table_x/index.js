@@ -12,7 +12,7 @@ import {
   getColumnKey
 } from '../../util'
 import TableX from '../../base'
-import { devWarn } from 'gm-util'
+import { devWarn } from '@gm-common/tool'
 import DiyTableXModal from './components/diy_table_x_modal'
 
 /**

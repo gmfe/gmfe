@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import Base from './base'
-import { warn, devWarn } from 'gm-util'
+import { warn, devWarn } from '@gm-common/tool'
 
 /** 列表组件 */
 class List extends React.Component {
+  ref = React.createRef()
+
   constructor(props) {
     super(props)
 
@@ -14,6 +16,10 @@ class List extends React.Component {
         warn('多选情况下 selected 请传数组')
       }
     })
+  }
+
+  apiDoSelectWillActive = () => {
+    this.ref.apiDoSelectWillActive()
   }
 
   handleSelected = selected => {
@@ -52,6 +58,7 @@ class List extends React.Component {
     return (
       <Base
         {...rest}
+        ref={this.ref}
         data={oData}
         selected={oSelected}
         onSelect={this.handleSelected}

@@ -5,7 +5,7 @@ import Flex from '../flex'
 import _ from 'lodash'
 import { getColumnKey } from './util'
 import classNames from 'classnames'
-import { devWarn } from 'gm-util'
+import { devWarn } from '@gm-common/tool'
 
 /** 和 MoreSelect 类似。多了 columns，和不能多选 */
 const TableSelect = React.forwardRef((props, ref) => {

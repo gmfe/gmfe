@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { is } from 'gm-util'
+import { is } from '@gm-common/tool'
 
 class Dropper extends React.Component {
   handleDrop = e => {

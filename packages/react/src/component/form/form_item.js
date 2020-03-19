@@ -5,7 +5,7 @@ import Flex from '../flex'
 import ToolTip from '../tool_tip'
 import Validator from '../../validator'
 import { withWrapContext, colWidthDefault } from './util'
-import { warn, devWarnForHook } from 'gm-util'
+import { warn, devWarnForHook } from '@gm-common/tool'
 
 const FormControl = ({ children }) => {
   const { className } = children.props

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import classNames from 'classnames'
-import { is } from 'gm-util'
+import { is } from '@gm-common/tool'
 import Loading from '../loading'
 
 const Button = ({

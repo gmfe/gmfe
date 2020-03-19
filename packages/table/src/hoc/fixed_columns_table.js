@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Table from '../table'
-import { devWarn } from 'gm-util'
+import { devWarn } from '@gm-common/tool'
 
 const isLeftFixed = column => _.includes([true, 'left'], column.fixed)
 const isRightFixed = column => column.fixed === 'right'
