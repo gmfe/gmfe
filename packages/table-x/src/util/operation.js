@@ -17,15 +17,15 @@ const OperationHeader = () => <div className='text-center'>操作</div>
 const OperationIconTip = ({ tip, children }) => {
   const tipRef = useRef()
 
-  const handleClick = fc => {
+  const handleClick = (fc, event) => {
     tipRef.current.apiDoSetActive()
-    fc && fc()
+    fc && fc(event)
   }
 
   return (
     <ToolTip popup={<IconTip>{tip}</IconTip>} showArrow ref={tipRef}>
       {cloneElement(children, {
-        onClick: () => handleClick(children.props.onClick)
+        onClick: event => handleClick(children.props.onClick, event)
       })}
     </ToolTip>
   )
