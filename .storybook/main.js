@@ -1,10 +1,6 @@
 const webpackFinal = config => {
   config.module.rules[0].include.push(/gm-/)
   config.module.rules[0].exclude = function(filepath) {
-    if (filepath.includes('/node_modules/gm-util/')) {
-      return false
-    }
-
     return filepath.includes('/node_modules/')
   }
 
