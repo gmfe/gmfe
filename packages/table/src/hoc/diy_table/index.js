@@ -2,12 +2,13 @@ import React from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Storage, Modal, Popover } from '@gmfe/react'
+import { Storage, Modal } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import { getColumnKey, referOfWidth } from '../../util'
 import Table from '../../table'
 import { devWarn } from '@gm-common/tool'
 import DiyTableModal from './diy_table_modal'
+import OperationIconTip from '../../operation_icon_tip'
 
 /**
  * 生成新的columns
@@ -144,22 +145,14 @@ function diyTableHOC(Component) {
           columns={[
             {
               Header: () => (
-                <Popover
-                  top
-                  arrowLeft='2px'
-                  popup={
-                    <div className='gm-padding-5'>{getLocale('表头设置')}</div>
-                  }
-                  showArrow
-                  type='hover'
-                >
+                <OperationIconTip tip={getLocale('表头设置')}>
                   <div>
                     <SVGSetting
                       className='gm-cursor gm-text-hover-primary'
                       onClick={this.handleModalShow}
                     />
                   </div>
-                </Popover>
+                </OperationIconTip>
               ),
               width: referOfWidth.noCell,
               accessor: '_setting', // 不重要,随便写

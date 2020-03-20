@@ -2,14 +2,15 @@ import React, { useState, useMemo } from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Storage, Modal, Popover } from '@gmfe/react'
+import { Storage, Modal } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import {
   TABLE_X,
   TABLE_X_SELECT_ID,
   TABLE_X_EXPAND_ID,
   TABLE_X_DIY_ID,
-  getColumnKey
+  getColumnKey,
+  OperationIconTip
 } from '../../util'
 import TableX from '../../base'
 import { devWarn } from '@gm-common/tool'
@@ -112,15 +113,7 @@ function diyTableXHOC(Component) {
           fixed: 'left',
           Cell: () => null, // 只是用来占据空间
           Header: () => (
-            <Popover
-              top
-              arrowLeft='2px'
-              popup={
-                <div className='gm-padding-5'>{getLocale('表头设置')}</div>
-              }
-              showArrow
-              type='hover'
-            >
+            <OperationIconTip tip={getLocale('表头设置')}>
               <div>
                 <SVGSetting
                   className='gm-cursor gm-text-hover-primary'
@@ -142,7 +135,7 @@ function diyTableXHOC(Component) {
                   }}
                 />
               </div>
-            </Popover>
+            </OperationIconTip>
           )
         },
         ...notDiyCols,
