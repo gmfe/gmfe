@@ -123,7 +123,7 @@ const List = ({
       () => true
     )
     const data = _.filter(flat, item => item.data.value === activeValue)
-    const values = data.length > 0 ? getLeafValues([data[0].data]) : null
+    const values = data.length > 0 ? getLeafValues([data[0].data]) : []
     onActiveValues(values)
     setActive(activeValue)
   }, [activeValue])

@@ -113,25 +113,23 @@ const TreeV2 = ({
   }
 
   const handleSearch = () => {
-    return new Promise(resolve => {
-      const find_list = withFindFilter(list, findQuery)
-      const box_height = refList.current.offsetHeight
-      const scroll_list = _.map(find_list, item => ({
-        height: getItemOffsetHeight(item, 28, box_height, list),
-        value: item.value
-      }))
+    const find_list = withFindFilter(list, findQuery)
+    const box_height = refList.current.offsetHeight
+    const scroll_list = _.map(find_list, item => ({
+      height: getItemOffsetHeight(item, 28, box_height, list),
+      value: item.value
+    }))
 
-      if (!find_list || !scroll_list.length) {
-        handleScroll(0)
-        return
-      }
-      setFindItem(scroll_list)
-      resolve(scroll_list)
-    })
+    if (!find_list || !scroll_list.length) {
+      handleScroll(0)
+      return
+    }
+    setFindItem(scroll_list)
+    return scroll_list
   }
 
   const handleNext = async () => {
-    const list = await handleSearch()
+    const list = handleSearch()
     if (findIndex + 1 === list.length) {
       setFindIndex(0)
     } else {
@@ -233,7 +231,9 @@ TreeV2.propTypes = {
   renderLeafItem: PropTypes.func,
   renderGroupItem: PropTypes.func,
   placeholder: PropTypes.string,
+  /** 全选开关是否显示 */
   showAllCheck: PropTypes.bool,
+  /** 半勾选状态，数组 [value] */
   indeterminateList: PropTypes.array,
   /** 定位过滤函数, 默认自带，不需要就 false */
   withFindFilter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
