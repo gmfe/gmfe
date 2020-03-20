@@ -46,18 +46,20 @@ const OperationDetail = ({ href, open, onClick, className, ...rest }) => {
   }
 
   return (
-    <OperationIconTip tip={getLocale('详情')}>
-      <div
-        {...rest}
-        onClick={handleClick}
-        className={classNames(
-          'gm-inline-block gm-cursor gm-padding-5 gm-text-14 gm-text gm-text-hover-primary',
-          className
-        )}
-      >
-        <SVGCheckDetail />
-      </div>
-    </OperationIconTip>
+    <div
+      {...rest}
+      onClick={handleClick}
+      className={classNames(
+        'gm-inline-block gm-cursor gm-padding-5 gm-text-14 gm-text gm-text-hover-primary',
+        className
+      )}
+    >
+      <OperationIconTip tip={getLocale('详情')}>
+        <div>
+          <SVGCheckDetail />
+        </div>
+      </OperationIconTip>
+    </div>
   )
 }
 
