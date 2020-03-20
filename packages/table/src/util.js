@@ -33,9 +33,7 @@ OperationCell.propTypes = {
 }
 
 const OperationDetail = ({ href, open, onClick, className, ...rest }) => {
-  const tipRef = useRef()
   const handleClick = e => {
-    tipRef.current.apiDoSetActive()
     onClick && onClick(e)
 
     if (href) {
@@ -48,7 +46,7 @@ const OperationDetail = ({ href, open, onClick, className, ...rest }) => {
   }
 
   return (
-    <OperationIconTip tip={getLocale('详情')} ref={tipRef}>
+    <OperationIconTip tip={getLocale('详情')}>
       <div
         {...rest}
         onClick={handleClick}
@@ -76,7 +74,6 @@ OperationDetail.propTypes = {
 const OperationDelete = props => {
   const { title, onClick, className, children, ...rest } = props
   const refPopover = useRef()
-  const refTooltip = useRef()
 
   const handleDelete = () => {
     refPopover.current.apiDoSetActive(false)
@@ -98,10 +95,6 @@ const OperationDelete = props => {
     </PopupContentConfirm>
   )
 
-  const handleRemoveTip = () => {
-    refTooltip.current.apiDoSetActive()
-  }
-
   return (
     <Popover ref={refPopover} right popup={popup} showArrow>
       <div
@@ -111,8 +104,8 @@ const OperationDelete = props => {
           className
         )}
       >
-        <OperationIconTip tip={getLocale('删除')} ref={refTooltip}>
-          <div onClick={handleRemoveTip}>
+        <OperationIconTip tip={getLocale('删除')}>
+          <div>
             <SVGDelete />
           </div>
         </OperationIconTip>

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import SVGCheckDetail from '../../svg/check-detail.svg'
-import React, { forwardRef, useRef } from 'react'
+import React, { cloneElement, useRef } from 'react'
 import { PopupContentConfirm, Popover, Button, ToolTip } from '@gmfe/react'
 import styled from 'styled-components'
 import SVGDelete from '../../svg/delete.svg'
@@ -14,13 +14,22 @@ const IconTip = styled.div`
 
 const OperationHeader = () => <div className='text-center'>操作</div>
 
-const OperationIconTip = forwardRef(({ tip, children }, ref) => {
+const OperationIconTip = ({ tip, children }) => {
+  const tipRef = useRef()
+
+  const handleClick = fc => {
+    tipRef.current.apiDoSetActive()
+    fc && fc()
+  }
+
   return (
-    <ToolTip popup={<IconTip>{tip}</IconTip>} showArrow ref={ref}>
-      {children}
+    <ToolTip popup={<IconTip>{tip}</IconTip>} showArrow>
+      {cloneElement(children, {
+        onClick: () => handleClick(children.props.onClick)
+      })}
     </ToolTip>
   )
-})
+}
 
 OperationIconTip.propTypes = {
   tip: PropTypes.string.isRequired,
@@ -78,7 +87,6 @@ OperationDetail.propTypes = {
 const OperationDelete = props => {
   const { title, onClick, className, children, ...rest } = props
   const refPopover = useRef()
-  const refTip = useRef()
 
   const handleDelete = () => {
     refPopover.current.apiDoSetActive(false)
@@ -100,10 +108,6 @@ const OperationDelete = props => {
     </PopupContentConfirm>
   )
 
-  const handleRemoveTip = () => {
-    refTip.current.apiDoSetActive()
-  }
-
   return (
     <Popover ref={refPopover} right popup={popup} showArrow>
       <div
@@ -113,8 +117,8 @@ const OperationDelete = props => {
           className
         )}
       >
-        <OperationIconTip tip={getLocale('删除')} ref={refTip}>
-          <div onClick={handleRemoveTip}>
+        <OperationIconTip tip={getLocale('删除')}>
+          <div>
             <SVGDelete />
           </div>
         </OperationIconTip>
