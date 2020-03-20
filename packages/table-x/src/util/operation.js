@@ -23,7 +23,7 @@ const OperationIconTip = ({ tip, children }) => {
   }
 
   return (
-    <ToolTip popup={<IconTip>{tip}</IconTip>} showArrow>
+    <ToolTip popup={<IconTip>{tip}</IconTip>} showArrow ref={tipRef}>
       {cloneElement(children, {
         onClick: () => handleClick(children.props.onClick)
       })}
