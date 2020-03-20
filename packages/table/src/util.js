@@ -273,8 +273,9 @@ const EditButton = ({ popupRender, right }) => {
       ref={refPopover}
       popup={popupRender(closePopup)}
       right={right}
-      offset={right ? 2 : -8}
+      offset={right ? 2 : -24}
       showArrow
+      arrowLeft={right ? 0 : 26}
       animName={false}
     >
       <span style={{ display: 'inline-block', width: '20px' }}>
