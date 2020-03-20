@@ -5,7 +5,8 @@ import { Popover } from '@gmfe/react'
 import SVGEditPen from '../../svg/edit-pen.svg'
 import SVGPlusSquare from '../../svg/plus-square.svg'
 import SVGMinusSquare from '../../svg/minus-square.svg'
-import { OperationCell } from './operation'
+import { OperationCell, OperationIconTip } from './operation'
+import { getLocale } from '@gmfe/locales'
 
 const EditButton = ({ popupRender, right }) => {
   const refPopover = useRef(null)
@@ -22,7 +23,11 @@ const EditButton = ({ popupRender, right }) => {
       animName={false}
     >
       <span className='gm-table-x-edit-button'>
-        <SVGEditPen />
+        <OperationIconTip tip={getLocale('编辑')}>
+          <span>
+            <SVGEditPen />
+          </span>
+        </OperationIconTip>
       </span>
     </Popover>
   )

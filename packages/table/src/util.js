@@ -272,7 +272,11 @@ const EditButton = ({ popupRender, right }) => {
       animName={false}
     >
       <span style={{ display: 'inline-block', width: '20px' }}>
-        <SVGEditPen className='react-table-edit-button gm-cursor gm-text-14 gm-text-hover-primary' />
+        <OperationIconTip tip={getLocale('编辑')}>
+          <span>
+            <SVGEditPen className='react-table-edit-button gm-cursor gm-text-14 gm-text-hover-primary' />
+          </span>
+        </OperationIconTip>
       </span>
     </Popover>
   )
