@@ -13,7 +13,7 @@ const ExpandContext = createContext({
 
 const Expand = ({ active, onChange }) => {
   return (
-    <div className='gm-cursor' onClick={onChange}>
+    <div className='gm-cursor gm-table-x-expand' onClick={onChange}>
       {active ? <SVGCloseup className='gm-text-primary' /> : <SVGExpand />}
     </div>
   )
