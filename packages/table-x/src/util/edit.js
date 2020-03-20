@@ -5,29 +5,37 @@ import { Popover } from '@gmfe/react'
 import SVGEditPen from '../../svg/edit-pen.svg'
 import SVGPlusSquare from '../../svg/plus-square.svg'
 import SVGMinusSquare from '../../svg/minus-square.svg'
-import { OperationCell } from './operation'
+import { OperationCell, OperationIconTip } from './operation'
+import { getLocale } from '@gmfe/locales'
 
-const EditButton = props => {
+const EditButton = ({ popupRender, right }) => {
   const refPopover = useRef(null)
   const closePopup = () => refPopover.current.apiDoSetActive(false)
 
   return (
     <Popover
       ref={refPopover}
-      right
-      popup={props.popupRender(closePopup)}
+      right={right}
+      popup={popupRender(closePopup)}
+      offset={right ? 2 : -24}
       showArrow
+      arrowLeft={right ? 0 : 26}
       animName={false}
     >
       <span className='gm-table-x-edit-button'>
-        <SVGEditPen />
+        <OperationIconTip tip={getLocale('编辑')}>
+          <span>
+            <SVGEditPen />
+          </span>
+        </OperationIconTip>
       </span>
     </Popover>
   )
 }
 
 EditButton.propTypes = {
-  popupRender: PropTypes.func.isRequired
+  popupRender: PropTypes.func.isRequired,
+  right: PropTypes.bool
 }
 
 const EditOperation = props => {

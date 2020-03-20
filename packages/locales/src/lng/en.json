@@ -46,5 +46,8 @@
   "表头设置": "Table header setting",
   "勾选当前页内容": "Check the current page",
   "勾选所有页内容": "Check all page content",
-  "项": "items"
+  "项": "items",
+  "详情": "details",
+  "删除": "delete",
+  "编辑": "edit"
 }

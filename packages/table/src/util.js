@@ -6,7 +6,8 @@ import {
   PopupContentConfirm,
   Flex,
   InputNumberV2,
-  Button
+  Button,
+  Input
 } from '@gmfe/react'
 import _ from 'lodash'
 import { getLocale } from '@gmfe/locales'
@@ -16,6 +17,7 @@ import SVGDelete from '../svg/delete.svg'
 import SVGPen from '../svg/pen.svg'
 import SVGCheckDetail from '../svg/check-detail.svg'
 import SVGEditPen from '../svg/edit-pen.svg'
+import OperationIconTip from './operation_icon_tip'
 
 const OperationHeader = <div className='text-center'>操作</div>
 
@@ -52,7 +54,11 @@ const OperationDetail = ({ href, open, onClick, className, ...rest }) => {
         className
       )}
     >
-      <SVGCheckDetail />
+      <OperationIconTip tip={getLocale('详情')}>
+        <div>
+          <SVGCheckDetail />
+        </div>
+      </OperationIconTip>
     </div>
   )
 }
@@ -69,7 +75,7 @@ OperationDetail.propTypes = {
 
 const OperationDelete = props => {
   const { title, onClick, className, children, ...rest } = props
-  const refPopover = React.createRef()
+  const refPopover = useRef()
 
   const handleDelete = () => {
     refPopover.current.apiDoSetActive(false)
@@ -100,7 +106,11 @@ const OperationDelete = props => {
           className
         )}
       >
-        <SVGDelete />
+        <OperationIconTip tip={getLocale('删除')}>
+          <div>
+            <SVGDelete />
+          </div>
+        </OperationIconTip>
       </div>
     </Popover>
   )
@@ -201,12 +211,14 @@ const OperationRowEdit = ({
 
   return !isEditing ? (
     <OperationCell>
-      <span className='gm-padding-5'>
-        <SVGPen
-          className='gm-inline-block gm-cursor gm-text-14 gm-text gm-text-hover-primary'
-          onClick={handleClick}
-        />
-      </span>
+      <OperationIconTip tip={getLocale('编辑')}>
+        <span className='gm-padding-5'>
+          <SVGPen
+            className='gm-inline-block gm-cursor gm-text-14 gm-text gm-text-hover-primary'
+            onClick={handleClick}
+          />
+        </span>
+      </OperationIconTip>
       {children}
     </OperationCell>
   ) : (
@@ -247,27 +259,34 @@ function getColumnKey(column) {
   return null
 }
 
-const EditButton = props => {
+const EditButton = ({ popupRender, right }) => {
   const refPopover = useRef(null)
   const closePopup = () => refPopover.current.apiDoSetActive(false)
 
   return (
     <Popover
       ref={refPopover}
-      right
-      popup={props.popupRender(closePopup)}
+      popup={popupRender(closePopup)}
+      right={right}
+      offset={right ? 2 : -24}
       showArrow
+      arrowLeft={right ? 0 : 26}
       animName={false}
     >
       <span style={{ display: 'inline-block', width: '20px' }}>
-        <SVGEditPen className='react-table-edit-button gm-cursor gm-text-14 gm-text-hover-primary' />
+        <OperationIconTip tip={getLocale('编辑')}>
+          <span>
+            <SVGEditPen className='react-table-edit-button gm-cursor gm-text-14 gm-text-hover-primary' />
+          </span>
+        </OperationIconTip>
       </span>
     </Popover>
   )
 }
 
 EditButton.propTypes = {
-  popupRender: PropTypes.func.isRequired
+  popupRender: PropTypes.func.isRequired,
+  right: PropTypes.bool
 }
 
 const EditContentInput = ({
@@ -289,10 +308,6 @@ const EditContentInput = ({
     closePopup()
   }
 
-  const handleCancel = () => {
-    closePopup()
-  }
-
   const handleInputFocus = e => {
     e.target && e.target.select()
   }
@@ -307,31 +322,23 @@ const EditContentInput = ({
   }
 
   return (
-    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-5'>
-      <Flex alignCenter style={{ width: '64%' }}>
-        <input
+    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-10'>
+      <Flex alignCenter>
+        <Input
           {...rest}
           ref={inputRef}
           className='form-control'
-          type='text'
+          style={{ width: '150px' }}
           value={val}
           onFocus={handleInputFocus}
           onKeyDown={handleInputKeyDown}
           onChange={e => setVal(e.target.value)}
         />
-        <div className='gm-gap-5' />
-        {suffixText}
+        {suffixText && <div className='gm-margin-left-5'>{suffixText}</div>}
       </Flex>
-      <span
-        className='gm-text-primary gm-margin-left-10 gm-cursor'
-        onClick={handleCancel}
-      >
-        {getLocale('取消')}
-      </span>
-      <span className='gm-padding-lr-10 gm-text-desc'>|</span>
-      <span className='gm-text-primary gm-cursor' onClick={handleSave}>
+      <Button type='primary' onClick={handleSave} className='gm-margin-left-10'>
         {getLocale('保存')}
-      </span>
+      </Button>
     </Flex>
   )
 }
@@ -366,10 +373,6 @@ const EditContentInputNumber = ({
     closePopup()
   }
 
-  const handleCancel = () => {
-    closePopup()
-  }
-
   const handleInputFocus = e => {
     e.target && e.target.select()
   }
@@ -388,7 +391,7 @@ const EditContentInputNumber = ({
   }
 
   return (
-    <Flex alignCenter className='gm-padding-tb-5 gm-padding-lr-10'>
+    <Flex alignCenter className='gm-padding-tb-10 gm-padding-lr-10'>
       <Flex alignCenter>
         <InputNumberV2
           {...rest}
@@ -400,19 +403,11 @@ const EditContentInputNumber = ({
           onKeyDown={handleInputKeyDown}
           onChange={handleChange}
         />
-        <div className='gm-gap-5' />
-        {suffixText}
+        {suffixText && <div className='gm-margin-left-5'>{suffixText}</div>}
       </Flex>
-      <span
-        className='gm-text-primary gm-margin-left-10 gm-cursor'
-        onClick={handleCancel}
-      >
-        {getLocale('取消')}
-      </span>
-      <span className='gm-padding-lr-10 gm-text-desc'>|</span>
-      <span className='gm-text-primary gm-cursor' onClick={handleSave}>
+      <Button type='primary' className='gm-margin-left-10' onClick={handleSave}>
         {getLocale('保存')}
-      </span>
+      </Button>
     </Flex>
   )
 }
