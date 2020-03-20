@@ -10,15 +10,15 @@ const Tip = styled.div`
 const OperationIconTip = ({ children, tip }) => {
   const tipRef = useRef()
 
-  const handleClick = fc => {
+  const handleClick = (fc, event) => {
     tipRef.current.apiDoSetActive()
-    fc && fc()
+    fc && fc(event)
   }
 
   return (
     <ToolTip showArrow popup={<Tip>{tip}</Tip>} ref={tipRef}>
       {cloneElement(children, {
-        onClick: () => handleClick(children.props.onClick)
+        onClick: event => handleClick(children.props.onClick, event)
       })}
     </ToolTip>
   )
