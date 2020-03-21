@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/tour",
-  "version": "2.7.6-alphq.2",
+  "version": "2.7.6-alphq.3",
   "description": "> TODO: description",
   "author": "zhongsink <zhongink@gmail.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -29,8 +29,8 @@
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
-    "@gmfe/react": "^2.7.6-alphq.2",
-    "@gmfe/table-x": "^2.7.6-alphq.2"
+    "@gmfe/react": "^2.7.6-alphq.3",
+    "@gmfe/table-x": "^2.7.6-alphq.3"
   },
   "gitHead": "886d4ffe8d97370ecc0696fc08977f88eb305979"
 }
