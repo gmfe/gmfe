@@ -222,7 +222,7 @@ TreeV2.propTypes = {
   list: PropTypes.array.isRequired,
   selectedValues: PropTypes.array.isRequired,
   onSelectValues: PropTypes.func.isRequired,
-  onActiveValues: PropTypes.func.isRequired,
+  onActiveValues: PropTypes.func,
   activeValue: PropTypes.string,
 
   title: PropTypes.string,
@@ -250,6 +250,7 @@ TreeV2.defaultProps = {
   activeValue: null,
   placeholder: getLocale('搜索'),
   findPlaceholder: getLocale('输入定位信息'),
+  onActiveValues: () => [],
   indeterminateList: []
 }
 
