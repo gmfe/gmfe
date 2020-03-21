@@ -7,20 +7,20 @@ import _ from 'lodash'
  * @return {array}
  */
 export function filterGroupListLeaf(list, predicate) {
-  return _(list)
-    .map(item => {
+  return _.filter(
+    _.map(list, item => {
       const copy = Object.assign({}, item)
       if (copy.children) {
         copy.children = filterGroupListLeaf(copy.children, predicate)
       }
       return copy
-    })
-    .filter(d => {
+    }),
+    d => {
       if (d.children) {
         return !!d.children.length
       } else {
         return predicate(d)
       }
-    })
-    .value()
+    }
+  )
 }
