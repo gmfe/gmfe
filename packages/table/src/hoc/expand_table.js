@@ -169,7 +169,9 @@ function expandTableHOC(Component) {
               expander: true,
               Header: this.renderHeader,
               Expander: this.renderExpander,
-              width: referOfWidth.noCell
+              width: referOfWidth.noCell,
+              className: 'icon-column',
+              headerClassName: 'icon-column'
             },
             ...columns
           ]}

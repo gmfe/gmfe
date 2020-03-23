@@ -2,6 +2,12 @@ import React from 'react'
 import _ from 'lodash'
 import { Checkbox, Flex } from '@gmfe/react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
+
+const Item = styled.div`
+  width: 25%;
+  padding: 5px 0;
+`
 
 const Selector = props => {
   const { cols, onColsChange, diyGroupSorting } = props
@@ -21,7 +27,7 @@ const Selector = props => {
 
                 return (
                   _.isString(text) && (
-                    <div style={{ width: '25%', padding: '5px' }} key={key}>
+                    <Item key={key}>
                       <Checkbox
                         value={key}
                         disabled={!diyEnable} // 不能编辑的字段,disable
@@ -32,7 +38,7 @@ const Selector = props => {
                       >
                         {text}
                       </Checkbox>
-                    </div>
+                    </Item>
                   )
                 )
               })}

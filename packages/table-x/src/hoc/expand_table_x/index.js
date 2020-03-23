@@ -48,6 +48,8 @@ function getNewColumns(columns, fixedExpand) {
       width: TABLE_X.WIDTH_FUN,
       maxWidth: TABLE_X.WIDTH_FUN,
       fixed: fixedExpand ? 'left' : null,
+      thClassName: 'gm-table-x-icon',
+      tdClassName: 'gm-table-x-icon',
       Header: () => <ExpandHeader />,
       // eslint-disable-next-line
       Cell: ({ row }) => <ExpandCell row={row} />

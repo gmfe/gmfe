@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Storage, Modal } from '@gmfe/react'
+import { Storage, Popover } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import {
   TABLE_X,
@@ -97,9 +97,15 @@ function diyTableXHOC(Component) {
       () => generateDiyColumns(columns, Storage.get(id) || [])[1]
     )
 
+    const popoverRef = useRef()
+
     const handleDiyColumnsSave = cols => {
       setDiyCols(cols)
       Storage.set(id, getStorageColumns(cols))
+    }
+
+    const handleCancel = () => {
+      popoverRef.current.apiDoSetActive(false)
     }
 
     const _columns = useMemo(() => {
@@ -111,31 +117,31 @@ function diyTableXHOC(Component) {
           maxWidth: TABLE_X.WIDTH_FUN,
           accessor: TABLE_X_DIY_ID,
           fixed: 'left',
+          thClassName: 'gm-table-x-icon-column',
+          tdClassName: 'gm-table-x-icon-column',
           Cell: () => null, // 只是用来占据空间
           Header: () => (
-            <OperationIconTip tip={getLocale('表头设置')}>
-              <div>
-                <SVGSetting
-                  className='gm-cursor gm-text-hover-primary'
-                  onClick={() => {
-                    Modal.render({
-                      disableMaskClose: true,
-                      title: getLocale('表头设置'),
-                      noContentPadding: true,
-                      size: 'lg',
-                      onHide: Modal.hide,
-                      children: (
-                        <DiyTableXModal
-                          diyGroupSorting={diyGroupSorting}
-                          columns={diyCols}
-                          onSave={handleDiyColumnsSave}
-                        />
-                      )
-                    })
-                  }}
+            <Popover
+              ref={popoverRef}
+              showArrow
+              offset={-10}
+              popup={
+                <DiyTableXModal
+                  diyGroupSorting={diyGroupSorting}
+                  columns={diyCols}
+                  onSave={handleDiyColumnsSave}
+                  onCancel={handleCancel}
                 />
+              }
+            >
+              <div className='gm-table-x-icon'>
+                <OperationIconTip tip={getLocale('表头设置')}>
+                  <div>
+                    <SVGSetting className='gm-cursor gm-text-hover-primary' />
+                  </div>
+                </OperationIconTip>
               </div>
-            </OperationIconTip>
+            </Popover>
           )
         },
         ...notDiyCols,
