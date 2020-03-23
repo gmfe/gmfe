@@ -154,6 +154,8 @@ function diyTableHOC(Component) {
                   </div>
                 </OperationIconTip>
               ),
+              className: 'icon-column',
+              headerClassName: 'icon-column',
               width: referOfWidth.noCell,
               accessor: '_setting', // 不重要,随便写
               id: '__setting', // 不重要,随便写
