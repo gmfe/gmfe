@@ -20,7 +20,7 @@ const Td = ({ cell, totalWidth }) => {
   const cp = cell.getCellProps()
   const tdProps = {
     ...cp,
-    className: classNames('gm-table-x-td', {
+    className: classNames('gm-table-x-td', cell.column.className, {
       'gm-table-x-fixed-left': cell.column.fixed === 'left',
       'gm-table-x-fixed-right': cell.column.fixed === 'right'
     }),

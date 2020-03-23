@@ -77,7 +77,9 @@ export default Component => {
         fixed: 'left', // 如果是fixed_columns_table,默认固定复选框
         filterable: false,
         sortable: false,
-        resizable: false
+        resizable: false,
+        className: 'icon-column',
+        headerClassName: 'icon-column'
       }
 
       return <Component {...rest} columns={[select, ...originalCols]} />

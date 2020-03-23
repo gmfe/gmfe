@@ -111,6 +111,7 @@ function diyTableXHOC(Component) {
           maxWidth: TABLE_X.WIDTH_FUN,
           accessor: TABLE_X_DIY_ID,
           fixed: 'left',
+          className: 'gm-table-x-icon',
           Cell: () => null, // 只是用来占据空间
           Header: () => (
             <OperationIconTip tip={getLocale('表头设置')}>

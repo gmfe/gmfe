@@ -5,15 +5,16 @@ import React from 'react'
 
 const Th = ({ column, totalWidth }) => {
   const hp = column.getHeaderProps()
-
+  const { className, style } = column
   const thProps = {
     ...hp,
-    className: classNames('gm-table-x-th', hp.className, {
+    className: classNames('gm-table-x-th', hp.className, className, {
       'gm-table-x-fixed-left': column.fixed === 'left',
       'gm-table-x-fixed-right': column.fixed === 'right'
     }),
     style: {
       ...hp.style,
+      ...style,
       ...getColumnStyle(column)
     }
   }

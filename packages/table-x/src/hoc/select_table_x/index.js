@@ -23,6 +23,7 @@ function getNewColumns(
       id: TABLE_X_SELECT_ID,
       width: TABLE_X.WIDTH_FUN,
       maxWidth: TABLE_X.WIDTH_FUN,
+      className: 'gm-table-x-icon',
       fixed: fixedSelect ? 'left' : null,
       Header: () => <SelectHeader selectType={selectType} />,
       // eslint-disable-next-line
