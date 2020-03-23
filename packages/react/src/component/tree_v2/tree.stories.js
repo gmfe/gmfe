@@ -1,7 +1,7 @@
 import React from 'react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
-import { pinYinFilter } from 'gm-util'
+import { pinYinFilter } from '@gm-common/tool'
 import TreeV2 from './'
 
 const store = observable({
