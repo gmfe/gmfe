@@ -17,9 +17,9 @@ const EditButton = ({ popupRender, right }) => {
       ref={refPopover}
       right={right}
       popup={popupRender(closePopup)}
-      offset={right ? 2 : -24}
+      offset={right ? 24 : -24}
       showArrow
-      arrowLeft={right ? 0 : 26}
+      arrowLeft={right ? 'calc(100% - 42px)' : 26}
       animName={false}
     >
       <span className='gm-table-x-edit-button'>
