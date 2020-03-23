@@ -108,7 +108,6 @@ class BaseTable extends React.Component {
         return this.processItem(v)
       }
     })
-
     return (
       <ReactTable
         ref={this.refTable}

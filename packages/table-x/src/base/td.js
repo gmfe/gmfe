@@ -18,9 +18,10 @@ class TdCatchErr extends React.Component {
 
 const Td = ({ cell, totalWidth }) => {
   const cp = cell.getCellProps()
+  const { tdClassName } = cell.column
   const tdProps = {
     ...cp,
-    className: classNames('gm-table-x-td', {
+    className: classNames('gm-table-x-td', tdClassName, {
       'gm-table-x-fixed-left': cell.column.fixed === 'left',
       'gm-table-x-fixed-right': cell.column.fixed === 'right'
     }),
