@@ -3,8 +3,13 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 import Table from '../table'
 import { referOfWidth } from '../util'
+import styled from 'styled-components'
 import SVGExpand from '../../svg/expand.svg'
 import SVGCloseup from '../../svg/closeup.svg'
+
+const Expander = styled.div`
+  padding-top: 3px;
+`
 
 const convertGMToRT = (data, expanded, keyField) => {
   const rtExpanded = {}
@@ -96,13 +101,13 @@ function expandTableHOC(Component) {
       }
 
       return (
-        <div className='gm-cursor' onClick={this.handleExpandAll}>
+        <Expander className='gm-cursor' onClick={this.handleExpandAll}>
           {isAllExpanded ? (
             <SVGCloseup className='react-table-closeup active' />
           ) : (
             <SVGExpand className='react-table-expand' />
           )}
-        </div>
+        </Expander>
       )
     }
 
@@ -119,13 +124,13 @@ function expandTableHOC(Component) {
       }
 
       return (
-        <div>
+        <Expander>
           {isExpanded ? (
             <SVGCloseup className='react-table-closeup active' />
           ) : (
             <SVGExpand className='react-table-expand' />
           )}
-        </div>
+        </Expander>
       )
     }
 
