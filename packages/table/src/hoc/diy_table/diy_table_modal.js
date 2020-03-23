@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Flex, Modal, Button } from '@gmfe/react'
+import { Flex, Button } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './selector'
 import SortList from './sort_list'
 import PropTypes from 'prop-types'
+import { getLocale } from '@gmfe/locales'
 
-const DiyTableModal = ({ columns, onSave, diyGroupSorting }) => {
+const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
   const [diyCols, setDiyCols] = useState(columns)
   const [showCols, setShowCols] = useState(
     _.sortBy(
@@ -69,11 +70,26 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting }) => {
     })
 
     onSave(columns)
-    Modal.hide()
+    onCancel()
   }
 
   return (
     <div className='gm-react-table-diy-modal'>
+      <Flex
+        className='gm-react-table-diy-modal-header gm-padding-tb-5'
+        justifyBetween
+        alignCenter
+      >
+        <div className='gm-react-table-diy-modal-header-title gm-margin-left-10 gm-padding-left-5'>
+          {getLocale('表头设置')}
+        </div>
+        <button
+          className='gm-react-table-diy-modal-header-close gm-margin-right-10'
+          onClick={onCancel}
+        >
+          ×
+        </button>
+      </Flex>
       <Flex>
         <div className='gm-react-table-diy-modal-selector'>
           <div className='gm-border-bottom gm-react-table-diy-modal-title'>
@@ -97,7 +113,7 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting }) => {
         </div>
       </Flex>
       <Flex justifyEnd className='gm-padding-10'>
-        <Button onClick={() => Modal.hide()}>取消</Button>
+        <Button onClick={onCancel}>取消</Button>
         <div className='gm-gap-10' />
         <Button type='primary' onClick={handleSave}>
           保存
@@ -110,7 +126,8 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting }) => {
 DiyTableModal.propTypes = {
   columns: PropTypes.array.isRequired,
   diyGroupSorting: PropTypes.array.isRequired,
-  onSave: PropTypes.func.isRequired
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired
 }
 
 export default DiyTableModal

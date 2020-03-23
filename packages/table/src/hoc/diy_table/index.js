@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Storage, Modal } from '@gmfe/react'
+import { Storage, Popover } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import { getColumnKey, referOfWidth } from '../../util'
 import Table from '../../table'
@@ -72,6 +72,7 @@ function splitColumns(columns) {
 
 function diyTableHOC(Component) {
   class DiyTable extends React.Component {
+    popoverRef = createRef()
     constructor(props) {
       super(props)
       // 没有id强制报错
@@ -119,21 +120,8 @@ function diyTableHOC(Component) {
       Storage.set(this.props.id, getStorageColumns(newColumns))
     }
 
-    handleModalShow = () => {
-      Modal.render({
-        disableMaskClose: true,
-        title: getLocale('表头设置'),
-        noContentPadding: true,
-        size: 'lg',
-        onHide: Modal.hide,
-        children: (
-          <DiyTableModal
-            diyGroupSorting={this.props.diyGroupSorting}
-            columns={this.state.columns}
-            onSave={this.handleColumnsSave}
-          />
-        )
-      })
+    handleCancel = () => {
+      this.popoverRef.current.apiDoSetActive(false)
     }
 
     render() {
@@ -145,15 +133,30 @@ function diyTableHOC(Component) {
           columns={[
             {
               Header: () => (
-                <OperationIconTip tip={getLocale('表头设置')}>
-                  <div>
-                    <SVGSetting
-                      className='gm-cursor gm-text-hover-primary'
-                      onClick={this.handleModalShow}
+                <Popover
+                  ref={this.popoverRef}
+                  showArrow
+                  offset={-10}
+                  popup={
+                    <DiyTableModal
+                      diyGroupSorting={this.props.diyGroupSorting}
+                      columns={this.state.columns}
+                      onSave={this.handleColumnsSave}
+                      onCancel={this.handleCancel}
                     />
+                  }
+                >
+                  <div>
+                    <OperationIconTip tip={getLocale('表头设置')}>
+                      <div>
+                        <SVGSetting className='gm-cursor gm-text-hover-primary' />
+                      </div>
+                    </OperationIconTip>
                   </div>
-                </OperationIconTip>
+                </Popover>
               ),
+              className: 'icon-column',
+              headerClassName: 'icon-column',
               width: referOfWidth.noCell,
               accessor: '_setting', // 不重要,随便写
               id: '__setting', // 不重要,随便写

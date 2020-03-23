@@ -33,6 +33,11 @@
     a {
       cursor: pointer;
     }
+
+    &.icon-column {
+      padding-right: 5px;
+      padding-left: 5px;
+    }
   }
 
   .rt-th:first-child,
@@ -235,6 +240,28 @@
 }
 
 .gm-react-table-diy-modal {
+  min-width: 800px;
+
+  .gm-react-table-diy-modal-header {
+    .gm-react-table-diy-modal-header-title {
+      font-size: 14px;
+      border-left: 3px solid @brand-primary;
+    }
+
+    .gm-react-table-diy-modal-header-close {
+      font-size: 16px;
+      color: #000;
+      text-shadow: 0 1px 0 #fff;
+      font-weight: bold;
+      opacity: 0.2;
+      transition: color 0.5s;
+      border: none;
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+
   .gm-react-table-diy-modal-title {
     background-color: @gm-back-body-bg;
   }
