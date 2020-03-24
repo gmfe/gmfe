@@ -70,7 +70,7 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
           ×
         </button>
       </Flex>
-      <Flex>
+      <Flex className='gm-border-top gm-border-bottom'>
         <div className='gm-react-table-x-diy-modal-selector'>
           <div className='gm-border-bottom gm-react-table-x-diy-modal-title'>
             可选字段
