@@ -411,7 +411,7 @@
 }
 
 .gm-react-table-x-diy-modal {
-  min-width: 800px;
+  width: 900px;
 
   .gm-react-table-x-diy-modal-header {
     .gm-react-table-x-diy-modal-header-title {
@@ -463,7 +463,7 @@
       .gm-react-table-x-diy-modal-list-li {
         position: relative;
         user-select: none;
-        padding: 5px;
+        padding: 5px 10px;
 
         &::before {
           content: '\2022'; //圆点
@@ -488,6 +488,12 @@
         background: #d7e8fc;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .gm-react-table-x-diy-modal {
+    width: 600px;
   }
 }
 
