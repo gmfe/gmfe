@@ -90,9 +90,9 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
           ×
         </button>
       </Flex>
-      <Flex className='gm-border-bottom gm-border-top'>
+      <Flex className='gm-react-table-diy-modal-content'>
         <div className='gm-react-table-diy-modal-selector'>
-          <div className='gm-border-bottom gm-react-table-diy-modal-title'>
+          <div className='gm-react-table-diy-modal-title'>
             可选字段
           </div>
           <Selector
@@ -102,7 +102,7 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
           />
         </div>
         <div className='gm-react-table-diy-modal-sort-list'>
-          <div className='gm-border-bottom gm-react-table-diy-modal-title'>
+          <div className='gm-react-table-diy-modal-title'>
             当前选定的字段
           </div>
           <SortList

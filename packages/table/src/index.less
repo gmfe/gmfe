@@ -261,8 +261,14 @@
     }
   }
 
+  .gm-react-table-diy-modal-content{
+    border-top: 1px solid @react-table-sub-item-border-bottom;
+    border-bottom: 1px solid @react-table-sub-item-border-bottom;
+  }
+
   .gm-react-table-diy-modal-title {
     background-color: @gm-back-body-bg;
+    border-bottom: 1px solid @react-table-sub-item-border-bottom;
   }
 
   .gm-react-table-diy-modal-selector {
@@ -271,7 +277,7 @@
     }
 
     width: 80%;
-    border-right: 1px solid @gm-border-color;
+    border-right: 1px solid @react-table-sub-item-border-bottom;
   }
 
   .gm-react-table-diy-modal-sort-list {
@@ -291,7 +297,7 @@
       .gm-react-table-diy-modal-sort-list-li {
         position: relative;
         user-select: none;
-        padding: 5px;
+        padding: 5px 10px;
 
         &::before {
           content: '\2022'; //圆点
