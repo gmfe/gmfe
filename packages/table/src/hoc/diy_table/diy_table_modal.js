@@ -115,7 +115,11 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
       <Flex justifyEnd className='gm-padding-10'>
         <Button onClick={onCancel}>取消</Button>
         <div className='gm-gap-10' />
-        <Button type='primary' onClick={handleSave}>
+        <Button
+          type='primary'
+          onClick={handleSave}
+          className='gm-margin-right-10'
+        >
           保存
         </Button>
       </Flex>
