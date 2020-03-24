@@ -146,7 +146,7 @@ function diyTableHOC(Component) {
                     />
                   }
                 >
-                  <div>
+                  <div className='table-icon'>
                     <OperationIconTip tip={getLocale('表头设置')}>
                       <div>
                         <SVGSetting className='gm-cursor gm-text-hover-primary' />

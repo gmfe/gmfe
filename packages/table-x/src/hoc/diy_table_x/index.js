@@ -117,8 +117,8 @@ function diyTableXHOC(Component) {
           maxWidth: TABLE_X.WIDTH_FUN,
           accessor: TABLE_X_DIY_ID,
           fixed: 'left',
-          thClassName: 'gm-table-x-icon',
-          tdClassName: 'gm-table-x-icon',
+          thClassName: 'gm-table-x-icon-column',
+          tdClassName: 'gm-table-x-icon-column',
           Cell: () => null, // 只是用来占据空间
           Header: () => (
             <Popover
@@ -134,7 +134,7 @@ function diyTableXHOC(Component) {
                 />
               }
             >
-              <div>
+              <div className='gm-table-x-icon'>
                 <OperationIconTip tip={getLocale('表头设置')}>
                   <div>
                     <SVGSetting className='gm-cursor gm-text-hover-primary' />
