@@ -46,6 +46,14 @@
         word-wrap: break-word;
         word-break: break-all;
 
+        &.gm-table-x-icon-column {
+          padding-right: 5px;
+          padding-left: 5px;
+          .gm-table-x-icon.gm-popover-active {
+            color: @brand-primary;
+          }
+        }
+
         &:first-child {
           padding-left: 20px;
         }
@@ -171,6 +179,7 @@
     /* sort end */
 
     /* resizer */
+
     .gm-table-x-resizer {
       position: absolute;
       width: 10px;
@@ -179,6 +188,7 @@
       bottom: 0;
       z-index: 1;
     }
+
     // 最后一个需要去掉
     // stylelint-disable-next-line
     .gm-table-x-th {
@@ -193,6 +203,7 @@
     /* resizer end */
 
     /* fixed */
+
     .gm-table-x-th,
     .gm-table-x-td {
       &.gm-table-x-fixed-left,
@@ -403,8 +414,32 @@
 }
 
 .gm-react-table-x-diy-modal {
+  width: 900px;
+
+  .gm-react-table-x-diy-modal-header {
+    .gm-react-table-x-diy-modal-header-title {
+      font-size: 14px;
+      border-left: 3px solid @brand-primary;
+    }
+
+    .gm-react-table-x-diy-modal-header-close {
+      font-size: 16px;
+      color: #000923;
+      text-shadow: 0 1px 0 #fff;
+      font-weight: bold;
+      transition: color 0.5s;
+      border: none;
+    }
+  }
+
+  .gm-react-table-x-diy-modal-content{
+    border-top: 1px solid @gm-table-x-border-color;
+    border-bottom: 1px solid @gm-table-x-border-color;
+  }
+
   .gm-react-table-x-diy-modal-title {
     background-color: @gm-back-body-bg;
+    border-bottom: 1px solid @gm-table-x-border-color;
   }
 
   .gm-react-table-x-diy-modal-selector {
@@ -413,7 +448,7 @@
     }
 
     width: 80%;
-    border-right: 1px solid @gm-border-color;
+    border-right: 1px solid @gm-table-x-border-color;
   }
 
   .gm-react-table-x-diy-modal-list {
@@ -433,7 +468,7 @@
       .gm-react-table-x-diy-modal-list-li {
         position: relative;
         user-select: none;
-        padding: 5px;
+        padding: 5px 10px;
 
         &::before {
           content: '\2022'; //圆点
@@ -458,6 +493,12 @@
         background: #d7e8fc;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .gm-react-table-x-diy-modal {
+    width: 600px;
   }
 }
 

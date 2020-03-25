@@ -3,7 +3,7 @@
 
 @react-table-even: #f7f8fa;
 @react-table-sub-bg: #f7f8fa;
-@react-table-sub-item-border-bottom: rgba(216, 222, 231, 0.5);
+@react-table-sub-item-border: rgba(216, 222, 231, 0.5);
 @react-table-sub-wrap-border: #56a3f2;
 @react-table-header: #e8eaf0;
 @react-table-tip-height: 50px;
@@ -32,6 +32,15 @@
 
     a {
       cursor: pointer;
+    }
+
+    &.icon-column {
+      padding-right: 5px;
+      padding-left: 5px;
+
+      .table-icon.gm-popover-active {
+        color: @brand-primary;
+      }
     }
   }
 
@@ -235,8 +244,31 @@
 }
 
 .gm-react-table-diy-modal {
+  width: 900px;
+  .gm-react-table-diy-modal-header {
+    .gm-react-table-diy-modal-header-title {
+      font-size: 14px;
+      border-left: 3px solid @brand-primary;
+    }
+
+    .gm-react-table-diy-modal-header-close {
+      font-size: 16px;
+      color: #000923;
+      text-shadow: 0 1px 0 #fff;
+      font-weight: bold;
+      transition: color 0.5s;
+      border: none;
+    }
+  }
+
+  .gm-react-table-diy-modal-content{
+    border-top: 1px solid @react-table-sub-item-border;
+    border-bottom: 1px solid @react-table-sub-item-border;
+  }
+
   .gm-react-table-diy-modal-title {
     background-color: @gm-back-body-bg;
+    border-bottom: 1px solid @react-table-sub-item-border;
   }
 
   .gm-react-table-diy-modal-selector {
@@ -245,7 +277,7 @@
     }
 
     width: 80%;
-    border-right: 1px solid @gm-border-color;
+    border-right: 1px solid @react-table-sub-item-border;
   }
 
   .gm-react-table-diy-modal-sort-list {
@@ -265,7 +297,7 @@
       .gm-react-table-diy-modal-sort-list-li {
         position: relative;
         user-select: none;
-        padding: 5px;
+        padding: 5px 10px;
 
         &::before {
           content: '\2022'; //圆点
@@ -294,6 +326,12 @@
 
   .gm-react-table-diy-modal-btn {
     // TODO
+  }
+}
+
+@media (max-width: 768px) {
+  .gm-react-table-diy-modal {
+    width: 600px;
   }
 }
 
@@ -467,7 +505,7 @@
   .rt-thead {
     .rt-tr .rt-th {
       background: @react-table-sub-bg;
-      border-bottom: 1px solid @react-table-sub-item-border-bottom;
+      border-bottom: 1px solid @react-table-sub-item-border;
 
       &:first-child {
         border-bottom: 1px solid transparent;
@@ -484,7 +522,7 @@
 
     .rt-tr.-odd .rt-td {
       background-color: @react-table-sub-bg;
-      border-bottom: 1px solid @react-table-sub-item-border-bottom;
+      border-bottom: 1px solid @react-table-sub-item-border;
 
       &:first-child {
         border-bottom: 1px solid transparent;
@@ -493,7 +531,7 @@
 
     .rt-tr.-even .rt-td {
       background-color: @react-table-sub-bg;
-      border-bottom: 1px solid @react-table-sub-item-border-bottom;
+      border-bottom: 1px solid @react-table-sub-item-border;
 
       &:first-child {
         border-bottom: 1px solid transparent;

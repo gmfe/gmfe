@@ -424,7 +424,7 @@ EditContentInputNumber.defaultProps = {
 }
 
 const referOfWidth = {
-  noCell: 56,
+  noCell: 40,
   operationCell: 100,
   searchBox: 168,
   numberInputBox: 80,

@@ -24,7 +24,7 @@ const TABLE_X_SUB_TABLE_ID = 'table_x_sub_table_id'
 const TABLE_X = {
   HEIGHT_HEAD_TR: 46,
   HEIGHT_TR: 60,
-  WIDTH_FUN: 46,
+  WIDTH_FUN: 40,
   // 序号
   WIDTH_NO: 56,
   // 操作区
