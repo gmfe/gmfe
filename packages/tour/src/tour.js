@@ -109,7 +109,7 @@ const Tour = forwardRef(
         close()
       },
       apiRecalculate: () => {
-        showStep()
+        calculatePosition()
       }
     }))
 
@@ -142,19 +142,10 @@ const Tour = forwardRef(
       goTo(current < steps.length - 1 ? current + 1 : current)
     }
 
-    async function showStep(nextStep) {
+    function calculatePosition(nextStep) {
       const step = steps[nextStep] || steps[current]
-      const { w, h } = getWindow()
-
-      if (step.actionBefore && typeof step.actionBefore === 'function') {
-        await step.actionBefore()
-      }
-
       const node = getNode(step)
-      if (step.observe) {
-        observer.current = document.querySelector(step.observe)
-      }
-
+      const { w, h } = getWindow()
       if (node) {
         const nodeRect = getNodeRect(node)
 
@@ -183,6 +174,19 @@ const Tour = forwardRef(
           inDOM: false
         })
       }
+    }
+
+    async function showStep(nextStep) {
+      const step = steps[nextStep] || steps[current]
+
+      if (step.actionBefore && typeof step.actionBefore === 'function') {
+        await step.actionBefore()
+      }
+
+      if (step.observe) {
+        observer.current = document.querySelector(step.observe)
+      }
+      calculatePosition(nextStep)
     }
 
     function makeCalculations(nodeRect, helperPosition) {
