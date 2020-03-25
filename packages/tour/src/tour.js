@@ -107,6 +107,9 @@ const Tour = forwardRef(
       },
       apiClose: () => {
         close()
+      },
+      apiRecalculate: () => {
+        showStep()
       }
     }))
 

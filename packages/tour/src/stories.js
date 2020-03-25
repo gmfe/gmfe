@@ -1,4 +1,4 @@
-import React, { Suspense, Fragment, useRef } from 'react'
+import React, { Suspense, Fragment, useRef, useState, useEffect } from 'react'
 import { storiesOf } from '@storybook/react'
 import { observable } from 'mobx'
 import { selectTableXHOC, TableX, TableXUtil } from '@gmfe/table-x'
@@ -199,6 +199,17 @@ storiesOf('Tour|Tour', module)
   })
   .add('自定义', () => {
     const tourRef = useRef(null)
+    const [show, setShow] = useState(false)
+    useEffect(() => {
+      setTimeout(() => {
+        handleShow()
+      }, 1000)
+    }, [])
+
+    const handleShow = () => {
+      setShow(true)
+      tourRef.current.apiRecalculate()
+    }
     
     const next = () => {
       tourRef.current.apiToNextStep()
@@ -221,6 +232,7 @@ storiesOf('Tour|Tour', module)
           </Button>
         }
       >
+        {show ? <div className='gm-padding-15'/> : null}
         <SelectTableX
           data={store.data.slice()}
           columns={columns}
