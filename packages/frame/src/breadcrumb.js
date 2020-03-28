@@ -66,11 +66,11 @@ const Breadcrumb = props => {
               props.onSelect(last)
             }}
           >
-            {data.slice(-1)[0].name}
+            {last.name}
           </a>
         </li>
       ) : (
-        <li>{data.slice(-1)[0].name}</li>
+        <li>{last.name}</li>
       )}
     </ul>
   )
