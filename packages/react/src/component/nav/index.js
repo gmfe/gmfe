@@ -8,7 +8,7 @@ import Flex from '../flex'
 function isOneActive(oneSub, selected) {
   return !!_.find(oneSub, two => {
     return !!_.find(two.sub, three => {
-      return three.link.includes(selected)
+      return selected.includes(three.link)
     })
   })
 }

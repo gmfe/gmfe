@@ -10,7 +10,7 @@ function nav2BreadCrumb(props) {
   _.find(navConfig, one => {
     _.find(one.sub, two => {
       return _.find(two.sub, three => {
-        if (three.link.includes(pathname)) {
+        if (pathname.includes(three.link)) {
           result.push(one)
           result.push(two)
           result.push(three)
@@ -40,6 +40,7 @@ const Breadcrumb = props => {
   }
 
   const last = data[data.length - 1]
+  const three = data[2]
 
   return (
     <ul className='gm-framework-breadcrumb-default breadcrumb'>
@@ -50,7 +51,7 @@ const Breadcrumb = props => {
               href={v.link}
               onClick={e => {
                 e.preventDefault()
-                props.onSelect(v)
+                props.onSelect(three)
               }}
             >
               {v.name}
