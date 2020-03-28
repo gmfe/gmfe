@@ -40,7 +40,6 @@ const Breadcrumb = props => {
   }
 
   const last = data[data.length - 1]
-  const three = data[2]
 
   return (
     <ul className='gm-framework-breadcrumb-default breadcrumb'>
@@ -51,7 +50,15 @@ const Breadcrumb = props => {
               href={v.link}
               onClick={e => {
                 e.preventDefault()
-                props.onSelect(three)
+                if (i === 0) {
+                  props.onSelect(data[0].sub[0].sub[0])
+                } else if (i === 1) {
+                  props.onSelect(data[1].sub[0])
+                } else if (i === 2) {
+                  props.onSelect(data[2])
+                } else {
+                  props.onSelect(v)
+                }
               }}
             >
               {v.name}
