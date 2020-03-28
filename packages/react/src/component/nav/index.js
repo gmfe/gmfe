@@ -5,6 +5,14 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Flex from '../flex'
 
+function isOneActive(oneSub, selected) {
+  return !!_.find(oneSub, two => {
+    return !!_.find(two.sub, three => {
+      return three.link.includes(selected)
+    })
+  })
+}
+
 const A = ({ href, ...rest }) => {
   return <a {...rest} href={`#${href}`} />
 }
@@ -94,6 +102,8 @@ const Item = props => {
   const ref = useRef(null)
   const [rect, setRect] = useState(null)
 
+  const active = isOneActive(sub, selected)
+
   useEffect(() => {
     if (showActive === link) {
       setRect(ref.current.getBoundingClientRect())
@@ -102,8 +112,7 @@ const Item = props => {
 
   const handleClick = e => {
     e.preventDefault()
-
-    onSelect(props.data)
+    onSelect(sub[0].sub[0])
   }
 
   const handleSelect = data => {
@@ -123,7 +132,7 @@ const Item = props => {
     <div
       ref={ref}
       className={classNames('gm-nav-one-box', {
-        active: selected.startsWith(link)
+        active
       })}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -207,9 +216,9 @@ Nav.propTypes = {
    * sub 没有的话就没有 popup
    * */
   data: PropTypes.array.isRequired,
-  /** pathname */
+  /** pathname 会匹配到第三级 link */
   selected: PropTypes.string.isRequired,
-  /** 直接吐 item */
+  /** 直接吐 item，如果是一二级会找到第三级的item吐 */
   onSelect: PropTypes.func.isRequired,
   /** 控制 浮层的线上，如商品库传 merchandise */
   showActive: PropTypes.string,
