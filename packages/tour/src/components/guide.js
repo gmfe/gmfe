@@ -3,12 +3,12 @@ import * as util from '../util'
 
 const Guide = styled.div`
   ${props => `
-  max-width: 331px;
+  max-width: 350px;
   min-width: 200px;
   padding-right: 40px;
   border-radius: ${props.rounded}px;
   background-color: #fff;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 0 0.5em 3em rgba(0, 0, 0, 0.3);
   color: inherit;
   `}

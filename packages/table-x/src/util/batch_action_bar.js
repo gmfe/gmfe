@@ -84,6 +84,7 @@ const BatchActionBar = props => {
         o =>
           o.show !== false && (
             <div
+              data-id={o.dataId}
               onClick={o.onClick} // eslint-disable-line
               className='gm-text-hover-primary gm-cursor gm-text-bold'
               style={{ marginLeft: '30px' }}

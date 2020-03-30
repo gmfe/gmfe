@@ -6,7 +6,7 @@ const Action = ({ isLastItem, goToNextStep, close }) => {
     <div className='gm-flex gm-flex-justify-end gm-padding-top-10 '>
       {isLastItem ? (
         <button className='btn btn-primary' onClick={close}>
-          知道了
+          马上尝试
         </button>
       ) : (
         <button className='btn btn-primary' onClick={goToNextStep}>
