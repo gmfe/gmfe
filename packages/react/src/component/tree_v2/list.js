@@ -161,17 +161,24 @@ const List = ({
       selectedValues,
       flatItem.leafValues
     )
+    const indeterminateLeafValues = _.intersection(
+      indeterminateList,
+      flatItem.leafValues
+    )
 
     let isSelected
     let isIndeterminate
     if (flatItem.isLeaf) {
       isSelected = selectedValues.includes(flatItem.data.value)
-      isIndeterminate = false
+      isIndeterminate = _.includes(indeterminateList, flatItem.data.value)
     } else {
       isSelected =
         flatItem.leafValues.length !== 0 &&
         flatItem.leafValues.length === selectedLeafValues.length
-      isIndeterminate = selectedLeafValues.length !== 0 && !isSelected
+      isIndeterminate =
+        (selectedLeafValues.length !== 0 ||
+          indeterminateLeafValues.length !== 0) &&
+        !isSelected
     }
 
     return (
@@ -181,11 +188,7 @@ const List = ({
         onGroup={handleGroup}
         onSelect={handleSelect}
         isSelected={isSelected}
-        isIndeterminate={
-          indeterminateList.length > 0
-            ? _.includes(indeterminateList, flatItem.data.value)
-            : isIndeterminate
-        }
+        isIndeterminate={isIndeterminate}
         flatItem={flatItem}
         style={style}
         renderLeafItem={renderLeafItem}
