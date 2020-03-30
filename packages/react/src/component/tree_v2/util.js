@@ -101,31 +101,72 @@ function unSelectAll(list, selectedValues) {
 
 /**
  * 获取滚动高度,需要标明虚拟列表每项的高度 itemHeight ,因为用 scrollTo 滚动
- * @param {object} item 搜索项
+ * @param {object} data 搜索项
  * @param {number} itemHeight 虚拟列表中每项的高度
  * @param {number} box_height 容器的高度
  * @param {object} list 搜索的数据
+ * @param {object} group_select 已展开的id
  */
-function getItemOffsetHeight(item, itemHeight, box_height, list) {
+function getItemOffsetHeight(data, itemHeight, box_height, list, group_select) {
   const flat = listToFlat(
     list,
     () => true,
     () => true
   )
 
-  let count = 0
-  let flatItem = null
-  do {
-    flatItem = flat[count++]
-  } while (flatItem.data.value !== item.value && count !== flat.length)
+  let height = 0
+  let flag = false
   // 最大限制高度
-  const limit_height = flat.length * itemHeight - box_height
+  const max_height = _.reduce(
+    flat,
+    (res, item) => {
+      const exist = _.includes(group_select, item.data.value)
+      if (item.data.value === data.value) {
+        height = res - itemHeight
+      }
+
+      if (exist) {
+        flag = true
+        res = res + itemHeight
+      } else if (!item.isLeaf && flag) {
+        flag = false
+        res = res + itemHeight
+      } else if (!item.isLeaf && !flag) {
+        res = res + itemHeight
+      } else if (item.isLeaf && flag) {
+        res = res + itemHeight
+      }
+      return res
+    },
+    0
+  )
+  const limit_height = max_height < box_height ? 0 : max_height - box_height
   // 限制高度
-  const item_scroll_height =
-    (count - 1) * itemHeight < limit_height
-      ? (count - 1) * itemHeight
-      : limit_height
+  const item_scroll_height = height < limit_height ? height : limit_height
   return item_scroll_height
+}
+
+/**
+ * getFindGroupSelected 获取定位的展开id
+ * @param {object} list 列表到数据
+ * @param {object} find_list 搜索的数据
+ * @return 对应到树节点到id数组
+ */
+function getFindGroupSelected(list, find_list) {
+  const flat = listToFlat(
+    list,
+    () => true,
+    () => true
+  )
+  const find_list_value = _.map(find_list, i => i.value)
+  return _.reduce(
+    flat,
+    (res, item) => {
+      const same = _.intersection(item.leafValues, find_list_value)
+      return same.length > 0 ? _.concat(res, item.data.value) : res
+    },
+    []
+  )
 }
 
 export {
@@ -135,5 +176,6 @@ export {
   listToFlatFilterWithGroupSelected,
   unSelectAll,
   getItemOffsetHeight,
-  listToFlat
+  listToFlat,
+  getFindGroupSelected
 }
