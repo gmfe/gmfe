@@ -98,6 +98,12 @@
     background: darken(@brand, 10%);
   }
 
+  &.gm-btn-default:not([disabled]):hover {
+    background: white;
+    color: @gm-color-primary;
+    border-color: @gm-color-primary;
+  }
+
   &.disabled,
   &[disabled] {
     background: @gm-bg-disabled;
