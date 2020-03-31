@@ -8,7 +8,8 @@ import {
   getLeafValues,
   getUnLeafValues,
   filterWithQuery,
-  getItemOffsetHeight
+  getItemOffsetHeight,
+  getFindGroupSelected
 } from './util'
 import { filterGroupListLeaf } from '../../common/util'
 import _ from 'lodash'
@@ -107,18 +108,20 @@ const TreeV2 = ({
   }
 
   const handleScroll = height => {
-    // 全部展开，方便控制scroll
-    setGroupSelected(getUnLeafValues(list))
     refFixedList.current.scrollTo(height)
   }
 
   const handleSearch = () => {
     const find_list = withFindFilter(list, findQuery)
     const box_height = refList.current.offsetHeight
+    const group_selected = getFindGroupSelected(list, find_list)
     const scroll_list = _.map(find_list, item => ({
-      height: getItemOffsetHeight(item, 28, box_height, list),
+      height: getItemOffsetHeight(item, 28, box_height, list, group_selected),
       value: item.value
     }))
+
+    // 展开定位到数据
+    setGroupSelected(group_selected)
 
     if (!find_list || !scroll_list.length) {
       handleScroll(0)
