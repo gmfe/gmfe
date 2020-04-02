@@ -49,5 +49,12 @@
   "项": "items",
   "详情": "details",
   "删除": "delete",
-  "编辑": "edit"
+  "编辑": "edit",
+  "自定义颜色": "Custom colors",
+  "红色": "Red",
+  "橙色": "Orange",
+  "绿色": "Green",
+  "蓝色": "Blue",
+  "紫色": "Purple",
+  "灰色": "Gray"
 }
