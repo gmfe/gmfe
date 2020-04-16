@@ -128,7 +128,7 @@ function diyTableXHOC(Component) {
               popup={
                 <DiyTableXModal
                   diyGroupSorting={diyGroupSorting}
-                  columns={diyCols}
+                  columns={cols}
                   onSave={handleDiyColumnsSave}
                   onCancel={handleCancel}
                 />
