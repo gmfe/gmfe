@@ -407,14 +407,10 @@ storiesOf('TableX|HOC', module)
       <div>
         <button
           onClick={() =>
-            (store.diyColumns = store.diyColumns.concat([
-              {
-                Header: 'supplier_customer_id',
-                accessor: 'supplier_customer_id',
-                diyEnable: true,
-                diyGroupName: '基础'
-              }
-            ]))
+            (store.diyColumns = store.diyColumns.map(o => ({
+              ...o,
+              Header: '改变header'
+            })))
           }
         >
           改变组件的columns
