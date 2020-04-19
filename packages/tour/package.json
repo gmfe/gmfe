@@ -1,12 +1,13 @@
 {
   "name": "@gmfe/tour",
-  "version": "2.10.24",
-  "description": "> TODO: description",
+  "version": "3.0.0-beta.0",
+  "description": "观麦科技引导设置",
   "author": "zhongsink <zhongink@gmail.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "license": "ISC",
-  "main": "src/index.js",
-  "module": "src/index.js",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -26,12 +27,10 @@
     "styled-components": "^5.1.0"
   },
   "dependencies": {
+    "@gmfe/locales": "^3.0.0-beta.0",
+    "@gmfe/react": "^3.0.0-beta.0",
+    "@gmfe/table-x": "^3.0.0-beta.0",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.14",
-    "prop-types": "^15.7.2"
-  },
-  "devDependencies": {
-    "@gmfe/react": "^2.10.24",
-    "@gmfe/table-x": "^2.10.24"
+    "lodash": "^4.17.14"
   }
 }

@@ -1,15 +1,16 @@
 {
   "name": "@gmfe/business",
-  "version": "2.10.24",
-  "description": "",
+  "version": "3.0.0-beta.0",
+  "description": "观麦科技业务组件库",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "license": "ISC",
   "publishConfig": {
     "access": "public"
   },
-  "main": "src/index.js",
-  "module": "src/index.js",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
@@ -25,8 +26,7 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gm-common/tool": "^1.0.0",
-    "@gmfe/react": "^2.10.24",
-    "prop-types": "^15.7.2"
+    "@gm-common/tool": "^2.3.0",
+    "@gmfe/react": "^3.0.0-beta.0"
   }
 }

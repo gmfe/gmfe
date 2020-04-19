@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/cropper",
-  "version": "2.10.24",
+  "version": "3.0.0-beta.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -8,8 +8,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "src/index.js",
-  "module": "src/index.js",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
@@ -25,7 +26,8 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gmfe/react": "^2.10.24",
+    "@gmfe/locales": "^3.0.0-beta.0",
+    "@gmfe/react": "^3.0.0-beta.0",
     "cropperjs": "^1.5.6",
     "prop-types": "^15.7.2"
   }

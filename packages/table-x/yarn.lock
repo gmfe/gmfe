@@ -9,12 +9,18 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@gm-common/tool@^1.0.0":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@gm-common/tool/-/tool-1.1.1.tgz#e0996614f163f0be3bef8eadb218ca20d8e6c188"
-  integrity sha512-icWjw+070X9TwHG4MbG+I5EH6nM5HO5wSnV4kQR1iMTD4NWP+k1TgyHRGac0C9dNV2q4qFdb2J6jYT8WsY3guA==
+"@gm-common/tool@^2.3.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@gm-common/tool/-/tool-2.4.0.tgz#4abcbebd7dcae0320648cad7f15cc453bbecca9b"
+  integrity sha512-7ZD+qz3ZWLx/OxSornLEJD8Mhu1jhBtbXXL4Jy1VpwuKOnqE39oZ+eSK4P2GEpNoFFhHXfOTPSJmNDuHQggtTA==
   dependencies:
+    "@types/lodash" "^4.14.150"
     lodash "^4.17.15"
+
+"@types/lodash@^4.14.150":
+  version "4.14.155"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.155.tgz#e2b4514f46a261fd11542e47519c20ebce7bc23a"
+  integrity sha512-vEcX7S7aPhsBCivxMwAANQburHBtfN9RdyXFk84IJmu2Z4Hkg1tOFgaslRiEqqvoLtbCBi6ika1EMspE+NZ9Lg==
 
 classnames@^2.2.5:
   version "2.2.6"

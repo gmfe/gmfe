@@ -1,15 +1,16 @@
 {
   "name": "@gmfe/sortable",
-  "version": "2.10.24",
-  "description": "",
+  "version": "3.0.0-beta.0",
+  "description": "观麦科技拖拽组件",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "license": "ISC",
   "publishConfig": {
     "access": "public"
   },
-  "main": "src/index.js",
-  "module": "src/index.js",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
@@ -25,7 +26,8 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gmfe/react": "^2.10.24",
+    "@gm-common/tool": "^2.3.2",
+    "@gmfe/react": "^3.0.0-beta.0",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "sortablejs": "^1.10.1"

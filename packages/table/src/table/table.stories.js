@@ -20,7 +20,7 @@ const store = observable({
       date_time: '2018-07-25',
       delta_money: 0,
       settle_supplier_id: 'T10953',
-      address: null
+      address: null,
     },
     {
       total_money: 176,
@@ -35,8 +35,8 @@ const store = observable({
       settle_supplier_id: 'T14319',
       address: {
         value: 9,
-        text: '西乡9'
-      }
+        text: '西乡9',
+      },
     },
     {
       total_money: 279,
@@ -51,9 +51,9 @@ const store = observable({
       settle_supplier_id: 'T13324',
       address: {
         value: 4,
-        text: '宝安'
-      }
-    }
+        text: '宝安',
+      },
+    },
   ],
   sortTimeType: null,
   sortTime() {
@@ -64,36 +64,36 @@ const store = observable({
     } else {
       this.sortTimeType = 'asc'
     }
-  }
+  },
 })
 
 const columns = [
   {
     Header: '序号',
-    Cell: cellProps => cellProps.index + 1
+    Cell: (cellProps) => cellProps.index + 1,
   },
   // 常规用法
   {
     Header: '建单时间',
-    accessor: 'submit_time'
+    accessor: 'submit_time',
   },
   // accessor 有点用法
   {
     Header: '地址',
     accessor: 'address.text',
-    width: 200 // 定宽
+    width: 200, // 定宽
   },
   // accessor 是 func，需要提供 id
   {
     Header: '供应商信息',
     id: 'supplier_name',
-    accessor: data => data.supplier_name
+    accessor: (data) => data.supplier_name,
   },
   // 自定义整个单元格
   {
     Header: '入库金额',
     accessor: 'total_money',
-    Cell: cellProps => (
+    Cell: (cellProps) => (
       <div>
         {cellProps.value} 或者 {cellProps.original.total_money}
         <EditButton
@@ -107,8 +107,8 @@ const columns = [
           }}
         />
       </div>
-    )
-  }
+    ),
+  },
 ]
 
 storiesOf('Table|Table', module)
@@ -118,8 +118,8 @@ storiesOf('Table|Table', module)
 react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
 
 用法见 story 源码
-`
-    }
+`,
+    },
   })
   .add('default', () => <Table data={store.data} columns={columns} />)
   .add('loading & nodata & tiled', () => (
@@ -133,20 +133,20 @@ react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
     <Table
       style={{
         height: '200px',
-        width: '300px'
+        width: '300px',
       }}
       data={store.data}
       columns={[
         {
           Header: '建单时间',
           accessor: 'submit_time',
-          width: 400
+          width: 400,
         },
         {
           Header: '地址',
           accessor: 'address.text',
-          width: 200
-        }
+          width: 200,
+        },
       ]}
     />
   ))
@@ -159,18 +159,18 @@ react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
           columns: [
             {
               Header: '序号',
-              Cell: cellProps => cellProps.index + 1
+              Cell: (cellProps) => cellProps.index + 1,
             },
             {
               Header: '建单时间',
-              accessor: 'submit_time'
+              accessor: 'submit_time',
             },
             {
               Header: '地址',
               accessor: 'address.text',
-              width: 200
-            }
-          ]
+              width: 200,
+            },
+          ],
         },
         {
           Header: 'Group2',
@@ -178,19 +178,22 @@ react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
             {
               Header: '供应商信息',
               id: 'supplier_name',
-              accessor: data => data.supplier_name
+              accessor: (data) => data.supplier_name,
             },
             {
               Header: '入库金额',
               accessor: 'total_money',
-              Cell: cellProps => (
-                <div>
-                  {cellProps.value} 或者 {cellProps.original.total_money}
-                </div>
-              )
-            }
-          ]
-        }
+              Cell: (cellProps) => {
+                console.log(cellProps)
+                return (
+                  <div>
+                    {cellProps.value} 或者 {cellProps.original.total_money}
+                  </div>
+                )
+              },
+            },
+          ],
+        },
       ]}
     />
   ))
@@ -200,8 +203,8 @@ react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
       columns={[
         {
           Header: '序号',
-          Cell: cellProps => cellProps.index + 1,
-          sortable: true
+          Cell: (cellProps) => cellProps.index + 1,
+          sortable: true,
         },
         {
           Header: (
@@ -212,13 +215,13 @@ react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
               建单时间
             </SortHeader>
           ),
-          accessor: 'submit_time'
+          accessor: 'submit_time',
         },
         {
           Header: '地址',
           accessor: 'address.text',
-          width: 200
-        }
+          width: 200,
+        },
       ]}
     />
   ))
