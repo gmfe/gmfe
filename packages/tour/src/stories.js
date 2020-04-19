@@ -18,7 +18,7 @@ const initData = [
     date_time: '2018-07-25',
     delta_money: 0,
     settle_supplier_id: 'T10953',
-    address: null
+    address: null,
   },
   {
     total_money: 176,
@@ -33,8 +33,8 @@ const initData = [
     settle_supplier_id: 'T14319',
     address: {
       value: 9,
-      text: '西乡9'
-    }
+      text: '西乡9',
+    },
   },
   {
     total_money: 279,
@@ -49,8 +49,8 @@ const initData = [
     settle_supplier_id: 'T13324',
     address: {
       value: 4,
-      text: '宝安'
-    }
+      text: '宝安',
+    },
   },
   {
     total_money: 176,
@@ -65,9 +65,9 @@ const initData = [
     settle_supplier_id: 'T13324',
     address: {
       value: 4,
-      text: '宝安'
-    }
-  }
+      text: '宝安',
+    },
+  },
 ]
 
 const columns = [
@@ -75,34 +75,34 @@ const columns = [
   {
     Header: '序号',
     accessor: 'index',
-    Cell: ({ row }) => row.index + 1
+    Cell: ({ row }) => row.index + 1,
   },
   // 常规用法
   {
     Header: '建单时间',
-    accessor: 'submit_time'
+    accessor: 'submit_time',
   },
   // accessor 有点用法
   {
     Header: '地址',
     accessor: 'address.text',
-    width: 200 // 定宽
+    width: 200, // 定宽
   },
   // accessor 是 func，需要提供 id
   {
     Header: '供应商信息',
-    accessor: data => data.supplier_name,
-    id: 'supplier_name'
+    accessor: (data) => data.supplier_name,
+    id: 'supplier_name',
   },
   // 自定义整个单元格
   {
     Header: '入库金额',
     accessor: 'total_money',
-    Cell: cellProps => {
+    Cell: (cellProps) => {
       const { row } = cellProps
       return <div>{row.original.total_money}</div>
-    }
-  }
+    },
+  },
 ]
 
 const store = observable({
@@ -118,7 +118,7 @@ const store = observable({
   },
   setOpen(bool) {
     this.isTourOpen = bool
-  }
+  },
 })
 
 const SelectTableX = selectTableXHOC(TableX)
@@ -139,9 +139,7 @@ storiesOf('Tour|Tour', module)
             >
               新建车间
             </Button>
-            <div data-id='button-start'>
-              {start && <Button >start</Button>}
-            </div>
+            <div data-id='button-start'>{start && <Button>start</Button>}</div>
           </>
         }
       >
@@ -150,17 +148,17 @@ storiesOf('Tour|Tour', module)
           columns={columns}
           keyField='id'
           selected={store.selected}
-          onSelect={selected => store.setSelected(selected)}
+          onSelect={(selected) => store.setSelected(selected)}
           batchActionBar={
             store.selected.length > 0 ? (
               <TableXUtil.BatchActionBar
                 onClose={() => store.setSelected([])}
-                toggleSelectAll={bool => store.toggleIsSelectAllPage(bool)}
+                toggleSelectAll={(bool) => store.toggleIsSelectAllPage(bool)}
                 batchActions={[
                   {
                     name: <div className='func-test'>下达加工单</div>,
-                    onClick: () => {}
-                  }
+                    onClick: () => {},
+                  },
                 ]}
                 count={store.isSelectAllPage ? null : store.selected.length}
                 isSelectAll={store.isSelectAllPage}
@@ -176,19 +174,19 @@ storiesOf('Tour|Tour', module)
                 selector: '[data-id="button-test"]',
                 observe: '[data-id="button-start"]',
                 content:
-                  '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'
+                  '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
               },
               {
                 selector: '.gm-table-x-tbody .gm-checkbox.gm-table-x-select',
                 content:
                   'checkbox 测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
                 stepInteraction: true,
-                actionAfter: async function(node) {
+                actionAfter: async function (node) {
                   if (node) {
                     console.log(1111, node)
                     node?.click()
                   }
-                }
+                },
               },
               {
                 selector: '.func-test',
@@ -197,8 +195,8 @@ storiesOf('Tour|Tour', module)
                     func-test
                     测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
                   </div>
-                )
-              }
+                ),
+              },
             ]}
             isOpen={store.isTourOpen}
             rounded={3}
@@ -221,7 +219,7 @@ storiesOf('Tour|Tour', module)
       setShow(true)
       tourRef.current.apiRecalculate()
     }
-    
+
     const next = () => {
       tourRef.current.apiToNextStep()
     }
@@ -243,23 +241,23 @@ storiesOf('Tour|Tour', module)
           </Button>
         }
       >
-        {show ? <div className='gm-padding-15'/> : null}
+        {show ? <div className='gm-padding-15' /> : null}
         <SelectTableX
           data={store.data.slice()}
           columns={columns}
           keyField='id'
           selected={store.selected}
-          onSelect={selected => store.setSelected(selected)}
+          onSelect={(selected) => store.setSelected(selected)}
           batchActionBar={
             store.selected.length > 0 ? (
               <TableXUtil.BatchActionBar
                 onClose={() => store.setSelected([])}
-                toggleSelectAll={bool => store.toggleIsSelectAllPage(bool)}
+                toggleSelectAll={(bool) => store.toggleIsSelectAllPage(bool)}
                 batchActions={[
                   {
                     name: <div className='func-test'>下达加工单</div>,
-                    onClick: () => {}
-                  }
+                    onClick: () => {},
+                  },
                 ]}
                 count={store.isSelectAllPage ? null : store.selected.length}
                 isSelectAll={store.isSelectAllPage}
@@ -277,7 +275,8 @@ storiesOf('Tour|Tour', module)
                 content: (
                   <div>
                     <div>
-                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</div>
+                      测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                    </div>
                     <Flex justifyEnd className='gm-padding-top-10'>
                       <Button type='primary' onClick={next}>
                         下一步
@@ -285,27 +284,29 @@ storiesOf('Tour|Tour', module)
                     </Flex>
                   </div>
                 ),
-                actionAfter: async function(node) {
+                actionAfter: async function (node) {
                   if (node) {
                     console.log(1111, node)
                     node?.click()
                   }
-                }
+                },
               },
               {
                 selector: '.func-test',
                 content: (
                   <div>
-                    <div>func-test
-                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</div>
+                    <div>
+                      func-test
+                      测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                    </div>
                     <Flex justifyEnd className='gm-padding-top-10'>
                       <Button type='primary' onClick={close}>
                         知道了
                       </Button>
                     </Flex>
                   </div>
-                )
-              }
+                ),
+              },
             ]}
             isOpen={store.isTourOpen}
             onRequestClose={() => store.setOpen(false)}
