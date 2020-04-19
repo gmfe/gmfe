@@ -13,7 +13,7 @@ import {
   FormButton,
   FormBlock,
   FormGroup,
-  FormPanel
+  FormPanel,
 } from './component/form'
 
 import Storage from './component/storage'
@@ -36,7 +36,7 @@ import {
   SheetColumn,
   SheetAction,
   SheetSelect,
-  SheetBatchAction
+  SheetBatchAction,
 } from './component/sheet'
 import Cascader from './component/cascader/cascader'
 import CascaderSelect from './component/cascader/cascader.select'
@@ -47,9 +47,7 @@ import LoadingFullScreen from './component/loading/loading_full_screen'
 import InputNumber from './component/input_number'
 import InputNumberV2 from './component/input_number/number'
 import LayoutRoot from './component/layout_root'
-import Modal from './component/modal'
-import RightSideModal from './component/modal/right_side_modal'
-import CleanModal from './component/modal/clean_modal'
+import { Modal, RightSideModal, CleanModal } from './component/modal'
 import Collapse from './component/collapse'
 import { DropDown, DropDownItem, DropDownItems } from './component/drop_down'
 import { Radio, RadioGroup } from './component/radio'
@@ -106,29 +104,29 @@ Object.assign(Sheet, {
   SheetColumn,
   SheetAction,
   SheetSelect,
-  SheetBatchAction
+  SheetBatchAction,
 })
 
 Object.assign(DropDown, {
   DropDownItems,
-  DropDownItem
+  DropDownItem,
 })
 
 Object.assign(Form, {
   FormItem,
-  FormButton
+  FormButton,
 })
 
 Object.assign(Radio, {
-  RadioGroup
+  RadioGroup,
 })
 
 Object.assign(Checkbox, {
-  CheckboxGroup
+  CheckboxGroup,
 })
 
 Object.assign(Select, {
-  Option
+  Option,
 })
 
 export {
@@ -229,5 +227,5 @@ export {
   Tabs,
   Steps,
   Selection,
-  TreeV2
+  TreeV2,
 }

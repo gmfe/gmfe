@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Modal from './index'
+import Modal from './modal'
 import CleanModal from './clean_modal'
 import RightSideModal from './right_side_modal'
 import Button from '../button'
@@ -13,7 +13,6 @@ storiesOf('Modal', module)
         Modal.render({
           children: '我是内容',
           title: '我是标题',
-          onHide: Modal.hide
         })
       }}
     >
@@ -28,7 +27,7 @@ storiesOf('Modal', module)
           size: 'lg',
           children: '我是内容',
           title: '我是标题',
-          onHide: Modal.hide
+          onHide: Modal.hide,
         })
       }}
     >
@@ -44,7 +43,7 @@ storiesOf('Modal', module)
           size: 'lg',
           children: '我是内容',
           title: '我是标题',
-          onHide: Modal.hide
+          onHide: Modal.hide,
         })
       }}
     >
@@ -60,7 +59,7 @@ storiesOf('Modal', module)
           size: 'lg',
           children: '我是内容',
           title: '我是标题',
-          onHide: Modal.hide
+          onHide: Modal.hide,
         })
       }}
     >
@@ -73,7 +72,7 @@ storiesOf('Modal', module)
       onClick={() => {
         CleanModal.render({
           children: <div className='gm-text-white'>啦啦啦</div>,
-          onHide: Modal.hide
+          onHide: Modal.hide,
         })
       }}
     >
@@ -87,7 +86,7 @@ storiesOf('Modal', module)
         RightSideModal.render({
           title: 'asdf',
           children: <div className='gm-text-white'>啦啦啦</div>,
-          onHide: Modal.hide
+          onHide: Modal.hide,
         })
       }}
     >

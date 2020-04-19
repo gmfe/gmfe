@@ -2,14 +2,26 @@
 # yarn lockfile v1
 
 
-"@gm-common/tool@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@gm-common/tool/-/tool-1.0.0.tgz#e7a919d2c01845d543cc95e20aad7cd395b3313f"
-  integrity sha512-MCGhIeFbcDxM9f8ZV1r2dWo4dIMPe3C+DqJ2vHcjsK2rGyowsRQaouPRJUS/HNRUlFmVRci3gMyEIOFtQTWWrQ==
+"@gm-common/tool@^2.1.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@gm-common/tool/-/tool-2.2.0.tgz#d2c4480791f20be04b4a5c89cde99e26adabd0b5"
+  integrity sha512-tcHhA7UhcNhpwrUS70ZOtaSD1NQbS/qGZVD9mHd6skVCNVPcqH4vj+7j3qLTfJFZlhJ4dnljw0kl37KrXcR5eg==
   dependencies:
+    "@types/lodash" "^4.14.149"
     lodash "^4.17.15"
+    ts-config-gm-react-app "^3.0.6"
+
+"@types/lodash@^4.14.149":
+  version "4.14.150"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.150.tgz#649fe44684c3f1fcb6164d943c5a61977e8cf0bd"
+  integrity sha512-kMNLM5JBcasgYscD9x/Gvr6lTAv2NVgsKtet/hm93qMyf/D1pt+7jeEZklKJKxMVmXjxbRVQQGfqDSfipYCO6w==
 
 lodash@^4.17.15:
   version "4.17.15"
-  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.15.tgz?cache=0&sync_timestamp=1571657272199&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
+
+ts-config-gm-react-app@^3.0.6:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/ts-config-gm-react-app/-/ts-config-gm-react-app-3.1.1.tgz#23504ca54e85548074828f74513ce7b84723af69"
+  integrity sha512-QUsazUvdSzX8ibZeLuugd9TXgz4RYcWPFaSabr39KOybdijC0NHE6gVw55pdIR0QAFkToiFsiJ7BVid9N19fKg==

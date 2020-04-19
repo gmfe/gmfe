@@ -9,7 +9,7 @@ import {
   editTableXHOC,
   selectTableXHOC,
   fixedColumnsTableXHOC,
-  TableXUtil
+  TableXUtil,
 } from '@gmfe/table-x'
 import _ from 'lodash'
 
@@ -21,44 +21,44 @@ const KeyboardTable = keyboardTableXHOC(
 const data = [
   {
     value: 1,
-    text: '南山'
+    text: '南山',
   },
   {
     value: 2,
-    text: '福田'
+    text: '福田',
   },
   {
     value: 3,
-    text: '罗湖'
+    text: '罗湖',
   },
   {
     value: 4,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 5,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 6,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 7,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 8,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 9,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 10,
-    text: '宝安'
-  }
+    text: '宝安',
+  },
 ]
 
 const store = observable({
@@ -75,7 +75,7 @@ const store = observable({
     area: [],
     sku: null,
     date: null,
-    gender: ''
+    gender: '',
   })),
   addList() {
     this.data.push({
@@ -85,7 +85,7 @@ const store = observable({
       age: null,
       sku: null,
       date: null,
-      gender: ''
+      gender: '',
     })
   },
   setPosition(index, position) {
@@ -108,7 +108,7 @@ const store = observable({
   },
   setGender(index, gender) {
     this.data[index].gender = gender
-  }
+  },
 })
 
 const CellEditOperation = React.memo(({ index }) => {
@@ -121,7 +121,7 @@ const CellEditOperation = React.memo(({ index }) => {
 })
 
 CellEditOperation.propTypes = {
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 }
 
 // 有必要用 React.memo 提供更友好的渲染性能
@@ -135,7 +135,7 @@ const CellName = React.memo(({ index }) => {
           <KCInput
             type='text'
             value={item.name}
-            onChange={e => store.setName(index, e.target.value)}
+            onChange={(e) => store.setName(index, e.target.value)}
           />
         )
       }}
@@ -144,7 +144,7 @@ const CellName = React.memo(({ index }) => {
 })
 
 CellName.propTypes = {
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 }
 
 const CellPosition = React.memo(({ index }) => {
@@ -159,7 +159,7 @@ const CellPosition = React.memo(({ index }) => {
             style={{ width: TABLE_X.WIDTH_SEARCH }}
             data={data}
             selected={item.position} // 不能用 row.value，因为并不是 store 的数据
-            onSelect={selected => store.setPosition(index, selected)}
+            onSelect={(selected) => store.setPosition(index, selected)}
           />
         )
       }}
@@ -168,7 +168,7 @@ const CellPosition = React.memo(({ index }) => {
 })
 
 CellPosition.propTypes = {
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 }
 
 const Wrap = observer(() => {
@@ -181,21 +181,21 @@ const Wrap = observer(() => {
         Header: '序号',
         fixed: 'left',
         width: TABLE_X.WIDTH_NO,
-        Cell: ({ row }) => <div>{row.index + 1}</div>
+        Cell: ({ row }) => <div>{row.index + 1}</div>,
       },
       {
         id: 'operation',
         Header: OperationHeader,
         fixed: 'left',
         width: TABLE_X.WIDTH_OPERATION,
-        Cell: ({ row }) => <CellEditOperation index={row.index} />
+        Cell: ({ row }) => <CellEditOperation index={row.index} />,
       },
       {
         Header: '位置',
         accessor: 'position',
         width: TABLE_X.WIDTH_SEARCH + 16,
         isKeyboard: true,
-        Cell: ({ row }) => <CellPosition index={row.index} />
+        Cell: ({ row }) => <CellPosition index={row.index} />,
       },
       // {
       //   Header: '位置',
@@ -244,8 +244,8 @@ const Wrap = observer(() => {
         accessor: 'name',
         minWidth: 250,
         isKeyboard: true,
-        Cell: ({ row }) => <CellName index={row.index} />
-      }
+        Cell: ({ row }) => <CellName index={row.index} />,
+      },
     ]
   }, [])
 
@@ -254,7 +254,10 @@ const Wrap = observer(() => {
       <div>{store.data.slice().length}</div>
       <KeyboardTable
         id='test_tablex'
-        onAddRow={() => store.addList()}
+        onBeforeDispatch={(value) => console.log(value)}
+        onAddRow={(value) => {
+          store.addList()
+        }}
         virtualizedHeight={300}
         virtualizedItemSize={TableXUtil.TABLE_X.HEIGHT_TR}
         data={store.data.slice()} // 记得 slice 下，否则增加数据不会 刷新
@@ -262,7 +265,7 @@ const Wrap = observer(() => {
         fixedSelect
         keyField={'id'}
         selected={store.selected.slice()}
-        onSelect={selected => store.setSelect(selected)}
+        onSelect={(selected) => store.setSelect(selected)}
       />
     </div>
   )
@@ -275,7 +278,7 @@ storiesOf('快速录入|Keyboard TableX', module)
 各单元格宽度 具体见 TableUtil.TABLE_X
 
 上述都是建议宽度，具体根据实际业务场景各自调整。 具体用法看代码。
-      `
-    }
+      `,
+    },
   })
   .add('hoc', () => <Wrap />)

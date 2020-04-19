@@ -7,7 +7,7 @@ import {
   TableX,
   subTableXHOC,
   TableXVirtualized,
-  TableXUtil
+  TableXUtil,
 } from '../index'
 
 const { BatchActionBar } = TableXUtil
@@ -24,7 +24,7 @@ const initData = [
     date_time: '2018-07-25',
     delta_money: 0,
     settle_supplier_id: 'T10953',
-    address: null
+    address: null,
   },
   {
     total_money: 176,
@@ -39,8 +39,8 @@ const initData = [
     settle_supplier_id: 'T14319',
     address: {
       value: 9,
-      text: '西乡9'
-    }
+      text: '西乡9',
+    },
   },
   {
     total_money: 279,
@@ -55,8 +55,8 @@ const initData = [
     settle_supplier_id: 'T13324',
     address: {
       value: 4,
-      text: '宝安'
-    }
+      text: '宝安',
+    },
   },
   {
     total_money: 176,
@@ -71,9 +71,9 @@ const initData = [
     settle_supplier_id: 'T13324',
     address: {
       value: 4,
-      text: '宝安'
-    }
-  }
+      text: '宝安',
+    },
+  },
 ]
 
 const columns = [
@@ -81,34 +81,34 @@ const columns = [
   {
     Header: '序号',
     accessor: 'index',
-    Cell: ({ row }) => row.index + 1
+    Cell: ({ row }) => row.index + 1,
   },
   // 常规用法
   {
     Header: '建单时间',
-    accessor: 'submit_time'
+    accessor: 'submit_time',
   },
   // accessor 有点用法
   {
     Header: '地址',
     accessor: 'address.text',
-    width: 200 // 定宽
+    width: 200, // 定宽
   },
   // accessor 是 func，需要提供 id
   {
     Header: '供应商信息',
-    accessor: data => data.supplier_name,
-    id: 'supplier_name'
+    accessor: (data) => data.supplier_name,
+    id: 'supplier_name',
   },
   // 自定义整个单元格
   {
     Header: '入库金额',
     accessor: 'total_money',
-    Cell: cellProps => {
+    Cell: (cellProps) => {
       const { row } = cellProps
       return <div>{row.original.total_money}</div>
-    }
-  }
+    },
+  },
 ]
 
 const store = observable({
@@ -122,7 +122,7 @@ const store = observable({
   setExpanded(expanded) {
     console.log(expanded)
     this.expanded = expanded
-  }
+  },
 })
 
 const SelectTableX = selectTableXHOC(TableX)
@@ -137,7 +137,7 @@ storiesOf('TableX|HOC select expand', module)
       columns={columns}
       keyField='id'
       selected={store.selected}
-      onSelect={selected => store.setSelected(selected)}
+      onSelect={(selected) => store.setSelected(selected)}
     />
   ))
   .add('select batchActionBar', () => (
@@ -147,13 +147,13 @@ storiesOf('TableX|HOC select expand', module)
         columns={columns}
         keyField='id'
         selected={store.selected}
-        onSelect={selected => store.setSelected(selected)}
+        onSelect={(selected) => store.setSelected(selected)}
         batchActionBar={
           <BatchActionBar
             batchActions={[
               { name: '批量删除', type: 'delete' },
               { name: '批量修改', type: 'edit' },
-              { name: '批量打印', type: 'business' }
+              { name: '批量打印', type: 'business' },
             ]}
           />
         }
@@ -166,7 +166,7 @@ storiesOf('TableX|HOC select expand', module)
       columns={columns}
       keyField='id'
       selected={store.selected}
-      onSelect={selected => store.setSelected(selected)}
+      onSelect={(selected) => store.setSelected(selected)}
       fixedSelect
     />
   ))
@@ -177,7 +177,7 @@ storiesOf('TableX|HOC select expand', module)
       columns={columns}
       keyField='id'
       selected={store.selected}
-      onSelect={selected => store.setSelected(selected)}
+      onSelect={(selected) => store.setSelected(selected)}
     />
   ))
   .add('select isSelectorDisable', () => (
@@ -186,8 +186,11 @@ storiesOf('TableX|HOC select expand', module)
       columns={columns}
       keyField='id'
       selected={store.selected}
-      onSelect={selected => store.setSelected(selected)}
-      isSelectorDisable={item => item.total_money === 176}
+      onSelect={(selected) => store.setSelected(selected)}
+      isSelectorDisable={(item) => {
+        console.log(item)
+        return item.total_money === 176
+      }}
     />
   ))
   .add('调用方控制的 expand', () => (
@@ -195,7 +198,7 @@ storiesOf('TableX|HOC select expand', module)
       data={store.data.slice()}
       columns={columns}
       expanded={store.expanded}
-      onExpand={obj => store.setExpanded(obj)}
+      onExpand={(obj) => store.setExpanded(obj)}
       SubComponent={() => {
         return <div style={{ height: '50px' }}>这是是展开的</div>
       }}
@@ -226,7 +229,7 @@ storiesOf('TableX|HOC select expand', module)
       columns={columns}
       keyField='id'
       selected={store.selected}
-      onSelect={selected => store.setSelected(selected)}
+      onSelect={(selected) => store.setSelected(selected)}
       SubComponent={() => {
         return <div>adsfa</div>
       }}
@@ -238,7 +241,7 @@ storiesOf('TableX|HOC select expand', module)
       columns={columns}
       keyField='id'
       selected={store.selected}
-      onSelect={selected => store.setSelected(selected)}
+      onSelect={(selected) => store.setSelected(selected)}
       SubComponent={() => {
         return (
           <SubSelectTableTableX
@@ -246,7 +249,7 @@ storiesOf('TableX|HOC select expand', module)
             columns={columns}
             keyField='id'
             selected={store.selected}
-            onSelect={selected => store.setSelected(selected)}
+            onSelect={(selected) => store.setSelected(selected)}
             virtualizedHeight={200}
             virtualizedItemSize={TableXUtil.TABLE_X.HEIGHT_TR}
           />
