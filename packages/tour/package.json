@@ -1,12 +1,13 @@
 {
   "name": "@gmfe/tour",
-  "version": "2.10.10",
+  "version": "2.11.0-beta.12",
   "description": "> TODO: description",
   "author": "zhongsink <zhongink@gmail.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "license": "ISC",
   "main": "src/index.js",
   "module": "src/index.js",
+  "types": "types/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -21,17 +22,18 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.1.0",
+    "ts-config-gm-react-app": "^3.0.5"
   },
   "devDependencies": {
-    "@gmfe/react": "^2.10.10",
-    "@gmfe/table-x": "^2.10.10"
+    "@gmfe/react": "^2.11.0-beta.12",
+    "@gmfe/table-x": "^2.11.0-beta.12"
   }
 }

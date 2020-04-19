@@ -12,7 +12,7 @@ import {
   KCTableSelect,
   KCDatePicker,
   KCSelect,
-  KeyboardUtil
+  KeyboardUtil,
 } from './'
 import { EditTable, fixedColumnsTableHOC, TableUtil } from '@gmfe/table'
 import _ from 'lodash'
@@ -23,50 +23,50 @@ const KeyboardEditTable = fixedColumnsTableHOC(keyboardTableHoc(EditTable))
 const data = [
   {
     value: 1,
-    text: '南山'
+    text: '南山',
   },
   {
     value: 2,
-    text: '福田'
+    text: '福田',
   },
   {
     value: 3,
-    text: '罗湖'
+    text: '罗湖',
   },
   {
     value: 4,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 5,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 6,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 7,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 8,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 9,
-    text: '宝安'
+    text: '宝安',
   },
   {
     value: 10,
-    text: '宝安'
-  }
+    text: '宝安',
+  },
 ]
 
 const selectData = [
   { value: '', text: '请选择' },
   { value: 0, text: '男' },
-  { value: 1, text: '女' }
+  { value: 1, text: '女' },
 ]
 
 const areaData = [
@@ -76,13 +76,13 @@ const areaData = [
     children: [
       {
         value: '01',
-        text: '西乡'
+        text: '西乡',
       },
       {
         value: '02',
-        text: '固戍'
-      }
-    ]
+        text: '固戍',
+      },
+    ],
   },
   {
     value: '1',
@@ -94,16 +94,16 @@ const areaData = [
         children: [
           {
             value: '111',
-            text: '东区'
+            text: '东区',
           },
           {
             value: '112',
-            text: '西区'
-          }
-        ]
-      }
-    ]
-  }
+            text: '西区',
+          },
+        ],
+      },
+    ],
+  },
 ]
 
 const tableData = [
@@ -122,7 +122,7 @@ const tableData = [
     sku_name: '大白菜',
     station_id: 'T7936',
     category_id_1_name: '蔬菜',
-    max_stock_unit_price: null
+    max_stock_unit_price: null,
   },
   {
     purchase_price_limit: null,
@@ -139,7 +139,7 @@ const tableData = [
     sku_name: '小白菜',
     station_id: 'T7936',
     category_id_1_name: '蔬菜',
-    max_stock_unit_price: null
+    max_stock_unit_price: null,
   },
   {
     purchase_price_limit: null,
@@ -156,32 +156,32 @@ const tableData = [
     sku_name: '小白菜',
     station_id: 'T7936',
     category_id_1_name: '蔬菜',
-    max_stock_unit_price: null
-  }
+    max_stock_unit_price: null,
+  },
 ]
 
-const newTableData = _.map(tableData, v => ({
+const newTableData = _.map(tableData, (v) => ({
   value: v.sku_id,
   text: v.sku_name,
-  original: v
+  original: v,
 }))
 
 const tableColumns = [
   {
     Header: 'id',
     accessor: 'original.sku_id',
-    width: 100
+    width: 100,
   },
   {
     Header: '名字',
     accessor: 'original.sku_name',
-    width: 100
+    width: 100,
   },
   {
     Header: '供应商',
     accessor: 'original.settle_supplier_name',
-    width: 100
-  }
+    width: 100,
+  },
 ]
 
 const store = observable({
@@ -193,7 +193,7 @@ const store = observable({
       area: [],
       sku: null,
       date: null,
-      gender: ''
+      gender: '',
     },
     {
       position: null,
@@ -202,7 +202,7 @@ const store = observable({
       area: [],
       sku: null,
       date: null,
-      gender: ''
+      gender: '',
     },
     {
       position: null,
@@ -211,8 +211,8 @@ const store = observable({
       area: [],
       sku: null,
       date: null,
-      gender: ''
-    }
+      gender: '',
+    },
   ],
   addList() {
     this.data.push({
@@ -221,7 +221,7 @@ const store = observable({
       age: null,
       sku: null,
       date: null,
-      gender: ''
+      gender: '',
     })
   },
   setPosition(index, position) {
@@ -230,7 +230,7 @@ const store = observable({
   setName(index, name) {
     this.data[index] = {
       ...this.data[index],
-      name
+      name,
     }
     // this.data[index].name = name
   },
@@ -248,7 +248,7 @@ const store = observable({
   },
   setGender(index, gender) {
     this.data[index].gender = gender
-  }
+  },
 })
 
 // setTimeout(() => {
@@ -267,7 +267,7 @@ const CellEditOperation = React.memo(({ index }) => {
 })
 
 CellEditOperation.propTypes = {
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 }
 
 const CellName = React.memo(({ index }) => {
@@ -279,7 +279,7 @@ const CellName = React.memo(({ index }) => {
           <KCInput
             type='text'
             value={item.name}
-            onChange={e => store.setName(index, e.target.value)}
+            onChange={(e) => store.setName(index, e.target.value)}
           />
         )
       }}
@@ -288,7 +288,7 @@ const CellName = React.memo(({ index }) => {
 })
 
 CellName.propTypes = {
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 }
 
 const CellPosition = React.memo(({ index }) => {
@@ -303,7 +303,7 @@ const CellPosition = React.memo(({ index }) => {
             style={{ width: referOfWidth.searchBox }}
             data={data}
             selected={item.position} // 不能用 row.value，因为并不是 store 的数据
-            onSelect={selected => store.setPosition(index, selected)}
+            onSelect={(selected) => store.setPosition(index, selected)}
           />
         )
       }}
@@ -312,7 +312,7 @@ const CellPosition = React.memo(({ index }) => {
 })
 
 CellPosition.propTypes = {
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
 }
 
 storiesOf('快速录入|Keyboard', module)
@@ -322,8 +322,8 @@ storiesOf('快速录入|Keyboard', module)
 各单元格宽度 具体见 TableUtil.referOfWidth
 
 上述都是建议宽度，具体根据实际业务场景各自调整。 具体用法看代码。
-      `
-    }
+      `,
+    },
   })
   .add('hoc', () => {
     const ref = React.createRef()
@@ -332,38 +332,45 @@ storiesOf('快速录入|Keyboard', module)
         <KeyboardEditTable
           id='test'
           ref={ref}
-          onAddRow={() => store.addList()}
+          onBeforeDispatch={(value) => {
+            console.log(value)
+          }}
+          onAddRow={(value) => {
+            store.addList()
+          }}
           data={store.data.slice()} // 记得 slice 下，否则增加数据不会 刷新
           columns={[
             {
               Header: '序号',
-              Cell: cellProps => cellProps.index + 1,
+              Cell: (cellProps) => cellProps.index + 1,
               fixed: 'left',
-              width: referOfWidth.noCell
+              width: referOfWidth.noCell,
             },
             {
               Header: OperationHeader,
               fixed: 'left',
               width: referOfWidth.operationCell,
-              Cell: cellProps => <CellEditOperation index={cellProps.index} />
+              Cell: (cellProps) => (
+                <CellEditOperation index={cellProps.index} />
+              ),
             },
             {
               Header: '位置',
               accessor: 'position',
               minWidth: 170,
               isKeyboard: true,
-              Cell: cellProps => (
+              Cell: (cellProps) => (
                 // 使用 Observer 包下，才能响应 store 数据
                 <CellPosition index={cellProps.index} />
-              )
+              ),
             },
             {
               Header: '名字',
               accessor: 'name',
               minWidth: 150,
               isKeyboard: true,
-              Cell: cellProps => <CellName index={cellProps.index} />
-            }
+              Cell: (cellProps) => <CellName index={cellProps.index} />,
+            },
           ]}
         />
       </div>
@@ -407,26 +414,26 @@ storiesOf('快速录入|Keyboard', module)
             accessor: 'name',
             minWidth: 150,
             isKeyboard: true,
-            Cell: cellProps => <CellName index={cellProps.index} />
+            Cell: (cellProps) => <CellName index={cellProps.index} />,
           },
           {
             Header: '年龄',
             accessor: 'age',
             minWidth: 100,
             isKeyboard: true,
-            Cell: cellProps => (
+            Cell: (cellProps) => (
               <Observer>
                 {() => (
                   <KCInputNumberV2
-                    onFocus={e => e.target.select()}
+                    onFocus={(e) => e.target.select()}
                     style={{ width: referOfWidth.numberInputBox }}
                     value={cellProps.original.age}
-                    onChange={value => store.setAge(cellProps.index, value)}
+                    onChange={(value) => store.setAge(cellProps.index, value)}
                   />
                 )}
               </Observer>
-            )
-          }
+            ),
+          },
         ]}
       />
     )

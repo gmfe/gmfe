@@ -8,11 +8,11 @@ function selectTableV2HOC(Component) {
   const SelectComponent = baseSelectTableHoc(Component)
 
   class SelectTable extends React.Component {
-    handleSelect = selected => {
+    handleSelect = (selected) => {
       this.props.onSelect(selected)
     }
 
-    handleSelectAll = isSelectedAll => {
+    handleSelectAll = (isSelectedAll) => {
       this.props.onSelectAll(isSelectedAll)
     }
 
@@ -49,12 +49,12 @@ function selectTableV2HOC(Component) {
     /** 自定义批量操作栏 */
     batchActionBar: PropTypes.element,
     /** 自定义被选中项的id */
-    keyField: PropTypes.string
+    keyField: PropTypes.string,
   }
 
   SelectTable.defaultProps = {
     keyField: 'value',
-    selectType: 'checkbox'
+    selectType: 'checkbox',
   }
 
   return SelectTable

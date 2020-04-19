@@ -11,17 +11,17 @@ const Wrap = ({ count }) => {
     pagination.current.apiDoFirstRequest()
   }, [])
 
-  const requestSomething = pagination => {
+  const requestSomething = (pagination) => {
     console.log(pagination)
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         const json = {
           data: ['111', '222'],
           pagination: {
             offset: 10,
             limit: 10,
-            count
-          }
+            count,
+          },
         }
         resolve(json)
       }, 1000)
@@ -40,7 +40,7 @@ const Wrap = ({ count }) => {
 }
 
 Wrap.propTypes = {
-  count: PropTypes.number
+  count: PropTypes.number,
 }
 
 const Wrap2 = ({ count }) => {
@@ -50,8 +50,9 @@ const Wrap2 = ({ count }) => {
     pagination.current.apiDoFirstRequest()
   }, [])
 
-  const requestSomething = pagination => {
-    return new Promise(resolve => {
+  const requestSomething = (pagination) => {
+    console.log(pagination)
+    return new Promise((resolve) => {
       setTimeout(() => {
         const json = {
           data: ['111', '222'],
@@ -59,8 +60,8 @@ const Wrap2 = ({ count }) => {
             page_obj: 'xxx',
             peek: 40,
             more: true,
-            count
-          }
+            count,
+          },
         }
         resolve(json)
       }, 1000)
@@ -79,7 +80,7 @@ const Wrap2 = ({ count }) => {
 }
 
 Wrap2.propTypes = {
-  count: PropTypes.number
+  count: PropTypes.number,
 }
 
 storiesOf('Business|ManagePagination', module)
@@ -95,8 +96,8 @@ storiesOf('Business|ManagePaginationV2', module)
 - 响应请求动作 onRequest，用提供的参数去请求
 - 请求数据 this.ref.current.doFirstRequest。顾名思义，想要重新请求数据也应该调用这个方法。比如搜索按钮点击。
 - 如果想刷新当前页，this.ref.current.doCurrentRequest。
-`
-    }
+`,
+    },
   })
   .add('default without count', () => <Wrap2 />)
   .add('with count', () => <Wrap2 count={177} />)
