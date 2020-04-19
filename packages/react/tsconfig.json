@@ -1,0 +1,4 @@
+{
+  "extends": "ts-config-gm-react-app/tsconfig.json",
+  "exclude": ["types"]
+}

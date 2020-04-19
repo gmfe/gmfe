@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/table",
-  "version": "2.10.6",
+  "version": "2.11.0-beta.2",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -26,12 +26,13 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/locales": "^2.10.6",
-    "@gmfe/react": "^2.10.6",
+    "@gmfe/locales": "^2.11.0-beta.2",
+    "@gmfe/react": "^2.11.0-beta.2",
     "classnames": "^2.2.5",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "react-table-v6": "6.8.6",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "ts-config-gm-react-app": "^3.0.5"
   }
 }
