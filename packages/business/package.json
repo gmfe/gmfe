@@ -27,6 +27,7 @@
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
     "@gmfe/react": "^2.10.1",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "ts-config-gm-react-app": "^3.0.5"
   }
 }

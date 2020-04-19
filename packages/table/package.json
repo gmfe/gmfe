@@ -32,6 +32,7 @@
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "react-table-v6": "6.8.6",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "ts-config-gm-react-app": "^3.0.5"
   }
 }

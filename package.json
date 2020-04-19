@@ -6,7 +6,7 @@
     "build": "build-storybook -c .storybook -o docs",
     "prebuild": "rm -rf docs; mkdir docs;",
     "publish-latest": "lerna publish --force-publish",
-    "publish-beta": "lerna publish --force-publish --dist-tag beta"
+    "publish-beta": "lerna publish --force-publish --dist-tag beta --preid beta"
   },
   "husky": {
     "hooks": {
@@ -46,12 +46,12 @@
     "@welldone-software/why-did-you-render": "^4.0.5",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
-    "babel-preset-gm-react-app": "^1.1.1",
+    "babel-preset-gm-react-app": "^3.0.5",
     "big.js": "^5.2.2",
     "cropperjs": "^1.5.6",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
-    "eslint-plugin-gm-react-app": "^1.1.1",
+    "eslint-plugin-gm-react-app": "^3.0.5",
     "file-loader": "^5.1.0",
     "husky": "^4.2.3",
     "less": "^3.11.1",
@@ -62,7 +62,7 @@
     "mobx-react": "^6.1.8",
     "moment": "^2.24.0",
     "path": "^0.12.7",
-    "prettier": "^1.18.2",
+    "prettier": "^2.0.4",
     "prop-types": "^15.7.2",
     "query-string": "^6.11.0",
     "react": "^16.13.0",

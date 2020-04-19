@@ -10,6 +10,7 @@
   },
   "main": "src/index.js",
   "module": "src/index.js",
+  "types": "types/index.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
@@ -33,6 +34,7 @@
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
-    "react-window": "^1.8.5"
+    "react-window": "^1.8.5",
+    "ts-config-gm-react-app": "^3.0.5"
   }
 }
