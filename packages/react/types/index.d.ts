@@ -103,6 +103,21 @@ import List, {
   ListGroupDataOptions,
   ListProps,
 } from './src/component/list'
+import Loading, { LoadingProps } from './src/component/loading'
+import LoadingChunk, {
+  LoadingChunkProps,
+} from './src/component/loading/loading_chunk'
+import LoadingFullScreen, {
+  LoadingFullScreenProps,
+} from './src/component/loading/loading_full_screen'
+import Mask, { MaskProps } from './src/component/mask'
+import Modal, {
+  ModalStaticOptions,
+  ModalSize,
+  ModalProps,
+  ModalType,
+  ModalAnimName,
+} from './src/component/modal'
 
 export {
   Affix,
@@ -206,4 +221,18 @@ export {
   ListDataOptions,
   List,
   ListProps,
+  Loading,
+  LoadingProps,
+  LoadingChunk,
+  LoadingChunkProps,
+  LoadingFullScreen,
+  LoadingFullScreenProps,
+  Mask,
+  MaskProps,
+  ModalType,
+  ModalProps,
+  ModalSize,
+  ModalStaticOptions,
+  Modal,
+  ModalAnimName,
 }
