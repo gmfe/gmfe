@@ -45,6 +45,41 @@ import Drawer, {
   DrawerProps,
   DrawerStaticOptions,
 } from './src/component/drawer'
+import {
+  DropDownProps,
+  DropDownItemProps,
+  DropDownItemsProps,
+  DropDownItems,
+  DropDownItem,
+  DropDown,
+} from './src/component/dropdown'
+import DropSelect, {
+  DropSelectProps,
+  DropSelectDataActionsOptions,
+  DropSelectDataOptions,
+  DropSelectDataColumnsOptions,
+} from './src/component/drop_select'
+import EditableText, { EditableTextProps } from './src/component/editable_text'
+import Flex, { FlexProps } from './src/component/flex'
+import FlipNumber, { FlipNumberProps } from './src/component/flip_number'
+import {
+  FormBlockProps,
+  FormProps,
+  FormButtonProps,
+  FormItemProps,
+  Form,
+  FormItem,
+  FormButton,
+  FormPanel,
+  FormPanelProps,
+  FormGroup,
+  FormGroupProps,
+  FormBlock,
+} from './src/component/form'
+import FunctionSet, {
+  FunctionSetDataOptions,
+  FunctionSetProps,
+} from './src/component/function_set'
 
 export {
   Affix,
@@ -90,4 +125,36 @@ export {
   DrawerProps,
   Drawer,
   DrawerStaticOptions,
+  DropDownItem,
+  DropDownItems,
+  DropDownItemsProps,
+  DropDownItemProps,
+  DropDownProps,
+  DropDown,
+  DropSelectDataOptions,
+  DropSelectDataActionsOptions,
+  DropSelectProps,
+  DropSelect,
+  DropSelectDataColumnsOptions,
+  EditableText,
+  EditableTextProps,
+  Flex,
+  FlexProps,
+  FlipNumber,
+  FlipNumberProps,
+  FormGroupProps,
+  FormGroup,
+  FormPanelProps,
+  FormPanel,
+  FormButton,
+  FormItem,
+  Form,
+  FormItemProps,
+  FormButtonProps,
+  FormProps,
+  FormBlockProps,
+  FormBlock,
+  FunctionSetProps,
+  FunctionSetDataOptions,
+  FunctionSet,
 }
