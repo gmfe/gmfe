@@ -1,23 +1,26 @@
+.gm-color-picker-color-point {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  margin: 3px;
+  display: inline-block;
+}
+
 .gm-color-picker {
-  padding: 10px;
-  width: 276px;
+  padding: 20px;
   background: white;
   position: relative;
 
-  div {
-    margin: 3px;
-    width: 30px;
-    height: 30px;
-    border-radius: 4px;
+  .gm-color-picker-color-default-item {
+    padding: 5px 0;
     cursor: pointer;
   }
 
   .gm-color-picker-addon {
     background: rgb(240, 240, 240);
     color: rgb(152, 161, 164);
-    font-size: 16px;
     font-weight: bolder;
-    line-height: 30px;
+    line-height: 25px;
     text-align: center;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -25,24 +28,14 @@
   }
 
   input {
-    width: 109px;
-    font-size: 14px;
+    width: 70px;
     color: rgb(102, 102, 102);
     border: 0;
     outline: none;
-    height: 30px;
+    height: 25px;
     margin: 3px 3px 3px 0;
     box-shadow: rgb(240, 240, 240) 0 0 0 1px inset;
     border-radius: 0 4px 4px 0;
     padding-left: 8px;
-  }
-
-  .gm-color-picker-value {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    bottom: 15px;
-    right: 20px;
-    border-radius: 50%;
   }
 }

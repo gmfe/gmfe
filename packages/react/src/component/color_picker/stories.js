@@ -12,6 +12,6 @@ const store = observable({
 
 storiesOf('ColorPicker', module).add('default', () => (
   <ColorPicker color={store.color} onChange={value => store.setColor(value)}>
-    <button>color picker</button>
+    <button>{`color picker:${store.color}`}</button>
   </ColorPicker>
 ))
