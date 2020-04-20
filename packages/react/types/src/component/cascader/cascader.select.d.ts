@@ -28,6 +28,14 @@ interface CascaderSelectState<T> {
 declare class CascaderSelect<T> extends Component<
   CascaderSelectProps<T>,
   CascaderSelectState<T>
-> {}
+> {
+  static defaultProps: {
+    inputProps: HTMLAttributes<HTMLInputElement>
+    disabled: boolean
+    filtrable: boolean
+    onlyChildSelectable: boolean
+  }
+}
 
 export default CascaderSelect
+export { CascaderSelectProps, CascaderSelectDataOptions }

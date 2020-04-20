@@ -1,4 +1,4 @@
-import Calendar from './calendar'
-import RangeCalendar from './range_calendar'
+import Calendar, { CalendarProps } from './calendar'
+import RangeCalendar, { RangeCalendarProps } from './range_calendar'
 
-export { Calendar, RangeCalendar }
+export { Calendar, RangeCalendar, CalendarProps, RangeCalendarProps }

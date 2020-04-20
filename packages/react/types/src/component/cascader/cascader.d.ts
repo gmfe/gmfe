@@ -32,6 +32,13 @@ interface CascaderState<T> {
 declare class Cascader<C> extends Component<
   CascaderProps<C>,
   CascaderState<C>
-> {}
+> {
+  static defaultProps: {
+    onChange(value: any[]): void
+    inputProps: HTMLAttributes<HTMLInputElement>
+    disabled: boolean
+    onlyChildSelectable: boolean
+  }
+}
 
 export default Cascader

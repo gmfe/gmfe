@@ -19,6 +19,12 @@ interface CarouselState {
 }
 
 declare class Carousel extends Component<CarouselProps, CarouselState> {
+  static defaultProps: {
+    defaultIndex: number
+    delay: number
+    transitionTime: number
+  }
+
   readonly state: CarouselState
 
   setCurrentIndex

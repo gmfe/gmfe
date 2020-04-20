@@ -1,4 +1,4 @@
-import Box from './box'
+import Box, { BoxProps } from './box'
 // todo BoxForm BoxTable BoxPanel
 
-export { Box }
+export { Box, BoxProps }
