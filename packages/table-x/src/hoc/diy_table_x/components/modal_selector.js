@@ -14,31 +14,29 @@ const ModalSelector = ({ cols, onColsChange, diyGroupSorting }) => {
 
   return (
     <div>
-      {_.map(diyGroupSorting, groupName => {
+      {_.map(diyGroupSorting, (groupName) => {
         const cols = colGroup[groupName]
         return (
           <div key={groupName}>
             <div className='gm-margin-tb-5'>{groupName}</div>
             <Flex wrap>
-              {_.map(cols, item => {
+              {_.map(cols, (item) => {
                 const { show, Header, diyItemText, diyEnable, key } = item
                 const text = diyItemText || Header
 
                 return (
-                  _.isString(text) && (
-                    <Item key={key}>
-                      <Checkbox
-                        value={key}
-                        disabled={!diyEnable} // 不能编辑的字段,disable
-                        checked={show}
-                        onChange={() => {
-                          onColsChange(key, show)
-                        }}
-                      >
-                        {text}
-                      </Checkbox>
-                    </Item>
-                  )
+                  <Item key={key}>
+                    <Checkbox
+                      value={key}
+                      disabled={!diyEnable} // 不能编辑的字段,disable
+                      checked={show}
+                      onChange={() => {
+                        onColsChange(key, show)
+                      }}
+                    >
+                      {text}
+                    </Checkbox>
+                  </Item>
                 )
               })}
             </Flex>
@@ -52,7 +50,7 @@ const ModalSelector = ({ cols, onColsChange, diyGroupSorting }) => {
 ModalSelector.propTypes = {
   cols: PropTypes.array.isRequired,
   diyGroupSorting: PropTypes.array.isRequired,
-  onColsChange: PropTypes.func.isRequired
+  onColsChange: PropTypes.func.isRequired,
 }
 
 export default ModalSelector
