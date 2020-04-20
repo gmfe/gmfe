@@ -80,6 +80,10 @@ import FunctionSet, {
   FunctionSetDataOptions,
   FunctionSetProps,
 } from './src/component/function_set'
+import { RowProps, Row, ColProps, Col } from './src/component/grid'
+import IconDownUp, { IconDownUpProps } from './src/component/icon_down_up'
+import ImagePreview from './src/component/image_preview'
+import ImgUploader, { ImgUploaderProps } from './src/component/img_uploader'
 
 export {
   Affix,
@@ -157,4 +161,13 @@ export {
   FunctionSetProps,
   FunctionSetDataOptions,
   FunctionSet,
+  Row,
+  RowProps,
+  ColProps,
+  Col,
+  IconDownUp,
+  IconDownUpProps,
+  ImagePreview,
+  ImgUploader,
+  ImgUploaderProps,
 }
