@@ -84,6 +84,25 @@ import { RowProps, Row, ColProps, Col } from './src/component/grid'
 import IconDownUp, { IconDownUpProps } from './src/component/icon_down_up'
 import ImagePreview from './src/component/image_preview'
 import ImgUploader, { ImgUploaderProps } from './src/component/img_uploader'
+import Input from './src/component/input'
+import InputNumber, { InputNumberProps } from './src/component/input_number'
+import InputNumberV2, {
+  InputNumberV2Props,
+} from './src/component/input_number/number'
+import LazyImg, { LazyImgProps } from './src/component/lazy_img'
+import LevelList, {
+  LevelListProps,
+  LevelListDataOptions,
+} from './src/component/level_list'
+import LevelSelect, {
+  LevelSelectProps,
+  LevelSelectDataOptions,
+} from './src/component/level_select'
+import List, {
+  ListDataOptions,
+  ListGroupDataOptions,
+  ListProps,
+} from './src/component/list'
 
 export {
   Affix,
@@ -170,4 +189,21 @@ export {
   ImagePreview,
   ImgUploader,
   ImgUploaderProps,
+  Input,
+  InputNumber,
+  InputNumberV2,
+  InputNumberProps,
+  InputNumberV2Props,
+  LazyImg,
+  LazyImgProps,
+  LevelListProps,
+  LevelListDataOptions,
+  LevelList,
+  LevelSelect,
+  LevelSelectProps,
+  LevelSelectDataOptions,
+  ListGroupDataOptions,
+  ListDataOptions,
+  List,
+  ListProps,
 }
