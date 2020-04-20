@@ -45,7 +45,7 @@ const Popup = ({ parentRect, data, selected, onSelect }) => {
     if (diff > 0) {
       setMarginTop(-diff)
     }
-  }, [])
+  }, [parentRect.y])
 
   return (
     <div
@@ -108,11 +108,18 @@ const Item = props => {
     if (showActive === link) {
       setRect(ref.current.getBoundingClientRect())
     }
-  }, [showActive])
+  }, [showActive, link])
 
   const handleClick = e => {
     e.preventDefault()
-    onSelect(sub[0].sub[0])
+    let target = props.data
+
+    // 直达末端路由
+    while (target.sub && target.sub[0]) {
+      target = target.sub[0]
+    }
+
+    onSelect(target)
   }
 
   const handleSelect = data => {

@@ -14,7 +14,13 @@ const data = [
         sub: [
           {
             link: '/merchandise/manage/sale',
-            name: '报价单管理'
+            name: '报价单管理',
+            sub: [
+              {
+                link: '/merchandise/manage/list',
+                name: '商品库111（很多很多层）'
+              }
+            ]
           },
           {
             link: '/merchandise/manage/list',
@@ -87,6 +93,10 @@ const data = [
         ]
       }
     ]
+  },
+  {
+    name: '分拣(单层路由）',
+    link: '/supply_chain/sorting'
   }
 ]
 
