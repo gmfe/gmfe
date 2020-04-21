@@ -108,7 +108,7 @@ const Item = props => {
     if (showActive === link) {
       setRect(ref.current.getBoundingClientRect())
     }
-  }, [showActive])
+  }, [showActive, link])
 
   const handleClick = e => {
     e.preventDefault()
@@ -165,6 +165,44 @@ Item.propTypes = {
   showActive: PropTypes.string
 }
 
+// 一级菜单处理，区分默认的三级菜单
+const SingleItem = props => {
+  const {
+    data: { icon, name, link },
+    onSelect,
+    selected
+  } = props
+
+  const active = selected === link
+
+  const handleClick = e => {
+    e.preventDefault()
+    onSelect(props.data)
+  }
+
+  return (
+    <div
+      className={classNames('gm-nav-one-box', {
+        active
+      })}
+    >
+      <A href={link} className='gm-nav-one' onClick={handleClick}>
+        <div className='gm-nav-one-icon'>{icon}</div>
+        <div className='gm-nav-one-text'>{name}</div>
+      </A>
+    </div>
+  )
+}
+
+SingleItem.propTypes = {
+  /** 同Item的data,但是只有一层 */
+  data: PropTypes.object.isRequired,
+  /** 当前路由地址 */
+  selected: PropTypes.string.isRequired,
+  /** 点击第一个菜单回调，返回当前data,与Item，Nav保持一致，故不使用onClick命名 */
+  onSelect: PropTypes.func.isRequired
+}
+
 const Nav = props => {
   const {
     logo,
@@ -207,6 +245,7 @@ const Nav = props => {
 }
 
 Nav.Item = Item
+Nav.SingleItem = SingleItem
 Nav.propTypes = {
   logo: PropTypes.element,
   logoActive: PropTypes.bool,
