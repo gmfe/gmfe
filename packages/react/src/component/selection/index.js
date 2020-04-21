@@ -19,6 +19,60 @@ class Selection extends React.Component {
     onSelect(null)
   }
 
+  renderChildren = () => {
+    const {
+      isForSelect,
+      disabled,
+      onKeyDown,
+      placeholder,
+      renderSelected,
+      selected,
+      isSearching,
+      onSearch,
+      search,
+    } = this.props
+    const text = !_.isNil(selected) ? renderSelected(selected) : ''
+    if (isForSelect) {
+      return (
+        <div
+          ref={this.refInput}
+          className={classNames('form-control gm-selection-selected')}
+          disabled={disabled}
+          tabIndex={0}
+          onKeyDown={onKeyDown}
+        >
+          {text || placeholder}
+        </div>
+      )
+    }
+    if (isSearching) {
+      return (
+        <input
+          ref={this.refInput}
+          disabled={disabled}
+          type='text'
+          value={search}
+          onChange={onSearch}
+          onKeyDown={onKeyDown}
+          placeholder={placeholder}
+          className='form-control gm-selection-selected'
+        />
+      )
+    }
+    return (
+      <input
+        ref={this.refInput}
+        disabled={disabled}
+        type='text'
+        value={text}
+        onChange={onSearch}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        className='form-control gm-selection-selected'
+      />
+    )
+  }
+
   render() {
     const {
       selected,
@@ -32,13 +86,10 @@ class Selection extends React.Component {
       className,
       onKeyDown,
       isForSelect,
+      onSearch,
+      isSearching,
       ...rest
     } = this.props
-
-    const text =
-      selected !== null && selected !== undefined
-        ? renderSelected(selected)
-        : ''
 
     return (
       <div
@@ -48,33 +99,12 @@ class Selection extends React.Component {
           {
             disabled,
             'gm-selection-disabled-clean': clean,
-            'gm-selection-disabled-close': disabledClose
+            'gm-selection-disabled-close': disabledClose,
           },
           className
         )}
       >
-        {isForSelect ? (
-          <div
-            ref={this.refInput}
-            className={classNames('form-control gm-selection-selected')}
-            disabled={disabled}
-            tabIndex={0}
-            onKeyDown={onKeyDown}
-          >
-            {text || placeholder}
-          </div>
-        ) : (
-          <input
-            ref={this.refInput}
-            disabled={disabled}
-            type='text'
-            value={text}
-            onChange={_.noop}
-            onKeyDown={onKeyDown}
-            placeholder={placeholder}
-            className='form-control gm-selection-selected'
-          />
-        )}
+        {this.renderChildren()}
         {selected && !disabledClose && !clean && (
           <SVGCloseCircle
             onClick={!disabled && this.handleClear}
@@ -86,16 +116,16 @@ class Selection extends React.Component {
             className: classNames(
               'gm-selection-icon',
               {
-                'gm-selection-fun-icon': selected && !disabledClose && !clean
+                'gm-selection-fun-icon': selected && !disabledClose && !clean,
               },
               funIcon.props.className
-            )
+            ),
           })
         ) : (
           <IconDownUp
             active={(className || '').includes('gm-popover-active')}
             className={classNames('gm-selection-icon gm-selection-down-up', {
-              'gm-selection-fun-icon': selected && !disabledClose && !clean
+              'gm-selection-fun-icon': selected && !disabledClose && !clean,
             })}
           />
         )}
@@ -122,11 +152,16 @@ Selection.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   /** 给 Select 定制的 */
-  isForSelect: PropTypes.bool
+  isForSelect: PropTypes.bool,
+  /* 筛选 */
+  search: PropTypes.string,
+  onSearch: PropTypes.func,
+  /* 是否正在搜索 */
+  isSearching: PropTypes.bool,
 }
 
 Selection.defaultProps = {
-  renderSelected: item => item.text
+  renderSelected: (item) => item.text,
 }
 
 export default Selection

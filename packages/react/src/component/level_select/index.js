@@ -6,22 +6,19 @@ import _ from 'lodash'
 import { getLevel } from '../level_list/util'
 import Selection from '../selection'
 import Flex from '../flex'
+import { pinyin } from '@gm-common/tool'
 
 // TODO
 // onlySelectLeaf
-
 class LevelSelect extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      willActiveSelected: props.selected,
-      search: ''
-    }
-
-    this.refSelection = React.createRef()
-    this.popoverRef = React.createRef()
+  state = {
+    willActiveSelected: this.props.selected,
+    search: '',
+    isSearching: false,
   }
+
+  refSelection = React.createRef()
+  popoverRef = React.createRef()
 
   apiDoFocus = () => {
     this.refSelection.current.apiDoFocus()
@@ -41,7 +38,7 @@ class LevelSelect extends React.Component {
     _.each(selected, (v, i) => {
       const match = _.find(
         i === 0 ? data : items[i - 1].children,
-        item => item.value === v
+        (item) => item.value === v
       )
       items.push(match)
     })
@@ -55,7 +52,7 @@ class LevelSelect extends React.Component {
     return renderSelected(items)
   }
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     const { data, onKeyDown } = this.props
     const { willActiveSelected } = this.state
 
@@ -102,7 +99,7 @@ class LevelSelect extends React.Component {
         const arr = level[newWill.length - 1]
         let index = _.findIndex(
           arr,
-          v => v.value === newWill[newWill.length - 1]
+          (v) => v.value === newWill[newWill.length - 1]
         )
 
         if (event.key === 'ArrowDown') {
@@ -127,19 +124,22 @@ class LevelSelect extends React.Component {
     }
 
     this.setState({
-      willActiveSelected: newWill
+      willActiveSelected: newWill,
     })
   }
 
-  handleWillActiveSelect = willActiveSelected => {
+  handleWillActiveSelect = (willActiveSelected) => {
     this.setState({
-      willActiveSelected
+      willActiveSelected,
     })
   }
 
-  handleSelect = selected => {
+  handleSelect = (selected) => {
     const { onSelect } = this.props
-
+    this.setState({
+      isSearching: false,
+      search: '',
+    })
     this.popoverRef.current.apiDoSetActive(false)
 
     onSelect(selected)
@@ -164,9 +164,31 @@ class LevelSelect extends React.Component {
     )
   }
 
-  handleSelectionSelect = selected => {
+  handleSelectionSelect = (selected) => {
     const { onSelect } = this.props
     onSelect(selected === null ? [] : selected)
+    this.setState({
+      isSearching: false,
+      search: '',
+    })
+  }
+
+  handleSearch = (event) => {
+    this.setState(
+      {
+        isSearching: true,
+        search: event.target.value,
+      },
+      () => {
+        const { search } = this.state
+        const { data } = this.props
+        const path = getAllPath(data, search)
+        const debounceSetWillActiveSelect = _.debounce((willActiveSelected) => {
+          this.setState({ willActiveSelected })
+        }, 500)
+        debounceSetWillActiveSelect(path)
+      }
+    )
   }
 
   renderTarget = () => {
@@ -179,6 +201,7 @@ class LevelSelect extends React.Component {
       right,
       ...rest
     } = this.props
+    const { search, isSearching } = this.state
 
     // 注意转换 selected onSelect renderSelected
     return (
@@ -187,9 +210,12 @@ class LevelSelect extends React.Component {
         ref={this.refSelection}
         selected={selected.length === 0 ? null : selected}
         onSelect={this.handleSelectionSelect}
-        renderSelected={() => this.getSelectItemText()}
+        renderSelected={this.getSelectItemText}
         onKeyDown={this.handleKeyDown}
         disabled={disabled}
+        search={search}
+        onSearch={this.handleSearch}
+        isSearching={isSearching}
       />
     )
   }
@@ -229,12 +255,72 @@ LevelSelect.propTypes = {
   popoverType: PropTypes.oneOf(['focus', 'realFocus']),
   right: PropTypes.bool,
   // 事件
-  onKeyDown: PropTypes.func
+  onKeyDown: PropTypes.func,
 }
 
 LevelSelect.defaultProps = {
-  renderSelected: item => item.map(v => v.text).join(','),
-  onKeyDown: _.noop
+  renderSelected: (item) => item.map((v) => v.text).join(','),
+  onKeyDown: _.noop,
 }
 
 export default LevelSelect
+
+/**
+ * @param list {*[]}
+ * @param searchWord {string}
+ * @returns {*[]}
+ */
+function getAllPath(list, searchWord) {
+  if (!searchWord) {
+    return []
+  }
+  /**
+   * @param list {*[]}
+   * @param path {*[]?}
+   * @returns {*[]}
+   */
+  function deepCloneList(list, path) {
+    return list.map((item) => {
+      const { value, children, ...rest } = item
+      let _path = [value]
+      if (path) {
+        _path = [...path, ..._path]
+      }
+      const result = {
+        value,
+        _path,
+        ...rest,
+      }
+      if (children) {
+        result.children = deepCloneList(children, _path)
+      }
+      return result
+    })
+  }
+  const cloneList = deepCloneList(list)
+  let maxLengthPath = []
+  /**
+   * @param list {*[]}
+   * @param searchText {string}
+   */
+  function findMaxLengthPath(list, searchText) {
+    list.forEach((item) => {
+      const firstLetter = pinyin(item.text, 'first_letter')
+      const commonLetter = pinyin(item.text)
+      if (
+        (item.text.indexOf(searchText) > -1 ||
+          firstLetter.indexOf(searchText) > -1 ||
+          commonLetter.indexOf(searchText) > -1) &&
+        maxLengthPath.length < item._path.length
+      ) {
+        maxLengthPath = item._path
+      }
+
+      if (item.children) {
+        findMaxLengthPath(item.children, searchText)
+      }
+    })
+  }
+  findMaxLengthPath(cloneList, searchWord)
+  return maxLengthPath
+}

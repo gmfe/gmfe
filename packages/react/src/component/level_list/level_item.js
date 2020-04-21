@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import SVGRightSmall from '../../../svg/right-small.svg'
 
-const Item = props => {
+const Item = (props) => {
   const {
     title,
     data,
@@ -14,10 +14,10 @@ const Item = props => {
     onListItemMouseEnter,
     willActiveSelected,
     className,
-    style
+    style,
   } = props
 
-  const renderItem = item => {
+  const renderItem = (item) => {
     const hasChildren = item.children && !!item.children.length
     return (
       <div className='gm-position-relative'>
@@ -29,12 +29,14 @@ const Item = props => {
     )
   }
 
-  const getItemProps = item => ({
-    onMouseEnter: () => onListItemMouseEnter(item)
+  const getItemProps = (item) => ({
+    onMouseEnter: () => onListItemMouseEnter(item),
   })
 
-  const willActiveIndex = _.findIndex(data, v => v.value === willActiveSelected)
-
+  const willActiveIndex = _.findIndex(
+    data,
+    (v) => v.value === willActiveSelected
+  )
   return (
     <div className={classNames('gm-level-list-item ', className)} style={style}>
       {title && <div className='gm-level-list-item-title'>{title}</div>}
@@ -45,6 +47,7 @@ const Item = props => {
         renderItem={renderItem}
         getItemProps={getItemProps}
         willActiveIndex={willActiveIndex}
+        isScrollTo
       />
     </div>
   )
@@ -58,7 +61,7 @@ Item.propTypes = {
   onListItemMouseEnter: PropTypes.func,
   willActiveSelected: PropTypes.any,
   className: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
 }
 
 export default Item
