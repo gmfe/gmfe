@@ -90,6 +90,11 @@ const data = [
   }
 ]
 
+const application = {
+  name: '应用中心',
+  link: '/application_center'
+}
+
 const store = observable({
   selected: '/merchandise/manage/tax_rate',
   setSelect(selected) {
@@ -99,7 +104,7 @@ const store = observable({
 })
 
 storiesOf('Nav', module).add('default', () => (
-  <div style={{ height: '400px' }}>
+  <div style={{ height: '700px' }}>
     <Nav
       logo={
         <img
@@ -114,6 +119,13 @@ storiesOf('Nav', module).add('default', () => (
       data={data}
       selected={store.selected}
       onSelect={store.setSelect.bind(store)}
+      other={
+        <Nav.SingleItem
+          data={application}
+          selected={store.selected}
+          onSelect={store.setSelect.bind(store)}
+        />
+      }
     >
       点击显示 loading
     </Nav>
