@@ -1,6 +1,15 @@
 import { useEffect } from 'react'
 
-export function useMutationObserver(ref, callback, options) {
+export function useMutationObserver(
+  ref,
+  callback,
+  options = {
+    attributes: true,
+    characterData: true,
+    subtree: true,
+    childList: true
+  }
+) {
   useEffect(() => {
     if (ref.current) {
       const observer = new window.MutationObserver(callback)

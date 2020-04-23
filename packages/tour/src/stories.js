@@ -125,16 +125,24 @@ const SelectTableX = selectTableXHOC(TableX)
 
 storiesOf('Tour|Tour', module)
   .add('默认', () => {
+    const [start, setStart] = useState(false)
     return (
       <BoxTable
         action={
-          <Button
-            className='btn-primary'
-            data-id='button-test'
-            onClick={() => {}}
-          >
-            新建车间
-          </Button>
+          <>
+            <Button
+              className='btn-primary'
+              data-id='button-test'
+              onClick={() => {
+                setStart(true)
+              }}
+            >
+              新建车间
+            </Button>
+            <div data-id='button-start'>
+              {start && <Button >start</Button>}
+            </div>
+          </>
         }
       >
         <SelectTableX
@@ -162,9 +170,11 @@ storiesOf('Tour|Tour', module)
         />
         <Suspense fallback={<Fragment />}>
           <Tour
+            disableInteraction={false}
             steps={[
               {
                 selector: '[data-id="button-test"]',
+                observe: '[data-id="button-start"]',
                 content:
                   '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'
               },
@@ -172,6 +182,7 @@ storiesOf('Tour|Tour', module)
                 selector: '.gm-table-x-tbody .gm-checkbox.gm-table-x-select',
                 content:
                   'checkbox 测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
+                stepInteraction: true,
                 actionAfter: async function(node) {
                   if (node) {
                     console.log(1111, node)

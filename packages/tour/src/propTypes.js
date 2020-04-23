@@ -23,6 +23,7 @@ export const propTypes = {
       selector: PropTypes.string,
       content: PropTypes.oneOfType([PropTypes.node, PropTypes.element])
         .isRequired,
+      observe: PropTypes.string,
       position: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.number),
         PropTypes.oneOf(['top', 'right', 'bottom', 'left', 'center'])
