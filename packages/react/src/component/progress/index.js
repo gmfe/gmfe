@@ -32,7 +32,7 @@ class ProgressBar extends React.Component {
                 'gm-progress-bar-success': status === 'success',
                 'gm-progress-bar-exception': status === 'exception'
               })}
-              style={{ width: `${percentage}%`, backgroundColor: strokeColor }}
+              style={{ width: `${percentage}%`, background: strokeColor }}
             >
               {showText && textInside && !textInsideFix && (
                 <div
