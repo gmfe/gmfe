@@ -6,7 +6,7 @@ import { Flex, Modal, Button } from '@gmfe/react'
 
 const defaultOptions = {
   aspectRatio: 1,
-  viewMode: 1
+  viewMode: 1,
 }
 
 // 简单判断
@@ -31,13 +31,13 @@ const Cropper = ({ file, url, options, croppedOptions, onCancel, onOK }) => {
     cropperRef.current = new CropperJS(dom, {
       ...defaultOptions,
       ...options,
-      preview: domPreview
+      preview: domPreview,
     })
   }, [])
 
   const handleOK = () => {
     cropperRef.current.getCroppedCanvas(croppedOptions).toBlob(
-      blob => {
+      (blob) => {
         onOK(blob)
       },
       url ? getType(url) || 'image/jpeg' : file.type
@@ -60,9 +60,7 @@ const Cropper = ({ file, url, options, croppedOptions, onCancel, onOK }) => {
         </div>
       </Flex>
       <div className='text-right gm-margin-top-10'>
-        <Button onClick={onCancel}>
-          取消
-        </Button>
+        <Button onClick={onCancel}>取消</Button>
         <div className='gm-gap-10' />
         <Button type='primary' onClick={handleOK}>
           确定
@@ -78,27 +76,27 @@ Cropper.propTypes = {
   options: PropTypes.object,
   croppedOptions: PropTypes.shape({
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
   }),
   onCancel: PropTypes.func.isRequired,
-  onOK: PropTypes.func.isRequired
+  onOK: PropTypes.func.isRequired,
 }
 
 Cropper.SIZE = {
   SKU: { width: 720, height: 720 },
-  LOGO: { width: 720, height: 720 }
+  LOGO: { width: 720, height: 720 },
 }
 
 // file url options
 // return promise blob
-Cropper.render = props => {
+Cropper.render = (props) => {
   return new Promise((resolve, reject) => {
     const handleCancel = () => {
       Modal.hide()
       reject(new Error('cancel'))
     }
 
-    const handleOK = data => {
+    const handleOK = (data) => {
       Modal.hide()
       resolve(data)
     }
@@ -107,9 +105,9 @@ Cropper.render = props => {
       title: '编辑头像',
       children: <Cropper {...props} onCancel={handleCancel} onOK={handleOK} />,
       style: {
-        width: '520px'
+        width: '520px',
       },
-      onHide: handleCancel
+      onHide: handleCancel,
     })
   })
 }
