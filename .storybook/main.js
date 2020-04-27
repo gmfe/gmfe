@@ -1,6 +1,8 @@
-const webpackFinal = config => {
+const webpackFinal = (config) => {
+  config.resolve.extensions = ['.tsx', '.ts', '.js', '.json']
+
   config.module.rules[0].include.push(/gm-/)
-  config.module.rules[0].exclude = function(filepath) {
+  config.module.rules[0].exclude = function (filepath) {
     return filepath.includes('/node_modules/')
   }
 
@@ -8,7 +10,7 @@ const webpackFinal = config => {
     test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/,
     loader:
       './node_modules/@storybook/core/node_modules/file-loader/dist/cjs.js',
-    query: { name: 'static/media/[name].[hash:8].[ext]' }
+    query: { name: 'static/media/[name].[hash:8].[ext]' },
   }
 
   config.module.rules.push({
@@ -18,31 +20,31 @@ const webpackFinal = config => {
         loader: 'url-loader',
         options: {
           limit: 1024,
-          name: 'static/media/font/[name].[hash:8].[ext]'
-        }
-      }
-    ]
+          name: 'static/media/font/[name].[hash:8].[ext]',
+        },
+      },
+    ],
   })
 
   config.module.rules.push({
     test: /\.less$/,
     use: [
       {
-        loader: 'style-loader'
+        loader: 'style-loader',
       },
       {
-        loader: 'css-loader'
+        loader: 'css-loader',
       },
       {
-        loader: 'less-loader'
-      }
-    ]
+        loader: 'less-loader',
+      },
+    ],
   })
 
   config.module.rules.push({
     test: /\.stories\.jsx?$/,
     loaders: [require.resolve('@storybook/source-loader')],
-    enforce: 'pre'
+    enforce: 'pre',
   })
 
   config.module.rules.unshift({
@@ -55,11 +57,17 @@ const webpackFinal = config => {
           expandProps: 'start',
           svgProps: {
             fill: 'currentColor',
-            className: "{'gm-svg-icon ' + (props.className || '')}"
-          }
-        }
-      }
-    ]
+            className: "{'gm-svg-icon ' + (props.className || '')}",
+          },
+        },
+      },
+    ],
+  })
+
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    loader: 'babel-loader',
+    options: { cacheDirectory: true },
   })
 
   return config
@@ -81,7 +89,7 @@ module.exports = {
     '../packages/table/src/**/*stories.js',
     '../packages/table-x/src/**/*stories.js',
     '../packages/tour/src/**/*stories.js',
-    '../demo/**/*stories.js'
+    '../demo/**/*stories.js',
   ],
-  webpackFinal
+  webpackFinal,
 }
