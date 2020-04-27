@@ -1,131 +1,168 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import Flex from '../flex'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
+import { useMemo } from 'react'
 
-class Carousel extends React.Component {
-  constructor(props) {
-    super(props)
+const Footer = ({ count, onSelect, onCancelSelect, currentIndex }) => {
+  const _countArray = _.range(count)
 
-    this.state = {
-      currentIndex: props.defaultIndex
-    }
+  return (
+    <ul className='gm-carousel-fade-footer'>
+      {_.map(_countArray, (value, index) => {
+        return (
+          <li
+            className={classNames(
+              { 'gm-carousel-fade-footer-li-hover': currentIndex === index },
+              'gm-carousel-fade-footer-li'
+            )}
+            key={index}
+            onMouseOver={() => onSelect(index)}
+            onMouseLeave={onCancelSelect}
+          />
+        )
+      })}
+    </ul>
+  )
+}
 
-    this.timer = null
+Footer.propTypes = {
+  currentIndex: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onCancelSelect: PropTypes.func.isRequired
+}
+
+const Items = ({ transitionTime, currentIndex, children }) => {
+  const fadeTransitionStyle = {
+    transition: `all ${transitionTime}ms ease-in-out`
   }
 
-  componentDidMount() {
-    if (React.Children.count(this.props.children) > 0) {
-      this.startCarousel()
+  return (
+    <>
+      {React.Children.map(children, (thisArg, index) => {
+        return React.cloneElement(thisArg, {
+          style: Object.assign({}, thisArg.props.style, fadeTransitionStyle),
+          className: classNames(
+            'gm-carousel-fade-item',
+            { 'gm-carousel-fade-item-active': currentIndex === index },
+            thisArg.props.className
+          ),
+          key: index
+        })
+      })}
+    </>
+  )
+}
+
+Items.propTypes = {
+  transitionTime: PropTypes.number.isRequired,
+  currentIndex: PropTypes.number.isRequired
+}
+
+const Carousel = props => {
+  const {
+    onIndexChange,
+    className,
+    transitionTime,
+    defaultIndex,
+    delay,
+    children,
+    ...rest
+  } = props
+
+  const [currentIndex, setCurrentIndex] = useState(defaultIndex)
+  const timerRef = useRef(null)
+
+  const _children = useMemo(() => {
+    return React.Children.toArray(children).filter(v => v)
+  }, [children])
+
+  const _childCount = useMemo(() => {
+    return React.Children.count(_children)
+  }, [_children])
+
+  useEffect(() => {
+    if (_childCount > 0) {
+      startCarousel()
     }
-  }
+  }, [_childCount])
 
-  componentWillUnmount() {
-    clearInterval(this.timer)
-  }
-
-  setCurrentIndex = () => {
-    let index = this.state.currentIndex
-
-    if (index === React.Children.count(this.props.children) - 1) {
-      index = 0
-    } else {
-      index++
+  useEffect(() => {
+    return () => {
+      clearInterval(timerRef.current)
     }
+  }, [])
 
-    this.setState({
-      currentIndex: index
+  useEffect(() => {
+    if (onIndexChange && typeof onIndexChange === 'function') {
+      onIndexChange(currentIndex)
+    }
+  }, [currentIndex, onIndexChange])
+
+  const setTimerCurrentIndex = () => {
+    setCurrentIndex(prevIndex => {
+      let index = prevIndex
+
+      if (index === _childCount - 1) {
+        index = 0
+      } else {
+        index++
+      }
+
+      return index
     })
   }
 
-  startCarousel = () => {
-    const { delay } = this.props
-
-    this.timer = setInterval(this.setCurrentIndex, delay)
+  const startCarousel = () => {
+    clearInterval(timerRef.current)
+    timerRef.current = setInterval(setTimerCurrentIndex, delay)
   }
 
-  handleStopCarousel = () => {
-    clearInterval(this.timer)
+  const handleStopCarousel = () => {
+    clearInterval(timerRef.current)
+    timerRef.current = null
   }
 
-  handleSelect = index => {
-    this.handleStopCarousel()
-
-    this.setState({
-      currentIndex: index
-    })
+  const handleSelect = index => {
+    handleStopCarousel()
+    setCurrentIndex(index)
   }
 
-  handleCancelSelect = () => {
-    this.startCarousel()
+  const handleCancelSelect = () => {
+    startCarousel()
   }
 
-  renderChildren = () => {
-    const { children, transitionTime } = this.props
-    const { currentIndex } = this.state
-    const fadeTransitionStyle = {
-      transition: `all ${transitionTime}ms ease-in-out`
-    }
+  return (
+    <Flex
+      {...rest}
+      justifyCenter
+      className={classNames('gm-carousel-fade', className)}
+      onMouseOver={handleStopCarousel}
+      onMouseLeave={handleCancelSelect}
+    >
+      <Items currentIndex={currentIndex} transitionTime={transitionTime}>
+        {_children}
+      </Items>
 
-    return React.Children.map(children, (thisArg, index) => {
-      return React.cloneElement(thisArg, {
-        style: Object.assign({}, thisArg.props.style, fadeTransitionStyle),
-        className: classNames(
-          'gm-carousel-fade-item',
-          { 'gm-carousel-fade-item-active': currentIndex === index },
-          thisArg.props.className
-        ),
-        key: index
-      })
-    })
-  }
-
-  renderFooterController = () => {
-    const { children } = this.props
-    const { currentIndex } = this.state
-
-    return (
-      <ul className='gm-carousel-fade-footer'>
-        {React.Children.map(children, (value, index) => {
-          return (
-            <li
-              className={classNames(
-                { 'gm-carousel-fade-footer-li-hover': currentIndex === index },
-                'gm-carousel-fade-footer-li'
-              )}
-              key={index}
-              onMouseOver={this.handleSelect.bind(this, index)}
-              onMouseLeave={this.handleCancelSelect}
-            />
-          )
-        })}
-      </ul>
-    )
-  }
-
-  render() {
-    const { className, transitionTime, defaultIndex, ...rest } = this.props
-
-    return (
-      <Flex
-        justifyCenter
-        className={classNames('gm-carousel-fade', className)}
-        onMouseOver={this.handleStopCarousel}
-        onMouseLeave={this.handleCancelSelect}
-        {...rest}
-      >
-        {this.renderChildren()}
-        {this.renderFooterController()}
-      </Flex>
-    )
-  }
+      <Footer
+        count={_childCount}
+        onSelect={handleSelect}
+        onCancelSelect={handleCancelSelect}
+        currentIndex={currentIndex}
+      />
+    </Flex>
+  )
 }
 
 Carousel.propTypes = {
   defaultIndex: PropTypes.number,
   delay: PropTypes.number,
   transitionTime: PropTypes.number,
-  children: PropTypes.array,
+  /** 支持element元素 */
+  children: PropTypes.arrayOf(PropTypes.element),
+  onIndexChange: PropTypes.func,
   className: PropTypes.string
 }
 
