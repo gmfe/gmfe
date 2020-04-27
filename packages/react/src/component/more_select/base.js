@@ -100,12 +100,17 @@ class Base extends React.Component {
   }
 
   handleSelected = values => {
-    const { onSelect, data, multiple } = this.props
+    const { onSelect, data, multiple, selected } = this.props
 
     const items = []
     _.each(data, group => {
       _.each(group.children, item => {
         if (values.includes(item.value)) {
+          items.push(item)
+        }
+      })
+      _.each(selected, item => {
+        if (_.every(group.children, v => v.value !== item.value)) {
           items.push(item)
         }
       })

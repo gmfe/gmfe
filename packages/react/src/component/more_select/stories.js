@@ -212,6 +212,31 @@ storiesOf('MoreSelect', module)
       }}
     />
   ))
+  .add('multiple onSearch', () => {
+    return (
+      <MoreSelect
+        multiple
+        data={store.data}
+        selected={store.mulSelected}
+        onSelect={selected => {
+          store.setMulSelected(selected)
+        }}
+        onSearch={searchWord => {
+          store.data = [
+            {
+              value: 7,
+              text:
+                '西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡西乡'
+            },
+            {
+              value: 8,
+              text: '西乡8'
+            }
+          ]
+        }}
+      />
+    )
+  })
   .add('group', () => (
     <MoreSelect
       isGroupList
