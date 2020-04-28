@@ -1,4 +1,4 @@
-import { CSSProperties, PropsWithChildren, ReactElement, UIEvent } from 'react'
+import { CSSProperties, FC, PropsWithChildren, ReactNode, UIEvent } from 'react'
 import { Column } from 'react-table'
 
 interface TableXProps<Original extends { [key: string]: any }> {
@@ -18,6 +18,5 @@ interface TableXProps<Original extends { [key: string]: any }> {
   style?: CSSProperties
 }
 
-declare const TableX: <P>(
-  props: PropsWithChildren<TableXProps<P>>
-) => ReactElement
+declare const TableX: FC<TableXProps<any>>
+export default TableX
