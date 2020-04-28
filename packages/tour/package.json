@@ -1,12 +1,13 @@
 {
   "name": "@gmfe/tour",
-  "version": "2.11.0-beta.4",
+  "version": "2.11.0-beta.5",
   "description": "> TODO: description",
   "author": "zhongsink <zhongink@gmail.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "license": "ISC",
   "main": "src/index.js",
   "module": "src/index.js",
+  "types": "types/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -32,7 +33,7 @@
     "ts-config-gm-react-app": "^3.0.5"
   },
   "devDependencies": {
-    "@gmfe/react": "^2.11.0-beta.4",
-    "@gmfe/table-x": "^2.11.0-beta.4"
+    "@gmfe/react": "^2.11.0-beta.5",
+    "@gmfe/table-x": "^2.11.0-beta.5"
   }
 }
