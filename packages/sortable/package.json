@@ -10,6 +10,7 @@
   },
   "main": "src/index.js",
   "module": "src/index.js",
+  "types": "types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "@gmfe/react": "^2.11.0-beta.4",
+    "@types/sortablejs": "^1.10.4",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "sortablejs": "^1.10.1",

@@ -10,13 +10,13 @@ const GroupSortable = ({
   itemProps,
   tag,
   options,
-  children
+  children,
 }) => {
   const refData = useRef([])
 
   const flatData = _.flatten(data)
   const items = _.map(data, (subData, i) => {
-    const handleSubChange = newSubData => {
+    const handleSubChange = (newSubData) => {
       // 变化的才会触发 change，
       // 单个列表内拖动只一次 change，此时 newSubData 长度和原先一样
       // 如果列表之间拖动，仅有两次 change，此时 newSubData 长度和原先不一样
@@ -37,7 +37,6 @@ const GroupSortable = ({
           const newData = refData.current.slice()
           // 还原
           refData.current = []
-
           onChange(newData)
         }
       }
@@ -46,14 +45,14 @@ const GroupSortable = ({
     return (
       <Sortable
         data={flatData}
-        groupValues={_.map(subData, v => v.value)}
+        groupValues={_.map(subData, (v) => v.value)}
         onChange={handleSubChange}
         renderItem={renderItem}
         itemProps={itemProps}
         tag={tag}
         options={{
           group: 'group',
-          ...options
+          ...options,
         }}
       />
     )
@@ -66,7 +65,7 @@ GroupSortable.propTypes = {
   ...Sortable.propTypes,
   /** 和 Sortable 不同的是，data 是一个二维数组 */
   data: PropTypes.arrayOf(PropTypes.array).isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 }
 
 export default GroupSortable
