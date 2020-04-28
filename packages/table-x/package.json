@@ -10,6 +10,7 @@
   },
   "main": "src/index.js",
   "module": "src/index.js",
+  "types": "types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
@@ -28,6 +29,7 @@
     "@gm-common/tool": "^2.1.0",
     "@gmfe/locales": "^2.11.0-beta.7",
     "@gmfe/react": "^2.11.0-beta.7",
+    "@types/react-table": "^7.0.16",
     "classnames": "^2.2.5",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
