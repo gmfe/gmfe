@@ -1,7 +1,9 @@
 import { FC } from 'react'
-import { TableXProps } from '../base/base'
 
-declare function editTableXHOC<Original extends { [keys: string]: any }>(
-  Component: FC<TableXProps<Original>>
-): FC<TableXProps<Original>>
+interface PropsGeneric<Props extends { [key: string]: any }> {}
+
+declare function editTableXHOC<
+  Original extends { [key: string]: any },
+  Props extends PropsGeneric<Original>
+>(Component: FC<Props>): FC<Props>
 export default editTableXHOC

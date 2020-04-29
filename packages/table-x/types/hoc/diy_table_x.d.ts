@@ -1,6 +1,5 @@
 import { FC, ReactNode } from 'react'
 import { Column } from 'react-table'
-import { TableXProps } from '../base/base'
 
 interface DiyTableColumns {
   diyItemText: ReactNode
@@ -10,13 +9,16 @@ interface DiyTableColumns {
   [key: string]: any
 }
 
+interface PropsGeneric<Original extends { [key: string]: any }> {}
+
 interface DiyTableXProps<Original extends DiyTableColumns> {
   id: string
   diyGroupSorting: string[]
   columns: Column<Original>
 }
 
-declare function diyTableXHOC<Original extends DiyTableColumns>(
-  Component: FC<TableXProps<Original>>
-): FC<TableXProps<Original> & DiyTableXProps<Original>>
+declare function diyTableXHOC<
+  Original extends DiyTableColumns,
+  Props extends PropsGeneric<Original>
+>(Component: FC<Props>): FC<Props & DiyTableXProps<Original>>
 export default diyTableXHOC

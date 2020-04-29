@@ -12,7 +12,10 @@ interface SelectTableXProps<Original extends { [keys: string]: any }> {
   fixedSelect?: boolean
 }
 
-declare function selectTableXHOC<Original>(
-  Component: FC<TableXProps<Original>>
-): FC<TableXProps<Original> & SelectTableXProps<Original>>
+interface PropsGeneric<Original extends { [key: string]: any }> {}
+
+declare function selectTableXHOC<
+  Original extends { [key: string]: any },
+  Props extends PropsGeneric<Original>
+>(Component: FC<Props>): FC<Props & SelectTableXProps<Original>>
 export default selectTableXHOC

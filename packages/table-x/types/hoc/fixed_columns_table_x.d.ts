@@ -1,11 +1,14 @@
 import { FC } from 'react'
-import { TableXProps } from '../base/base'
 
 interface FixedColumnsTableXProps {
   fixed?: 'left' | 'right'
+  [key: string]: any
 }
 
-declare function fixedColumnsTableXHOC<Original extends { [key: string]: any }>(
-  Component: FC<TableXProps<Original>>
-): FC<TableXProps<Original> & FixedColumnsTableXProps>
+interface PropsGeneric<Original extends FixedColumnsTableXProps> {}
+
+declare function fixedColumnsTableXHOC<
+  Original extends FixedColumnsTableXProps,
+  Props extends PropsGeneric<Original>
+>(Component: FC<Props>): FC<Props>
 export default fixedColumnsTableXHOC

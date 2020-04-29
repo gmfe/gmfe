@@ -1,11 +1,13 @@
 import { FC } from 'react'
-import { TableXProps } from '../base/base'
 
 interface SortableTableXProps<Original extends { [key: string]: any }> {
   onSortChange(data: Original[]): void
 }
 
-declare function sortableTableX<Original extends { [key: string]: any }>(
-  Component: FC<TableXProps<Original>>
-): FC<TableXProps<Original> & SortableTableXProps<Original>>
+interface PropsGeneric<Original extends { [key: string]: any }> {}
+
+declare function sortableTableX<
+  Original extends { [key: string]: any },
+  Props extends PropsGeneric<Original>
+>(Component: FC<Props>): FC<Props & SortableTableXProps<Original>>
 export default sortableTableX

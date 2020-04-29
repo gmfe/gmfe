@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import { TableXProps } from '../base/base'
 
 interface ExpandTableXProps<Original extends { [key: string]: any }> {
   SubComponent: (original: Original) => ReactNode
@@ -8,7 +7,10 @@ interface ExpandTableXProps<Original extends { [key: string]: any }> {
   onExpand?(expanded: { [key: string]: boolean }): void
 }
 
-declare function expandTableXHOC<Original>(
-  Component: FC<TableXProps<Original>>
-): FC<TableXProps<Original> & ExpandTableXProps<Original>>
+interface PropsGeneric<Original extends { [key: string]: any }> {}
+
+declare function expandTableXHOC<
+  Original extends { [key: string]: any },
+  Props extends PropsGeneric<Original>
+>(Component: FC<Props>): FC<Props & ExpandTableXProps<Original>>
 export default expandTableXHOC

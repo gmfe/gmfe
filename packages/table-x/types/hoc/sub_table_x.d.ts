@@ -1,12 +1,13 @@
 import { FC } from 'react'
-import { TableXProps } from '../base/base'
 
 interface SubTableXProps {
   subTableIndent?: number
 }
 
-declare function subTableXHOC<Original extends { [key: string]: any }>(
-  Component: FC<TableXProps<Original>>
-): FC<TableXProps<Original> & SubTableXProps>
+interface PropsGeneric<Original extends { [key: string]: any }> {}
 
+declare function subTableXHOC<
+  Original extends { [key: string]: any },
+  Props extends PropsGeneric<Original>
+>(Component: FC<Props>): FC<Props & SubTableXProps>
 export default subTableXHOC
