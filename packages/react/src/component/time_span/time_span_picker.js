@@ -22,6 +22,8 @@ const TimeSpanPicker = props => {
     className,
     isInPopup,
     enabledEndTimeOfDay,
+    beginTime,
+    endTime,
     ...rest
   } = props
 
@@ -37,6 +39,8 @@ const TimeSpanPicker = props => {
 
   const popup = (
     <TimeSpan
+      beginTime={beginTime}
+      endTime={endTime}
       min={min}
       max={max}
       span={span}
@@ -84,6 +88,12 @@ TimeSpanPicker.propTypes = {
   disabledSpan: PropTypes.func,
   /** 渲染时间文本展示格式，默认为 HH:mm */
   renderItem: PropTypes.func,
+
+  /** 自定义渲染的开始时间, 不传默认开始时间从 00:00 开始 */
+  beginTime: PropTypes.number,
+  /** 自定义渲染的结束时间 */
+  endTime: PropTypes.number,
+
   className: PropTypes.string,
   style: PropTypes.object,
   children: PropTypes.any,
