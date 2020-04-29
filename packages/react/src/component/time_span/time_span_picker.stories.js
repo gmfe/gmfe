@@ -8,9 +8,12 @@ const store = observable({
   date: moment()
     .startOf('day')
     .toDate(),
+  customDate: moment().hour(10).minute(30).toDate(),
   setDate(date) {
-    console.log(date)
     this.date = date
+  },
+  setCustomDate(date) {
+    this.customDate = date
   }
 })
 
@@ -51,4 +54,18 @@ storiesOf('TimeSpanPicker', module)
         {store.date ? moment(store.date).format('HH:mm') : '请点击选择'}
       </span>
     </TimeSpanPicker>
+  ))
+
+  .add('自定义开始跟结束时间', () => (
+    <TimeSpanPicker
+      date={store.customDate}
+      beginTime={moment()
+        .hour(8)
+        .minute(30)}
+      endTime={moment()
+        .hour(22)
+        .minute(30)}
+      span={60 * 60 * 1000}
+      onChange={date => store.setCustomDate(date)}
+    />
   ))

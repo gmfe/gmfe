@@ -54,3 +54,13 @@ storiesOf('TimeSpan', module)
       onSelect={date => store3.setDate(date)}
     />
   ))
+
+  .add('自定义开始跟结束时间', () => (
+    <TimeSpan
+      beginTime={moment().hour(8).minute(30)}
+      endTime={moment().hour(22).minute(30)}
+      span={60 * 60 * 1000}
+      selected={store3.date}
+      onSelect={date => store3.setDate(date)}
+    />
+  ))
