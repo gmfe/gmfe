@@ -159,9 +159,9 @@ TimeSpan.propTypes = {
   /** 点击选择回调，传入参数为Date对象 */
   onSelect: PropTypes.func,
   /** 自定义渲染的开始时间, 不传默认开始时间从 00:00 开始 */
-  beginTime: PropTypes.number,
+  beginTime: PropTypes.object,
   /** 自定义渲染的结束时间 */
-  endTime: PropTypes.number,
+  endTime: PropTypes.object,
 
   /** 不知道取啥名字, 目前是日期组件选择时间为了展示 24:00 用 */
   enabledEndTimeOfDay: PropTypes.bool

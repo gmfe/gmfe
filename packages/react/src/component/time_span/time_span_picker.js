@@ -90,9 +90,9 @@ TimeSpanPicker.propTypes = {
   renderItem: PropTypes.func,
 
   /** 自定义渲染的开始时间, 不传默认开始时间从 00:00 开始 */
-  beginTime: PropTypes.number,
+  beginTime: PropTypes.object,
   /** 自定义渲染的结束时间 */
-  endTime: PropTypes.number,
+  endTime: PropTypes.object,
 
   className: PropTypes.string,
   style: PropTypes.object,
