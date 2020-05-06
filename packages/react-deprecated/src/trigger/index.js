@@ -148,28 +148,9 @@ class Trigger extends React.Component {
       top,
       showArrow,
       arrowBgColor,
-      arrowBorderColor,
-      animName
+      arrowBorderColor
     } = this.props
     const { active } = this.state
-
-    let animate = animName
-
-    if (animName === true) {
-      if (top) {
-        if (right) {
-          animate = 'fade-in-left'
-        } else {
-          animate = 'fade-in-right'
-        }
-      } else {
-        if (right) {
-          animate = 'fade-in-left'
-        } else {
-          animate = 'fade-in-right'
-        }
-      }
-    }
 
     const child = React.Children.only(children)
 
@@ -213,9 +194,7 @@ class Trigger extends React.Component {
                       'gm-trigger-popup-right': right,
                       'gm-trigger-popup-top': top,
                       'gm-box-shadow-top': top,
-                      'gm-trigger-popup-no-arrow': !showArrow,
-                      'gm-animated': !!animate,
-                      ['gm-animated-' + animate]: animate
+                      'gm-trigger-popup-no-arrow': !showArrow
                     }
                   )
                 },
@@ -238,22 +217,13 @@ Trigger.propTypes = {
   disabled: PropTypes.bool,
   showArrow: PropTypes.bool, // 是否显示三角标
   arrowBgColor: PropTypes.string, // 三角标的背景颜色
-  arrowBorderColor: PropTypes.string, // 三角标的border颜色
-  animName: PropTypes.oneOf([
-    false,
-    true,
-    'fade-in-right',
-    'fade-in-left',
-    'fade-in-top',
-    'fade-in-bottom'
-  ])
+  arrowBorderColor: PropTypes.string // 三角标的border颜色
 }
 
 Trigger.defaultProps = {
   type: 'focus',
   showArrow: false,
-  arrowBgColor: '#FFF',
-  animName: true
+  arrowBgColor: '#FFF'
 }
 
 export default Trigger

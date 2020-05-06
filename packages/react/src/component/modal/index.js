@@ -132,8 +132,7 @@ class Modal extends React.Component {
       noContentPadding,
       className,
       noCloseBtn,
-      opacityMask,
-      animName
+      opacityMask
     } = this.props
     if (!show) {
       return null
@@ -141,15 +140,6 @@ class Modal extends React.Component {
 
     if (type) {
       return this.renderTypeModal()
-    }
-
-    let animate = false
-    if (animName) {
-      if (animName === true) {
-        animate = 'fade-in-bottom'
-      } else {
-        animate = animName
-      }
     }
 
     const inner = (
@@ -196,14 +186,7 @@ class Modal extends React.Component {
         />
         <div
           ref={ref => (this.refModal = ref)}
-          className={classNames(
-            'gm-modal',
-            {
-              'gm-animated': !!animate,
-              ['gm-animated-' + animate]: animate
-            },
-            className
-          )}
+          className={classNames('gm-modal', className)}
           tabIndex='-1'
           onClick={this.handleMask}
         >
@@ -293,14 +276,6 @@ Modal.propTypes = {
   noContentPadding: PropTypes.bool,
   noCloseBtn: PropTypes.bool,
   style: PropTypes.object,
-  animName: PropTypes.oneOf([
-    false,
-    true,
-    'fade-in-right',
-    'fade-in-left',
-    'fade-in-top',
-    'fade-in-bottom'
-  ]),
   children: PropTypes.any,
   onCancel: PropTypes.func,
   onOk: PropTypes.func
@@ -312,8 +287,7 @@ Modal.defaultProps = {
   disableMaskClose: false,
   opacityMask: false,
   noContentPadding: false,
-  noCloseBtn: false,
-  animName: true
+  noCloseBtn: false
 }
 
 export default Modal

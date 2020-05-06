@@ -30,7 +30,6 @@ class Popup extends React.Component {
     super(props)
 
     this.state = {
-      isInit: false,
       width: 0,
       height: 0,
       top: props.top
@@ -61,8 +60,7 @@ class Popup extends React.Component {
     this.setState({
       width: dom.offsetWidth,
       height: dom.offsetHeight,
-      top,
-      isInit: true
+      top
     })
   }
 
@@ -99,14 +97,13 @@ class Popup extends React.Component {
       pureContainer,
       children,
       rect,
-      animName,
       predictingHeight,
       className,
       style,
       ...rest
     } = this.props
 
-    const { isInit, width, height } = this.state
+    const { width, height } = this.state
 
     const sStyle = {
       top: rect.top + rect.height + (showArrow ? 5 : 1),
@@ -127,16 +124,6 @@ class Popup extends React.Component {
       sStyle.top = rect.top - height - 2
     }
 
-    let animate = animName
-
-    if (animName === true) {
-      if (this.state.top) {
-        animate = 'zoom-in-top'
-      } else {
-        animate = 'zoom-in-bottom'
-      }
-    }
-
     return (
       <div
         ref={ref => (this.refPopup = ref)}
@@ -146,10 +133,7 @@ class Popup extends React.Component {
         className={classNames(
           'gm-popup',
           {
-            'gm-popup-pure': pureContainer,
-            // 在计算的时候不能出现动画，否则会偏差
-            'gm-animated': isInit && animate,
-            [`gm-animated-${animate}`]: isInit && animate
+            'gm-popup-pure': pureContainer
           },
           className
         )}
@@ -172,17 +156,6 @@ Popup.propTypes = {
   offset: PropTypes.number,
   showArrow: PropTypes.bool, // 是否显示三角标
   arrowLeft: PropTypes.string,
-  animName: PropTypes.oneOf([
-    false,
-    true,
-    'fade-in-right',
-    'fade-in-left',
-    'fade-in-top',
-    'fade-in-bottom',
-    'zoom-in',
-    'zoom-in-top',
-    'zoom-in-bottom'
-  ]),
   /** 预判高度。因为 popup 的宽高会是可变的，所以没法判断视窗内是否能放得下，于是有此。 */
   predictingHeight: PropTypes.number,
   /** 纯粹的，目前是没有背景色，没有阴影 */
