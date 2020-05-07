@@ -51,7 +51,7 @@ class Drawer extends React.Component {
   }
 
   render() {
-    const { children, style, className, animation, opacityMask } = this.props
+    const { children, style, className, opacityMask } = this.props
 
     return (
       <div>
@@ -62,14 +62,7 @@ class Drawer extends React.Component {
         />
         <div
           ref={ref => (this.refDrawer = ref)}
-          className={classNames(
-            'gm-drawer',
-            {
-              'gm-animated': animation,
-              'gm-animated-fade-in-right': animation
-            },
-            className
-          )}
+          className={classNames('gm-drawer', className)}
           tabIndex='-1'
           onClick={this.handleMask}
         >
@@ -102,14 +95,12 @@ Drawer.propTypes = {
   onHide: PropTypes.func,
   className: PropTypes.string,
   style: PropTypes.object,
-  animation: PropTypes.bool,
   opacityMask: PropTypes.bool,
   children: PropTypes.any
 }
 
 Drawer.defaultProps = {
   onHide: _.noop,
-  animation: true,
   opacityMask: false
 }
 

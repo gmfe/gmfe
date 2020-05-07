@@ -96,7 +96,7 @@ class TipOverlay extends React.Component {
   render() {
     const { title, type, children } = this.props
     return (
-      <Flex justifyEnd className='gm-animated gm-animated-fade-in-right-100'>
+      <Flex justifyEnd>
         <Tip title={title} type={type} onClose={this.handleClose}>
           {children}
         </Tip>
@@ -142,9 +142,7 @@ class Tip extends React.Component {
             <div>
               <strong>{title}</strong>
             </div>
-          ) : (
-            undefined
-          )}
+          ) : null}
           {children}
         </div>
       </div>
