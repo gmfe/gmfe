@@ -101,7 +101,6 @@ class Base extends React.Component {
 
   handleSelected = values => {
     const { onSelect, data, multiple, selected } = this.props
-
     const items = []
     _.each(data, group => {
       _.each(group.children, item => {
@@ -109,11 +108,16 @@ class Base extends React.Component {
           items.push(item)
         }
       })
-      _.each(selected, item => {
-        if (_.every(group.children, v => v.value !== item.value)) {
-          items.push(item)
-        }
+    })
+
+    _.each(selected, item => {
+      let flag = true // 判断当前已选择的选项中是否存在不在当前data里面的，解决onSearch异步，true则表示都不在data里面
+      _.each(data, group => {
+        flag = flag && _.every(group.children, v => v.value !== item.value)
       })
+      if (flag) {
+        items.push(item)
+      }
     })
 
     onSelect(items)

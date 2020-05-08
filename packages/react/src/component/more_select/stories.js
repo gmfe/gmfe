@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import MoreSelect from './index'
 import _ from 'lodash'
-import { observable } from 'mobx'
+import { observable, toJS } from 'mobx'
 
 const store = observable({
   data: [
@@ -216,8 +216,8 @@ storiesOf('MoreSelect', module)
     return (
       <MoreSelect
         multiple
-        data={store.data}
-        selected={store.mulSelected}
+        data={toJS(store.data)}
+        selected={toJS(store.mulSelected)}
         onSelect={selected => {
           store.setMulSelected(selected)
         }}
@@ -240,8 +240,8 @@ storiesOf('MoreSelect', module)
   .add('group', () => (
     <MoreSelect
       isGroupList
-      data={store.dataGroup}
-      selected={store.selected}
+      data={toJS(store.dataGroup)}
+      selected={toJS(store.selected)}
       onSelect={selected => {
         store.setSelected(selected)
       }}
@@ -251,8 +251,8 @@ storiesOf('MoreSelect', module)
     <MoreSelect
       isGroupList
       multiple
-      data={store.dataGroup}
-      selected={store.mulSelected}
+      data={toJS(store.dataGroup)}
+      selected={toJS(store.mulSelected)}
       onSelect={selected => {
         store.setMulSelected(selected)
       }}
