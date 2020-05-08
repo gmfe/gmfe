@@ -1,8 +1,8 @@
-import React, { CSSProperties, FC, HTMLAttributes } from 'react'
+import React, { CSSProperties, FC, AllHTMLAttributes } from 'react'
 import classNames from 'classnames'
 import Loading from './index'
 
-export interface LoadingChunkProps extends HTMLAttributes<HTMLDivElement> {
+export interface LoadingChunkProps extends AllHTMLAttributes<HTMLDivElement> {
   loading?: boolean
   text?: string
   size?: number

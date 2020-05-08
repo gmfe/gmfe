@@ -40,7 +40,7 @@ declare class Dialog extends Component<DialogProps, DialogState> {
     disableMaskClose: boolean
   }
 
-  static alert(options: DialogStaticOptions): Promise<void>
+  static alert(options: { children: string }): Promise<void>
   static confirm(options: DialogStaticOptions): Promise<void>
   static prompt(options: DialogStaticOptions): Promise<void>
   static dialog(options: DialogStaticOptions): Promise<void>

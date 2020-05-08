@@ -1,4 +1,4 @@
-import { Component, HTMLAttributes, ReactNode } from 'react'
+import { Component, AllHTMLAttributes, ReactNode } from 'react'
 
 interface CascaderSelectProps<T> {
   data: CascaderSelectDataOptions<T>
@@ -6,7 +6,7 @@ interface CascaderSelectProps<T> {
   onSelect(value: T[]): void
   multiple?: boolean
   selectedRender?(value: CascaderSelectDataOptions<T>): ReactNode
-  inputProps?: HTMLAttributes<HTMLInputElement>
+  inputProps?: AllHTMLAttributes<HTMLInputElement>
   disabled?: boolean
   valueRender?(value: CascaderSelectDataOptions<T>): ReactNode
   filtrable?: boolean
@@ -30,7 +30,7 @@ declare class CascaderSelect<T> extends Component<
   CascaderSelectState<T>
 > {
   static defaultProps: {
-    inputProps: HTMLAttributes<HTMLInputElement>
+    inputProps: AllHTMLAttributes<HTMLInputElement>
     disabled: boolean
     filtrable: boolean
     onlyChildSelectable: boolean

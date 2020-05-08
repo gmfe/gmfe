@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { CSSProperties, FC, ReactNode, useState } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import Collapse from '../../component/collapse'
@@ -7,7 +6,25 @@ import Flex from '../flex'
 import SVGUp from '../../../svg/up.svg'
 import SVGDown from '../../../svg/down.svg'
 
-const BoxPanel = ({
+interface BoxPanelSummaryDataOptions {
+  text: string
+  value: unknown
+}
+
+type BoxPanelSummary = BoxPanelSummaryDataOptions[] | ReactNode
+
+interface BoxPanelProps {
+  title: string
+  /* 不传就是没有此功能， false 默认收起 true 默认展开 */
+  collapse?: boolean
+  /* 汇总信息 */
+  summary?: BoxPanelSummary
+  right?: ReactNode
+  className?: string
+  style?: CSSProperties
+}
+
+const BoxPanel: FC<BoxPanelProps> = ({
   title,
   collapse,
   right,
@@ -39,7 +56,7 @@ const BoxPanel = ({
           <div className='gm-box-panel-title'>{title}</div>
           {_.isArray(summary) ? (
             <div className='gm-box-panel-summary'>
-              {_.map(summary, (s, i) => {
+              {_.map(summary as BoxPanelSummaryDataOptions[], (s, i) => {
                 if (i < summary.length - 1)
                   return s.text + ': ' + s.value + ', '
                 else return s.text + ': ' + s.value
@@ -54,22 +71,12 @@ const BoxPanel = ({
           {right}
         </Flex>
       </Flex>
-      <Collapse in={isCollapse}>
+      <Collapse in={isCollapse as boolean}>
         <div>{children}</div>
       </Collapse>
     </div>
   )
 }
 
-BoxPanel.propTypes = {
-  title: PropTypes.string.isRequired,
-  /** undefined 就是没有此功能， false 默认收起 true 默认展开 */
-  collapse: PropTypes.bool,
-  /** 汇总信息，数组：数据格式为[{text, value}] or element */
-  summary: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
-  right: PropTypes.element,
-  className: PropTypes.string,
-  style: PropTypes.object
-}
-
 export default BoxPanel
+export type { BoxPanelSummaryDataOptions, BoxPanelProps }

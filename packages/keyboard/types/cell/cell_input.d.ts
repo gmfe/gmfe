@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, AllHTMLAttributes } from 'react'
 
-declare const KeyboardCellInput: FC<HTMLAttributes<HTMLInputElement>>
+declare const KeyboardCellInput: FC<AllHTMLAttributes<HTMLInputElement>>
 export default KeyboardCellInput

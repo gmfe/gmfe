@@ -1,6 +1,6 @@
-import { Component, HTMLAttributes } from 'react'
+import { Component, AllHTMLAttributes } from 'react'
 
-export interface MaskProps extends HTMLAttributes<HTMLDivElement> {
+export interface MaskProps extends AllHTMLAttributes<HTMLDivElement> {
   opacity?: number
 }
 

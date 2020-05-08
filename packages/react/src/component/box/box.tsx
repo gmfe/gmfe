@@ -1,7 +1,7 @@
-import React, { FC, HTMLAttributes } from 'react'
+import React, { FC, AllHTMLAttributes } from 'react'
 import classNames from 'classnames'
 
-export interface BoxProps extends HTMLAttributes<HTMLDivElement> {
+export interface BoxProps extends AllHTMLAttributes<HTMLDivElement> {
   hasGap?: boolean
 }
 /** Box，用来包裹一块内容 */

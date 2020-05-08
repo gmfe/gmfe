@@ -1,4 +1,4 @@
-import { CSSProperties, FC, HTMLAttributes, MouseEvent } from 'react'
+import { CSSProperties, FC, AllHTMLAttributes, MouseEvent } from 'react'
 
 declare const OperationHeader: FC
 
@@ -21,7 +21,7 @@ interface OperationDetailProps {
 
 declare const OperationDetail: FC<OperationDetailProps>
 
-declare const OperationCell: FC<HTMLAttributes<HTMLDivElement>>
+declare const OperationCell: FC<AllHTMLAttributes<HTMLDivElement>>
 
 interface OperationRowEditProps {
   isEditing: boolean

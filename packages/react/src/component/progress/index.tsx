@@ -1,9 +1,9 @@
-import React, { FC, HTMLAttributes } from 'react'
+import React, { FC, AllHTMLAttributes } from 'react'
 import classNames from 'classnames'
 import SVGSuccessCircle from '../../../svg/success-circle.svg'
 import SVGCloseCircle from '../../../svg/close-circle.svg'
 
-export interface ProgressBarProps extends HTMLAttributes<HTMLDivElement> {
+export interface ProgressBarProps extends AllHTMLAttributes<HTMLDivElement> {
   percentage: number
   text?: string
   status?: 'success' | 'exception'

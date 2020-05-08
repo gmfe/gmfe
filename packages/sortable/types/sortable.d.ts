@@ -1,5 +1,5 @@
 import {
-  HTMLAttributes,
+  AllHTMLAttributes,
   PropsWithChildren,
   ReactElement,
   ReactNode,
@@ -15,7 +15,7 @@ interface SortableDataOptions<T> {
 interface SortableCommonProps<P> {
   groupValues?: P[]
   renderItem?: (value: SortableDataOptions<P>) => ReactNode
-  itemProps?: HTMLAttributes<HTMLDivElement>
+  itemProps?: AllHTMLAttributes<HTMLDivElement>
   tag?: string
   options?: Options
 }

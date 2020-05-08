@@ -1,6 +1,6 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, AllHTMLAttributes } from 'react'
 
-export interface BoxProps extends HTMLAttributes<HTMLDivElement> {
+export interface BoxProps extends AllHTMLAttributes<HTMLDivElement> {
   hasGap?: boolean
 }
 

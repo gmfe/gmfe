@@ -1,21 +1,28 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Dialog from './index'
+import Dialog from './dialog'
 import { Button } from '../../index'
 
 storiesOf('Dialog', module)
+  .add('JSX', () => (
+    <Dialog show>
+      <p>Hello world</p>
+    </Dialog>
+  ))
   .add('default', () => (
     <div>
       <Button
         onClick={() => {
           Dialog.alert({
-            children: 'alert'
+            children: '1231',
           }).then(
-            () => {
-              console.log('resolve')
+            (value) => {
+              console.log(value)
+              // console.log('resolve')
             },
-            () => {
-              console.log('reject')
+            (error) => {
+              console.log(error)
+              // console.log('reject')
             }
           )
         }}
@@ -26,7 +33,7 @@ storiesOf('Dialog', module)
         onClick={() => {
           Dialog.confirm({
             children: 'confirm',
-            title: 'title'
+            title: 'title',
           }).then(
             () => {
               console.log('resolve')
@@ -46,14 +53,14 @@ storiesOf('Dialog', module)
             size: 'md',
             children: <div>something</div>,
             onOK: () => {
-              return new Promise(resolve => {
+              return new Promise((resolve) => {
                 setTimeout(() => {
                   resolve('a')
                 }, 1000)
               })
-            }
-          }).then(() => {
-            console.log('promise resolve')
+            },
+          }).then((value) => {
+            console.log(value)
           })
         }}
       >
@@ -65,12 +72,12 @@ storiesOf('Dialog', module)
             children: 'sssss',
             title: 'title',
             promptDefaultValue: '123',
-            onOK: value => {
+            onOK: (value) => {
               console.log('ok', value)
               return false // return Promise.reject();
-            }
+            },
           }).then(
-            value => {
+            (value) => {
               console.log('resolve', value)
             },
             () => {
@@ -87,7 +94,7 @@ storiesOf('Dialog', module)
     const openSyncDialog1 = () => {
       Dialog.confirm({
         title: 'dialog1',
-        children: 'dialog1'
+        children: 'dialog1',
       }).then(() => {
         openDialog2()
       })
@@ -98,7 +105,7 @@ storiesOf('Dialog', module)
         title: 'dialog1',
         children: 'dialog1',
         onOK() {
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             setTimeout(() => resolve(), 2000)
           }).then(() => {
             setTimeout(() => {
@@ -106,14 +113,14 @@ storiesOf('Dialog', module)
               openDialog2()
             })
           })
-        }
+        },
       })
     }
 
     const openDialog2 = () => {
       Dialog.confirm({
         title: 'dialog2',
-        children: 'dialog2'
+        children: 'dialog2',
       })
     }
     return (

@@ -1,10 +1,10 @@
-import { FC, HTMLAttributes, MouseEvent } from 'react'
+import { FC, AllHTMLAttributes, MouseEvent } from 'react'
 
 type ButtonType = 'default' | 'primary' | 'success' | 'danger' | 'link'
 type ButtonSize = 'large'
 type ButtonHTMLType = 'submit' | 'button' | 'reset'
 
-interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends AllHTMLAttributes<HTMLButtonElement> {
   type?: ButtonType
   plain?: boolean
   size?: ButtonSize

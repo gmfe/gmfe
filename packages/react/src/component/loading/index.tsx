@@ -1,7 +1,7 @@
-import React, { CSSProperties, FC, HTMLAttributes } from 'react'
+import React, { CSSProperties, FC, AllHTMLAttributes } from 'react'
 import classNames from 'classnames'
 
-export interface LoadingProps extends HTMLAttributes<HTMLDivElement> {
+export interface LoadingProps extends AllHTMLAttributes<HTMLDivElement> {
   text?: string
   size?: number
   className?: string

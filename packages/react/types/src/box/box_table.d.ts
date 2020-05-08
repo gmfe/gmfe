@@ -1,7 +1,7 @@
 import {
   CSSProperties,
   FC,
-  HTMLAttributes,
+  AllHTMLAttributes,
   ReactElement,
   ReactNode,
 } from 'react'
@@ -11,7 +11,7 @@ export interface BoxTableProps {
   action?: ReactNode
   className?: string
   style?: CSSProperties
-  headerProps?: HTMLAttributes<HTMLDivElement>
+  headerProps?: AllHTMLAttributes<HTMLDivElement>
 }
 
 interface BoxTableFC extends FC<BoxTableProps> {

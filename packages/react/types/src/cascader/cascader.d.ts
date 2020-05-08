@@ -1,11 +1,11 @@
-import { Component, CSSProperties, HTMLAttributes, ReactNode } from 'react'
+import { Component, CSSProperties, AllHTMLAttributes, ReactNode } from 'react'
 
 interface CascaderProps<P> {
   data: CascaderDataOptions<P>
   value?: P[]
   defaultValue?: P[]
   onChange?(value: P[]): void
-  inputProps?: HTMLAttributes<HTMLInputElement>
+  inputProps?: AllHTMLAttributes<HTMLInputElement>
   valueRender?(value: CascaderDataOptions<P>[]): ReactNode // todo 待确认
   disabled?: boolean
   filtrable?: boolean
@@ -35,7 +35,7 @@ declare class Cascader<C> extends Component<
 > {
   static defaultProps: {
     onChange(value: unknown[]): void
-    inputProps: HTMLAttributes<HTMLInputElement>
+    inputProps: AllHTMLAttributes<HTMLInputElement>
     disabled: boolean
     onlyChildSelectable: boolean
   }

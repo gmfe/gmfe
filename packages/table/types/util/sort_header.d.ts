@@ -1,6 +1,6 @@
-import { Component, HTMLAttributes } from 'react'
+import { Component, AllHTMLAttributes } from 'react'
 
-interface SortHeaderProps extends HTMLAttributes<HTMLSpanElement> {
+interface SortHeaderProps extends AllHTMLAttributes<HTMLSpanElement> {
   type?: 'asc' | 'desc'
 }
 

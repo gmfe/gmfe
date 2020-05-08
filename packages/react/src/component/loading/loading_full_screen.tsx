@@ -1,7 +1,7 @@
 import React, {
   Component,
   CSSProperties,
-  HTMLAttributes,
+  AllHTMLAttributes,
   PropsWithChildren,
 } from 'react'
 import classNames from 'classnames'
@@ -9,7 +9,8 @@ import Loading from './index'
 import LayoutRoot from '../layout_root'
 import EVENT_TYPE from '../../event_type'
 
-export interface LoadingFullScreenProps extends HTMLAttributes<HTMLDivElement> {
+export interface LoadingFullScreenProps
+  extends AllHTMLAttributes<HTMLDivElement> {
   text?: string
   size?: number
   className?: string
