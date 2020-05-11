@@ -14,7 +14,6 @@ const Overlay = props => {
     willActiveSelected,
     min,
     max,
-    timeSpan,
     onSelect,
     timeLimit,
     disabledDate,
@@ -25,7 +24,7 @@ const Overlay = props => {
 
   // 选择日期后渲染时间，有默认时间则展示，无展示为可选的第一个时间
   const getTime = () => {
-    const { defaultTime, disabledSpan } = timeLimit || {}
+    const { defaultTime, disabledSpan, timeSpan } = timeLimit || {}
     if (defaultTime) {
       return defaultTime
     }
@@ -75,7 +74,6 @@ const Overlay = props => {
       />
       <TimeSelect
         date={selectedDate}
-        timeSpan={timeSpan}
         timeLimit={timeLimit}
         onSelectTime={value => handleSelect(value, 'time')}
         enabledTimeSelect={enabledTimeSelect}
@@ -107,7 +105,6 @@ Overlay.propTypes = {
   max: PropTypes.object,
   onSelect: PropTypes.func,
   disabledDate: PropTypes.func,
-  timeSpan: PropTypes.number,
   timeLimit: PropTypes.shape({
     defaultTime: PropTypes.object,
     disabledSpan: PropTypes.func,
