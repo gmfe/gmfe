@@ -128,7 +128,7 @@ const Wrap = props => {
 
   // 处理方向事件, 依赖 dataLength 的变动
   useEffect(() => {
-    const handleDirection = event => {
+    const handleDirection = _.throttle(event => {
       const { cellKey, direction } = event.detail
       const { rowKey, columnKey } = getKey(cellKey)
 
@@ -141,8 +141,7 @@ const Wrap = props => {
       } else if (direction === 'up') {
         doDirectionUp(rowKey, columnKey, cellKey)
       }
-    }
-
+    }, 50)
     window.addEventListener(KEYBOARD_DIRECTION + id, handleDirection)
 
     return () => {
@@ -152,7 +151,7 @@ const Wrap = props => {
 
   // 处理 Enter 依赖 dataLength 的变动
   useEffect(() => {
-    const handleEnter = event => {
+    const handleEnter = _.throttle(event => {
       clearTimeout(timer.current)
 
       const { cellKey } = event.detail
@@ -193,7 +192,7 @@ const Wrap = props => {
           }, 10)
         }
       }
-    }
+    }, 50)
 
     window.addEventListener(KEYBOARD_ENTER + id, handleEnter)
 
@@ -203,7 +202,7 @@ const Wrap = props => {
   }, [dataLength, columnKeys.length])
 
   useEffect(() => {
-    const handleTab = event => {
+    const handleTab = _.throttle(event => {
       const { cellKey } = event.detail
       const { rowKey, columnKey } = getKey(cellKey)
       const columnIndex = columnKeys.indexOf(columnKey)
@@ -238,7 +237,7 @@ const Wrap = props => {
           )
         }
       }
-    }
+    }, 50)
 
     window.addEventListener(KEYBOARD_TAB + id, handleTab)
 

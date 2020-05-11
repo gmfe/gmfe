@@ -205,8 +205,7 @@ DatePicker.propTypes = {
 DatePicker.defaultProps = {
   onKeyDown: _.noop,
   timeLimit: {
-    timeSpan: 30 * 60 * 1000,
-    renderTime: time => moment(time).format('HH:mm')
+    timeSpan: 30 * 60 * 1000
   },
   enabledTimeSelect: false
 }

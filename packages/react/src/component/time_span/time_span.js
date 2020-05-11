@@ -12,6 +12,16 @@ import { Flex } from '../../index'
  * 主要功能：时间点选择
  * */
 
+const getTime = time => {
+  if (time) {
+    const year = moment().year()
+    const month = moment().month()
+    const day = moment().date()
+    return moment(time).set({ year, month, date: day })
+  }
+  return null
+}
+
 const TimeSpan = props => {
   const {
     selected,
@@ -21,17 +31,19 @@ const TimeSpan = props => {
     min,
     max,
     span,
-    enabledEndTimeOfDay
+    enabledEndTimeOfDay,
+    beginTime,
+    endTime
   } = props
-  // 一天起始时间点
-  const beginTime = moment().startOf('day')
-  const endTime = moment().endOf('day')
+  // 自定义起始时间点 or 一天起始时间点
+  const _beginTime = getTime(beginTime) || moment().startOf('day')
+  const _endTime = getTime(endTime) || moment().endOf('day')
 
   const getTimeCells = () => {
-    let time = beginTime
+    let time = _beginTime
     const cells = []
 
-    while (time <= endTime) {
+    while (time <= _endTime) {
       cells.push(time)
       time = moment(time + span)
     }
@@ -59,8 +71,8 @@ const TimeSpan = props => {
       return false
     }
 
-    const dMax = max ? moment(max) : endTime
-    const dMin = min ? moment(min) : beginTime
+    const dMax = max ? moment(max) : _endTime
+    const dMin = min ? moment(min) : _beginTime
     const dTime = moment(time)
     return (
       !(dTime <= dMax && dTime >= dMin) || (disabledSpan && disabledSpan(time))
@@ -146,10 +158,15 @@ TimeSpan.propTypes = {
   renderItem: PropTypes.func,
   /** 点击选择回调，传入参数为Date对象 */
   onSelect: PropTypes.func,
+  /** 自定义渲染的开始时间, 不传默认开始时间从 00:00 开始 */
+  beginTime: PropTypes.object,
+  /** 自定义渲染的结束时间 */
+  endTime: PropTypes.object,
 
   /** 不知道取啥名字, 目前是日期组件选择时间为了展示 24:00 用 */
   enabledEndTimeOfDay: PropTypes.bool
 }
+
 TimeSpan.defaultProps = {
   min: moment()
     .startOf('day')
@@ -158,7 +175,7 @@ TimeSpan.defaultProps = {
     .endOf('day')
     .toDate(),
   span: 30 * 60 * 1000,
-  enabledEndTime: false,
+  enabledEndTimeOfDay: false,
   renderItem: value => moment(value).format('HH:mm'),
   onSelect: _.noop
 }
