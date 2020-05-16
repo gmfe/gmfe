@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
-import { createChainedFunction, getScrollTop, getScrollLeft } from '@gm-common/tool'
+import {
+  createChainedFunction,
+  getScrollTop,
+  getScrollLeft
+} from '@gm-common/tool'
 import LayoutRoot from '../layout_root'
 import Popup from '../popup/popup'
 import _ from 'lodash'
@@ -157,7 +161,6 @@ class Popover extends React.Component {
       offset,
       showArrow,
       arrowLeft,
-      animName,
       predictingHeight,
       pureContainer,
       isInPopup
@@ -184,7 +187,6 @@ class Popover extends React.Component {
           offset={offset}
           showArrow={showArrow}
           arrowLeft={arrowLeft}
-          animName={animName}
           predictingHeight={predictingHeight}
           pureContainer={pureContainer}
           className={classNames(
@@ -358,18 +360,6 @@ Popover.propTypes = {
 
   isInPopup: PropTypes.bool,
 
-  animName: PropTypes.oneOf([
-    false,
-    true,
-    'fade-in-right',
-    'fade-in-left',
-    'fade-in-top',
-    'fade-in-bottom',
-    'zoom-in',
-    'zoom-in-top',
-    'zoom-in-bottom'
-  ]),
-
   /** 预判高度。因为 popup 的宽高会是可变的，所以没法判断视窗内是否能放得下，于是有此。 */
   predictingHeight: PropTypes.number
 }
@@ -377,7 +367,6 @@ Popover.propTypes = {
 Popover.defaultProps = {
   type: 'focus',
   showArrow: false,
-  animName: true,
   isInPopup: false
 }
 
