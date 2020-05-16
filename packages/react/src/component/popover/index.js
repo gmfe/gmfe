@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
-import { createChainedFunction, getScrollTop, getScrollLeft } from '@gm-common/tool'
+import {
+  createChainedFunction,
+  getScrollTop,
+  getScrollLeft
+} from '@gm-common/tool'
 import LayoutRoot from '../layout_root'
 import Popup from '../popup/popup'
 import _ from 'lodash'
@@ -44,6 +48,7 @@ class Popover extends React.Component {
     this.debounceHandleTableScroll = _.debounce(this.handleTableScroll, 200)
 
     this.timer = null
+    this._popoverContainer = createRef()
 
     // 延迟的，可能不存在。使用的时候判断下
     this.refPopup = null
@@ -56,6 +61,7 @@ class Popover extends React.Component {
   /** 注意，先调用这个，再处理业务的 onXXX。比如 date_picker */
   apiDoSetActive = active => {
     this.setActive(active)
+    this.handleDispatchEvent(active)
   }
 
   componentDidMount() {
@@ -255,8 +261,8 @@ class Popover extends React.Component {
     ) {
       return
     }
-
     this.setActive(false)
+    this.handleDispatchEvent(false)
   }
 
   handleBodyClick = event => {
@@ -270,16 +276,31 @@ class Popover extends React.Component {
   handleClick = () => {
     // focus 也会进来
     const { type } = this.props
-
-    if (type === 'click') {
-      this.setActive(!this.state.active)
-    } else {
-      this.setActive(true)
-    }
+    const active = type === 'click' ? !this.state.active : true
+    this.setActive(active)
+    this.handleDispatchEvent(active)
   }
 
   handleFocus = () => {
     this.setActive(true)
+    this.handleDispatchEvent(true)
+  }
+
+  /**
+   * 手动发布事件，告诉Table打开或关闭了浮层
+   * 排除hover状态，因为表格中的浮层都是用点击的方式实现的
+   * @param active {boolean}
+   */
+  handleDispatchEvent = active => {
+    window.dispatchEvent(
+      new window.CustomEvent(EVENT_TYPE.TR_ACTIVE, {
+        // 将active以及popover的container发布出去
+        detail: {
+          active: active,
+          target: this._popoverContainer.current
+        }
+      })
+    )
   }
 
   handleMouseEnter = () => {
@@ -328,6 +349,7 @@ class Popover extends React.Component {
     // 通过类名告知 target 做好 active 的应变
     return React.cloneElement(child, {
       ...p,
+      ref: this._popoverContainer,
       className: classNames(child.props.className, {
         'gm-popover-active': active
       })

@@ -13,6 +13,10 @@ import { warn } from '@gm-common/tool'
 class BaseTable extends React.Component {
   refTable = React.createRef()
 
+  state = {
+    trActiveMap: {}
+  }
+
   constructor(props) {
     super(props)
     warn('Table deprecated, use TableX instead.')
@@ -31,6 +35,7 @@ class BaseTable extends React.Component {
     dom
       .getElementsByClassName('rt-tbody')[0]
       .addEventListener('scroll', this.doScroll)
+    window.addEventListener(EVENT_TYPE.TR_ACTIVE, this.handleSetTrActive)
   }
 
   componentWillUnmount() {
@@ -42,6 +47,16 @@ class BaseTable extends React.Component {
     dom
       .getElementsByClassName('rt-tbody')[0]
       .removeEventListener('scroll', this.doScroll)
+    window.removeEventListener(EVENT_TYPE.TR_ACTIVE, this.handleSetTrActive)
+  }
+
+  handleSetTrActive = ({ detail }) => {
+    const { target, active } = detail
+    const index = getActiveTrIndex(target)
+    const { trActiveMap } = this.state
+    this.setState({
+      trActiveMap: Object.assign({}, trActiveMap, { [index]: active })
+    })
   }
 
   processItem = item => {
@@ -114,6 +129,13 @@ class BaseTable extends React.Component {
         {...rest}
         columns={newColumns}
         data={data}
+        getTrProps={(_, { index }) => {
+          const { trActiveMap } = this.state
+          return {
+            'data-index': index,
+            className: classNames({ '-active': trActiveMap[index] })
+          }
+        }}
         defaultPageSize={defaultPageSize}
         pageSize={Math.max(data.length, 1)} // 展示完整，传多少显示多少。避免被 pageSize 截断
         showPagination={showPagination}
@@ -176,3 +198,16 @@ BaseTable.defaultProps = {
 }
 
 export default BaseTable
+
+/**
+ * 获取目标元素所在表格的行数
+ * @param target {Element}
+ * @returns {number}
+ */
+function getActiveTrIndex(target) {
+  if (target.classList.contains('rt-tr')) {
+    return +target.getAttribute('data-index')
+  } else {
+    return getActiveTrIndex(target.parentElement)
+  }
+}
