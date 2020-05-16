@@ -26,7 +26,6 @@ const ToolTip = (props, ref) => {
       popup={popup}
       center={center}
       showArrow={showArrow}
-      animName={top ? 'zoom-in-top' : 'zoom-in-bottom'}
     >
       {children !== undefined ? (
         children
