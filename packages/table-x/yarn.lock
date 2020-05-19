@@ -16,6 +16,30 @@
   dependencies:
     lodash "^4.17.15"
 
+"@gmfe/locales@^2.10.15":
+  version "2.10.15"
+  resolved "https://registry.yarnpkg.com/@gmfe/locales/-/locales-2.10.15.tgz#60b9e85bfad8f550a1a0c5fb393b8ae1ce292e07"
+  integrity sha512-mnJIrsMqS192YJfbOCOXMKrCdz/GMGCecxZtvrcBNz/Grn/zXTDv2r+9g4XEwFP3vTACgfu3fR9kdYIWDs7ciA==
+
+"@gmfe/react@^2.10.15":
+  version "2.10.15"
+  resolved "https://registry.yarnpkg.com/@gmfe/react/-/react-2.10.15.tgz#4d79a75cb1f3a703af6ec39128fa0dcea675970b"
+  integrity sha512-GYaM7krp1mo1+3L7tuuO1aWkp1SfpDP5GmsssvniFq1544qPoJiDh8Vqbow2Dlqan08ADbdJ40TBTPKlWBXK5g==
+  dependencies:
+    "@gm-common/tool" "^1.0.0"
+    "@gmfe/locales" "^2.10.15"
+    big.js "^5.2.2"
+    classnames "^2.2.5"
+    lodash "^4.17.14"
+    moment "^2.24.0"
+    prop-types "^15.7.2"
+    react-window "^1.8.5"
+
+big.js@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
+  integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
+
 classnames@^2.2.5:
   version "2.2.6"
   resolved "https://registry.npmjs.org/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
@@ -42,6 +66,11 @@ loose-envify@^1.4.0:
   version "5.1.1"
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
   integrity sha512-HKeeBpWvqiVJD57ZUAsJNm71eHTykffzcLZVYWiVfQeI1rJtuEaS7hQiEpWfVVk18donPwJEcFKIkCmPJNOhHA==
+
+moment@^2.24.0:
+  version "2.25.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.3.tgz#252ff41319cf41e47761a1a88cab30edfe9808c0"
+  integrity sha512-PuYv0PHxZvzc15Sp8ybUCoQ+xpyPWvjOuK72a5ovzp2LI32rJXOiIfyoFoYvG3s6EwwrdkMyWuRiEHSZRLJNdg==
 
 object-assign@^4.1.1:
   version "4.1.1"
