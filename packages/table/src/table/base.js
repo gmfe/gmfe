@@ -129,8 +129,12 @@ class BaseTable extends React.Component {
         {...rest}
         columns={newColumns}
         data={data}
-        getTrProps={(_, { index }) => {
+        getTrProps={(_, rowInfo) => {
           const { trActiveMap } = this.state
+          if (!rowInfo) {
+            return {}
+          }
+          const { index } = rowInfo
           return {
             'data-index': index,
             className: classNames({ '-active': trActiveMap[index] })
