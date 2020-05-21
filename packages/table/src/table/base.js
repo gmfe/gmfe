@@ -53,6 +53,9 @@ class BaseTable extends React.Component {
   handleSetTrActive = ({ detail }) => {
     const { target, active } = detail
     const index = getActiveTrIndex(target)
+    if (_.isNil(index)) {
+      return
+    }
     const { trActiveMap } = this.state
     this.setState({
       trActiveMap: Object.assign({}, trActiveMap, { [index]: active })
@@ -129,8 +132,12 @@ class BaseTable extends React.Component {
         {...rest}
         columns={newColumns}
         data={data}
-        getTrProps={(_, { index }) => {
+        getTrProps={(_, rowInfo) => {
           const { trActiveMap } = this.state
+          if (!rowInfo) {
+            return {}
+          }
+          const { index } = rowInfo
           return {
             'data-index': index,
             className: classNames({ '-active': trActiveMap[index] })
@@ -207,7 +214,7 @@ export default BaseTable
 function getActiveTrIndex(target) {
   if (target.classList.contains('rt-tr')) {
     return +target.getAttribute('data-index')
-  } else {
+  } else if (target.parentElement) {
     return getActiveTrIndex(target.parentElement)
   }
 }
