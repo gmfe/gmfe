@@ -14,7 +14,8 @@ class BaseTable extends React.Component {
   refTable = React.createRef()
 
   state = {
-    trActiveMap: {}
+    trActiveMap: {},
+    id: this.props.id || _.uniqueId('TABLE-')
   }
 
   constructor(props) {
@@ -112,7 +113,6 @@ class BaseTable extends React.Component {
       tiled,
       ...rest
     } = this.props
-
     const newColumns = _.map(columns, v => {
       // groups 的形式
       if (v.columns) {
@@ -133,14 +133,14 @@ class BaseTable extends React.Component {
         columns={newColumns}
         data={data}
         getTrProps={(_, rowInfo) => {
-          const { trActiveMap } = this.state
+          const { trActiveMap, id } = this.state
           if (!rowInfo) {
             return {}
           }
           const { index } = rowInfo
           return {
-            'data-index': index,
-            className: classNames({ '-active': trActiveMap[index] })
+            'data-index': `${id}-${index}`,
+            className: classNames({ '-active': trActiveMap[`${id}-${index}`] })
           }
         }}
         defaultPageSize={defaultPageSize}
@@ -183,6 +183,7 @@ BaseTable.propTypes = {
   loading: PropTypes.bool,
   /** 表格数据 */
   data: PropTypes.array.isRequired,
+  id: PropTypes.string,
   /** 列定义 */
   columns: PropTypes.array.isRequired,
   className: PropTypes.string,
@@ -209,11 +210,11 @@ export default BaseTable
 /**
  * 获取目标元素所在表格的行数
  * @param target {Element}
- * @returns {number}
+ * @returns {string}
  */
 function getActiveTrIndex(target) {
   if (target.classList.contains('rt-tr')) {
-    return +target.getAttribute('data-index')
+    return target.getAttribute('data-index')
   } else if (target.parentElement) {
     return getActiveTrIndex(target.parentElement)
   }

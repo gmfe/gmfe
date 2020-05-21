@@ -21,6 +21,7 @@ const TableX = ({
   onScroll,
   isTrDisable,
   isTrHighlight,
+  id = _.uniqueId('TABLE-X-'),
   ...rest
 }) => {
   // diy fixed(最新rc12不支持column.show,自己实现)
@@ -74,6 +75,7 @@ const TableX = ({
       <Tr
         key={row.index}
         row={row}
+        tableID={id}
         SubComponent={SubComponent}
         keyField={keyField}
         style={style}
@@ -86,6 +88,7 @@ const TableX = ({
 
   return (
     <div
+      id={id}
       {...rest}
       className={classNames(
         'gm-table-x',
@@ -116,6 +119,7 @@ const TableX = ({
 
 TableX.propTypes = {
   columns: PropTypes.array.isRequired,
+  id: PropTypes.string,
   data: PropTypes.array.isRequired,
   loading: PropTypes.bool,
   SubComponent: PropTypes.func,
