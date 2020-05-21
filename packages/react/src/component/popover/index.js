@@ -345,7 +345,6 @@ class Popover extends React.Component {
         )
       }
     }
-
     // 通过类名告知 target 做好 active 的应变
     return React.cloneElement(child, {
       ...p,
