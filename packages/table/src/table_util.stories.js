@@ -311,7 +311,6 @@ storiesOf('Table|TableUtil', module)
               </span>
               <EditButton
                 popupRender={closePopup => {
-                  console.log(d)
                   return (
                     <EditContentDemo
                       closePopup={closePopup}

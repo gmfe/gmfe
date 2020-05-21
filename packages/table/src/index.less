@@ -217,11 +217,17 @@
 
   &.-highlight {
     .rt-tbody {
-      .rt-tr:hover .rt-td {
-        background-color: @table-bg-hover;
+      .rt-tr {
+        &.-active .rt-td{
+          background-color: @table-bg-hover;
+        }
 
-        .react-table-edit-button {
-          visibility: visible;
+        &:hover .rt-td {
+          background-color: @table-bg-hover;
+
+          .react-table-edit-button {
+            visibility: visible;
+          }
         }
       }
     }
@@ -261,7 +267,7 @@
     }
   }
 
-  .gm-react-table-diy-modal-content{
+  .gm-react-table-diy-modal-content {
     border-top: 1px solid @react-table-sub-item-border;
     border-bottom: 1px solid @react-table-sub-item-border;
   }
