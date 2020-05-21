@@ -292,9 +292,6 @@ class Popover extends React.Component {
   handleDispatchEvent = active => {
     const { children } = this.props
     const child = Children.only(children)
-    if (!isPopoverChildrenInTable(findDOMNode(child))) {
-      return
-    }
     window.dispatchEvent(
       new window.CustomEvent(EVENT_TYPE.TR_ACTIVE, {
         // 将active以及popover的container发布出去
@@ -348,7 +345,6 @@ class Popover extends React.Component {
         )
       }
     }
-
     // 通过类名告知 target 做好 active 的应变
     return React.cloneElement(child, {
       ...p,
@@ -392,25 +388,6 @@ Popover.defaultProps = {
   type: 'focus',
   showArrow: false,
   isInPopup: false
-}
-
-/**
- * 判断 Popover 的 children 是否在 Table 或者 TableX里面
- * 通过判断 target 的 parentElement 的 className
- * @param target {Element}
- * @returns {boolean}
- */
-function isPopoverChildrenInTable(target) {
-  let result = false
-  if (
-    target.classList.contains('rt-td') ||
-    target.classList.contains('gm-table-x-td')
-  ) {
-    return true
-  } else if (target.parentElement) {
-    result = result || isPopoverChildrenInTable(target.parentElement)
-  }
-  return result
 }
 
 export default Popover
