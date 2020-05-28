@@ -69,7 +69,7 @@ const Carousel = props => {
     defaultIndex,
     delay,
     children,
-    isNeedAutoCarousel,
+    isStopByHoverContent,
     ...rest
   } = props
 
@@ -140,7 +140,7 @@ const Carousel = props => {
       {...rest}
       justifyCenter
       className={classNames('gm-carousel-fade', className)}
-      onMouseOver={isNeedAutoCarousel ? handleStopCarousel : undefined}
+      onMouseOver={isStopByHoverContent ? handleStopCarousel : undefined}
       onMouseLeave={handleCancelSelect}
     >
       <Items currentIndex={currentIndex} transitionTime={transitionTime}>
@@ -165,14 +165,14 @@ Carousel.propTypes = {
   children: PropTypes.arrayOf(PropTypes.element),
   onIndexChange: PropTypes.func,
   className: PropTypes.string,
-  isNeedAutoCarousel: PropTypes.bool
+  isStopByHoverContent: PropTypes.bool
 }
 
 Carousel.defaultProps = {
   defaultIndex: 0, // 设置初始索引
   delay: 3000, // 轮播时延
   transitionTime: 1000, // 切换时间（ms）
-  isNeedAutoCarousel: true // 是否需要自动切换
+  isStopByHoverContent: true // 鼠标悬浮content禁止轮播
 }
 
 export default Carousel
