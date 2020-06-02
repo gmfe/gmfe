@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { Table, TableUtil } from '../index'
 import { observable } from 'mobx/lib/mobx'
 import _ from 'lodash'
+const { EditButton, EditContentInputNumber } = TableUtil
 
 const { SortHeader } = TableUtil
 
@@ -95,6 +96,16 @@ const columns = [
     Cell: cellProps => (
       <div>
         {cellProps.value} 或者 {cellProps.original.total_money}
+        <EditButton
+          popupRender={closePopup => {
+            return (
+              <EditContentInputNumber
+                closePopup={closePopup}
+                onSave={value => console.log(value)}
+              />
+            )
+          }}
+        />
       </div>
     )
   }
@@ -210,4 +221,10 @@ react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
         }
       ]}
     />
+  ))
+  .add('multiple tables', () => (
+    <>
+      <Table data={store.data} columns={columns} />
+      <Table data={store.data} columns={columns} />
+    </>
   ))

@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { TableX, TableXUtil } from '../index'
 import { observable } from 'mobx/lib/mobx'
 import moment from 'moment'
-import {observer} from 'mobx-react'
+import { observer } from 'mobx-react'
 
 const { SortHeader, EditButton } = TableXUtil
 
@@ -32,7 +32,7 @@ const initData = [
     date_time: '2018-07-25',
     delta_money: 0,
     settle_supplier_id: 'T10953',
-    address:  {
+    address: {
       value: 33,
       text: '西乡fdsfsdf9'
     }
@@ -166,7 +166,11 @@ const editColumns = [
     Cell: () => (
       <div>
         <input type='text' />
-        <EditButton popupRender={() => <div>lalala123j4123;lk4j;132lkj4;lk12j34;lk123j;4lkj123;l4kj;</div>} />
+        <EditButton
+          popupRender={() => (
+            <div>lalala123j4123;lk4j;132lkj4;lk12j34;lk123j;4lkj123;l4kj;</div>
+          )}
+        />
       </div>
     )
   }
@@ -303,4 +307,15 @@ Table 切 TableX 关注点：
       isTrDisable={(item, index) => index % 2 === 0}
       isTrHighlight={(item, index) => index === 0}
     />
+  ))
+  .add('no data', () => (
+    <>
+      <TableX data={[]} columns={editColumns} />
+    </>
+  ))
+  .add('multiple tables', () => (
+    <>
+      <TableX data={store.data} columns={editColumns} />
+      <TableX data={store.data} columns={editColumns} />
+    </>
   ))

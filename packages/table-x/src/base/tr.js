@@ -11,7 +11,8 @@ const Tr = ({
   style,
   totalWidth,
   isTrDisable,
-  isTrHighlight
+  isTrHighlight,
+  id
 }) => {
   // 手动设置active态
   const [active, setActive] = useState(false)
@@ -32,11 +33,11 @@ const Tr = ({
   const handleSetActive = useCallback(
     ({ detail }) => {
       const { target, active } = detail
-      if (isActive(target, 'gm-table-x-tr', `${row.index}`)) {
+      if (isActive(target, 'gm-table-x-tr', `${id}-${row.index}`)) {
         setActive(active)
       }
     },
-    [row.index]
+    [row.index, id]
   )
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const Tr = ({
 
   return (
     <>
-      <tr data-id={dataId} data-index={row.index} {...props}>
+      <tr data-id={dataId} data-index={`${id}-${row.index}`} {...props}>
         {row.cells.map((cell, cellIndex) => (
           <Td key={cellIndex} cell={cell} totalWidth={totalWidth} />
         ))}
@@ -62,6 +63,7 @@ const Tr = ({
 Tr.whyDidYouRender = true
 
 Tr.propTypes = {
+  id: PropTypes.string.isRequired,
   row: PropTypes.object.isRequired,
   SubComponent: PropTypes.func,
   keyField: PropTypes.string.isRequired,
