@@ -12,10 +12,10 @@ import { warn } from '@gm-common/tool'
 
 class BaseTable extends React.Component {
   refTable = React.createRef()
+  id = this.props.id || _.uniqueId('TABLE-')
 
   state = {
-    trActiveMap: {},
-    id: this.props.id || _.uniqueId('TABLE-')
+    trActiveMap: {}
   }
 
   constructor(props) {
@@ -133,7 +133,8 @@ class BaseTable extends React.Component {
         columns={newColumns}
         data={data}
         getTrProps={(_, rowInfo) => {
-          const { trActiveMap, id } = this.state
+          const { trActiveMap } = this.state
+          const { id } = this
           if (!rowInfo) {
             return {}
           }

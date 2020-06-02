@@ -75,7 +75,7 @@ const TableX = ({
       <Tr
         key={row.index}
         row={row}
-        tableID={id}
+        id={id}
         SubComponent={SubComponent}
         keyField={keyField}
         style={style}
