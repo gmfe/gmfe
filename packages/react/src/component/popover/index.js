@@ -105,6 +105,7 @@ class Popover extends React.Component {
 
     LayoutRoot._removeComponentPopup(this.id)
 
+    this.handleDispatchEvent(false)
     window.removeEventListener(
       EVENT_TYPE.MODAL_SCROLL,
       this.debounceHandleModalScroll

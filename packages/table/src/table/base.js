@@ -111,6 +111,7 @@ class BaseTable extends React.Component {
       showPagination,
       className,
       tiled,
+      getTrProps,
       ...rest
     } = this.props
     const newColumns = _.map(columns, v => {
@@ -132,16 +133,28 @@ class BaseTable extends React.Component {
         {...rest}
         columns={newColumns}
         data={data}
-        getTrProps={(_, rowInfo) => {
+        getTrProps={(
+          state,
+          rowInfo = {
+            row: {},
+            original: {},
+            index: null
+          },
+          column
+        ) => {
           const { trActiveMap } = this.state
           const { id } = this
-          if (!rowInfo) {
-            return {}
-          }
+          const { className: trClassName, ...rest } = getTrProps
+            ? getTrProps(state, rowInfo, column)
+            : {}
           const { index } = rowInfo
           return {
             'data-index': `${id}-${index}`,
-            className: classNames({ '-active': trActiveMap[`${id}-${index}`] })
+            className: classNames(
+              { '-active': trActiveMap[`${id}-${index}`] },
+              trClassName
+            ),
+            ...rest
           }
         }}
         defaultPageSize={defaultPageSize}
@@ -193,7 +206,8 @@ BaseTable.propTypes = {
   tiled: PropTypes.bool,
   /** 额外，忽略，不一一列了，参考 ReactTable */
   showPagination: PropTypes.bool,
-  defaultPageSize: PropTypes.number
+  defaultPageSize: PropTypes.number,
+  getTrProps: PropTypes.func
 }
 
 BaseTable.defaultProps = {
@@ -214,9 +228,10 @@ export default BaseTable
  * @returns {string}
  */
 function getActiveTrIndex(target) {
-  if (target.classList.contains('rt-tr')) {
+  if (target?.classList.contains('rt-tr')) {
+    // 当递归找到 html 时，不知为何 html 的 parentElement 居然还是 html，导致可以进入第二个条件
     return target.getAttribute('data-index')
-  } else if (target.parentElement) {
+  } else if (target?.parentElement) {
     return getActiveTrIndex(target.parentElement)
   }
 }
