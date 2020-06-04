@@ -133,7 +133,15 @@ class BaseTable extends React.Component {
         {...rest}
         columns={newColumns}
         data={data}
-        getTrProps={(state, rowInfo = {}, column) => {
+        getTrProps={(
+          state,
+          rowInfo = {
+            row: {},
+            original: {},
+            index: null
+          },
+          column
+        ) => {
           const { trActiveMap } = this.state
           const { id } = this
           const { className: trClassName, ...rest } = getTrProps
