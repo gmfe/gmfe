@@ -94,6 +94,7 @@ class BaseTable extends React.Component {
       tiled,
       ...rest
     } = this.props
+
     const newColumns = _.map(columns, v => {
       // groups 的形式
       if (v.columns) {
