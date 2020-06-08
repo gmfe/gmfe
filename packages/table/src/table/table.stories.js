@@ -222,9 +222,3 @@ react-table 文档见 https://github.com/tannerlinsley/react-table/tree/v6
       ]}
     />
   ))
-  .add('multiple tables', () => (
-    <>
-      <Table data={store.data} columns={columns} />
-      <Table data={store.data} columns={columns} />
-    </>
-  ))

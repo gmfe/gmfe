@@ -12,11 +12,6 @@ import { warn } from '@gm-common/tool'
 
 class BaseTable extends React.Component {
   refTable = React.createRef()
-  id = this.props.id || _.uniqueId('TABLE-')
-
-  state = {
-    trActiveMap: {}
-  }
 
   constructor(props) {
     super(props)
@@ -36,7 +31,6 @@ class BaseTable extends React.Component {
     dom
       .getElementsByClassName('rt-tbody')[0]
       .addEventListener('scroll', this.doScroll)
-    window.addEventListener(EVENT_TYPE.TR_ACTIVE, this.handleSetTrActive)
   }
 
   componentWillUnmount() {
@@ -48,19 +42,6 @@ class BaseTable extends React.Component {
     dom
       .getElementsByClassName('rt-tbody')[0]
       .removeEventListener('scroll', this.doScroll)
-    window.removeEventListener(EVENT_TYPE.TR_ACTIVE, this.handleSetTrActive)
-  }
-
-  handleSetTrActive = ({ detail }) => {
-    const { target, active } = detail
-    const index = getActiveTrIndex(target)
-    if (_.isNil(index)) {
-      return
-    }
-    const { trActiveMap } = this.state
-    this.setState({
-      trActiveMap: Object.assign({}, trActiveMap, { [index]: active })
-    })
   }
 
   processItem = item => {
@@ -111,9 +92,9 @@ class BaseTable extends React.Component {
       showPagination,
       className,
       tiled,
-      getTrProps,
       ...rest
     } = this.props
+
     const newColumns = _.map(columns, v => {
       // groups 的形式
       if (v.columns) {
@@ -133,30 +114,6 @@ class BaseTable extends React.Component {
         {...rest}
         columns={newColumns}
         data={data}
-        getTrProps={(
-          state,
-          rowInfo = {
-            row: {},
-            original: {},
-            index: null
-          },
-          column
-        ) => {
-          const { trActiveMap } = this.state
-          const { id } = this
-          const { className: trClassName, ...rest } = getTrProps
-            ? getTrProps(state, rowInfo, column)
-            : {}
-          const { index } = rowInfo
-          return {
-            'data-index': `${id}-${index}`,
-            className: classNames(
-              { '-active': trActiveMap[`${id}-${index}`] },
-              trClassName
-            ),
-            ...rest
-          }
-        }}
         defaultPageSize={defaultPageSize}
         pageSize={Math.max(data.length, 1)} // 展示完整，传多少显示多少。避免被 pageSize 截断
         showPagination={showPagination}
@@ -197,7 +154,6 @@ BaseTable.propTypes = {
   loading: PropTypes.bool,
   /** 表格数据 */
   data: PropTypes.array.isRequired,
-  id: PropTypes.string,
   /** 列定义 */
   columns: PropTypes.array.isRequired,
   className: PropTypes.string,
@@ -206,8 +162,7 @@ BaseTable.propTypes = {
   tiled: PropTypes.bool,
   /** 额外，忽略，不一一列了，参考 ReactTable */
   showPagination: PropTypes.bool,
-  defaultPageSize: PropTypes.number,
-  getTrProps: PropTypes.func
+  defaultPageSize: PropTypes.number
 }
 
 BaseTable.defaultProps = {
@@ -221,17 +176,3 @@ BaseTable.defaultProps = {
 }
 
 export default BaseTable
-
-/**
- * 获取目标元素所在表格的行数
- * @param target {Element}
- * @returns {string}
- */
-function getActiveTrIndex(target) {
-  if (target?.classList.contains('rt-tr')) {
-    // 当递归找到 html 时，不知为何 html 的 parentElement 居然还是 html，导致可以进入第二个条件
-    return target.getAttribute('data-index')
-  } else if (target?.parentElement) {
-    return getActiveTrIndex(target.parentElement)
-  }
-}

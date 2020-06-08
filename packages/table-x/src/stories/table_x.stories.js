@@ -308,14 +308,3 @@ Table 切 TableX 关注点：
       isTrHighlight={(item, index) => index === 0}
     />
   ))
-  .add('no data', () => (
-    <>
-      <TableX data={[]} columns={editColumns} />
-    </>
-  ))
-  .add('multiple tables', () => (
-    <>
-      <TableX data={store.data} columns={editColumns} />
-      <TableX data={store.data} columns={editColumns} />
-    </>
-  ))
