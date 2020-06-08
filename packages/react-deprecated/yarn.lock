@@ -3,13 +3,13 @@
 
 
 "@gm-common/tool@^1.0.0":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@gm-common/tool/-/tool-1.1.1.tgz#e0996614f163f0be3bef8eadb218ca20d8e6c188"
-  integrity sha512-icWjw+070X9TwHG4MbG+I5EH6nM5HO5wSnV4kQR1iMTD4NWP+k1TgyHRGac0C9dNV2q4qFdb2J6jYT8WsY3guA==
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@gm-common/tool/-/tool-1.0.0.tgz#e7a919d2c01845d543cc95e20aad7cd395b3313f"
+  integrity sha512-MCGhIeFbcDxM9f8ZV1r2dWo4dIMPe3C+DqJ2vHcjsK2rGyowsRQaouPRJUS/HNRUlFmVRci3gMyEIOFtQTWWrQ==
   dependencies:
     lodash "^4.17.15"
 
 lodash@^4.17.15:
   version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
