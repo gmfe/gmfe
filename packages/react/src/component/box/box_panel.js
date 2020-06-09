@@ -41,8 +41,19 @@ const BoxPanel = ({
             <div className='gm-box-panel-summary'>
               {_.map(summary, (s, i) => {
                 if (i < summary.length - 1)
-                  return s.text + ': ' + s.value + ', '
-                else return s.text + ': ' + s.value
+                  return (
+                    <span>
+                      {s.text}:&nbsp;
+                      <span className='gm-text-primary'>{s.value}</span>,&nbsp;
+                    </span>
+                  )
+                else
+                  return (
+                    <span>
+                      {s.text}:&nbsp;
+                      <span className='gm-text-primary'>{s.value}</span>
+                    </span>
+                  )
               })}
             </div>
           ) : (
