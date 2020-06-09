@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/tour",
-  "version": "2.10.22",
+  "version": "2.10.23-alpha.0",
   "description": "> TODO: description",
   "author": "zhongsink <zhongink@gmail.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -31,7 +31,7 @@
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@gmfe/react": "^2.10.22",
-    "@gmfe/table-x": "^2.10.22"
+    "@gmfe/react": "^2.10.23-alpha.0",
+    "@gmfe/table-x": "^2.10.23-alpha.0"
   }
 }
