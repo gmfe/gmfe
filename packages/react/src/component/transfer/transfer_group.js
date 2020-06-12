@@ -86,9 +86,13 @@ class TransferGroup extends React.Component {
     })
 
     // 左边是group数据
-    const leftList = filterGroupListLeaf(list, v => {
-      return !_.includes(selectedValues, v.value)
-    })
+    const leftList = filterGroupListLeaf(
+      list,
+      v => {
+        return !_.includes(selectedValues, v.value)
+      },
+      false
+    )
 
     return (
       <div

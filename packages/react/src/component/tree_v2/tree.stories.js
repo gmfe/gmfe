@@ -396,6 +396,24 @@ const json = {
         }
       ],
       text: '肉禽类'
+    },
+    {
+      value: 'A111',
+      text: '水果类',
+      children: [
+        {
+          value: 'C111',
+          text: '雪梨'
+        },
+        {
+          value: 'C222',
+          text: '葡萄'
+        },
+        {
+          value: 'C333',
+          text: '西瓜'
+        }
+      ]
     }
   ]
 }

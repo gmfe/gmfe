@@ -81,9 +81,27 @@ const store = observable({
             { value: 'C1292505', text: '三黄鸡 （鲜 2斤/只 去内脏）' }
           ],
           text: '整鸡类'
-        }
+        },
       ],
       text: '肉禽类'
+    },
+    {
+      value: 'A111',
+      text: '水果类',
+      children: [
+        {
+          value: 'C111',
+          text: '雪梨'
+        },
+        {
+          value: 'C222',
+          text: '葡萄'
+        },
+        {
+          value: 'C333',
+          text: '西瓜'
+        }
+      ]
     }
   ],
   flatData: [
