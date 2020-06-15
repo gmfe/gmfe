@@ -89,7 +89,7 @@ const TreeV2 = ({
   }, [findIndex])
 
   const handleSelectAll = checked => {
-    onSelectValues(checked ? getLeafValues(filterList) : [])
+    onSelectValues(checked ? getLeafValues(list) : [])
   }
 
   const handleQuery = e => {
@@ -201,7 +201,7 @@ const TreeV2 = ({
 
       {showAllCheck ? (
         <Bottom
-          list={filterList}
+          list={list}
           selectedValues={selectedValues}
           onChange={handleSelectAll}
         />
