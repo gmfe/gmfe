@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Flex from '../flex'
 import { pinYinFilter } from '@gm-common/tool'
 import { getLeaf, getUnLeafValues } from './util'
-import { filterGroupListLeaf } from '../../common/util'
+import { filterGroupListNode } from '../../common/util'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Bottom from './bottom'
@@ -14,7 +14,7 @@ import SearchSvg from '../../../svg/search.svg'
 const filterWithQuery = (list, query, withFilter) => {
   let processList
   if (withFilter === true) {
-    processList = filterGroupListLeaf(list, v => {
+    processList = filterGroupListNode(list, v => {
       return pinYinFilter([v], query, v => v.name).length > 0
     })
   } else if (withFilter) {

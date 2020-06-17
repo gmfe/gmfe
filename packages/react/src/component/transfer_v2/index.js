@@ -4,6 +4,7 @@ import TreeV2 from '../tree_v2'
 import Flex from '../flex'
 import SvgRightSmall from '../../../svg/right-small.svg'
 import SvgLeftSmall from '../../../svg/left-small.svg'
+import Button from '../button'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { filterGroupListLeaf } from '../../common/util'
@@ -103,22 +104,23 @@ const TransferV2 = ({
       />
       <div className='gm-gap-5' />
       <Flex column justifyCenter alignCenter className='gm-transfer-operation'>
-        <button
+        <Button
+          className='gm-margin-bottom-5'
+          type='primary'
+          plain
           disabled={lefts.length === 0}
-          type='button'
-          className='btn btn-default btn-block gm-margin-bottom-5'
           onClick={handleToRight}
         >
           <SvgRightSmall />
-        </button>
-        <button
+        </Button>
+        <Button
+          plain
+          type='primary'
           disabled={rights.length === 0}
-          type='button'
-          className='btn btn-default btn-block'
           onClick={handleToLeft}
         >
           <SvgLeftSmall />
-        </button>
+        </Button>
       </Flex>
       <div className='gm-gap-5' />
       <TreeV2

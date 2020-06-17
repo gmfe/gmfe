@@ -1,13 +1,13 @@
 import _ from 'lodash'
 import { pinYinFilter } from '@gm-common/tool'
-import { filterGroupListLeaf } from '../../common/util'
+import { filterGroupListNode } from '../../common/util'
 
 // 这里做一层 cache
 const _cache = []
 const filterWithQuery = (list, query, withFilter) => {
   let processList
   if (withFilter === true) {
-    processList = filterGroupListLeaf(list, v => {
+    processList = filterGroupListNode(list, v => {
       const field = `${query}______${v.text}`
       if (_cache[field] === undefined) {
         _cache[field] = pinYinFilter([v], query, v => v.text).length > 0
