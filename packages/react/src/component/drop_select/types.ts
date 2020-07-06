@@ -28,7 +28,7 @@ interface DropSelectDataActionOptions {
   onClick?(rowData: { [key: string]: any }): void
 }
 
-export type {
+export {
   DropSelectProps,
   DropSelectDataOptions,
   DropSelectDataActionOptions,

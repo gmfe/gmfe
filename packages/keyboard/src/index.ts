@@ -12,7 +12,7 @@ export { default as KCLevelSelect } from './components/level_select'
 export { default as KCTableSelect } from './components/table_select'
 export { default as KCDatePicker } from './components/date_picker'
 export { default as KCSelect } from './components/select'
-export type {
+export {
   KeyboardTableXProps,
   KeyboardTableXColumn,
   KeyboardCustomEvent,

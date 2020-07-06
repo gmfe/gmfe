@@ -22,4 +22,4 @@ interface SelectProps<V> {
   onKeyDown?(event: KeyboardEvent): void
 }
 
-export type { SelectDataOptions, SelectProps }
+export { SelectDataOptions, SelectProps }

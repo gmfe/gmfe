@@ -70,7 +70,7 @@ interface MoreSelectProps<T> extends MoreSelectCommonProps<T> {
   ): void
 }
 
-export type {
+export {
   MoreSelectBaseDataOptions,
   MoreSelectGroupDataOptions,
   MoreSelectNormalDataOptions,

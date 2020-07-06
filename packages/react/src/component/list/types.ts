@@ -47,9 +47,4 @@ interface ListProps<V> extends CommonListProps<V> {
   onSelect?(selected: V | V[]): void
 }
 
-export type {
-  BaseListDataOptions,
-  BaseListGroupDataOptions,
-  BaseListProps,
-  ListProps,
-}
+export { BaseListDataOptions, BaseListGroupDataOptions, BaseListProps, ListProps }

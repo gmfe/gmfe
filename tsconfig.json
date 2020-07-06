@@ -1,5 +1,9 @@
 {
   "extends": "ts-config-gm-react-app/tsconfig.json",
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["packages/**/types", "node_modules"]
+  "exclude": ["packages/**/types/*", "node_modules", "packages/**/*.stories.tsx"],
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "isolatedModules": false
+  }
 }

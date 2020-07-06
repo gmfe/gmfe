@@ -1,2 +1,2 @@
 export { default as ImagePreview } from './image_preview'
-export type { PreviewModalProps } from './preview_modal'
+export { PreviewModalProps } from './preview_modal'

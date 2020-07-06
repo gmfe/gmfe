@@ -44,4 +44,9 @@ interface CascaderSelectProps<T> {
   onlyChildSelectable?: boolean
 }
 
-export type { CascaderDataOptions, CascaderProps, CascaderDataOptionsWithPath, CascaderSelectProps }
+export {
+  CascaderDataOptions,
+  CascaderProps,
+  CascaderDataOptionsWithPath,
+  CascaderSelectProps,
+}

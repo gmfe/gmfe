@@ -1,2 +1,1 @@
-export { default as selectTableXHOC } from './hoc'
-export type { SelectTableXProps } from './hoc'
+export { default as selectTableXHOC, SelectTableXProps } from './hoc'

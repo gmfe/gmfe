@@ -1,1 +1,1 @@
-export * from './manage-pagination'
+export * from './manage_pagination'

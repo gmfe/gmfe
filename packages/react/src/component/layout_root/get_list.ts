@@ -24,4 +24,4 @@ function getList(type: PopUpListType) {
 }
 
 export default getList
-export type { PopUpListType, ComponentListMap, ComponentListMapValue }
+export { PopUpListType, ComponentListMap, ComponentListMapValue }

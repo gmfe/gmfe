@@ -6,7 +6,10 @@ interface TableSelectColumnOptions<T = any> {
   accessor?: string | ((data: MoreSelectNormalDataOptions<T>) => ReactNode)
   width: number
   Header: ReactNode
-  Cell?: (cellProps: { original: MoreSelectNormalDataOptions<T>; index: number }) => ReactNode
+  Cell?: (cellProps: {
+    original: MoreSelectNormalDataOptions<T>
+    index: number
+  }) => ReactNode
 }
 
 interface TableSelectProps<T = any>
@@ -17,4 +20,4 @@ interface TableSelectProps<T = any>
   columns: TableSelectColumnOptions<T>[]
 }
 
-export type { TableSelectProps, TableSelectColumnOptions }
+export { TableSelectProps, TableSelectColumnOptions }

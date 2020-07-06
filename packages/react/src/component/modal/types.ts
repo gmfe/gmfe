@@ -13,4 +13,4 @@ interface CommonModalProps {
   noContentPadding?: boolean
 }
 
-export type { ModalSize, CommonModalProps }
+export { ModalSize, CommonModalProps }

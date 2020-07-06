@@ -23,7 +23,9 @@ const Button: FC<ButtonProps> = ({
 
   const loadFlag = loading || isLoading
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (
+    event: MouseEvent<HTMLButtonElement> | MouseEvent<HTMLAnchorElement>
+  ) => {
     if (loadFlag) {
       return
     }

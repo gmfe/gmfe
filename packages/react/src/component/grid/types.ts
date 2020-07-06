@@ -29,4 +29,4 @@ interface RowContextOptions {
   gutter?: number | { [key in ColSizeType]: number }
 }
 
-export type { RowProps, ColProps, RowContextOptions }
+export { RowProps, ColProps, RowContextOptions }

@@ -1,4 +1,10 @@
-import React, { Component, createRef, CSSProperties, HTMLAttributes, ReactNode } from 'react'
+import React, {
+  Component,
+  createRef,
+  CSSProperties,
+  HTMLAttributes,
+  ReactNode,
+} from 'react'
 import classNames from 'classnames'
 import elementInView from './element_in_viewport'
 
@@ -115,7 +121,8 @@ export default class Popup extends Component<PopupProps, PopupState> {
     if (center) {
       sStyle.left = rect.left + rect.width / 2 - width / 2 + offset
     } else if (right) {
-      sStyle.right = document.documentElement.clientWidth - rect.left - rect.width - offset
+      sStyle.right =
+        document.documentElement.clientWidth - rect.left - rect.width - offset
     } else {
       sStyle.left = rect.left + offset
     }
@@ -139,4 +146,4 @@ export default class Popup extends Component<PopupProps, PopupState> {
   }
 }
 
-export type { PopupRectOptions, PopupProps }
+export { PopupRectOptions, PopupProps }

@@ -19,7 +19,9 @@ interface TreeV2Props<T> {
   /* 点击选中回调 */
   onActiveValues?(activeValues: T[]): void
   title?: string
-  withFilter?: ((list: TreeV2DataOptions<T>[], query: string) => TreeV2DataOptions<T>[]) | boolean
+  withFilter?:
+    | ((list: TreeV2DataOptions<T>[], query: string) => TreeV2DataOptions<T>[])
+    | boolean
   renderLeafItem?(item: TreeV2DataOptions<T>): ReactNode
   renderGroupItem?(item: TreeV2DataOptions<T>): ReactNode
   placeholder?: string
@@ -27,10 +29,12 @@ interface TreeV2Props<T> {
   showAllCheck?: boolean
   /* 半选 value 列表 */
   indeterminateList?: T[]
-  withFindFilter?: false | ((list: TreeV2DataOptions<T>[], query: string) => TreeV2DataOptions<T>[])
+  withFindFilter?:
+    | false
+    | ((list: TreeV2DataOptions<T>[], query: string) => TreeV2DataOptions<T>[])
   findPlaceholder?: string
   className?: string
   style?: CSSProperties
 }
 
-export type { TreeV2DataOptions, TreeV2Props }
+export { TreeV2DataOptions, TreeV2Props }

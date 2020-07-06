@@ -29,4 +29,4 @@ interface ManagePaginationV2Response {
   }
 }
 
-export type { ManagePaginationV2Props, ManagePaginationV2Params, ManagePaginationV2Response }
+export { ManagePaginationV2Props, ManagePaginationV2Params, ManagePaginationV2Response }

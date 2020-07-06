@@ -8,4 +8,4 @@ interface TipProps extends TipContentProps {
   time: number
 }
 
-export type { TipTypes, TipContentProps, TipProps }
+export { TipTypes, TipContentProps, TipProps }

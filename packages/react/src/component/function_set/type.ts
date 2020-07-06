@@ -12,4 +12,4 @@ interface FunctionSetProps {
   disabled?: boolean
 }
 
-export type { FunctionSetDataOptions, FunctionSetProps }
+export { FunctionSetDataOptions, FunctionSetProps }

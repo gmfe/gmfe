@@ -1,2 +1,1 @@
-export { default as Cropper } from './cropper'
-export type { CropperProps } from './cropper'
+export { default as Cropper, CropperProps } from './cropper'

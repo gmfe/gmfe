@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef } from 'react'
 import { Button, Flex, UploaderFile, Modal } from '@gmfe/react'
 import CropperJS from 'cropperjs'
 import { getLocale } from '@gmfe/locales'
+import getType from './get_type'
 
 const DEFAULT_OPTIONS: CropperJS.Options = {
   aspectRatio: 1,
@@ -18,7 +19,10 @@ export interface CropperProps {
 }
 
 interface CropperFC extends FC<CropperProps> {
-  SIZE: { SKU: { width: number; height: number }; LOGO: { width: number; height: number } }
+  SIZE: {
+    SKU: { width: number; height: number }
+    LOGO: { width: number; height: number }
+  }
   render(props: Omit<CropperProps, 'onCancel' | 'onOK'>): Promise<Blob | null>
   hide: typeof Modal.hide
 }
@@ -51,11 +55,18 @@ const Cropper: CropperFC = ({ file, url, options, croppedOptions, onCancel, onOK
     <div className='gm-cropper'>
       <Flex justifyBetween>
         <div>
-          <img alt='' className='gm-cropper-img' ref={imageRef} src={url ?? file?.preview} />
+          <img
+            alt=''
+            className='gm-cropper-img'
+            ref={imageRef}
+            src={url ?? file?.preview}
+          />
         </div>
         <div>
           <div ref={imgPreviewRef} className='gm-cropper-preview' />
-          <div className='gm-text-desc text-center gm-margin-top-10'>{getLocale('预览')}</div>
+          <div className='gm-text-desc text-center gm-margin-top-10'>
+            {getLocale('预览')}
+          </div>
         </div>
       </Flex>
       <div className='text-right gm-margin-top-10'>

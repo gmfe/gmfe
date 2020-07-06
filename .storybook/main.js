@@ -1,3 +1,8 @@
+const path = require('path')
+const WebpackBar = require('webpackbar')
+const FriendlyErrorWebpackPlugin = require('friendly-errors-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+
 const webpackFinal = (config) => {
   config.resolve.extensions = ['.tsx', '.ts', '.js', '.json']
 
@@ -41,8 +46,8 @@ const webpackFinal = (config) => {
   })
 
   config.module.rules.push({
-    test: /\.stories\.jsx?$/,
-    loaders: [require.resolve('@storybook/source-loader')],
+    test: /\.stories\.tsx$/,
+    loaders: ['@storybook/source-loader'],
     enforce: 'pre',
   })
 
@@ -65,15 +70,47 @@ const webpackFinal = (config) => {
 
   config.module.rules.push({
     test: /\.tsx?$/,
-    loader: 'babel-loader',
-    options: { cacheDirectory: true },
+    use: [
+      {
+        loader: 'babel-loader',
+        options: { cacheDirectory: true },
+      },
+      'thread-loader',
+      {
+        loader: 'react-docgen-typescript-loader',
+        options: {
+          tsconfigPath: path.resolve(__dirname, '../tsconfig.json'),
+        },
+      },
+    ],
   })
+
+  config.plugins.push(
+    new WebpackBar(),
+    new FriendlyErrorWebpackPlugin(),
+    new HardSourceWebpackPlugin()
+  )
 
   return config
 }
 
 module.exports = {
-  addons: ['@storybook/addon-storysource/register'],
+  addons: [
+    '@storybook/addon-storysource/register',
+    {
+      name: '@storybook/preset-typescript',
+      options: {
+        tsLoaderOptions: {
+          transpileOnly: true,
+          happyPackMode: true,
+          configFile: path.resolve(__dirname, '../tsconfig.json'),
+        },
+        forkTsCheckerWebpackPluginOptions: {
+          checkSyntacticErrors: true,
+        },
+      },
+    },
+  ],
   // 写清晰一点，否则容易碰到 node_modules 里的 stories
   stories: [
     '../packages/business/src/**/*stories.tsx',

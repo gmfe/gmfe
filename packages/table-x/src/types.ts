@@ -47,7 +47,7 @@ interface TableXBatchActionOptions {
   type: TableXBatchActionType
 }
 
-export type {
+export {
   TableXColumn,
   TableXColumnInstance,
   TableXProps,
