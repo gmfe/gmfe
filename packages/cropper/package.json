@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "react": "^16.13.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.13.0"
   },
   "dependencies": {
     "@gmfe/locales": "^3.0.0-beta.2",
