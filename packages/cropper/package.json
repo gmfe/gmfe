@@ -22,7 +22,7 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "peerDependencies": {
-    "react": "^16.12.0",
+    "react": "^16.13.0",
     "react-dom": "^16.12.0"
   },
   "dependencies": {
