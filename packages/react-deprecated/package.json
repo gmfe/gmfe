@@ -20,7 +20,7 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "dependencies": {
-    "@gm-common/tool": "^2.3.0",
+    "@gm-common/tool": "^2.4.1",
     "@gmfe/locales": "^3.0.0-beta.2",
     "@gmfe/react": "^3.0.0-beta.2"
   }

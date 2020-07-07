@@ -26,7 +26,7 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gm-common/tool": "^2.3.0",
+    "@gm-common/tool": "^2.4.1",
     "@gmfe/react": "^3.0.0-beta.2",
     "@gmfe/table": "^3.0.0-beta.2",
     "@gmfe/table-x": "^3.0.0-beta.2",
