@@ -1,6 +1,14 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Framework, RightTop, Info, FullTab, Breadcrumb } from './index'
+import {
+  Breadcrumb,
+  Framework,
+  FullTab,
+  FullTabV2,
+  Info,
+  RightTop,
+} from './index'
+import { observable } from 'mobx'
 
 const data = [
   {
@@ -13,17 +21,17 @@ const data = [
         sub: [
           {
             link: '/merchandise/manage/sale',
-            name: '报价单管理'
+            name: '报价单管理',
           },
           {
             link: '/merchandise/manage/list',
-            name: '商品库'
+            name: '商品库',
           },
           {
             link: '/merchandise/manage/spu_remark',
-            name: '商品备注'
-          }
-        ]
+            name: '商品备注',
+          },
+        ],
       },
       {
         name: '营销',
@@ -31,11 +39,11 @@ const data = [
         sub: [
           {
             link: '/merchandise/marketing_tool/price_rule',
-            name: '限时锁价'
-          }
-        ]
-      }
-    ]
+            name: '限时锁价',
+          },
+        ],
+      },
+    ],
   },
   {
     link: '/merchandise',
@@ -47,11 +55,11 @@ const data = [
         sub: [
           {
             link: '/merchandise/manage/tax_rate',
-            name: '税率规则'
-          }
-        ]
-      }
-    ]
+            name: '税率规则',
+          },
+        ],
+      },
+    ],
   },
   {
     link: '/supply_chain',
@@ -63,9 +71,9 @@ const data = [
         sub: [
           {
             link: '/supply_chain/order/list',
-            name: '订单列表'
-          }
-        ]
+            name: '订单列表',
+          },
+        ],
       },
       {
         name: '分拣',
@@ -73,62 +81,130 @@ const data = [
         sub: [
           {
             link: '/supply_chain/sorting/schedule',
-            name: '分拣进度'
+            name: '分拣进度',
           },
           {
             link: '/supply_chain/sorting/detail',
-            name: '分拣明细'
+            name: '分拣明细',
           },
           {
             link: '/supply_chain/sorting/method',
-            name: '分拣方式'
-          }
-        ]
-      }
-    ]
-  }
+            name: '分拣方式',
+          },
+        ],
+      },
+    ],
+  },
 ]
 
-storiesOf('框架|FrameWork', module).add('default', () => (
-  <div>
-    <Framework
-      leftWidth='100px'
-      menu={
-        <div
-          style={{ width: '100px', height: '100vh', backgroundColor: 'red' }}
-        >
-          adfafa
-        </div>
-      }
-      rightTop={
-        <RightTop
-          breadcrumb={
-            <Breadcrumb
-              breadcrumbs={[]}
-              navConfig={data}
-              pathname='/merchandise/manage/tax_rate'
-              onSelect={item => console.log(item)}
-            />
-          }
-          info={
-            <Info
-              more={[
-                {
-                  text: 'adfasf',
-                  onClick: () => {
-                    console.log('123')
-                  }
-                }
-              ]}
-            />
-          }
+const store = observable({
+  activeKey: 'sku',
+  changeKey(v) {
+    this.activeKey = v
+    console.log(v, 'ss')
+  },
+})
+
+storiesOf('框架|FrameWork', module)
+  .add('default', () => (
+    <div>
+      <Framework
+        leftWidth='100px'
+        menu={
+          <div
+            style={{ width: '100px', height: '100vh', backgroundColor: 'red' }}
+          >
+            adfafa
+          </div>
+        }
+        rightTop={
+          <RightTop
+            breadcrumb={
+              <Breadcrumb
+                breadcrumbs={[]}
+                navConfig={data}
+                pathname='/merchandise/manage/tax_rate'
+                onSelect={(item) => console.log(item)}
+              />
+            }
+            info={
+              <Info
+                more={[
+                  {
+                    text: 'adfasf',
+                    onClick: () => {
+                      console.log('123')
+                    },
+                  },
+                ]}
+              />
+            }
+          />
+        }
+      >
+        <FullTab tabs={['按订单查看', '按商品查看']} active={1}>
+          <div>按订单查看</div>
+          <div>按商品查看</div>
+        </FullTab>
+      </Framework>
+    </div>
+  ))
+  .add('FullTabV2', () => (
+    <div>
+      <Framework
+        leftWidth='100px'
+        menu={
+          <div
+            style={{ width: '100px', height: '100vh', backgroundColor: 'red' }}
+          >
+            adfafa
+          </div>
+        }
+        rightTop={
+          <RightTop
+            breadcrumb={
+              <Breadcrumb
+                breadcrumbs={[]}
+                navConfig={data}
+                pathname='/merchandise/manage/tax_rate'
+                onSelect={(item) => console.log(item)}
+              />
+            }
+            info={
+              <Info
+                more={[
+                  {
+                    text: 'adfasf',
+                    onClick: () => {
+                      console.log('123')
+                    },
+                  },
+                ]}
+              />
+            }
+          />
+        }
+      >
+        <FullTabV2
+          tabs={[
+            {
+              name: '按订单查看',
+              key: 'order',
+              content: <div>按订单按订单按订单</div>,
+            },
+            {
+              name: '按商品查看',
+              key: 'sku',
+              content: <div>按商品按商品按商品</div>,
+            },
+            {
+              name: '按司机查看',
+              key: 'driver',
+              content: <div>按司机按司机按司机</div>,
+            },
+          ]}
+          defaultActiveKey='sku'
         />
-      }
-    >
-      <FullTab tabs={['按订单查看', '按商品查看']} active={1}>
-        <div>按订单查看</div>
-        <div>按商品查看</div>
-      </FullTab>
-    </Framework>
-  </div>
-))
+      </Framework>
+    </div>
+  ))
