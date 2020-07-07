@@ -59,7 +59,7 @@
     "cropperjs": "^1.5.6",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
-    "eslint-plugin-gm-react-app": "^3.1.11-beta.0",
+    "eslint-plugin-gm-react-app": "^3.1.14-beta.0",
     "file-loader": "^5.1.0",
     "husky": "^4.2.3",
     "less": "^3.11.1",
@@ -83,7 +83,7 @@
     "styled-components": "^5.1.0",
     "stylelint": "^13.2.0",
     "stylelint-config-standard": "^20.0.0",
-    "ts-config-gm-react-app": "^3.1.11-beta.0",
+    "ts-config-gm-react-app": "^3.1.14-beta.0",
     "typescript": "^3.8.3",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.6"
