@@ -28,7 +28,7 @@
     "@gm-common/tool": "^2.4.1",
     "@gmfe/react": "^3.0.0-beta.2",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.15",
     "prop-types": "^15.7.2"
   }
 }

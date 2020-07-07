@@ -31,6 +31,6 @@
     "@gmfe/react": "^3.0.0-beta.2",
     "@gmfe/table-x": "^3.0.0-beta.2",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.14"
+    "lodash": "^4.17.15"
   }
 }
