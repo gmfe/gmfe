@@ -16,6 +16,7 @@ import {
 import BatchActionBar from './util/batch_action_bar'
 
 export { default as Table } from './base'
+export { default as EditTable } from './edit_table'
 export { default as subTableHOC } from './hoc/sub_table'
 export { default as diyTableHOC } from './hoc/diy_table'
 export { default as fixedColumnsTableHOC } from './hoc/fixed_columns_table'
