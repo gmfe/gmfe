@@ -28,9 +28,9 @@ export interface RangeCalendarProps {
   className?: string
   style?: CSSProperties
   /* 当前鼠标hover日期 */
-  hoverDay?: Moment
+  hoverDay?: Moment | null
   /* 鼠标hover回调 */
-  onHoverDay?(value: Moment): void
+  onHoverDay?(value: Moment | null): void
   /* 键盘用 */
   onKeyDown?(event: KeyboardEvent<HTMLDivElement>): void
 }
@@ -57,7 +57,11 @@ const RangeCalendar: FC<RangeCalendarProps> = (props) => {
   } = props
 
   // 如果 willActiveSelected 就取 begin，否则当前
-  const _will = willActiveSelected ? moment(willActiveSelected) : begin ? moment(begin) : moment()
+  const _will = willActiveSelected
+    ? moment(willActiveSelected)
+    : begin
+    ? moment(begin)
+    : moment()
 
   // 需要有状态，因为 willActiveSelected 非必传
   const [will, setWill] = useState(_will)
@@ -113,7 +117,11 @@ const RangeCalendar: FC<RangeCalendarProps> = (props) => {
 
   return (
     <div {...rest} className={classNames('gm-calendar', className)}>
-      <Head value={will} onChange={handleChangeHead} disabledYearAndMonth={disabledYearAndMonth!} />
+      <Head
+        value={will}
+        onChange={handleChangeHead}
+        disabledYearAndMonth={disabledYearAndMonth!}
+      />
       <Week />
       <Content
         begin={(begin && moment(begin))!}

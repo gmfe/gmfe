@@ -33,7 +33,7 @@ function selectTableXHOC<
     const canSelectData = useMemo(() => data.filter((item) => !isSelectorDisable(item)), [
       data,
     ])
-    const isSelectAll = selected.length === canSelectData.length
+    const isSelectAll = !!selected.length && selected.length === canSelectData.length
 
     const newColumns = useGetColumns<Original>(
       columns,

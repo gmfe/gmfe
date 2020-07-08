@@ -19,9 +19,9 @@ interface ContentProps {
   /* 自定义可选日期 */
   disabledDate?(date: Date, options: { begin?: Date | null; end?: Date | null }): boolean
   /* 当前鼠标hover日期 */
-  hoverDay?: Moment
+  hoverDay?: Moment | null
   /* 鼠标hover日期修改函数 */
-  onHoverDay?(date: Moment): void
+  onHoverDay?(date: Moment | null): void
 }
 
 const Content: FC<ContentProps> = (props) => {

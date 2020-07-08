@@ -14,22 +14,20 @@ interface DayProps {
   /* 键盘用 */
   will: Moment
   /* 当前鼠标hover日期 */
-  hoverDay?: Moment
+  hoverDay?: Moment | null
   onHoverDay?(value: Moment | null): void
 }
 
-const Day: FC<DayProps> = (props) => {
-  const {
-    disabled,
-    onClick,
-    value,
-    will,
-    begin,
-    end,
-    hoverDay,
-    onHoverDay,
-  } = props
-
+const Day: FC<DayProps> = ({
+  disabled,
+  onClick,
+  value,
+  will,
+  begin,
+  end,
+  hoverDay,
+  onHoverDay,
+}) => {
   const handleClick = (): void => {
     if (disabled) {
       return
