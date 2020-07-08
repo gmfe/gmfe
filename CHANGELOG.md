@@ -95,13 +95,9 @@
 
 26.  在使用 SelectTableX 的子组件 BatchActionBar 时，count 不再需要手动去除来切换当前页和全部页；
 
-27.  全键盘 keyboardTableHOC 尽管已经完成迁移，但是不在迭代，请使用 keyboardTableXHOC 代替；
+27.  全键盘 keyboardTableHoc 修改为 keyboardTableHOC，同时不再维护，请迁移使用 keyboardTableXHOC；
 
 28.  由于 react-docgen-typescript-loader（用于生成 storybook 的 prop-types）这个插件会使用文件名来声明成变量名，所以文件名一律不能用 JavaScript 关键字、保留字等； 
-
-
-
-
 
 
 

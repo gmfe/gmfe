@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import NProgress from './nprogress'
+import NProgress from './n_progress'
 
 storiesOf('NProgress', module).add('default', () => (
   <div>
