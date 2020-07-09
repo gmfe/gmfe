@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, HTMLAttributes } from 'react'
 import { Flex } from '../flex'
 import classNames from 'classnames'
 import _ from 'lodash'
@@ -26,14 +26,13 @@ const Step: FC<StepProps> = (props) => {
   )
 }
 
-export interface StepsProps {
+export interface StepsProps extends HTMLAttributes<HTMLDivElement> {
   data: StepsDataOptions[]
-  className?: string
 }
 
 export interface StepsDataOptions {
   title: string
-  description: string
+  description?: string
 }
 
 const Steps: FC<StepsProps> = (props) => {

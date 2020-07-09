@@ -15,7 +15,7 @@ function useGetColumns<Original extends object>(
         id: TABLE_X_EXPAND_ID,
         width: TABLE_X.WIDTH_FUN,
         maxWidth: TABLE_X.WIDTH_FUN,
-        fixed: fixedExpand ? 'left' : null,
+        fixed: fixedExpand ? 'left' : undefined,
         thClassName: 'gm-table-x-icon',
         tdClassName: 'gm-table-x-icon',
         Header: () => <ExpandHeader />,

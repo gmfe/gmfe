@@ -10,8 +10,8 @@ const store = observable({
   begin: new Date(),
   end: new Date(),
   changeDate(begin: Date | null, end: Date | null) {
-    this.begin = begin
-    this.end = end
+    this.begin = begin as any
+    this.end = end as any
   },
 })
 
@@ -21,8 +21,8 @@ const _store = {
   changeDate(begin: Date | null, end: Date | null) {
     const value = moment(end!).format('YYYY-MM-DD')
     console.log(moment(end!).add(1, 'ms').isSame(moment(value).add(1, 'd')))
-    this.begin = begin
-    this.end = end
+    this.begin = begin as any
+    this.end = end as any
   },
 }
 
@@ -33,8 +33,8 @@ const store3 = observable({
   begin: moment().hour(14).minute(0).toDate(),
   end: moment().hour(18).minute(0).toDate(),
   changeDate(begin: Date | null, end: Date | null) {
-    this.begin = begin
-    this.end = end
+    this.begin = begin as any
+    this.end = end as any
   },
 })
 
@@ -144,13 +144,9 @@ storiesOf('DateRangePicker', module)
     >
       <div>
         开始
-        {storeNull.begin
-          ? moment(storeNull.begin ?? undefined).format('YYYY-MM-DD')
-          : ''}
+        {storeNull.begin ? moment(storeNull.begin ?? undefined).format('YYYY-MM-DD') : ''}
         结束
-        {storeNull.end
-          ? moment(storeNull.end ?? undefined).format('YYYY-MM-DD')
-          : ''}
+        {storeNull.end ? moment(storeNull.end ?? undefined).format('YYYY-MM-DD') : ''}
       </div>
     </DateRangePicker>
   ))
@@ -160,9 +156,7 @@ storiesOf('DateRangePicker', module)
       end={store.end}
       onChange={(begin, end) => store.changeDate(begin, end)}
       renderDate={(begin, end) =>
-        `${moment(begin).format('YYYY-MM-DD')} - ${moment(end).format(
-          'MM / DD'
-        )}`
+        `${moment(begin).format('YYYY-MM-DD')} - ${moment(end).format('MM / DD')}`
       }
     />
   ))

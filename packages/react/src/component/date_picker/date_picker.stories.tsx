@@ -7,7 +7,7 @@ import { observable } from 'mobx'
 const datepickerStatus = {
   date: null,
   setDate(date: Date | null) {
-    this.date = date
+    this.date = date as any
   },
 }
 

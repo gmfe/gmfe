@@ -20,7 +20,7 @@ function useGetColumns<Original extends object>(
         maxWidth: TABLE_X.WIDTH_FUN,
         thClassName: 'gm-table-x-icon',
         tdClassName: 'gm-table-x-icon',
-        fixed: fixedSelect ? 'left' : null,
+        fixed: fixedSelect ? 'left' : undefined,
         Header: () => <SelectHeader selectType={selectType} />,
         Cell: ({ row }: CellProps<Original>) => (
           <SelectCell

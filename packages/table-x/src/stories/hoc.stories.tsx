@@ -12,7 +12,6 @@ import {
 } from '@gmfe/react'
 import { columns, initialData, InitialDataOptions } from './default.stories'
 import {
-  FixedColumnsTableXColumn,
   fixedColumnsTableXHOC,
   sortableTableXHOC,
   editTableXHOC,
@@ -53,7 +52,7 @@ class Store {
 
 const store = new Store()
 
-const fixedColumns: FixedColumnsTableXColumn<InitialDataOptions>[] = [
+const fixedColumns: TableXColumn<InitialDataOptions>[] = [
   {
     Header: '序号',
     id: 'index',
@@ -70,7 +69,7 @@ const fixedColumns: FixedColumnsTableXColumn<InitialDataOptions>[] = [
   {
     Header: '供应商信息',
     width: 500,
-    accessor: (data) => data.supplierName,
+    accessor: (data: InitialDataOptions) => data.supplierName,
     id: 'supplierName',
   },
   {

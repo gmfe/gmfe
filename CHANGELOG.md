@@ -99,6 +99,21 @@
 
 28.  由于 react-docgen-typescript-loader（用于生成 storybook 的 prop-types）这个插件会使用文件名来声明成变量名，所以文件名一律不能用 JavaScript 关键字、保留字等； 
 
+29.  由于 TypeScript 启动了 `isoluatedModules`（该选项是为了确保当前程序可以被 babel 正确编译），babel 在编译中将会对所有的 interface 或 type 报出没有该模块的警告。为了解决该问题，所有导出的类型都需要修改为
+
+     ```typescript
+     // a.ts
+     interface AProps {}
+     export type { AProps }
+     
+     // b.ts
+     import type { AProps } from './a'
+     ```
+
+     
+
+     
+
 
 
 # 2.9.0

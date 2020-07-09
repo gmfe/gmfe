@@ -8,27 +8,27 @@ const store = observable({
   data: [
     {
       value: 1,
-      text: '广州'
+      text: '广州',
     },
     {
       value: 2,
-      text: '深圳'
+      text: '深圳',
     },
     {
       value: 3,
       text: '成都',
-      disabled: true
-    }
+      disabled: true,
+    },
   ],
-  setValue(value) {
+  setValue(value: any) {
     console.log(value)
     this.value = value
   },
   checked: false,
-  setChecked(checked) {
+  setChecked(checked: any) {
     console.log('setChecked', checked)
     this.checked = checked
-  }
+  },
 })
 
 storiesOf('Radio', module)
@@ -69,9 +69,9 @@ storiesOf('Radio', module)
     <RadioGroup
       name='city'
       value={store.value}
-      onChange={value => store.setValue(value)}
+      onChange={(value) => store.setValue(value)}
     >
-      {store.data.map(v => (
+      {store.data.map((v) => (
         <Radio key={v.value} value={v.value} disabled={v.disabled}>
           {v.text}
         </Radio>
