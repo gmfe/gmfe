@@ -20,4 +20,4 @@ interface PopoverProps {
   predictingHeight?: number
 }
 
-export { PopupType, PopoverTrigger, PopoverProps }
+export type { PopupType, PopoverTrigger, PopoverProps }

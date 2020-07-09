@@ -21,4 +21,4 @@ interface DialogState {
   isLoading: boolean
 }
 
-export { DialogType, DialogState, DialogSize, DialogProps }
+export type { DialogType, DialogState, DialogSize, DialogProps }

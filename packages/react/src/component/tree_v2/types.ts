@@ -37,4 +37,4 @@ interface TreeV2Props<T> {
   style?: CSSProperties
 }
 
-export { TreeV2DataOptions, TreeV2Props }
+export type { TreeV2DataOptions, TreeV2Props }

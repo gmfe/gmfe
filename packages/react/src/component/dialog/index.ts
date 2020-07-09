@@ -1,2 +1,2 @@
 export { default as Dialog } from './dialog'
-export { DialogProps, DialogSize, DialogType } from './types'
+export type { DialogProps, DialogSize, DialogType } from './types'

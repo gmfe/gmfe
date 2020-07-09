@@ -145,4 +145,4 @@ class Price extends Component<PriceProps> {
 }
 
 export default Price
-export { PriceProps, CurrencyListOptions }
+export type { PriceProps, CurrencyListOptions }

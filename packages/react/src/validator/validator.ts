@@ -92,4 +92,4 @@ const Validator = {
 }
 
 export default Validator
-export { ValidatorType, ValidatorRuleOptions }
+export type { ValidatorType, ValidatorRuleOptions }

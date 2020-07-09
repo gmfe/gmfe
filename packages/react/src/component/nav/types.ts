@@ -54,7 +54,7 @@ interface NavFC extends FC<NavProps> {
   SingleItem: FC<SingleItemProps>
 }
 
-export {
+export type {
   NavProps,
   NavData1stOptions,
   NavData2RdOptions,

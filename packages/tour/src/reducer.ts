@@ -51,4 +51,4 @@ export default function (state: ReducerState, action: ReducerAction): ReducerSta
   }
 }
 
-export { ReducerAction, ReducerState }
+export type { ReducerAction, ReducerState }

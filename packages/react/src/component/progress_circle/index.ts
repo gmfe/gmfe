@@ -1,1 +1,2 @@
-export { default as ProgressCircle, ProgressCircleProps } from './progress_circle'
+export { default as ProgressCircle } from './progress_circle'
+export type { ProgressCircleProps } from './progress_circle'

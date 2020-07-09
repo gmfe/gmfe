@@ -35,4 +35,4 @@ interface PaginationProps extends FlexProps {
   nextDisabled?: boolean
 }
 
-export { PaginationDataOptions, PaginationBaseProps, PaginationProps }
+export type { PaginationDataOptions, PaginationBaseProps, PaginationProps }

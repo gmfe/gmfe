@@ -16,4 +16,4 @@ interface UploaderProps {
   style?: CSSProperties
 }
 
-export { UploaderProps, UploaderFile }
+export type { UploaderProps, UploaderFile }

@@ -39,4 +39,4 @@ interface QuickSelectListOptions {
   text: string
 }
 
-export { DateRangePickerProps, QuickSelectListOptions }
+export type { DateRangePickerProps, QuickSelectListOptions }

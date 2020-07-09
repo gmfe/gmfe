@@ -146,4 +146,4 @@ export default class Popup extends Component<PopupProps, PopupState> {
   }
 }
 
-export { PopupRectOptions, PopupProps }
+export type { PopupRectOptions, PopupProps }

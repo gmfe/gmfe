@@ -18,4 +18,4 @@ interface ManagePaginationResponse {
   pagination?: ManagePaginationParams
 }
 
-export { ManagePaginationProps, ManagePaginationParams, ManagePaginationResponse }
+export type { ManagePaginationProps, ManagePaginationParams, ManagePaginationResponse }

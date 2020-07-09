@@ -55,4 +55,4 @@ const getRawArray: GetRawArray = function (numStr, length) {
 }
 
 export { formatNum, filterForNum, getNumLength, getRawArray }
-export { GetRawArray, GetRawArrayReturns }
+export type { GetRawArray, GetRawArrayReturns }

@@ -8,5 +8,3 @@ function getType(url: string): string | undefined {
   }
   return undefined
 }
-
-export default getType

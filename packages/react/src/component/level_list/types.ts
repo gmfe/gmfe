@@ -23,4 +23,4 @@ interface LevelListProps<V> {
   isForFunctionSet?: boolean
 }
 
-export { LevelListDataOptions, LevelListProps }
+export type { LevelListDataOptions, LevelListProps }

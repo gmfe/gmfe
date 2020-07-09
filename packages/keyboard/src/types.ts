@@ -30,7 +30,7 @@ interface WrapDataOptions {
     rightFixedWidth: number
   }
 }
-export {
+export type {
   KeyboardTableXProps,
   KeyboardTableXColumn,
   KeyboardCustomEvent,

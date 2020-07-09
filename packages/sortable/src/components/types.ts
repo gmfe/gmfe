@@ -39,4 +39,4 @@ interface GroupSortableProps<T> extends SortableCommonProps<T> {
   children: (items: ReactElement<SortableProps<T>>[]) => ReactElement
 }
 
-export { SortableBaseProps, SortableDataOptions, SortableProps, GroupSortableProps }
+export type { SortableBaseProps, SortableDataOptions, SortableProps, GroupSortableProps }

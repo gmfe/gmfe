@@ -23,4 +23,4 @@ interface LevelSelectProps<V> {
   onKeyDown?(event: KeyboardEvent): void
 }
 
-export { LevelSelectDataOptions, LevelSelectProps }
+export type { LevelSelectDataOptions, LevelSelectProps }

@@ -92,4 +92,4 @@ const BoxPanel: FC<BoxPanelProps> = ({
 }
 
 export default BoxPanel
-export { BoxPanelSummaryDataOptions, BoxPanelProps }
+export type { BoxPanelSummaryDataOptions, BoxPanelProps }

@@ -17,4 +17,4 @@ interface DropdownItemProps extends LiHTMLAttributes<HTMLLIElement> {
   onClick?(): void
 }
 
-export { DropdownProps, DropdownItemProps }
+export type { DropdownProps, DropdownItemProps }

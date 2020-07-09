@@ -20,4 +20,4 @@ interface TableSelectProps<T = any>
   columns: TableSelectColumnOptions<T>[]
 }
 
-export { TableSelectProps, TableSelectColumnOptions }
+export type { TableSelectProps, TableSelectColumnOptions }

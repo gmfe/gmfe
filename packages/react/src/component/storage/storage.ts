@@ -56,4 +56,4 @@ Storage.getAll = function () {
 }
 
 export default Storage
-export { StorageValue, StorageProps }
+export type { StorageValue, StorageProps }

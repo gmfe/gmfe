@@ -1,1 +1,2 @@
-export { default as Mask, MaskProps } from './mask'
+export { default as Mask } from './mask'
+export type { MaskProps } from './mask'

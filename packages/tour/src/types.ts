@@ -49,4 +49,4 @@ interface TourRefOptions {
   apiRecalculate(): void
 }
 
-export { TourProps, TourStepOptions, TourRefOptions }
+export type { TourProps, TourStepOptions, TourRefOptions }

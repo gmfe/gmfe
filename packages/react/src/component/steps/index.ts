@@ -1,1 +1,2 @@
-export { default as Steps, StepsDataOptions, StepsProps } from './steps'
+export { default as Steps } from './steps'
+export type { StepsProps, StepsDataOptions } from './steps'

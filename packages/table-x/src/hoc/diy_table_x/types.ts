@@ -19,4 +19,4 @@ interface DiyTableXProps<Original extends object> {
   columns: DiyTableXColumn<Original>[]
 }
 
-export { DiyTableXColumn, DiyTableXProps }
+export type { DiyTableXColumn, DiyTableXProps }

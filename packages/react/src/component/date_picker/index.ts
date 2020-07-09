@@ -1,1 +1,2 @@
-export { default as DatePicker, DatePickerProps } from './date_picker'
+export { default as DatePicker } from './date_picker'
+export type { DatePickerProps } from './date_picker'
