@@ -110,7 +110,7 @@
      import type { AProps } from './a'
      ```
 
-     
+     [TypeScript 仅仅导入声明语法](https://juejin.im/post/5e0a07c1e51d4575ca50e3b5)
 
      
 
