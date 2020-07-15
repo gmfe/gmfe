@@ -1,9 +1,17 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { TableX, useDiyTableX } from '../index'
+import {
+  selectTableXHOC,
+  expandTableXHOC,
+  TableX,
+  subTableXHOC,
+  TableXVirtualized,
+  TableXUtil,
+} from '../index'
 import { observable } from 'mobx/lib/mobx'
-import moment from 'moment'
-import { observer } from 'mobx-react'
+import useDiyTableX from '../hook/use_diy_table_x/use_diy_table_x'
+const SelectExpandTableX = selectTableXHOC(expandTableXHOC(TableX))
+const SubSelectTableTableX = selectTableXHOC(subTableXHOC(TableXVirtualized))
 
 const initData = [
   {
@@ -74,24 +82,15 @@ const initData = [
 
 const store = observable({
   data: initData.slice(),
-  sortTimeType: null,
-  setSortTime(type) {
-    this.sortTimeType = type
-
-    if (!type) {
-      this.data = initData.slice()
-      return
-    }
-
-    let newData = this.data.sort((a, b) => {
-      return sortDateTime(a.submit_time, b.submit_time)
-    })
-
-    if (type === 'desc') {
-      newData = newData.reverse()
-    }
-
-    this.data = newData
+  selected: [],
+  setSelected(selected) {
+    console.log(selected)
+    this.selected = selected
+  },
+  expanded: { 2: true, 3: true },
+  setExpanded(expanded) {
+    console.log(expanded)
+    this.expanded = expanded
   },
 })
 
@@ -146,5 +145,26 @@ const columnsList = [
 storiesOf('TableX|hook', module).add('use_diy_table_x', () => {
   const [l1, l2] = useDiyTableX(columnsList, 'xx_diy')
 
-  return <TableX data={store.data} columns={l1.columns} />
+  return (
+    <SelectExpandTableX
+      data={store.data.slice()}
+      columns={l1.columns}
+      keyField='id'
+      selected={store.selected}
+      onSelect={(selected) => store.setSelected(selected)}
+      SubComponent={() => {
+        return (
+          <SubSelectTableTableX
+            data={store.data.slice()}
+            columns={l2.columns}
+            keyField='id'
+            selected={store.selected}
+            onSelect={(selected) => store.setSelected(selected)}
+            virtualizedHeight={200}
+            virtualizedItemSize={TableXUtil.TABLE_X.HEIGHT_TR}
+          />
+        )
+      }}
+    />
+  )
 })

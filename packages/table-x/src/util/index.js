@@ -13,7 +13,7 @@ import {
   OperationDetail,
   OperationCell,
   OperationRowEdit,
-  OperationIconTip
+  OperationIconTip,
 } from './operation'
 import { EditButton, EditOperation } from './edit'
 
@@ -36,14 +36,14 @@ const TABLE_X = {
   // Select
   WIDTH_SELECT: 148,
   // DatePicker
-  WIDTH_DATE: 110
+  WIDTH_DATE: 110,
 }
 
 // 私有。这些默认值都不会被tableX真正使用到，所以就这么定义了。
 const __DEFAULT_COLUMN = {
   minWidth: 7.77,
   width: 17.77,
-  maxWidth: 1777.77
+  maxWidth: 1777.77,
 }
 
 const Mask = ({ style, children }) => {
@@ -59,7 +59,7 @@ const Mask = ({ style, children }) => {
         left: 0,
         right: 0,
         marginTop: '46px',
-        ...style
+        ...style,
       }}
     >
       {children}
@@ -68,7 +68,7 @@ const Mask = ({ style, children }) => {
 }
 
 Mask.propTypes = {
-  style: PropTypes.object
+  style: PropTypes.object,
 }
 
 const Empty = () => {
@@ -86,7 +86,7 @@ const Loading = () => {
   return (
     <Mask
       style={{
-        backgroundColor: 'rgba(255,255,255,0.8)'
+        backgroundColor: 'rgba(255,255,255,0.8)',
       }}
     >
       {getLocale('加载数据中...')}
@@ -94,7 +94,7 @@ const Loading = () => {
   )
 }
 
-const Resizer = props => (
+const Resizer = (props) => (
   <div
     {...props}
     className={classNames('gm-table-x-resizer', props.className)}
@@ -102,12 +102,12 @@ const Resizer = props => (
 )
 
 Resizer.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
 const CellEmpty = () => <span className='gm-text-desc'>-</span>
 
-const asPx = value => {
+const asPx = (value) => {
   value = Number(value)
   return Number.isNaN(value) ? null : `${value}px`
 }
@@ -136,7 +136,7 @@ const getColumnStyle = ({ width, minWidth, maxWidth }) => {
   return {
     flex: `${_width} 0 auto`,
     width: asPx(_width),
-    maxWidth: asPx(_maxWidth)
+    maxWidth: asPx(_maxWidth),
   }
 }
 
@@ -162,6 +162,27 @@ function getColumnKey(column) {
   return null
 }
 
+function sortTableXColumnsById(columns) {
+  const __SORT__ = {
+    [TABLE_X_DIY_ID]: 0,
+    [TABLE_X_EXPAND_ID]: 1,
+    [TABLE_X_SELECT_ID]: 2,
+  }
+
+  const left = []
+  const right = []
+  for (let i = 0; i < columns.length; i++) {
+    const item = columns[i]
+
+    if (__SORT__[item.id] !== undefined) {
+      left[__SORT__[item.id]] = item
+    } else {
+      right.push(item)
+    }
+  }
+  return [...left, ...right]
+}
+
 export {
   TABLE_X,
   TABLE_X_SELECT_ID,
@@ -185,5 +206,6 @@ export {
   BatchActionBar,
   getColumnStyle,
   afterScroll,
-  getColumnKey
+  getColumnKey,
+  sortTableXColumnsById,
 }

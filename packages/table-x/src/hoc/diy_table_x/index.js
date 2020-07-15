@@ -10,7 +10,7 @@ import {
   TABLE_X_EXPAND_ID,
   TABLE_X_DIY_ID,
   getColumnKey,
-  OperationIconTip
+  OperationIconTip,
 } from '../../util'
 import TableX from '../../base'
 import { devWarn } from '@gm-common/tool'
@@ -43,7 +43,7 @@ function splitColumns(columns) {
 function generateDiyColumns(initColumns, mixColumns) {
   const [notDiyCols, diyCols] = splitColumns(initColumns)
 
-  const diyColumns = _.map(diyCols, column => {
+  const diyColumns = _.map(diyCols, (column) => {
     const key = getColumnKey(column)
     // 能获取 key 才可能使用 diy
     if (key === null) {
@@ -56,11 +56,11 @@ function generateDiyColumns(initColumns, mixColumns) {
       ...column,
       key, // 把key记录下来,作为这个列的唯一标识
       show,
-      diyEnable
+      diyEnable,
     }
 
     // localstorage中储存的列
-    const localItem = _.find(mixColumns, v => v.key === key)
+    const localItem = _.find(mixColumns, (v) => v.key === key)
     // localstorage的值覆盖初始值
     if (localItem) {
       newColumn.show = localItem.show
@@ -77,7 +77,7 @@ function generateDiyColumns(initColumns, mixColumns) {
  * @returns {Array}
  */
 function getStorageColumns(columns) {
-  return _.map(columns, col => {
+  return _.map(columns, (col) => {
     const { key, show, diyEnable } = col
     return { key, show, diyEnable }
   })
@@ -99,7 +99,7 @@ function diyTableXHOC(Component) {
 
     const popoverRef = useRef()
 
-    const handleDiyColumnsSave = cols => {
+    const handleDiyColumnsSave = (cols) => {
       setDiyCols(cols)
       Storage.set(id, getStorageColumns(cols))
     }
@@ -142,10 +142,10 @@ function diyTableXHOC(Component) {
                 </OperationIconTip>
               </div>
             </Popover>
-          )
+          ),
         },
         ...notDiyCols,
-        ...cols
+        ...cols,
       ]
     }, [columns, diyCols])
 
@@ -159,8 +159,8 @@ function diyTableXHOC(Component) {
     /** 分组排序 */
     diyGroupSorting: PropTypes.array.isRequired,
     /** column 需要有 diyGroupName 字段 和 （Header | diyItemText） */
-    columns: props => {
-      _.each(props.columns, column => {
+    columns: (props) => {
+      _.each(props.columns, (column) => {
         const key = getColumnKey(column)
         if (
           key &&
@@ -174,7 +174,7 @@ function diyTableXHOC(Component) {
           }
         }
       })
-    }
+    },
   }
 
   return DiyTableX

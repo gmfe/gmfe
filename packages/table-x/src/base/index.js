@@ -1,7 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useTable } from 'react-table'
-import { Empty, Loading, afterScroll, __DEFAULT_COLUMN } from '../util'
+import {
+  Empty,
+  Loading,
+  afterScroll,
+  __DEFAULT_COLUMN,
+  sortTableXColumnsById,
+} from '../util'
 import classNames from 'classnames'
 import _ from 'lodash'
 import THead from './thead'
@@ -24,20 +30,21 @@ const TableX = ({
   ...rest
 }) => {
   // diy fixed(最新rc12不支持column.show,自己实现)
-  columns = React.useMemo(() => columns.filter(c => c.show !== false), [
-    columns
-  ])
+  columns = React.useMemo(
+    () => sortTableXColumnsById(columns).filter((c) => c && c.show !== false),
+    [columns]
+  )
 
   const {
     getTableProps,
     headerGroups,
     getTableBodyProps,
     rows,
-    prepareRow
+    prepareRow,
   } = useTable({
     columns,
     data,
-    defaultColumn
+    defaultColumn,
   })
 
   let totalWidth = 0
@@ -51,16 +58,16 @@ const TableX = ({
   const tableProps = {
     ...gtp,
     style: { minWidth: totalWidth + 'px' },
-    className: classNames('gm-table-x-table', gtp.className)
+    className: classNames('gm-table-x-table', gtp.className),
   }
 
   const gtbp = getTableBodyProps()
   const tableBodyProps = {
     ...gtbp,
-    className: 'gm-table-x-tbody'
+    className: 'gm-table-x-tbody',
   }
 
-  const handleScroll = e => {
+  const handleScroll = (e) => {
     onScroll && onScroll(e)
     afterScroll()
   }
@@ -91,7 +98,7 @@ const TableX = ({
         'gm-table-x',
         {
           'gm-table-x-empty': data.length === 0,
-          'gm-table-x-tiled': tiled
+          'gm-table-x-tiled': tiled,
         },
         className
       )}
@@ -100,10 +107,10 @@ const TableX = ({
       <table {...tableProps}>
         <THead headerGroups={headerGroups} totalWidth={totalWidth} />
         <tbody {...tableBodyProps}>
-          {_.map(rows, row =>
+          {_.map(rows, (row) =>
             RenderRow({
               index: row.index,
-              style: {}
+              style: {},
             })
           )}
         </tbody>
@@ -129,14 +136,14 @@ TableX.propTypes = {
   isTrHighlight: PropTypes.func,
   onScroll: PropTypes.func,
   className: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
 }
 
 TableX.defaultProps = {
   keyField: 'value',
   tiled: false,
   isTrDisable: () => false,
-  isTrHighlight: () => false
+  isTrHighlight: () => false,
 }
 
 export default TableX
