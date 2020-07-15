@@ -7,6 +7,7 @@ import sortableTableXHOC from './hoc/sortable_table_x'
 import subTableXHOC from './hoc/sub_table_x'
 import editTableXHOC from './hoc/edit_table_x'
 import diyTableXHOC from './hoc/diy_table_x'
+import useDiyTableX from './hook/use_diy_table_x/use_diy_table_x'
 
 import {
   TABLE_X,
@@ -19,7 +20,7 @@ import {
   OperationIconTip,
   EditButton,
   EditOperation,
-  SortHeader
+  SortHeader,
 } from './util'
 
 const TableXUtil = {
@@ -35,7 +36,7 @@ const TableXUtil = {
   OperationRowEdit,
   OperationIconTip,
   EditButton,
-  EditOperation
+  EditOperation,
 }
 
 export {
@@ -48,5 +49,6 @@ export {
   subTableXHOC,
   editTableXHOC,
   diyTableXHOC,
-  sortableTableXHOC
+  sortableTableXHOC,
+  useDiyTableX,
 }
