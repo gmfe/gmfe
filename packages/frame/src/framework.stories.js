@@ -187,7 +187,21 @@ storiesOf('框架|FrameWork', module)
       >
         <FullTabV2
           tabs={[
-            
+            {
+              name: '按订单查看',
+              key: 'order',
+              content: <div>按订单按订单按订单</div>,
+            },
+            {
+              name: '按商品查看',
+              key: 'sku',
+              content: <div>按商品按商品按商品</div>,
+            },
+            {
+              name: '按司机查看',
+              key: 'driver',
+              content: <div>按司机按司机按司机</div>,
+            },
           ]}
           defaultActiveKey='sku'
         />
