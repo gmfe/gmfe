@@ -1,10 +1,21 @@
 import { getLocale } from '@gmfe/locales'
-import React, { useMemo, useRef, useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import PropTypes from 'prop-types'
 import Affix from '../affix'
 import _ from 'lodash'
 import Button from '../button'
 import { warn, devWarnForHook } from '@gm-common/tool'
+import classNames from 'classnames'
+import styled from 'styled-components'
+import { useMutationObserver } from '../../common/hooks'
+
+const AFFIX_HEIGHT = 40
+
+const StyledAffix = styled(Affix)`
+  height: ${() => {
+    return AFFIX_HEIGHT + 'px'
+  }};
+`
 
 const Action = ({ onCancel, onSubmit, disabled, saveText, actions }) => {
   return (
@@ -32,6 +43,13 @@ Action.propTypes = {
   actions: PropTypes.element
 }
 
+const options = {
+  childList: true,
+  attributes: true, // 观察属性变动
+  subtree: true,
+  characterData: false
+}
+
 /** 聚合多个表单，统一处理 submit */
 const FormGroup = ({
   disabled,
@@ -57,17 +75,27 @@ const FormGroup = ({
   })
 
   const [affix, setAffix] = useState(false)
-  const formGroupRef = useRef(null)
-  const handleAffix = () => {
-    !affix && setAffix(true)
-  }
+  const bodyRef = useRef(document.querySelector('body'))
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleAffix)
-    return () => {
-      window.removeEventListener('scroll', handleAffix)
+  const checkAndChangeAffix = useCallback(() => {
+    const BODY_SCROLL_HEIGHT = document.body.scrollHeight
+    const WINDOW_INNER_HEIGHT = window.innerHeight
+
+    // 判断是否有滚动条就好
+    if (BODY_SCROLL_HEIGHT > WINDOW_INNER_HEIGHT) {
+      setAffix(true)
+    } else {
+      setAffix(false)
     }
   }, [])
+
+  // 只针对body的scrollHeight
+  const _observerCallBack = useCallback(_.throttle(checkAndChangeAffix, 1000), [
+    checkAndChangeAffix
+  ])
+
+  // 暂时没有其他方案可以监听body---scrollHeight,先通过body中的child变化来触发，内部没很重的逻辑
+  useMutationObserver(bodyRef, _observerCallBack, options)
 
   const handleSubmit = useCallback(
     e => {
@@ -89,37 +117,39 @@ const FormGroup = ({
     [onSubmit, formRefs, onSubmitValidated]
   )
 
-  // 为了内部引用值引起维护方的注意，故抽出纯函数的形式来使用,但是不知道这里为什么要memo
-  const action = useMemo(
-    () => (
-      <Action
-        disabled={disabled}
-        actions={actions}
-        onSubmit={handleSubmit}
-        saveText={saveText}
-        onCancel={onCancel}
-      />
-    ),
-    [disabled, actions, handleSubmit, saveText, onCancel]
-  )
+  useEffect(() => {
+    const debounceChange = _.debounce(checkAndChangeAffix, 200)
+    window.addEventListener('resize', debounceChange)
+
+    return () => window.removeEventListener('resize', debounceChange)
+  }, [])
 
   useEffect(() => {
-    const contentHeight = formGroupRef.current.offsetHeight
-    if (contentHeight > window.innerHeight) {
-      setAffix(true)
-    }
+    console.log(777)
+    checkAndChangeAffix()
   }, [])
 
   return (
-    <div ref={formGroupRef} {...rest} onSubmit={handleSubmit}>
+    <div {...rest} onSubmit={handleSubmit}>
       {children}
-      {affix ? (
-        <Affix bottom={0}>
-          <div className='gm-form-group-sticky-box'>{action}</div>
-        </Affix>
-      ) : (
-        <div className='text-center gm-form-group-btns'>{action}</div>
-      )}
+      <StyledAffix bottom={0}>
+        <div
+          className={classNames(
+            'gm-padding-tb-5 gm-margin-top-20 text-center', // 统一padding,margin样式，保证affix切换时正常切换
+            {
+              'gm-form-group-sticky-box': affix // 仅处理粘底样式
+            }
+          )}
+        >
+          <Action
+            disabled={disabled}
+            actions={actions}
+            onSubmit={handleSubmit}
+            saveText={saveText}
+            onCancel={onCancel}
+          />
+        </div>
+      </StyledAffix>
     </div>
   )
 }
