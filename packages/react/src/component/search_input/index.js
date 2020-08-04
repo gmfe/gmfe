@@ -101,9 +101,9 @@ SearchInput.propTypes = {
   /** 推荐列表数据：[ { text: 'text1' },{ text: 'text2' },...] */
   data: PropTypes.array.isRequired,
   /** 受控组件必传 */
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
   /** 受控组件必传 */
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   /** 是否禁用 */
   disabled: PropTypes.bool,
   /** 列表高度 */
