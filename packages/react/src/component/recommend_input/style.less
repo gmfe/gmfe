@@ -1,0 +1,25 @@
+.gm-recommend-input {
+  position: relative;
+
+  .gm-recommend-input-clear-btn {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 8px;
+    color: @gm-color-third;
+  }
+
+  &:hover {
+    .gm-recommend-input-clear-btn {
+      display: block;
+    }
+  }
+
+  &.disabled {
+    .gm-disabled();
+
+    .gm-recommend-input-clear-btn {
+      cursor: not-allowed;
+    }
+  }
+}
