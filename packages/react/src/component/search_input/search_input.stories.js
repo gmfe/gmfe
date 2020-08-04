@@ -21,27 +21,16 @@ const store = observable({
   setValue(value) {
     this.value = value
   },
-  getChangeValue(value) {
-    console.log(value, 'unControl')
-  }
 })
 
 storiesOf('SearchInput', module)
-  .add('unControl', () => {
-    return (
-      <SearchInput
-        data={store.data}
-        onChange={store.getChangeValue}
-        defaultValue=''
-      />
-    )
-  })
-  .add('control', () => {
+  .add('default', () => {
     return (
       <SearchInput
         data={store.data}
         value={store.value}
         onChange={value => store.setValue(value)}
+        placeHolder='请输入'
       />
     )
   })
