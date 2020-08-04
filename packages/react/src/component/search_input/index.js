@@ -81,12 +81,12 @@ const SearchInput = props => {
       disabled={disabled}
     >
       <div
+        {...rest}
         className={classNames('gm-search-input', className, {
           disabled: disabled
         })}
       >
         <Input
-          {...rest}
           value={_value}
           onChange={handleChange}
           className='form-control'
