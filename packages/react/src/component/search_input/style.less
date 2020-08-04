@@ -1,0 +1,27 @@
+.gm-search-input {
+  .gm-search-input-clear-btn {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 7px;
+    color: @gm-color-third;
+  }
+
+  &:hover {
+    .gm-search-input-clear-btn {
+      display: block;
+    }
+  }
+
+  &.disabled {
+    .gm-disabled();
+
+    input {
+      .gm-disabled();
+    }
+
+    .gm-search-input-clear-btn {
+      cursor: not-allowed;
+    }
+  }
+}
