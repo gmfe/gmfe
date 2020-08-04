@@ -20,7 +20,6 @@ const SearchInput = props => {
     ...rest
   } = props
   const popoverRef = useRef(null)
-  const _value = value
 
   // 构造list需要的数据结构
   const _data = useMemo(() => {
@@ -33,8 +32,8 @@ const SearchInput = props => {
   }, [data])
 
   const searchData = useMemo(() => {
-    return pinYinFilter(_data, _value, item => item.text)
-  }, [_value, _data])
+    return pinYinFilter(_data, value, item => item.text)
+  }, [value, _data])
 
   const handleChange = e => {
     const changeVal = e.target.value
@@ -76,7 +75,7 @@ const SearchInput = props => {
         })}
       >
         <Input
-          value={_value}
+          value={value}
           onChange={handleChange}
           className='form-control'
           type='text'
