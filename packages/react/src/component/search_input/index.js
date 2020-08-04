@@ -16,7 +16,6 @@ const SearchInput = props => {
     listHeight,
     disabled,
     className,
-    placeHolder,
     ...rest
   } = props
   const popoverRef = useRef(null)
@@ -68,19 +67,16 @@ const SearchInput = props => {
       }
       disabled={disabled}
     >
-      <div
-        {...rest}
-        className={classNames('gm-search-input', className, {
-          disabled: disabled
-        })}
-      >
+      <div className='gm-search-input'>
         <Input
+          {...rest}
           value={value}
           onChange={handleChange}
-          className='form-control'
+          className={classNames('form-control', className, {
+            disabled: disabled
+          })}
           type='text'
           disabled={disabled}
-          placeHolder={placeHolder}
         />
         <SVGCloseCircle
           onClick={disabled ? _.noop : handleClear}
@@ -107,8 +103,7 @@ SearchInput.propTypes = {
   disabled: PropTypes.bool,
   /** 列表高度 */
   listHeight: PropTypes.string,
-  className: PropTypes.string,
-  placeHolder: PropTypes.string
+  className: PropTypes.string
 }
 
 export default SearchInput

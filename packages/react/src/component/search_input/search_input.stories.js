@@ -30,7 +30,7 @@ storiesOf('SearchInput', module)
         data={store.data}
         value={store.value}
         onChange={value => store.setValue(value)}
-        placeHolder='请输入'
+        placeholder='请输入'
       />
     )
   })
