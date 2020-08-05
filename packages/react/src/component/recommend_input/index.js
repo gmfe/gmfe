@@ -8,7 +8,7 @@ import { pinYinFilter } from '@gm-common/tool'
 import SVGCloseCircle from '../../../svg/close-circle.svg'
 import classNames from 'classnames'
 
-const SearchInput = props => {
+const RecommendInput = props => {
   const {
     onChange,
     value,
@@ -37,17 +37,17 @@ const SearchInput = props => {
   const handleChange = e => {
     const changeVal = e.target.value
 
-    onChange && onChange(changeVal)
+    onChange(changeVal)
   }
 
   const handleSelect = selected => {
     // 选择后隐藏
     popoverRef.current.apiDoSetActive(false)
-    onChange && onChange(selected)
+    onChange(selected)
   }
 
   const handleClear = () => {
-    onChange && onChange('')
+    onChange('')
   }
 
   return (
@@ -55,7 +55,7 @@ const SearchInput = props => {
       ref={popoverRef}
       type='realFocus'
       popup={
-        searchData && searchData.length > 0 ? (
+        searchData.length > 0 ? (
           <List
             data={searchData}
             onSelect={handleSelect}
@@ -67,37 +67,37 @@ const SearchInput = props => {
       }
       disabled={disabled}
     >
-      <div className='gm-search-input'>
+      <div
+        {...rest}
+        className={classNames('gm-recommend-input', className, {
+          disabled: disabled
+        })}
+      >
         <Input
-          {...rest}
           value={value}
           onChange={handleChange}
-          className={classNames('form-control', className, {
-            disabled: disabled
-          })}
           type='text'
           disabled={disabled}
+          className='form-control'
         />
         <SVGCloseCircle
           onClick={disabled ? _.noop : handleClear}
-          className='gm-cursor gm-search-input-clear-btn'
+          className='gm-cursor gm-recommend-input-clear-btn'
         />
       </div>
     </Popover>
   )
 }
 
-SearchInput.defaultProps = {
-  listHeight: '180px',
-  disabled: false
+RecommendInput.defaultProps = {
+  listHeight: '180px'
 }
 
-SearchInput.propTypes = {
-  /** 推荐列表数据：[ { text: 'text1' },{ text: 'text2' },...] */
+RecommendInput.propTypes = {
+  /** 推荐列表的数据，格式：[ { text: 'text1' },{ text: 'text2' },...] */
   data: PropTypes.array.isRequired,
-  /** 受控组件必传 */
   value: PropTypes.string.isRequired,
-  /** 受控组件必传 */
+  /** 接收change value。value => {} */
   onChange: PropTypes.func.isRequired,
   /** 是否禁用 */
   disabled: PropTypes.bool,
@@ -106,4 +106,4 @@ SearchInput.propTypes = {
   className: PropTypes.string
 }
 
-export default SearchInput
+export default RecommendInput

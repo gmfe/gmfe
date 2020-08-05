@@ -101,7 +101,7 @@ import Steps from './component/steps'
 
 import Selection from './component/selection'
 import TreeV2 from './component/tree_v2'
-import SearchInput from './component/search_input'
+import RecommendInput from './component/recommend_input'
 
 Object.assign(Sheet, {
   SheetColumn,
@@ -231,5 +231,5 @@ export {
   Steps,
   Selection,
   TreeV2,
-  SearchInput
+  RecommendInput
 }

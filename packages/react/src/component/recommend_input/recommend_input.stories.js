@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import SearchInput from '.'
+import RecommendInput from '.'
 import { observable } from 'mobx'
 
 const store = observable({
@@ -23,10 +23,10 @@ const store = observable({
   },
 })
 
-storiesOf('SearchInput', module)
+storiesOf('RecommendInput', module)
   .add('default', () => {
     return (
-      <SearchInput
+      <RecommendInput
         data={store.data}
         value={store.value}
         onChange={value => store.setValue(value)}
@@ -36,7 +36,7 @@ storiesOf('SearchInput', module)
   })
   .add('disabled', () => {
     return (
-      <SearchInput
+      <RecommendInput
         data={store.data}
         value={store.value}
         onChange={value => store.setValue(value)}
