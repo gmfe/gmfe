@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/tour",
-  "version": "3.0.0-beta.10",
+  "version": "3.0.0-beta.11",
   "description": "观麦科技引导设置",
   "author": "zhongsink <zhongink@gmail.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -27,9 +27,9 @@
     "styled-components": "^5.1.0"
   },
   "dependencies": {
-    "@gmfe/locales": "^3.0.0-beta.10",
-    "@gmfe/react": "^3.0.0-beta.10",
-    "@gmfe/table-x": "^3.0.0-beta.10",
+    "@gmfe/locales": "^3.0.0-beta.11",
+    "@gmfe/react": "^3.0.0-beta.11",
+    "@gmfe/table-x": "^3.0.0-beta.11",
     "classnames": "^2.2.5",
     "lodash": "^4.17.15"
   }
