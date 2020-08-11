@@ -10,6 +10,8 @@ const Input = forwardRef((props, ref) => {
   )
 })
 
+Input.displayName = 'Input'
+
 Input.propTypes = {
   className: PropTypes.string
 }
