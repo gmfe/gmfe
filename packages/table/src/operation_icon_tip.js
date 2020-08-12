@@ -1,6 +1,6 @@
 import React, { cloneElement, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { ToolTip } from '@gmfe/react'
+import { Tooltip } from '@gmfe/react'
 import styled from 'styled-components'
 
 const Tip = styled.div`
@@ -16,17 +16,17 @@ const OperationIconTip = ({ children, tip }) => {
   }
 
   return (
-    <ToolTip showArrow popup={<Tip>{tip}</Tip>} ref={tipRef}>
+    <Tooltip showArrow popup={<Tip>{tip}</Tip>} ref={tipRef}>
       {cloneElement(children, {
-        onClick: event => handleClick(children.props.onClick, event)
+        onClick: (event) => handleClick(children.props.onClick, event),
       })}
-    </ToolTip>
+    </Tooltip>
   )
 }
 
 OperationIconTip.propTypes = {
   children: PropTypes.object.isRequired,
-  tip: PropTypes.string.isRequired
+  tip: PropTypes.string.isRequired,
 }
 
 export default OperationIconTip
