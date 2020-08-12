@@ -107,6 +107,16 @@ module.exports = {
         },
         forkTsCheckerWebpackPluginOptions: {
           checkSyntacticErrors: true,
+          tsconfig: path.resolve(__dirname, '../tsconfig.json'),
+          reportFiles: [
+            '../packages/business/src/**/*.{ts,tsx}',
+            '../packages/cropper/src/**/*.{ts,tsx}',
+            '../packages/keyboard/src/**/*.{ts,tsx}',
+            '../packages/react/src/**/*.{ts,tsx}',
+            '../packages/sortable/src/**/*.{ts,tsx}',
+            '../packages/table-x/src/**/*.{ts,tsx}',
+            '../packages/tour/src/**/*.{ts,tsx}',
+          ]
         },
       },
     },
