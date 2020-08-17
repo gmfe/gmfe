@@ -57,7 +57,7 @@ class FunctionSet extends React.Component {
   }
 
   render() {
-    const { data, right, disabled, children } = this.props
+    const { data, right, disabled, children, showArrow } = this.props
 
     const newData = _.filter(data, d => d.show !== false)
 
@@ -76,6 +76,7 @@ class FunctionSet extends React.Component {
           />
         }
         right={right}
+        showArrow={showArrow}
         type='hover'
         disabled={disabled}
         pureContainer
@@ -90,7 +91,8 @@ FunctionSet.propTypes = {
   /** [{text, disabled, show, onClick, children}] */
   data: PropTypes.array.isRequired,
   right: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  showArrow: PropTypes.bool
 }
 
 export default FunctionSet
