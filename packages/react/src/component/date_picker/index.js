@@ -114,6 +114,7 @@ class DatePicker extends React.Component {
       timeLimit,
       enabledTimeSelect,
       children,
+      renderBottom,
       ...rest
     } = this.props
     const { willActiveSelected } = this.state
@@ -128,6 +129,7 @@ class DatePicker extends React.Component {
         disabledDate={disabledDate}
         timeLimit={timeLimit}
         enabledTimeSelect={enabledTimeSelect}
+        renderBottom={renderBottom}
       />
     )
 
@@ -182,6 +184,8 @@ DatePicker.propTypes = {
   /** 定义日期框内value的展示形式，传入参数为Date对象，返回展示格式，如定义value展示为 'xx月-xx日‘ */
   /** 若有时间选择，需带上时间 */
   renderDate: PropTypes.func,
+  /** 添加底部自定义组件 */
+  renderBottom: PropTypes.element,
 
   popoverType: PropTypes.oneOf(['focus', 'realFocus']),
 
