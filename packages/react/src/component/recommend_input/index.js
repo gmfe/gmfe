@@ -16,6 +16,7 @@ const RecommendInput = props => {
     listHeight,
     disabled,
     className,
+    inputMaxLength,
     ...rest
   } = props
   const popoverRef = useRef(null)
@@ -79,6 +80,7 @@ const RecommendInput = props => {
           type='text'
           disabled={disabled}
           className='form-control'
+          maxLength={inputMaxLength}
         />
         <SVGCloseCircle
           onClick={disabled ? _.noop : handleClear}
@@ -103,6 +105,7 @@ RecommendInput.propTypes = {
   disabled: PropTypes.bool,
   /** 列表高度 */
   listHeight: PropTypes.string,
+  inputMaxLength: PropTypes.number,
   className: PropTypes.string
 }
 
