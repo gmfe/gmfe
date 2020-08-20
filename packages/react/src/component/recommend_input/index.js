@@ -20,6 +20,7 @@ const RecommendInput = props => {
     ...rest
   } = props
   const popoverRef = useRef(null)
+  const inputRef = useRef(null)
 
   // 构造list需要的数据结构
   const _data = useMemo(() => {
@@ -49,6 +50,7 @@ const RecommendInput = props => {
 
   const handleClear = () => {
     onChange('')
+    inputRef.current.focus()
   }
 
   return (
@@ -81,6 +83,7 @@ const RecommendInput = props => {
           disabled={disabled}
           className='form-control'
           maxLength={inputMaxLength}
+          ref={inputRef}
         />
         <SVGCloseCircle
           onClick={disabled ? _.noop : handleClear}
