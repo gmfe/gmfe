@@ -1,21 +1,24 @@
 const path = require('path')
 const WebpackBar = require('webpackbar')
-const FriendlyErrorWebpackPlugin = require('friendly-errors-webpack-plugin')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const _ = require('lodash')
 
 const webpackFinal = (config) => {
   config.resolve.extensions = ['.tsx', '.ts', '.js', '.json']
 
-  config.module.rules[0].include.push(/gm-/)
-  config.module.rules[0].exclude = function (filepath) {
-    return filepath.includes('/node_modules/')
-  }
+  _.each(config.module.rules, (rule) => {
+    if (rule.use && rule.use[0] && rule.use[0].loader) {
+      if (rule.use[0].loader.includes('babel-loader')) {
+        rule.include.push(/gm-/)
+        rule.exclude = function (filepath) {
+          return filepath.includes('/node_modules/')
+        }
+      }
+    }
 
-  config.module.rules[3] = {
-    test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/,
-    loader: './node_modules/@storybook/core/node_modules/file-loader/dist/cjs.js',
-    query: { name: 'static/media/[name].[hash:8].[ext]' },
-  }
+    if (rule.loader && rule.loader.includes('file-loader')) {
+      rule.test = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/
+    }
+  })
 
   config.module.rules.push({
     test: /(glyphicons-halflings-regular|iconfont)\.(woff|woff2|ttf|eot|svg)($|\?)/,
@@ -46,26 +49,14 @@ const webpackFinal = (config) => {
   })
 
   config.module.rules.push({
-    test: /\.stories\.tsx$/,
-    loaders: ['@storybook/source-loader'],
-    enforce: 'pre',
-  })
-
-  config.module.rules.unshift({
-    test: /svg\/(\w|\W)+\.svg$/,
-    use: [
+    test: /stories\.tsx?$/,
+    loaders: [
       {
-        loader: '@svgr/webpack',
-        options: {
-          icon: true,
-          expandProps: 'start',
-          svgProps: {
-            fill: 'currentColor',
-            className: "{'gm-svg-icon ' + (props.className || '')}",
-          },
-        },
+        loader: require.resolve('@storybook/source-loader'),
+        options: { parser: 'typescript' },
       },
     ],
+    enforce: 'pre',
   })
 
   config.module.rules.push({
@@ -85,18 +76,31 @@ const webpackFinal = (config) => {
     ],
   })
 
-  config.plugins.push(
-    new WebpackBar(),
-    new FriendlyErrorWebpackPlugin(),
-    new HardSourceWebpackPlugin()
-  )
+  config.module.rules.unshift({
+    test: /svg\/(\w|\W)+\.svg$/,
+    use: [
+      {
+        loader: '@svgr/webpack',
+        options: {
+          icon: true,
+          expandProps: 'start',
+          svgProps: {
+            fill: 'currentColor',
+            className: "{'gm-svg-icon ' + (props.className || '')}",
+          },
+        },
+      },
+    ],
+  })
+
+  config.plugins.push(new WebpackBar())
 
   return config
 }
 
 module.exports = {
   addons: [
-    '@storybook/addon-storysource/register',
+    '@storybook/addon-storysource',
     {
       name: '@storybook/preset-typescript',
       options: {
@@ -109,14 +113,14 @@ module.exports = {
           checkSyntacticErrors: true,
           tsconfig: path.resolve(__dirname, '../tsconfig.json'),
           reportFiles: [
-            '../packages/business/src/**/*.{ts,tsx}',
-            '../packages/cropper/src/**/*.{ts,tsx}',
-            '../packages/keyboard/src/**/*.{ts,tsx}',
-            '../packages/react/src/**/*.{ts,tsx}',
-            '../packages/sortable/src/**/*.{ts,tsx}',
-            '../packages/table-x/src/**/*.{ts,tsx}',
-            '../packages/tour/src/**/*.{ts,tsx}',
-          ]
+            'packages/business/src/**/*.{ts,tsx}',
+            'packages/cropper/src/**/*.{ts,tsx}',
+            'packages/keyboard/src/**/*.{ts,tsx}',
+            'packages/react/src/**/*.{ts,tsx}',
+            'packages/sortable/src/**/*.{ts,tsx}',
+            'packages/table-x/src/**/*.{ts,tsx}',
+            'packages/tour/src/**/*.{ts,tsx}',
+          ],
         },
       },
     },
@@ -125,16 +129,16 @@ module.exports = {
   stories: [
     '../packages/business/src/**/*stories.tsx',
     '../packages/cropper/src/**/*stories.tsx',
-    '../packages/frame/src/**/*stories.js',
-    '../packages/keyboard/src/**/*.stories.tsx',
+    '../packages/frame/src/**/*stories.tsx',
+    '../packages/keyboard/src/**/*stories.tsx',
     '../packages/locales/src/**/*stories.js',
     '../packages/qiniu-image/src/**/*stories.js',
-    '../packages/react/src/**/*.stories.tsx',
+    '../packages/react/src/**/*stories.tsx',
     '../packages/react-deprecated/src/**/*stories.js',
-    '../packages/sortable/src/**/*.stories.tsx',
+    '../packages/sortable/src/**/*stories.tsx',
     '../packages/table/src/**/*stories.js',
-    '../packages/table-x/src/**/*.stories.tsx',
-    '../packages/tour/src/**/*.stories.tsx',
+    '../packages/table-x/src/**/*stories.tsx',
+    '../packages/tour/src/**/*stories.tsx',
     '../demo/**/*stories.js',
   ],
   webpackFinal,

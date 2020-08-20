@@ -28,8 +28,7 @@
   "dependencies": {
     "@gm-common/tool": "^2.4.1",
     "@gmfe/react": "^3.0.1",
-    "lodash": "^4.17.15",
-    "prop-types": "^15.7.2",
+    "lodash": "^4.17.19",
     "sortablejs": "^1.10.1"
   }
 }

@@ -31,7 +31,7 @@
     "@gmfe/locales": "^3.0.1",
     "big.js": "^5.2.2",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "react-window": "^1.8.5"
   }

@@ -19,8 +19,8 @@ import '../packages/table-x/src/index.less'
 import '../packages/cropper/src/index.less'
 
 if (process.env.NODE_ENV !== 'production') {
-  const whyDidYouRender = require('@welldone-software/why-did-you-render')
-  whyDidYouRender(React)
+  // const whyDidYouRender = require('@welldone-software/why-did-you-render')
+  // whyDidYouRender(React)
 }
 
 addDecorator(

@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@gm-common/tool": "^2.4.1",
-    "@gmfe/react": "^3.0.1",
-    "prop-types": "^15.7.2"
+    "@gmfe/react": "^3.0.1"
   }
 }

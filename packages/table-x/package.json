@@ -31,8 +31,7 @@
     "@gmfe/locales": "^3.0.1",
     "@gmfe/react": "^3.0.1",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.15",
-    "prop-types": "^15.7.2",
+    "lodash": "^4.17.19",
     "react-table": "7.0.0-rc.11",
     "react-window": "^1.8.5",
     "sortablejs": "^1.10.1"

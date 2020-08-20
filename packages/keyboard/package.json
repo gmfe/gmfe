@@ -31,7 +31,6 @@
     "@gmfe/table": "^3.0.1",
     "@gmfe/table-x": "^3.0.1",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.15",
-    "prop-types": "^15.7.2"
+    "lodash": "^4.17.19"
   }
 }

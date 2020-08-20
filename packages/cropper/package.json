@@ -29,7 +29,6 @@
     "@gmfe/locales": "^3.0.1",
     "@gmfe/react": "^3.0.1",
     "@gmfe/table-x": "^3.0.1",
-    "cropperjs": "^1.5.6",
-    "prop-types": "^15.7.2"
+    "cropperjs": "^1.5.6"
   }
 }
