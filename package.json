@@ -6,7 +6,8 @@
     "build": "build-storybook -c .storybook -o docs",
     "prebuild": "rm -rf docs; mkdir docs;",
     "publish-latest": "lerna publish --force-publish",
-    "publish-beta": "lerna publish --force-publish --dist-tag beta --preid beta"
+    "publish-beta": "lerna publish --force-publish --dist-tag beta --preid beta",
+    "link": "cd packages/frame; yarn link; cd ../business; yarn link; cd ../cropper; yarn link; cd ../keyboard;  yarn link; cd ../locales; yarn link; cd ../react; yarn link; cd ../sortable; yarn link; cd ../table-x; yarn link; cd ../tour; yarn link;"
   },
   "husky": {
     "hooks": {
