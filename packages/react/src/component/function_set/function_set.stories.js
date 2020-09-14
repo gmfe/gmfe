@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import FunctionSet from './index'
+import SVGMore from '../../../svg/more.svg'
 
 const data = [
   {
@@ -72,6 +73,15 @@ storiesOf('FunctionSet', module)
   .add('right', () => (
     <div style={{ padding: '50px 0 50px 300px' }}>
       <FunctionSet data={data} right />
+    </div>
+  ))
+  .add('三角样式', () => (
+    <div style={{ padding: '50px' }}>
+      <FunctionSet showArrow data={data}>
+        <span className='gm-cursor gm-margin-lr-5 gm-text-14 gm-text-hover-primary'>
+        <SVGMore />
+        </span>
+      </FunctionSet>
     </div>
   ))
   .add('data 为空数组', () => (

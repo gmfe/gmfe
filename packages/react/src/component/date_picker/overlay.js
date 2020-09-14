@@ -17,7 +17,8 @@ const Overlay = props => {
     onSelect,
     timeLimit,
     disabledDate,
-    enabledTimeSelect
+    enabledTimeSelect,
+    renderBottom
   } = props
 
   const [selectedDate, setSelectedDate] = useState(date)
@@ -94,6 +95,7 @@ const Overlay = props => {
           </Button>
         </Flex>
       )}
+      {renderBottom && renderBottom}
     </Flex>
   )
 }
@@ -110,7 +112,8 @@ Overlay.propTypes = {
     disabledSpan: PropTypes.func,
     timeSpan: PropTypes.number
   }),
-  enabledTimeSelect: PropTypes.bool
+  enabledTimeSelect: PropTypes.bool,
+  renderBottom: PropTypes.element
 }
 
 export default Overlay

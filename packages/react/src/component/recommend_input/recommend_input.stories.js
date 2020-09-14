@@ -44,3 +44,13 @@ storiesOf('RecommendInput', module)
       />
     )
   })
+  .add('input max length', () => {
+    return (
+      <RecommendInput
+        data={store.data}
+        value={store.value}
+        onChange={value => store.setValue(value)}
+        inputMaxLength={15}
+      />
+    )
+  })
