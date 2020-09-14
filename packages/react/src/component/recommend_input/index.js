@@ -16,9 +16,12 @@ const RecommendInput = props => {
     listHeight,
     disabled,
     className,
+    inputMaxLength,
+    placeholder,
     ...rest
   } = props
   const popoverRef = useRef(null)
+  const inputRef = useRef(null)
 
   // 构造list需要的数据结构
   const _data = useMemo(() => {
@@ -48,6 +51,7 @@ const RecommendInput = props => {
 
   const handleClear = () => {
     onChange('')
+    inputRef.current.focus()
   }
 
   return (
@@ -79,6 +83,9 @@ const RecommendInput = props => {
           type='text'
           disabled={disabled}
           className='form-control'
+          maxLength={inputMaxLength}
+          ref={inputRef}
+          placeholder={placeholder}
         />
         <SVGCloseCircle
           onClick={disabled ? _.noop : handleClear}
@@ -103,6 +110,8 @@ RecommendInput.propTypes = {
   disabled: PropTypes.bool,
   /** 列表高度 */
   listHeight: PropTypes.string,
+  inputMaxLength: PropTypes.number,
+  placeholder: PropTypes.string,
   className: PropTypes.string
 }
 
