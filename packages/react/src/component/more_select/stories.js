@@ -12,7 +12,8 @@ const store = observable({
     },
     {
       value: 2,
-      text: '福田'
+      text: '福田',
+      disabled: true
     },
     {
       value: 3,
