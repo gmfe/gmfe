@@ -5,7 +5,7 @@ import { observable } from 'mobx/lib/mobx'
 import moment from 'moment'
 import { observer } from 'mobx-react'
 
-const { SortHeader, EditButton } = TableXUtil
+const { SortHeader, EditButton, OperationHeader, OperationRecover, OperationCell, OperationDelete } = TableXUtil
 
 const sortDateTime = (a, b) => {
   const mA = moment(a)
@@ -140,12 +140,26 @@ const columns = [
   },
   // 自定义整个单元格
   {
-    Header: '入库金额',
+    Header: '入库金额2',
     accessor: 'total_money',
     Cell: cellProps => {
       const { row } = cellProps
       return <div>{row.original.total_money}</div>
     }
+  },
+  {
+    Header: OperationHeader,
+    accessor: 'operator',
+    Cell: cellProps => (
+      <OperationCell>
+        <OperationRecover
+          title='确认恢复'
+          onClick={() => store.deleteItemByID(cellProps.original.id)}
+        >
+          恢复这个很危险! 确定?
+        </OperationRecover>
+      </OperationCell>
+    )
   }
 ]
 

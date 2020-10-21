@@ -10,6 +10,7 @@ import SortHeader from './sort_header'
 import {
   OperationHeader,
   OperationDelete,
+  OperationRecover,
   OperationDetail,
   OperationCell,
   OperationRowEdit,
@@ -176,6 +177,7 @@ export {
   CellEmpty,
   OperationHeader,
   OperationDelete,
+  OperationRecover,
   OperationDetail,
   OperationCell,
   OperationRowEdit,
