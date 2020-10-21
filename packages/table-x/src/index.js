@@ -13,6 +13,7 @@ import {
   BatchActionBar,
   OperationHeader,
   OperationDelete,
+  OperationRecover,
   OperationDetail,
   OperationCell,
   OperationRowEdit,
@@ -27,7 +28,7 @@ const TableXUtil = {
 
   BatchActionBar,
   SortHeader,
-
+  OperationRecover,
   OperationHeader,
   OperationDelete,
   OperationDetail,
