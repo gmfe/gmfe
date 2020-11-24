@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Flex, Popover, List } from '@gmfe/react'
 import _ from 'lodash'
-import SVGMore from '../svg/more.svg'
 
 const Info = props => {
   const { more, children } = props
@@ -32,9 +31,7 @@ const Info = props => {
             />
           }
         >
-          <div className='gm-framework-info-default-item'>
-            <SVGMore style={{ transform: 'rotate(90deg)' }} />
-          </div>
+          <div className='gm-framework-info-default-item gm-text-14'>更多</div>
         </Popover>
       )}
     </Flex>
