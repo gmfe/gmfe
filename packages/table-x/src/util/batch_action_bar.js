@@ -26,7 +26,8 @@ const BatchActionBar = props => {
     count,
     batchActions,
     toggleSelectAll,
-    onClose
+    onClose,
+    extra
   } = props
 
   let selectAllBtn = null
@@ -79,6 +80,7 @@ const BatchActionBar = props => {
           {getLocale('页')}
         </div>
       )}
+      {extra}
       {batchActions.length && <div className='gm-margin-left-20'>|</div>}
       {batchActions.map(
         o =>
@@ -111,7 +113,8 @@ BatchActionBar.propTypes = {
   /** 所有页/当前页 切换函数 */
   toggleSelectAll: PropTypes.func,
   /** 点击关闭BatchActionBar的回调函数 */
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  extra: PropTypes.node
 }
 
 BatchActionBar.defaultProps = {

@@ -6,6 +6,7 @@ import { PopupContentConfirm, Popover, Button, ToolTip } from '@gmfe/react'
 import styled from 'styled-components'
 import SVGDelete from '../../svg/delete.svg'
 import SVGPen from '../../svg/pen.svg'
+import SVGRecover from '../../svg/recover.svg'
 import { getLocale } from '@gmfe/locales'
 
 const IconTip = styled.div`
@@ -187,9 +188,60 @@ OperationRowEdit.propTypes = {
   onCancel: PropTypes.func
 }
 
+const OperationRecover = props => {
+  const { title, onClick, className, children, ...rest } = props
+  const refPopover = useRef()
+
+  const handleRevover = () => {
+    refPopover.current.apiDoSetActive(false)
+    return onClick()
+  }
+
+  const handleCancel = () => {
+    refPopover.current.apiDoSetActive(false)
+  }
+
+  const popup = (
+    <PopupContentConfirm
+      type='save'
+      title={title}
+      onSave={handleRevover}
+      onCancel={handleCancel}
+    >
+      {children || '确定恢复？'}
+    </PopupContentConfirm>
+  )
+
+  return (
+    <Popover ref={refPopover} right popup={popup} showArrow>
+      <div
+        {...rest}
+        className={classNames(
+          'gm-inline-block gm-cursor gm-padding-5 gm-text-14 gm-text gm-text-hover-primary',
+          className
+        )}
+      >
+        <OperationIconTip tip={getLocale('恢复')}>
+          <div>
+            <SVGRecover />
+          </div>
+        </OperationIconTip>
+      </div>
+    </Popover>
+  )
+}
+
+OperationRecover.propTypes = {
+  title: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  style: PropTypes.object
+}
+
 export {
   OperationHeader,
   OperationDelete,
+  OperationRecover,
   OperationDetail,
   OperationCell,
   OperationRowEdit,
