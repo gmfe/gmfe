@@ -74,12 +74,17 @@
     &-default {
       &-item {
         cursor: pointer;
-        min-width: 30px;
+        width: 30px;
         height: 30px;
+        border-radius: 50%;
         text-align: center;
         font-size: 18px;
         line-height: 30px;
         margin-right: 20px;
+
+        &:hover {
+          background-color: rgba(239, 242, 246, 0.5);
+        }
       }
 
       &-setting-popover {
