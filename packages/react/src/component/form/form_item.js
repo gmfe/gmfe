@@ -43,7 +43,8 @@ const FormItem = withWrapContext(
     disabledCol,
     colWidth,
     style,
-    toolTip
+    toolTip,
+    toolTipLeft
   }) => {
     devWarnForHook(() => {
       if (label === undefined) return
@@ -91,6 +92,9 @@ const FormItem = withWrapContext(
           >
             {required ? <span className='gm-text-red gm-text-16'>*</span> : ''}
             {label}
+            {toolTip && toolTipLeft ? (
+              <ToolTip popup={toolTip} className='gm-padding-left-5' />
+            ) : null}
             {label && ':'}
           </Flex>
         )}
@@ -101,7 +105,7 @@ const FormItem = withWrapContext(
             {!!(error && help) && (
               <div className={classNames({ 'help-block': error })}>{help}</div>
             )}
-            {toolTip ? (
+            {toolTip && !toolTipLeft ? (
               <ToolTip
                 popup={toolTip}
                 className='gm-padding-lr-5 gm-form-toolTip'
@@ -122,6 +126,8 @@ FormItem.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   /** 提示信息 */
   toolTip: PropTypes.element,
+  /** 提示信息位置左移 */
+  toolTipLeft: PropTypes.bool,
   /** 是否必须 */
   required: PropTypes.bool,
 

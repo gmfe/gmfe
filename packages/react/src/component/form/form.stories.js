@@ -386,13 +386,7 @@ FormItem 包住表单元素
               搜索
             </button>
           }
-          right={
-            <Button
-              onClick={() => console.log('删除')}
-            >
-              删除
-            </Button>
-          }
+          right={<Button onClick={() => console.log('删除')}>删除</Button>}
         >
           <Form
             colWidth='400px'
@@ -446,7 +440,23 @@ FormItem 包住表单元素
                   />
                 </Flex>
               </FormItem>
-              <FormItem label='地区'>
+              <FormItem
+                label='地区'
+                toolTipLeft
+                toolTip={
+                  <div
+                    className='gm-padding-10 gm-bg'
+                    style={{ width: '455px' }}
+                  >
+                    <p style={{ marginBottom: '4px', fontSize: '12px' }}>
+                      23333333333333333
+                    </p>
+                    <p style={{ marginBottom: 0, fontSize: '12px' }}>
+                      4555555555555555
+                    </p>
+                  </div>
+                }
+              >
                 <Select
                   data={area}
                   value={store.area}
@@ -519,7 +529,14 @@ FormItem 包住表单元素
 
         <FormPanel
           title='店铺设置'
-          left={<span className='gm-margin-left-10' onClick={() => console.log('搜索')}>搜索</span>}
+          left={
+            <span
+              className='gm-margin-left-10'
+              onClick={() => console.log('搜索')}
+            >
+              搜索
+            </span>
+          }
           right={<span onClick={() => console.log('删除')}>删除</span>}
         >
           <Form
