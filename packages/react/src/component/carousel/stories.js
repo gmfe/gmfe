@@ -6,7 +6,6 @@ import { observable } from 'mobx'
 const store = observable({
   showOne: false,
   setShowOne(value) {
-    console.log(value)
     this.showOne = value
   },
 })

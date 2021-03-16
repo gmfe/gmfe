@@ -306,6 +306,7 @@ class Base extends React.Component {
       className,
       style,
       popoverType,
+      isEllipsis,
       children
     } = this.props
 
@@ -341,11 +342,23 @@ class Base extends React.Component {
                 _.map(selected, item => (
                   <Flex
                     key={item.value}
-                    className='gm-more-select-selected-item'
+                    className={classNames('gm-more-select-selected-item', {
+                      'gm-ellipsis': isEllipsis
+                    })}
                   >
-                    <Flex flex column>
-                      {renderSelected(item)}
-                    </Flex>
+                    {isEllipsis ? (
+                      <Popover
+                        className='gm-padding-tb-10 gm-padding-lr-15'
+                        type='hover'
+                        popup={<div>{renderSelected(item)}</div>}
+                      >
+                        <span>{renderSelected(item)}</span>
+                      </Popover>
+                    ) : (
+                      <Flex flex column>
+                        {renderSelected(item)}
+                      </Flex>
+                    )}
                     {multiple ? (
                       <SVGRemove
                         onClick={
@@ -451,7 +464,8 @@ Base.propTypes = {
 
   /** 目前为了 keyboard */
   isKeyboard: PropTypes.bool,
-  onKeyDown: PropTypes.func
+  onKeyDown: PropTypes.func,
+  isEllipsis: PropTypes.bool
 }
 
 export default Base
