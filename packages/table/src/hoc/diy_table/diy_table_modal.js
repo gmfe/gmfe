@@ -73,6 +73,28 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
     onCancel()
   }
 
+  const handleColsSort = (beforeKey, afterKey) => {
+    //移动到前面，移动到后面
+    let beforeIndex, afterIndex;
+    _.forEach(diyCols, (item, index)=>{
+      if(beforeKey === item.key){
+        beforeIndex = index
+      }
+      if(afterKey === item.key){
+        afterIndex = index
+      }
+    })
+    diyCols.splice(afterIndex + 1, 0, diyCols[beforeIndex]);
+    if(afterIndex > beforeIndex){
+      diyCols.splice(beforeIndex, 1);
+    }
+    if(afterIndex < beforeIndex){
+      diyCols.splice(beforeIndex + 1, 1);
+    }
+    setDiyCols(diyCols)
+    setShowCols(columns.filter(o => o.show))
+  }
+
   return (
     <div className='gm-react-table-diy-modal'>
       <Flex
@@ -109,6 +131,7 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
             cols={showCols}
             onColsChange={onSortColsChange}
             onColsRemove={onColsRemove}
+            onColsSort={handleColsSort}
           />
         </div>
       </Flex>

@@ -41,6 +41,28 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
     setDiyCols(_diyCols)
   }
 
+  const handleColsSort = (beforeKey, afterKey) => {
+    //移动到前面，移动到后面
+    let beforeIndex, afterIndex;
+    _.forEach(diyCols, (item, index)=>{
+      if(beforeKey === item.key){
+        beforeIndex = index
+      }
+      if(afterKey === item.key){
+        afterIndex = index
+      }
+    })
+    diyCols.splice(afterIndex + 1, 0, diyCols[beforeIndex]);
+    if(afterIndex > beforeIndex){
+      diyCols.splice(beforeIndex, 1);
+    }
+    if(afterIndex < beforeIndex){
+      diyCols.splice(beforeIndex + 1, 1);
+    }
+    setDiyCols(diyCols)
+    setShowCols(columns.filter(o => o.show))
+  }
+
   const handleSave = () => {
     const columns = diyCols.map(col => {
       return {
@@ -85,7 +107,7 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
           <div className='gm-react-table-x-diy-modal-title'>
             当前选定的字段
           </div>
-          <List cols={showCols} onColsRemove={handleColsRemove} />
+          <List cols={showCols} onColsRemove={handleColsRemove} onColsSort={handleColsSort}/>
         </div>
       </Flex>
       <Flex justifyEnd className='gm-padding-10'>
