@@ -16,10 +16,13 @@ import OperationIconTip from '../../operation_icon_tip'
  * @param mixColumns 需要混合的columns(优先取值)
  * @returns {Array}
  */
-function generateDiyColumns(initColumns, mixColumns) {
-  // 把checkbox, selector, expander 提出来,不参与diy
+ function generateDiyColumns(initColumns, mixColumns) {
   const [notDiyCols, diyCols] = splitColumns(initColumns)
-
+  let mixColumnsMap = new Map()
+  _.forEach(mixColumns, (item, index)=>{
+    item.sortNumber = index
+    mixColumnsMap.set(item.key, item)
+  })
   const diyColumns = _.map(diyCols, column => {
     const key = getColumnKey(column)
     // 能获取 key 才可能使用 diy
@@ -27,7 +30,7 @@ function generateDiyColumns(initColumns, mixColumns) {
       return column
     }
 
-    // 默认显示和打开 diyEnable
+    // col 默认显示，以及 默认开启diy
     const { show = true, diyEnable = true } = column
     const newColumn = {
       ...column,
@@ -37,13 +40,17 @@ function generateDiyColumns(initColumns, mixColumns) {
     }
 
     // localstorage中储存的列
-    const localItem = _.find(mixColumns, v => v.key === key)
+    const localItem = mixColumnsMap.get(key)
     // localstorage的值覆盖初始值
     if (localItem) {
       newColumn.show = localItem.show
-      newColumn.diySortNumber = localItem.diySortNumber
+      newColumn.sortNumber = localItem.sortNumber
     }
     return newColumn
+  })
+
+  diyColumns.sort((a,b)=>{
+    return a.sortNumber - b.sortNumber
   })
 
   return [notDiyCols, diyColumns]
