@@ -42,12 +42,12 @@ function splitColumns(columns) {
  */
 function generateDiyColumns(initColumns, mixColumns) {
   const [notDiyCols, diyCols] = splitColumns(initColumns)
-  let mixColumnsMap = new Map()
-  _.forEach(mixColumns, (item, index)=>{
+  const mixColumnsMap = {}
+  _.forEach(mixColumns, (item, index) => {
     item.sortNumber = index
-    mixColumnsMap.set(item.key, item)
+    mixColumnsMap[item.key] = item
   })
-  const diyColumns = _.map(diyCols, column => {
+  let diyColumns = _.map(diyCols, column => {
     const key = getColumnKey(column)
     // 能获取 key 才可能使用 diy
     if (key === null) {
@@ -64,7 +64,7 @@ function generateDiyColumns(initColumns, mixColumns) {
     }
 
     // localstorage中储存的列
-    const localItem = mixColumnsMap.get(key)
+    const localItem = mixColumnsMap[key]
     // localstorage的值覆盖初始值
     if (localItem) {
       newColumn.show = localItem.show
@@ -73,8 +73,8 @@ function generateDiyColumns(initColumns, mixColumns) {
     return newColumn
   })
 
-  diyColumns.sort((a,b)=>{
-    return a.sortNumber - b.sortNumber
+  diyColumns = _.sortBy(diyColumns, function(o) {
+    return o.sortNumber
   })
 
   return [notDiyCols, diyColumns]
