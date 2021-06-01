@@ -24,7 +24,7 @@ const TableSelect = React.forwardRef((props, ref) => {
   const Title = (
     <Flex
       alignCenter
-      justifyCenter
+      justifyStart
       style={{
         minHeight: '40px'
       }}
@@ -60,7 +60,7 @@ const TableSelect = React.forwardRef((props, ref) => {
       <Flex
         key={item.value}
         alignCenter
-        justifyCenter
+        justifyStart
         style={{
           minHeight: '40px',
           position: 'relative'

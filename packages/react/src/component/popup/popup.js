@@ -15,13 +15,15 @@ function elementInViewport(top, dom, targetHeight, predictingHeight) {
   if (top) {
     return {
       topInViewport: rect.top - domHeight - buf >= 0,
-      bottomInViewport: null // top 情况不用算，用不到
+      bottomInViewport: null, // top 情况不用算，用不到
+      left: rect.x
     }
   }
 
   return {
     topInViewport: rect.top - targetHeight - domHeight - buf >= 0,
-    bottomInViewport: rect.top + domHeight + buf <= windowHeight
+    bottomInViewport: rect.top + domHeight + buf <= windowHeight,
+    left: rect.x
   }
 }
 
@@ -32,7 +34,8 @@ class Popup extends React.Component {
     this.state = {
       width: 0,
       height: 0,
-      top: props.top
+      top: props.top,
+      isModify: false
     }
   }
 
@@ -41,7 +44,7 @@ class Popup extends React.Component {
 
     let top = this.state.top
 
-    const { topInViewport, bottomInViewport } = elementInViewport(
+    const { topInViewport, bottomInViewport,left } = elementInViewport(
       top,
       dom,
       this.props.rect.height,
@@ -60,7 +63,19 @@ class Popup extends React.Component {
     this.setState({
       width: dom.offsetWidth,
       height: dom.offsetHeight,
-      top
+      top,
+      left
+    })
+  }
+
+  componentDidUpdate() {
+    const dom = findDOMNode(this.refPopup)
+    if(dom.offsetWidth === this.state.width || this.state.isModify){
+      return
+    }
+    this.setState({
+      width: dom.offsetWidth,
+      isModify: true
     })
   }
 
@@ -103,7 +118,7 @@ class Popup extends React.Component {
       ...rest
     } = this.props
 
-    const { width, height } = this.state
+    const { width, height, left } = this.state
 
     const sStyle = {
       top: rect.top + rect.height + (showArrow ? 5 : 1),
@@ -118,6 +133,14 @@ class Popup extends React.Component {
         document.documentElement.clientWidth - rect.left - rect.width - offset
     } else {
       sStyle.left = rect.left + offset
+      const buf = 5
+      let isless = document?.documentElement?.clientWidth - width - left - buf
+      if(isless < 0){
+        const maxWidthOffset = width + isless
+        sStyle.maxWidth = `${maxWidthOffset}px`
+        sStyle.minWidth = `${rect.width}px`
+        sStyle.width = `${maxWidthOffset}px`
+      }
     }
 
     if (this.state.top) {

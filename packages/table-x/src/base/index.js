@@ -23,10 +23,30 @@ const TableX = ({
   isTrHighlight,
   ...rest
 }) => {
+  // 冻结列左边的列全部冻结，因为冻结列可能是第二列，有个白条不美观
+  const fixedLeft = (columns) => {
+    let index;
+    for (let i = 0; i < columns.length; i++) {
+      const column = columns[i]
+      if (column["key"] && column["fixed"] === "left") {
+        index = i
+        break;
+      }
+    }
+    for (let i = 0; i < index; i++) {
+      const column = columns[i]
+      if (column["key"]) {
+        column["fixed"] = "left"
+      }
+    }
+  }
+
   // diy fixed(最新rc12不支持column.show,自己实现)
-  columns = React.useMemo(() => columns.filter(c => c.show !== false), [
-    columns
-  ])
+  columns = React.useMemo(() => {
+    columns = columns.filter(c => c.show !== false)
+    fixedLeft(columns)
+    return columns
+  }, [ columns ])
 
   const {
     getTableProps,
