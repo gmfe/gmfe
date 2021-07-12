@@ -22,6 +22,7 @@ class Base extends React.Component {
     this.ref = React.createRef()
     this.popoverRef = React.createRef()
     this.selectedRef = React.createRef()
+    // this.flexRef = React.createRef()
 
     this._isUnmounted = false
 

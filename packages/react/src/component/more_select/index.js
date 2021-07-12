@@ -71,7 +71,8 @@ MoreSelect.propTypes = {
 }
 
 MoreSelect.defaultProps = {
-  renderSelected: item => item.text,
+  // span标签的title作用，鼠标悬浮几秒中会显示title中的内容，如果是要自定义renderSelected，内容超出标签，建议加上span标签
+  renderSelected: item => <span title={item.text}>{item.text}</span>,
 
   delay: 500,
   renderListItem: item => item.text,
