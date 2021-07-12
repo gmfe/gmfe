@@ -343,9 +343,15 @@ class Base extends React.Component {
                     key={item.value}
                     className='gm-more-select-selected-item'
                   >
-                    <Flex flex column>
-                      {renderSelected(item)}
-                    </Flex>
+                    <Popover
+                      disabled={!this.props.isKeyboard}
+                      type='hover'
+                      popup={<div className='gm-padding-10'>{item.text}</div>}
+                    >
+                      <Flex flex column>
+                        {renderSelected(item)}
+                      </Flex>
+                    </Popover>
                     {multiple ? (
                       <SVGRemove
                         onClick={
