@@ -22,6 +22,7 @@ class Base extends React.Component {
     this.ref = React.createRef()
     this.popoverRef = React.createRef()
     this.selectedRef = React.createRef()
+    this.flexRef = React.createRef()
 
     this._isUnmounted = false
 
@@ -343,9 +344,22 @@ class Base extends React.Component {
                     key={item.value}
                     className='gm-more-select-selected-item'
                   >
-                    <Flex flex column>
-                      {renderSelected(item)}
-                    </Flex>
+                    <Popover
+                      disabled={!this.props.isKeyboard}
+                      type='hover'
+                      popup={
+                        <div
+                          className='gm-padding-10'
+                          style={{ maxWidth: '180px' }}
+                        >
+                          {this.flexRef?.current?.props?.children}
+                        </div>
+                      }
+                    >
+                      <Flex flex column ref={this.flexRef}>
+                        {renderSelected(item)}
+                      </Flex>
+                    </Popover>
                     {multiple ? (
                       <SVGRemove
                         onClick={
