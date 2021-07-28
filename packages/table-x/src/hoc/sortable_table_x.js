@@ -16,14 +16,14 @@ function sortableTableX(Component) {
         onStart: () => {
           target.classList.add('gm-table-x-sortable-active')
         },
-        onEnd: () => {
+        onEnd: ({ newIndex, oldIndex }) => {
           target.classList.remove('gm-table-x-sortable-active')
         },
-        onUpdate: () => {
+        onUpdate: evt => {
           const newIds = sortable.toArray()
-          const newData = _.sortBy(data.slice(), v =>
-            newIds.indexOf(v[keyField])
-          )
+          const newData = _.sortBy(data.slice(), v => {
+            return newIds.indexOf(v[keyField]) // 返回位置
+          })
           onSortChange(newData)
         }
       })
@@ -32,7 +32,6 @@ function sortableTableX(Component) {
         sortable.destroy()
       }
     }, [data])
-
     return <Component {...rest} id={id} data={data} keyField={keyField} />
   }
 

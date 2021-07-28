@@ -8,6 +8,7 @@ import selectTableV2HOC from './hoc/select_table'
 import expandTableHOC from './hoc/expand_table'
 import diyTableHOC from './hoc/diy_table'
 import subTableHOC from './hoc/sub_table'
+import sortableTable from './hoc/sort_table_table'
 
 import BatchActionBar from './hoc/select_table/batch_action_bar'
 
@@ -52,5 +53,6 @@ export {
   fixedFirstColumnsTableHOC,
   selectTableV2HOC,
   expandTableHOC,
-  TableUtil
+  TableUtil,
+  sortableTable
 }
