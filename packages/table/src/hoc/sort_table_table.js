@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import TableX from '../base'
+import Table from '../table/base'
 import SortableJS from 'sortablejs'
 import _ from 'lodash'
 
@@ -9,15 +9,15 @@ function sortableTable(Component) {
     id = id || 'id' + +new Date() + '' + String(Math.random()).slice(2)
 
     useEffect(() => {
-      const target = document.querySelector(`#${id} .rt-tbody`)
+      const target = document.querySelector(`.rt-tbody`)
 
       const sortable = new SortableJS(target, {
         animation: 150,
         onStart: () => {
-          target.classList.add('gm-table-x-sortable-active')
+          target.classList.add('gm-table-sortable-active')
         },
         onEnd: () => {
-          target.classList.remove('gm-table-x-sortable-active')
+          target.classList.remove('gm-table-sortable-active')
         },
         onUpdate: () => {
           const newIds = sortable.toArray()
@@ -37,7 +37,7 @@ function sortableTable(Component) {
   }
 
   SortableTable.propTypes = {
-    ...TableX.propTypes,
+    ...Table.propTypes,
 
     keyField: PropTypes.string,
     onSortChange: PropTypes.func.isRequired
