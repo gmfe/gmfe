@@ -165,7 +165,7 @@ const columns = [
     accessor: 'index',
     fixed: 'left',
     width: TABLE_X.WIDTH_NO,
-    Cell: ({ row }) => row.index + 1
+    Cell: ({ row }) => {return row.index + 1}
   },
   // 常规用法
   {
@@ -396,7 +396,8 @@ storiesOf('TableX|HOC', module)
       keyField='id'
       onSortChange={newData => {
         console.log(newData.map(v => v.id))
-        store.setData(newData)
+        // 不需要将newData重新赋值给data
+        // store.setData(newData)
       }}
     />
   ))
