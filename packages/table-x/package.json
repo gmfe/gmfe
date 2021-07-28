@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/table-x",
-  "version": "2.12.16",
+  "version": "2.13.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/locales": "^2.12.16",
-    "@gmfe/react": "^2.12.16",
+    "@gmfe/locales": "^2.13.0",
+    "@gmfe/react": "^2.13.0",
     "classnames": "^2.2.5",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
