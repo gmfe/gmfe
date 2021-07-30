@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Table from '../table/base'
 import SortableJS from 'sortablejs'
-import _ from 'lodash'
 
 function sortableTable(Component) {
   const SortableTable = ({ id, data, onSortChange, keyField, ...rest }) => {
@@ -16,15 +15,13 @@ function sortableTable(Component) {
         onStart: () => {
           target.classList.add('gm-table-sortable-active')
         },
-        onEnd: () => {
+        onEnd: ({ newIndex, oldIndex }) => {
           target.classList.remove('gm-table-sortable-active')
-        },
-        onUpdate: () => {
-          const newIds = sortable.toArray()
-          const newData = _.sortBy(data.slice(), v =>
-            newIds.indexOf(v[keyField])
-          )
-          onSortChange(newData)
+          // 删除原本位置的数据
+          const deleteData = data.splice(oldIndex, 1)
+          // 将删除的数据添加到新的位置
+          data.splice(newIndex, 0, deleteData[0])
+          onSortChange(data)
         }
       })
 
