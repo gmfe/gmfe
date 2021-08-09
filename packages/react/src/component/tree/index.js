@@ -55,6 +55,7 @@ const Tree = ({
   // 区分正常的 展开收起 和 搜索导致的展开收起
   const [queryGroupSelected, setQueryGroupSelected] = useState([])
   const [groupSelected, setGroupSelected] = useState([])
+  const [checkedAll, setCheckedAll] = useState(false)
 
   // 响应 list 的变化
   useEffect(() => {
@@ -62,7 +63,8 @@ const Tree = ({
   }, [list])
 
   const handleSelectAll = checked => {
-    onSelectValues(checked ? _.map(getLeaf(list), v => v.value) : [])
+    setCheckedAll(checked)
+    onSelectValues(checked ? _.map(getLeaf(filterList), v => v.value) : [])
   }
 
   const handleQueryFilter = query => {
@@ -91,11 +93,6 @@ const Tree = ({
   const handleGroupSelect = groupSelected => {
     setGroupSelected(groupSelected)
   }
-
-  const leafList = getLeaf(list)
-
-  const checkedAll =
-    leafList.length !== 0 && leafList.length === selectedValues.length
 
   const newGS = query ? queryGroupSelected : groupSelected
 
@@ -155,7 +152,7 @@ const Tree = ({
           checkedAll={checkedAll}
           onChange={() => handleSelectAll(!checkedAll)}
           selectValuesLength={selectedValues.length}
-          leafListLength={leafList.length}
+          leafListLength={getLeaf(filterList).length}
           disabled={disabled}
         />
       )}

@@ -21,9 +21,11 @@ class Box extends React.Component {
   }
 
   handleSelectAll = checked => {
-    const { list, onSelect } = this.props
+    const { onSelect } = this.props
 
-    onSelect(checked.length === 0 ? [] : _.map(list, v => v.value))
+    onSelect(
+      checked.length === 0 ? [] : _.map(this.getProcessList(), v => v.value)
+    )
   }
 
   handleQuery = e => {
@@ -32,9 +34,18 @@ class Box extends React.Component {
     })
   }
 
+  getProcessList = () => {
+    const { list, withFilter } = this.props
+    const { query } = this.state
+    if (withFilter === true) {
+      return pinYinFilter(list, query, e => e.name)
+    } else if (withFilter) {
+      return withFilter(list, query)
+    }
+  }
+
   render() {
     const {
-      list,
       selectedValues,
 
       style,
@@ -47,12 +58,7 @@ class Box extends React.Component {
 
     const { query } = this.state
 
-    let processList
-    if (withFilter === true) {
-      processList = pinYinFilter(list, query, e => e.name)
-    } else if (withFilter) {
-      processList = withFilter(list, query)
-    }
+    const processList = this.getProcessList()
 
     return (
       <Flex column className='gm-transfer-box gm-border gm-bg' style={style}>
@@ -102,7 +108,10 @@ class Box extends React.Component {
           <CheckboxGroup
             name='transferBoxBottom'
             className='gm-margin-0 gm-padding-5'
-            value={[list.length !== 0 && list.length === selectedValues.length]}
+            value={[
+              processList.length !== 0 &&
+                processList.length === selectedValues.length
+            ]}
             onChange={this.handleSelectAll}
           >
             <Checkbox value disabled={disabled}>
@@ -110,7 +119,7 @@ class Box extends React.Component {
             </Checkbox>
           </CheckboxGroup>
           <div className='gm-padding-lr-5 gm-text-desc'>
-            {selectedValues.length}/{list.length}
+            {selectedValues.length}/{processList.length}
           </div>
         </Flex>
       </Flex>
