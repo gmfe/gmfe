@@ -31,7 +31,8 @@ class Base extends React.Component {
       searchValue: '',
       loading: false,
       // keyboard 默认第一个位置
-      willActiveIndex: props.isKeyboard ? 0 : null
+      willActiveIndex: props.isKeyboard ? 0 : null,
+      _style: {}
     }
 
     // 要后于 this.state 执行，因为 getFilterData 用到 searchValue
@@ -70,6 +71,12 @@ class Base extends React.Component {
         onSelect([flatList[willActiveIndex]])
       }
     }
+  }
+
+  componentDidMount() {
+    const dom = findDOMNode(this)
+    const _style = { width: dom.offsetWidth }
+    this.setState({ _style })
   }
 
   componentWillUnmount() {
@@ -309,6 +316,8 @@ class Base extends React.Component {
       children
     } = this.props
 
+    const { _style } = this.state
+
     return (
       <div
         ref={this.ref}
@@ -320,7 +329,7 @@ class Base extends React.Component {
           },
           className
         )}
-        style={style}
+        style={{ ..._style, ...style }}
       >
         <Popover
           ref={this.popoverRef}
