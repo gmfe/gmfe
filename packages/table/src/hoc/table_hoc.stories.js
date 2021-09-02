@@ -6,7 +6,8 @@ import {
   selectTableV2HOC,
   expandTableHOC,
   subTableHOC,
-  TableUtil
+  TableUtil,
+  sortableTable
 } from '../index'
 import diyTableHOC from '../hoc/diy_table'
 import { observable } from 'mobx/lib/mobx'
@@ -17,6 +18,7 @@ const FixedColumnsTable = fixedColumnsTableHOC(Table)
 const DiyTable = diyTableHOC(Table)
 const SelectTable = selectTableV2HOC(Table)
 const ExpandTable = expandTableHOC(Table)
+const SortableTable = sortableTable(Table)
 
 const ExpandSelectTable = selectTableV2HOC(ExpandTable)
 const SelectSubTable = selectTableV2HOC(subTableHOC(Table))
@@ -45,12 +47,18 @@ const store = observable({
         {
           id: '5',
           name: 'a222',
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         },
         {
           id: '6',
           name: 2222,
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         }
       ]
     },
@@ -73,12 +81,18 @@ const store = observable({
         {
           id: '1',
           name: 'a',
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         },
         {
           id: '2',
           name: 2,
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         }
       ]
     },
@@ -101,22 +115,34 @@ const store = observable({
         {
           id: '3',
           name: 'a',
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         },
         {
           id: '4',
           name: 2,
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         },
         {
           id: '8',
           name: 2,
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         },
         {
           id: '9',
           name: 2,
-          subTable: [{ id: '5', name: 'a222' }, { id: '6', name: 2222 }]
+          subTable: [
+            { id: '5', name: 'a222' },
+            { id: '6', name: 2222 }
+          ]
         }
       ]
     }
@@ -665,3 +691,112 @@ HOC 可以相互组合使用，但是请注意使用顺序!
       ]}
     />
   ))
+  .add('sort_table_table', () => [
+    <SortableTable
+      id='sort_table_table'
+      data={store.data}
+      columns={[
+        {
+          Header: '入库单号',
+          accessor: 'id',
+          // 提供 fixed and width
+          minWidth: 200,
+          diySortNumber: 100, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          diyEnable: false, // 是否可以自定义,不写的话默认为true
+          show: false, // 是否展示当前列,不写的话默认为true
+          diyGroupName: '基础字段' // 组名
+        },
+        {
+          Header: '价格',
+          accessor: 'sku_money',
+          minWidth: 200,
+          diySortNumber: 600, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          diyEnable: false,
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '状态',
+          fixed: 'left',
+          width: 200,
+          diySortNumber: 300, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'status',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商户ID',
+          fixed: 'left',
+          width: 200,
+          diySortNumber: 400, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_customer_id',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商信息',
+          minWidth: 200,
+          diySortNumber: 500, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_name',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商户ID',
+          minWidth: 200,
+          diySortNumber: 400, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_customer_id',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商信息',
+          minWidth: 200,
+          diySortNumber: 500, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_name',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商户ID',
+          minWidth: 200,
+          diySortNumber: 400, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_customer_id',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商信息',
+          minWidth: 200,
+          diySortNumber: 500, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_name',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商户ID',
+          minWidth: 200,
+          diySortNumber: 400, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_customer_id',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: '供应商信息',
+          minWidth: 200,
+          diySortNumber: 500, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          accessor: 'supplier_name',
+          diyGroupName: '基础字段'
+        },
+        {
+          Header: TableUtil.OperationHeader,
+          diySortNumber: 700, // 列表的排序根据sortNumber来排: 100, 200, 300, 如此类推
+          diyItemText: '操作', // 操作栏要提供diyItemName
+          id: 'action', // id作为唯一标识
+          diyGroupName: '操作',
+          width: 180,
+          fixed: 'right',
+          diyEnable: false,
+          Cell: () => (
+            <TableUtil.OperationCell>
+              <a href='#'>删除</a>
+            </TableUtil.OperationCell>
+          )
+        }
+      ]}
+      onSortChange={newData => {
+        console.log(newData.map(v => v.id))
+      }}
+    />
+  ])

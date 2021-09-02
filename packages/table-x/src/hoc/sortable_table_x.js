@@ -19,7 +19,7 @@ function sortableTableX(Component) {
         onEnd: () => {
           target.classList.remove('gm-table-x-sortable-active')
         },
-        onUpdate: () => {
+        onUpdate: evt => {
           const newIds = sortable.toArray()
           const newData = _.sortBy(data.slice(), v =>
             newIds.indexOf(v[keyField])
@@ -32,7 +32,6 @@ function sortableTableX(Component) {
         sortable.destroy()
       }
     }, [data])
-
     return <Component {...rest} id={id} data={data} keyField={keyField} />
   }
 

@@ -79,6 +79,16 @@
         }
       }
     }
+    // 拖拽的时候没有hover效果
+    &:not(.gm-table-sortable-active) {
+      .rt-tr {
+        &:hover {
+          .rt-td {
+            background-color: @table-bg-hover;
+          }
+        }
+      }
+    }
   }
 
   .rt-thead {
