@@ -13,6 +13,7 @@ const PopupContentConfirm = props => {
     onSave,
     className,
     children,
+    hideClose,
     ...rest
   } = props
 
@@ -23,9 +24,9 @@ const PopupContentConfirm = props => {
     >
       <div className='gm-popup-content-confirm-title-wrap'>
         <div className='gm-popup-content-confirm-title'>{title}</div>
-        <div className='gm-popup-content-confirm-close' onClick={onCancel}>
+        {!hideClose && <div className='gm-popup-content-confirm-close' onClick={onCancel}>
           <SVGRemove />
-        </div>
+        </div>}
       </div>
       <div className='gm-popup-content-confirm-content'>
         {children}
@@ -55,6 +56,7 @@ PopupContentConfirm.propTypes = {
   onDelete: PropTypes.func,
   onSave: PropTypes.func,
   className: PropTypes.string,
+  hideClose: PropTypes.bool,
   style: PropTypes.object
 }
 
