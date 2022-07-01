@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react'
+import React, { useState, useMemo, useRef, useEffect } from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
@@ -105,6 +105,10 @@ function diyTableXHOC(Component) {
     const [diyCols, setDiyCols] = useState(
       () => generateDiyColumns(columns, Storage.get(id) || [])[1]
     )
+
+    useEffect(() => {
+      setDiyCols(generateDiyColumns(columns, Storage.get(id) || [])[1])
+    }, [columns])
 
     const popoverRef = useRef()
 
