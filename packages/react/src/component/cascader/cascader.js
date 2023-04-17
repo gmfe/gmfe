@@ -326,13 +326,13 @@ class Cascader extends React.Component {
     if (!filtrable) {
       return valueRender
         ? valueRender(value)
-        : _.map(value, v => v.name).join(',')
+        : _.map(value, v => v?.name).join(',')
     }
 
     return filterInput === null
       ? valueRender
         ? valueRender(value)
-        : _.map(value, v => v.name).join(',')
+        : _.map(value, v => v?.name).join(',')
       : filterInput
   }
 
