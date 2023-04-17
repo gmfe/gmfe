@@ -220,10 +220,10 @@ class Cascader extends React.Component {
     const value = []
     if (selected.length > 0) {
       _.each(selected, (v, i) => {
-        const match = _.find(i === 0 ? data : value[i - 1].children, val => {
+        const match = _.find(i === 0 ? data : value[i - 1]?.children, val => {
           return v === val.value
         })
-        value.push(match)
+        match && value.push(match)
       })
     }
 
@@ -316,23 +316,23 @@ class Cascader extends React.Component {
     const value = []
     if (selected.length > 0) {
       _.each(selected, (v, i) => {
-        const match = _.find(i === 0 ? data : value[i - 1].children, val => {
+        const match = _.find(i === 0 ? data : value[i - 1]?.children, val => {
           return v === val.value
         })
-        value.push(match)
+        match && value.push(match)
       })
     }
 
     if (!filtrable) {
       return valueRender
         ? valueRender(value)
-        : _.map(value, v => v.name).join(',')
+        : _.map(value, v => v?.name).join(',')
     }
 
     return filterInput === null
       ? valueRender
         ? valueRender(value)
-        : _.map(value, v => v.name).join(',')
+        : _.map(value, v => v?.name).join(',')
       : filterInput
   }
 
@@ -346,10 +346,10 @@ class Cascader extends React.Component {
     const value = []
     if (selected.length > 0) {
       _.each(selected, (v, i) => {
-        const match = _.find(i === 0 ? data : value[i - 1].children, val => {
+        const match = _.find(i === 0 ? data : value[i - 1]?.children, val => {
           return v === val.value
         })
-        value.push(match)
+        match && value.push(match)
       })
     }
 
