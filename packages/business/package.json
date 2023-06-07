@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/business",
-  "version": "2.14.3",
+  "version": "2.14.4",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -26,7 +26,8 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/react": "^2.14.3",
+    "@gmfe/react": "^2.14.4",
     "prop-types": "^15.7.2"
-  }
+  },
+  "gitHead": "ffd7a40fe33e60da6a9d47a6516032dd6c929c2e"
 }
