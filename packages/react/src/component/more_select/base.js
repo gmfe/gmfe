@@ -33,8 +33,8 @@ class Base extends React.Component {
       // keyboard 默认第一个位置
       willActiveIndex: props.isKeyboard ? 0 : null,
       _style: {}
+      // isOnComposition: false
     }
-
     // 要后于 this.state 执行，因为 getFilterData 用到 searchValue
 
     // 有选择才有意义
@@ -47,6 +47,12 @@ class Base extends React.Component {
       )
       this.state.willActiveIndex = index
     }
+  }
+
+  isOnComposition = false
+
+  setInputValue = () => {
+    this.ref.current.value = this.state.searchValue || ''
   }
 
   apiDoFocus = () => {
@@ -77,6 +83,11 @@ class Base extends React.Component {
     const dom = findDOMNode(this)
     const _style = { width: dom.offsetWidth }
     this.setState({ _style })
+    this.setInputValue()
+  }
+
+  componentDidUpdate() {
+    this.setInputValue()
   }
 
   componentWillUnmount() {
@@ -102,8 +113,19 @@ class Base extends React.Component {
     this.setState({
       searchValue
     })
-
+    if (this.isOnComposition && this.props.isEnableChineseCheck) return
     this.debounceDoSearch(searchValue)
+  }
+
+  handleComposition = evt => {
+    if (evt.type === 'compositionend') {
+      this.isOnComposition = false
+      if (navigator.userAgent.indexOf('Chrome') > -1) {
+        this.handleChange(evt)
+      }
+      return
+    }
+    this.isOnComposition = true
   }
 
   handleSelected = values => {
@@ -241,7 +263,8 @@ class Base extends React.Component {
       renderListItem,
       searchPlaceholder,
       listHeight,
-      popupClassName
+      popupClassName,
+      isEnableChineseCheck
     } = this.props
 
     const { loading, searchValue, willActiveIndex } = this.state
@@ -254,14 +277,28 @@ class Base extends React.Component {
         onKeyDown={this.handlePopupKeyDown}
       >
         <div className='gm-more-select-popup-input'>
-          <input
-            autoFocus
-            className='form-control'
-            type='text'
-            value={searchValue}
-            onChange={this.handleChange}
-            placeholder={searchPlaceholder}
-          />
+          {isEnableChineseCheck ? (
+            <input
+              autoFocus
+              className='form-control'
+              type='text'
+              // value={searchValue}
+              onChange={this.handleChange}
+              placeholder={searchPlaceholder}
+              onCompositionStart={this.handleComposition}
+              onCompositionUpdate={this.handleComposition}
+              onCompositionEnd={this.handleComposition}
+            />
+          ) : (
+            <input
+              autoFocus
+              className='form-control'
+              type='text'
+              value={searchValue}
+              onChange={this.handleChange}
+              placeholder={searchPlaceholder}
+            />
+          )}
         </div>
         <div style={{ height: listHeight }}>
           {loading && (
@@ -433,6 +470,7 @@ Base.propTypes = {
   selected: PropTypes.array.isRequired, // item 数组。 非 value，也非引用，原因是想解耦 selected 和 data 的关系。这样当
   onSelect: PropTypes.func.isRequired, // 返回 item 数组
   multiple: PropTypes.bool,
+  isEnableChineseCheck: PropTypes.bool, // 是否开启中文检查
 
   // 状态
   disabled: PropTypes.bool,
