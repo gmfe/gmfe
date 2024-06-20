@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/sortable",
-  "version": "2.14.6",
+  "version": "2.14.7-beta.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -25,7 +25,7 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gmfe/react": "^2.14.6",
+    "@gmfe/react": "^2.14.7-beta.0",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "sortablejs": "^1.10.1"

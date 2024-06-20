@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/frame",
-  "version": "2.14.6",
+  "version": "2.14.7-beta.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/react": "^2.14.6",
+    "@gmfe/react": "^2.14.7-beta.0",
     "classnames": "^2.2.5",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2"
