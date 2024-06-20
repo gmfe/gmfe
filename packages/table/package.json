@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/table",
-  "version": "2.14.7-beta.0",
+  "version": "2.14.7-beta.1",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/locales": "^2.14.7-beta.0",
-    "@gmfe/react": "^2.14.7-beta.0",
+    "@gmfe/locales": "^2.14.7-beta.1",
+    "@gmfe/react": "^2.14.7-beta.1",
     "classnames": "^2.2.5",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "react-table-v6": "6.8.6",
     "styled-components": "^5.1.0"
   },
-  "gitHead": "7105e88795d3aa1bfe258a5985a150048acacc84"
+  "gitHead": "9abf481601b019bcdceade2f4b55ce32653d576e"
 }
