@@ -67,6 +67,7 @@
     "query-string": "^6.11.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-photo-view": "^1.2.6",
     "react-table": "7.0.0-rc.11",
     "react-table-v6": "6.8.6",
     "react-window": "^1.8.5",
