@@ -59,6 +59,7 @@ const Item = ({
       )}
       {level > 0 && isLeaf && <div style={{ width: '2em' }} />}
       <Checkbox
+        disabled={!!data?.disabled}
         checked={isSelected}
         onChange={handleRadio}
         indeterminate={isIndeterminate}
