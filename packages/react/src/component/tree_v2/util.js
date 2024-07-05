@@ -83,7 +83,11 @@ function getLeafValues(list) {
     () => true
   )
 
-  return _.map(flat, item => item.data.value)
+  // 这里再加一个过滤禁用的
+  return _.map(
+    flat.filter(item => !item?.data?.disabled),
+    item => item.data.value
+  )
 }
 
 // 用find，高效。深度遍历，找到存在没选的就终止遍历。
