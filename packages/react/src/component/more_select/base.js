@@ -433,8 +433,15 @@ class Base extends React.Component {
 
 function renderListFilterDefault(data, query) {
   const result = []
+  const keywords = query.toLowerCase()
+  // TODO 加个queryText，用于基于多个搜索结果的情况下，因为是公共组件,所以多加个字段
   _.each(data, v => {
-    const arr = _.filter(v.children, item => item.text.includes(query))
+    const arr = _.filter(
+      v?.children || [],
+      item =>
+        item?.text?.toLowerCase()?.includes(keywords) ||
+        item?.queryText?.toLowerCase()?.includes(keywords)
+    )
     if (arr.length) {
       result.push({
         ...v,
