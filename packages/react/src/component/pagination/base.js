@@ -8,7 +8,15 @@ import Right from './right'
 import PagePeek from './page_peek'
 
 const PaginationBase = props => {
-  const { data, onChange, showCount, _peekInfo, className, ...rest } = props
+  const {
+    data,
+    onChange,
+    showCount,
+    _peekInfo,
+    className,
+    limitData = [],
+    ...rest
+  } = props
 
   return (
     <Flex
@@ -16,7 +24,12 @@ const PaginationBase = props => {
       alignCenter
       className={classNames('gm-pagination', className)}
     >
-      <Left data={data} onChange={onChange} showCount={showCount} />
+      <Left
+        data={data}
+        limitData={limitData}
+        onChange={onChange}
+        showCount={showCount}
+      />
       {_peekInfo ? (
         <PagePeek data={data} _peekInfo={_peekInfo} onChange={onChange} />
       ) : (
@@ -44,7 +57,11 @@ PaginationBase.propTypes = {
   _peekInfo: PropTypes.shape({
     more: PropTypes.bool,
     peek: PropTypes.number
-  })
+  }),
+  /**
+   *自定义分页，默认
+   */
+  limitData: PropTypes.array
 }
 
 export default PaginationBase
