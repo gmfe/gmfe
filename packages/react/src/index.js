@@ -102,6 +102,7 @@ import Steps from './component/steps'
 import Selection from './component/selection'
 import TreeV2 from './component/tree_v2'
 import RecommendInput from './component/recommend_input'
+import PicturePreview from './component/picture_preview'
 
 Object.assign(Sheet, {
   SheetColumn,
@@ -231,5 +232,6 @@ export {
   Steps,
   Selection,
   TreeV2,
-  RecommendInput
+  RecommendInput,
+  PicturePreview
 }
