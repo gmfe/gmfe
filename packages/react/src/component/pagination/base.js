@@ -14,7 +14,7 @@ const PaginationBase = props => {
     showCount,
     _peekInfo,
     className,
-    limitData = [],
+    limitData,
     ...rest
   } = props
 

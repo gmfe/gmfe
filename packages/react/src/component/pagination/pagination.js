@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import PaginationBase from './base'
 
-const Pagination = ({ data, toPage, nextDisabled, ...rest }) => {
+const Pagination = ({ data, toPage, nextDisabled, limitData, ...rest }) => {
   if (data.count !== undefined && data.count !== null) {
     return (
       <PaginationBase
@@ -47,7 +47,8 @@ Pagination.propTypes = {
   /** data without count 才有效 */
   nextDisabled: PropTypes.bool,
   className: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  limitData: PropTypes.array
 }
 
 export default Pagination
