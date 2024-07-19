@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import PaginationBase from './base'
 
-const Pagination = ({ data, toPage, nextDisabled, limitData, ...rest }) => {
+const Pagination = ({ data, toPage, nextDisabled, ...rest }) => {
   if (data.count !== undefined && data.count !== null) {
     return (
       <PaginationBase
