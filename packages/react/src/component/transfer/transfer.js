@@ -59,14 +59,15 @@ class Transfer extends React.Component {
       leftTitle,
       leftWithFilter,
       leftPlaceHolder,
-
       rightTitle,
       rightWithFilter,
       rightPlaceHolder,
-
       onSelect, // eslint-disable-line
       className,
       disabled,
+      // 虚拟需要用到的
+      isVirtual,
+      itemSize,
       ...rest
     } = this.props
 
@@ -86,6 +87,8 @@ class Transfer extends React.Component {
       <div {...rest} className={classNames('gm-transfer', className)}>
         <Flex>
           <Box
+            isVirtual={isVirtual}
+            itemSize={itemSize}
             list={leftList}
             selectedValues={leftSelectedValues}
             onSelect={this.handleLeftChange}
@@ -120,6 +123,8 @@ class Transfer extends React.Component {
           <div className='gm-gap-5' />
 
           <Box
+            isVirtual={isVirtual}
+            itemSize={itemSize}
             list={rightList}
             selectedValues={rightSelectedValues}
             onSelect={this.handleRightChange}
@@ -152,7 +157,9 @@ Transfer.propTypes = {
 
   className: PropTypes.string,
   style: PropTypes.object,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  isVirtual: PropTypes.bool,
+  itemSize: PropTypes.number
 }
 
 Transfer.defaultProps = {
@@ -160,6 +167,7 @@ Transfer.defaultProps = {
     width: '250px',
     height: '350px'
   },
+  itemSize: 25,
 
   leftTitle: getLocale('待选择'),
   leftWithFilter: true,

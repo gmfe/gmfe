@@ -10,3 +10,4 @@ yarn-error.log
 *.less.json
 
 packages/qiniu-image/node/token.js
+/.history

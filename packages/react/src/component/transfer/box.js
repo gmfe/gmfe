@@ -4,9 +4,13 @@ import PropTypes from 'prop-types'
 import Flex from '../flex'
 import { Checkbox, CheckboxGroup } from '../checkbox'
 import { pinYinFilter } from '@gm-common/tool'
-import _ from 'lodash'
+import _, { property } from 'lodash'
 import SearchSvg from '../../../svg/search.svg'
+import { FixedSizeList as List } from 'react-window'
 
+const pxToNumber = value => {
+  return parseInt(value, 10)
+}
 class Box extends React.Component {
   constructor(props) {
     super(props)
@@ -47,21 +51,24 @@ class Box extends React.Component {
   render() {
     const {
       selectedValues,
-
       style,
-
       title,
+      isVirtual = false,
+      itemSize,
       placeholder,
       disabled,
       withFilter
     } = this.props
-
     const { query } = this.state
 
     const processList = this.getProcessList()
 
     return (
-      <Flex column className='gm-transfer-box gm-border gm-bg' style={style}>
+      <Flex
+        column
+        className='gm-transfer-box gm-border gm-bg'
+        style={isVirtual ? _.omit(style, 'height') : style}
+      >
         {title && (
           <div className='gm-transfer-box-title gm-padding-5 gm-back-bg text-center gm-border-bottom'>
             {title}
@@ -83,27 +90,63 @@ class Box extends React.Component {
             />
           </div>
         ) : null}
-        <Flex flex column className='gm-bg gm-transfer-box-list gm-overflow-y'>
-          <CheckboxGroup
-            className='gm-margin-0'
-            name={'transferBox' + Math.random()}
-            value={selectedValues}
-            onChange={this.handleChange}
+        {isVirtual ? (
+          <Flex flex column className='gm-bg gm-transfer-box-list'>
+            <List
+              itemKey={v => v.value}
+              style={{ height: style?.height || '300px' }}
+              height={pxToNumber(style?.height || 300)}
+              itemCount={processList.length}
+              itemSize={+itemSize || 25}
+              itemData={processList}
+            >
+              {({ index, style }) => (
+                <CheckboxGroup
+                  className='gm-margin-0'
+                  name={'transferBox' + Math.random()}
+                  value={selectedValues}
+                  onChange={this.handleChange}
+                >
+                  <Checkbox
+                    key={index}
+                    value={processList[index].value}
+                    disabled={disabled}
+                    block
+                    className='gm-cursor'
+                    style={style}
+                  >
+                    {processList[index].name}
+                  </Checkbox>
+                </CheckboxGroup>
+              )}
+            </List>
+          </Flex>
+        ) : (
+          <Flex
+            flex
+            column
+            className='gm-bg gm-transfer-box-list gm-overflow-y'
           >
-            {_.map(processList, v => (
-              <Checkbox
-                key={v.value}
-                value={v.value}
-                disabled={disabled}
-                block
-                className='gm-cursor'
-              >
-                {v.name}
-              </Checkbox>
-            ))}
-          </CheckboxGroup>
-        </Flex>
-
+            <CheckboxGroup
+              className='gm-margin-0'
+              name={'transferBox' + Math.random()}
+              value={selectedValues}
+              onChange={this.handleChange}
+            >
+              {_.map(processList, v => (
+                <Checkbox
+                  key={v.value}
+                  value={v.value}
+                  disabled={disabled}
+                  block
+                  className='gm-cursor'
+                >
+                  {v.name}
+                </Checkbox>
+              ))}
+            </CheckboxGroup>
+          </Flex>
+        )}
         <Flex justifyBetween alignCenter className='gm-border-top'>
           <CheckboxGroup
             name='transferBoxBottom'
@@ -135,7 +178,9 @@ Box.propTypes = {
   placeholder: PropTypes.string,
   withFilter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   style: PropTypes.object,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  isVirtual: PropTypes.bool,
+  itemSize: PropTypes.number
 }
 
 export default Box
