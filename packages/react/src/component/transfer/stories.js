@@ -5,32 +5,14 @@ import TransferGroup from './transfer_group'
 import { observable } from 'mobx'
 
 const store = observable({
-  list: [
-    {
-      value: 1,
-      name: '水果'
-    },
-    {
-      value: 2,
-      name: '蔬菜'
-    },
-    {
-      value: 3,
-      name: '肉类'
-    },
-    {
-      value: 4,
-      name: '干果'
-    },
-    {
-      value: 5,
-      name: '什么乱七八糟'
-    },
-    {
-      value: 6,
-      name: '电子科技'
-    }
-  ],
+  list: Array.from({ length: 40 }, (_, index) => ({
+    value: index,
+    name: `item ${index}`
+  })),
+  virtualList: Array.from({ length: 400 }, (_, index) => ({
+    value: index,
+    name: `item ${index}`
+  })),
   groupList: [
     {
       value: 1,
@@ -97,6 +79,14 @@ storiesOf('Transfer', module)
   .add('default', () => (
     <Transfer
       list={store.list}
+      selectedValues={store.selectedValues}
+      onSelect={values => store.setSelectedValues(values)}
+    />
+  ))
+  .add('virtual', () => (
+    <Transfer
+      isVirtual
+      list={store.virtualList}
       selectedValues={store.selectedValues}
       onSelect={values => store.setSelectedValues(values)}
     />

@@ -61,6 +61,24 @@ const webpackFinal = config => {
       }
     ]
   })
+  if (process.platform === 'win32') {
+    config.module.rules.unshift({
+      test: /\\svg\\(\w|\W)+\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            icon: true,
+            expandProps: 'start',
+            svgProps: {
+              fill: 'currentColor',
+              className: "{'gm-svg-icon ' + (props.className || '')}"
+            }
+          }
+        }
+      ]
+    })
+  }
 
   return config
 }
