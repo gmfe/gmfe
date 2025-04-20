@@ -61,13 +61,24 @@ const FormItem = withWrapContext(
       style,
       disabledCol ? {} : { width: _cw * col }
     )
+    // TODO 以前的判断逻辑有问题
+    // if (canValidate && validate !== undefined) {
+    //   if (required) {
+    //     help = validate(function(value) {
+    //       return Validator.validate(Validator.TYPE.required, value)
+    //     })
+    //   } else {
+    //     help = validate()
+    //   }
+    //   error = !!help
+    // }
+
     if (canValidate && validate !== undefined) {
-      if (required) {
+      help = validate()
+      if (required && !help) {
         help = validate(function(value) {
           return Validator.validate(Validator.TYPE.required, value)
         })
-      } else {
-        help = validate()
       }
       error = !!help
     }
