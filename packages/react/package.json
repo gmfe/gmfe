@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/react",
-  "version": "2.14.23-beta.0",
+  "version": "2.14.24-beta.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/locales": "^2.14.23-beta.0",
+    "@gmfe/locales": "^2.14.24-beta.0",
     "big.js": "^5.2.2",
     "classnames": "^2.2.5",
     "lodash": "^4.17.14",
@@ -35,5 +35,5 @@
     "prop-types": "^15.7.2",
     "react-window": "^1.8.5"
   },
-  "gitHead": "685c7990cc63ce23e205afeb1990f0cae8dfc6d1"
+  "gitHead": "5388daf0455d9238920454efca22db66d2d943e9"
 }
