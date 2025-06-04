@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/locales",
-  "version": "2.14.25-beta.0",
+  "version": "2.14.26-beta.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -20,5 +20,5 @@
   "bugs": {
     "url": "https://github.com/gmfe/gmfe/issues"
   },
-  "gitHead": "da969d9d9d371229239308b4ee33b9c22669dfb8"
+  "gitHead": "ce8caa1ec68c4ede0515aba71c4a85349c431de7"
 }
