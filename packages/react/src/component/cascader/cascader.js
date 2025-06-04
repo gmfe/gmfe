@@ -109,7 +109,7 @@ const Overlay = ({
               id={v.value}
             >
               {v.name}&nbsp;
-              {v.children && v.children.length && (
+              {Array.isArray(v.children) && v.children.length > 0 && (
                 <i className={classNames('gm-arrow-right')} />
               )}
             </Flex>
@@ -183,7 +183,6 @@ class Cascader extends React.Component {
         }
       }
     })
-
     return result
   }
 
@@ -341,7 +340,6 @@ class Cascader extends React.Component {
     const { data } = this.state
     const inputValue = this.inputValueRender()
     let { inputProps } = this.props
-
     const selected = this.props.value || this.state.selected
     const value = []
     if (selected.length > 0) {
