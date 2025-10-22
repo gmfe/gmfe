@@ -1,6 +1,6 @@
 {
-  "name": "root",
-  "private": true,
+  "name": "@gmfe/root",
+  "version": "2.14.24",
   "workspaces": [
     "packages/*"
   ],
