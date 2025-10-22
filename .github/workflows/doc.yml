@@ -13,25 +13,32 @@ jobs:
     # 在何种平台执行，可选 windows-latest/ubuntu-latest/macOS-latest 等
     runs-on: ubuntu-latest
 
-    # 为了加速构建，我们使用同一个包含 Node.js 的容器运行所有命令
-    container:
-      image: thonatos/github-actions-nodejs
-
     # 这里定义了任务运行过程中的各个步骤
     steps:
-      # 环境
-      - run: |
+      # 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      # 环境信息
+      - name: Display environment info
+        run: |
           npm -v
           node -v
           yarn -v
           git config --global user.email "actions@github.com"
           git config --global user.name "actions"
 
-      - run: |
+      # 克隆仓库
+      - name: Clone repository
+        run: |
           pwd
           git clone https://github.com/gmfe/gmfe.git
 
-      - run: |
+      # 构建和部署
+      - name: Build and deploy
+        run: |
           cd gmfe
           yarn
           npx lerna bootstrap
