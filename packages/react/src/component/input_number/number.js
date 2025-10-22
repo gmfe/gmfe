@@ -78,7 +78,9 @@ class InputNumberV2 extends React.Component {
     // 一旦不一致就应该改，要比较 number 形式
     if (props.value !== text2Number(state.value)) {
       return {
-        value: processPropsValue(props.value)
+        value: processPropsValue(
+          props.forceInnerValue ? state.value : props.value
+        )
       }
     }
 
@@ -147,12 +149,14 @@ InputNumberV2.propTypes = {
   onChange: PropTypes.func.isRequired,
   precision: PropTypes.number, // 精确度，保留几位小数
   className: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  forceInnerValue: PropTypes.bool // 修复场景：删除1.09会将 .0 一起删除
 }
 
 InputNumberV2.defaultProps = {
   value: null,
-  precision: 2
+  precision: 2,
+  forceInnerValue: false
 }
 
 export default InputNumberV2
