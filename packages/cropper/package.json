@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/cropper",
-  "version": "2.14.23",
+  "version": "2.14.24",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -25,9 +25,9 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@gmfe/react": "^2.14.23",
+    "@gmfe/react": "^2.14.24",
     "cropperjs": "^1.5.6",
     "prop-types": "^15.7.2"
   },
-  "gitHead": "d74eb148119b6498946fdecddb7b312d3d43da3a"
+  "gitHead": "e5eebf30e9d99260b521906217cba87539b64ebf"
 }
