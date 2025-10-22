@@ -38,6 +38,8 @@ jobs:
 
       # 构建和部署
       - name: Build and deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd gmfe
           yarn install
@@ -46,4 +48,4 @@ jobs:
           git add --all
           git commit -m 'build docs'
           ls
-          git push 'https://liyatang%40qq.com:${{secrets.PASSWORD}}@github.com/gmfe/gmfe-docs.git' master:master -f
+          git push 'https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/gmfe/gmfe-docs.git' master:master -f
