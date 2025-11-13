@@ -81,7 +81,7 @@ const BatchActionBar = props => {
         </div>
       )}
       {extra}
-      {batchActions.length && <div className='gm-margin-left-20'>|</div>}
+      {!!batchActions.length && <div className='gm-margin-left-20'>|</div>}
       {batchActions.map(
         o =>
           o.show !== false && (
