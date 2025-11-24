@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import THead from './thead'
 import Tr from './tr'
+import { StickyLayout } from '@gmfe/business'
 
 // 给定初始值，交由getColumnStyle控制。width逻辑保持跟react-table（v6）的用法一致。
 const defaultColumn = __DEFAULT_COLUMN
@@ -139,4 +140,4 @@ TableX.defaultProps = {
   isTrHighlight: () => false
 }
 
-export default TableX
+export default StickyLayout(TableX)

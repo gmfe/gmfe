@@ -9,6 +9,7 @@ import { findDOMNode } from 'react-dom'
 import SVGEmpty from '../../svg/empty.svg'
 import { Flex, EVENT_TYPE } from '@gmfe/react'
 import { warn } from '@gm-common/tool'
+import { StickyLayout } from '@gmfe/business'
 
 class BaseTable extends React.Component {
   refTable = React.createRef()
@@ -175,4 +176,4 @@ BaseTable.defaultProps = {
   loadingText: getLocale('加载数据中...')
 }
 
-export default BaseTable
+export default StickyLayout(BaseTable)

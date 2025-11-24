@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Flex from '../flex'
+import { StickyLayout } from '@gmfe/business'
 
 // 暂时没什么用
 const Info = props => {
@@ -18,21 +19,27 @@ Info.propTypes = {
   style: PropTypes.object
 }
 
-const BoxTable = props => {
-  const { info, action, children, className, headerProps = {}, ...rest } = props
+const BoxHeader = StickyLayout((props) => {
+  const { info, action, headerProps = {} } = props
   const { className: headerClassName } = headerProps
+
+  return <Flex
+    {...headerProps}
+    className={classNames('gm-box-table-header common-sticky-header', headerClassName)}
+    alignCenter
+  >
+    <Flex>{info}</Flex>
+    <Flex flex />
+    <Flex>{action}</Flex>
+  </Flex>
+});
+
+const BoxTable = props => {
+  const { children, className, ...rest } = props
 
   return (
     <div {...rest} className={classNames('gm-box gm-box-table', className)}>
-      <Flex
-        {...headerProps}
-        className={classNames('gm-box-table-header', headerClassName)}
-        alignCenter
-      >
-        <Flex>{info}</Flex>
-        <Flex flex />
-        <Flex>{action}</Flex>
-      </Flex>
+      <BoxHeader {...props} />
       <div>{children}</div>
     </div>
   )
