@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/react-deprecated",
-  "version": "2.14.27-alpha.0",
+  "version": "2.14.28-alpha.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/locales": "^2.14.27-alpha.0",
-    "@gmfe/react": "^2.14.27-alpha.0"
+    "@gmfe/locales": "^2.14.28-alpha.0",
+    "@gmfe/react": "^2.14.28-alpha.0"
   },
-  "gitHead": "261f7a52626a1330789f9459c3e09365e4351579"
+  "gitHead": "8237602b551b42fd9da1c45def725d8471fb2aff"
 }
