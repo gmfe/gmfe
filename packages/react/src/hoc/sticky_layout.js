@@ -142,7 +142,7 @@ const handleTopSentinelLeave = currentStickyRef => {
 }
 
 function StickyLayout(Component) {
-  const StickyLayout = ({ sticky, ...rest }) => {
+  const _StickyLayout = ({ sticky, ...rest }) => {
     const currentStickyRef = useRef(null)
     const topSentinelRef = useRef(null)
     const bottomSentinelRef = useRef(null)
@@ -215,15 +215,15 @@ function StickyLayout(Component) {
     )
   }
 
-  StickyLayout.defaultProps = {
-    sticky: false
+  _StickyLayout.defaultProps = {
+    sticky: true
   }
 
-  StickyLayout.propTypes = {
+  _StickyLayout.propTypes = {
     sticky: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
   }
 
-  return StickyLayout
+  return _StickyLayout
 }
 
 export default StickyLayout
