@@ -7,9 +7,8 @@ import { SortHeader } from '../util'
 import ReactTable from 'react-table-v6'
 import { findDOMNode } from 'react-dom'
 import SVGEmpty from '../../svg/empty.svg'
-import { Flex, EVENT_TYPE } from '@gmfe/react'
+import { Flex, EVENT_TYPE, StickyLayout } from '@gmfe/react'
 import { warn } from '@gm-common/tool'
-import { StickyLayout } from '@gmfe/business'
 
 class BaseTable extends React.Component {
   refTable = React.createRef()

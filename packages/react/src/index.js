@@ -103,6 +103,7 @@ import Selection from './component/selection'
 import TreeV2 from './component/tree_v2'
 import RecommendInput from './component/recommend_input'
 import PicturePreview from './component/picture_preview'
+import StickyLayout from './hoc/sticky_layout'
 
 Object.assign(Sheet, {
   SheetColumn,
@@ -132,8 +133,8 @@ Object.assign(Checkbox, {
 Object.assign(Select, {
   Option
 })
-
 export {
+  StickyLayout,
   // 库之间用
   EVENT_TYPE,
   PaginationBase,
