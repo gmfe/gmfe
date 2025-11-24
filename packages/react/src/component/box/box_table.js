@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Flex from '../flex'
-import { StickyLayout } from '@gmfe/react'
+import StickyLayout from '../../hoc/sticky_layout'
 
 // 暂时没什么用
 const Info = props => {
