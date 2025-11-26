@@ -141,82 +141,111 @@ const handleTopSentinelLeave = currentStickyRef => {
   }
 }
 
-function StickyLayout(Component) {
-  const _StickyLayout = ({ sticky, ...rest }) => {
-    const currentStickyRef = useRef(null)
-    const topSentinelRef = useRef(null)
-    const bottomSentinelRef = useRef(null)
-    const observerRef = useRef(null)
+/**
+ * 粘性布局包装器组件
+ * 负责管理哨兵元素和 IntersectionObserver
+ */
+const StickyWrapper = ({
+  children,
+  onTopSentinelEnter,
+  onTopSentinelLeave
+}) => {
+  const wrapperRef = useRef(null)
+  const topSentinelRef = useRef(null)
+  const bottomSentinelRef = useRef(null)
+  const observerRef = useRef(null)
 
-    // 哨兵元素样式
-    const topSentinelStyle = useMemo(
-      () => ({ ...SENTINEL_STYLE, top: '0' }),
-      []
-    )
-    const bottomSentinelStyle = useMemo(
-      () => ({ ...SENTINEL_STYLE, bottom: '0' }),
-      []
-    )
+  // 哨兵元素样式
+  const topSentinelStyle = useMemo(() => ({ ...SENTINEL_STYLE, top: '0' }), [])
+  const bottomSentinelStyle = useMemo(
+    () => ({ ...SENTINEL_STYLE, bottom: '0' }),
+    []
+  )
 
-    useEffect(() => {
-      if (!sticky || !currentStickyRef.current) return undefined
+  useEffect(() => {
+    if (!wrapperRef.current) {
+      return
+    }
 
-      if (typeof window.IntersectionObserver === 'undefined') {
-        return undefined
-      }
+    if (typeof window.IntersectionObserver === 'undefined') {
+      return
+    }
 
-      observerRef.current = new window.IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          const target = entry.target
+    observerRef.current = new window.IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const target = entry.target
 
-          if (target === topSentinelRef.current) {
-            if (entry.isIntersecting) {
-              handleTopSentinelEnter(currentStickyRef)
-            } else {
-              handleTopSentinelLeave(currentStickyRef)
+        if (target === topSentinelRef.current) {
+          if (entry.isIntersecting) {
+            if (onTopSentinelEnter) {
+              onTopSentinelEnter(wrapperRef)
+            }
+          } else {
+            if (onTopSentinelLeave) {
+              onTopSentinelLeave(wrapperRef)
             }
           }
-        })
-      }, OBSERVER_OPTIONS)
-
-      // 观察哨兵元素
-      if (topSentinelRef.current) {
-        observerRef.current.observe(topSentinelRef.current)
-      }
-      if (bottomSentinelRef.current) {
-        observerRef.current.observe(bottomSentinelRef.current)
-      }
-
-      return () => {
-        if (observerRef.current) {
-          observerRef.current.disconnect()
         }
-      }
-    }, [sticky])
+      })
+    }, OBSERVER_OPTIONS)
 
+    // 观察哨兵元素
+    if (topSentinelRef.current) {
+      observerRef.current.observe(topSentinelRef.current)
+    }
+    if (bottomSentinelRef.current) {
+      observerRef.current.observe(bottomSentinelRef.current)
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [onTopSentinelEnter, onTopSentinelLeave])
+
+  return (
+    <div ref={wrapperRef} className='common-sticky-layout'>
+      <div
+        ref={topSentinelRef}
+        data-sentinel='topSentinel'
+        style={topSentinelStyle}
+      />
+      {children}
+      <div
+        ref={bottomSentinelRef}
+        data-sentinel='bottomSentinel'
+        style={bottomSentinelStyle}
+      />
+    </div>
+  )
+}
+
+StickyWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+  onTopSentinelEnter: PropTypes.func,
+  onTopSentinelLeave: PropTypes.func
+}
+
+function StickyLayout(Component) {
+  const _StickyLayout = ({ sticky, ...rest }) => {
+    // 如果不需要粘性布局，直接返回原组件
     if (!sticky) {
       return <Component {...rest} />
     }
 
     return (
-      <div ref={currentStickyRef} className='common-sticky-layout'>
-        <div
-          ref={topSentinelRef}
-          data-sentinel='topSentinel'
-          style={topSentinelStyle}
-        />
+      <StickyWrapper
+        onTopSentinelEnter={handleTopSentinelEnter}
+        onTopSentinelLeave={handleTopSentinelLeave}
+      >
         <Component {...rest} />
-        <div
-          ref={bottomSentinelRef}
-          data-sentinel='bottomSentinel'
-          style={bottomSentinelStyle}
-        />
-      </div>
+      </StickyWrapper>
     )
   }
 
   _StickyLayout.defaultProps = {
-    sticky: true
+    sticky: false
   }
 
   _StickyLayout.propTypes = {
