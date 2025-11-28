@@ -1,6 +1,6 @@
 {
   "name": "@gmfe/keyboard",
-  "version": "2.15.7-alpha.0",
+  "version": "2.15.8-alpha.0",
   "description": "",
   "author": "liyatang <liyatang@qq.com>",
   "homepage": "https://github.com/gmfe/gmfe#readme",
@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "@gm-common/tool": "^1.0.0",
-    "@gmfe/react": "^2.15.7-alpha.0",
-    "@gmfe/table": "^2.15.7-alpha.0",
-    "@gmfe/table-x": "^2.15.7-alpha.0",
+    "@gmfe/react": "^2.15.8-alpha.0",
+    "@gmfe/table": "^2.15.8-alpha.0",
+    "@gmfe/table-x": "^2.15.8-alpha.0",
     "classnames": "^2.2.5",
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2"
