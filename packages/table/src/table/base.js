@@ -7,7 +7,7 @@ import { SortHeader } from '../util'
 import ReactTable from 'react-table-v6'
 import { findDOMNode } from 'react-dom'
 import SVGEmpty from '../../svg/empty.svg'
-import { Flex, EVENT_TYPE, StickyLayout } from '@gmfe/react'
+import { Flex, EVENT_TYPE } from '@gmfe/react'
 import { warn } from '@gm-common/tool'
 
 class BaseTable extends React.Component {
@@ -175,4 +175,4 @@ BaseTable.defaultProps = {
   loadingText: getLocale('加载数据中...')
 }
 
-export default StickyLayout(BaseTable)
+export default BaseTable

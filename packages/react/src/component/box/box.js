@@ -26,10 +26,7 @@ const BoxHeader = StickyLayout(props => {
   return (
     <Flex
       {...headerProps}
-      className={classNames(
-        'gm-box-table-header common-sticky-header',
-        headerClassName
-      )}
+      className={classNames('gm-box-table-header', headerClassName)}
       alignCenter
     >
       <Flex>{info}</Flex>

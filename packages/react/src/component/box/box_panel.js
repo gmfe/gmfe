@@ -13,6 +13,7 @@ const BoxPanel = ({
   right,
   summary,
   className,
+  headerProps = {},
   children,
   ...rest
 }) => {
@@ -26,7 +27,15 @@ const BoxPanel = ({
 
   return (
     <div {...rest} className={classNames('gm-box gm-box-panel', className)}>
-      <Flex flex justifyBetween alignCenter className='gm-box-panel-header'>
+      <Flex
+        flex
+        justifyBetween
+        alignCenter
+        className={classNames(
+          'gm-box-panel-header',
+          headerProps.className || ''
+        )}
+      >
         <Flex alignCenter>
           {hasCollapse && (
             <a
@@ -85,6 +94,7 @@ BoxPanel.propTypes = {
   summary: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
   right: PropTypes.element,
   className: PropTypes.string,
+  headerProps: PropTypes.object,
   style: PropTypes.object
 }
 

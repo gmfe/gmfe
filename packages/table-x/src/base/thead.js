@@ -4,7 +4,7 @@ import Th from './th'
 
 const THead = ({ headerGroups, totalWidth }) => {
   return (
-    <thead className='gm-table-x-thead common-sticky-header'>
+    <thead className='gm-table-x-thead'>
       {headerGroups.map((headerGroup, i) => (
         <tr key={i} className='gm-table-x-tr'>
           {headerGroup.headers.map((column, i) => (
