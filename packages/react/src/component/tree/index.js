@@ -23,7 +23,7 @@ const filterWithQuery = (list, query, withFilter) => {
     processList = list
   }
 
-  return processList
+  return processList || []
 }
 
 const Tree = ({
