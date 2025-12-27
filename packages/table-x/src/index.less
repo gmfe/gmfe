@@ -19,6 +19,35 @@
     transform: translateZ(0);
     display: block; // 覆盖table 默认display
 
+    // 当有两级表头时，表格需要使用表格布局来支持 rowspan
+    &.gm-table-x-table-two-level {
+      display: table !important; // 使用表格布局以支持 rowspan
+      // 固定列的宽度保护
+      .gm-table-x-th,
+      .gm-table-x-td {
+        &.gm-table-x-fixed-left,
+        &.gm-table-x-fixed-right {
+          box-sizing: border-box;
+        }
+      }
+
+      .gm-table-x-tbody {
+        display: table-row-group !important;
+        .gm-table-x-tr {
+          display: table-row !important;
+          .gm-table-x-td {
+            display: table-cell !important;
+            // 移除 flex 相关样式
+            flex: none !important;
+            flex-grow: unset !important;
+            flex-shrink: unset !important;
+            flex-basis: unset !important;
+            box-sizing: border-box;
+          }
+        }
+      }
+    }
+
     .gm-table-x-tr {
       display: flex;
       min-height: 60px;
@@ -77,6 +106,68 @@
 
       .gm-table-x-tr {
         min-height: 46px;
+      }
+    }
+
+    // 二级表头样式
+    // 注意：为了支持 rowspan，二级表头需要使用原生的表格布局模型
+    .gm-table-x-thead-two-level {
+      display: table-header-group !important;
+
+      .gm-table-x-tr-first-level {
+        display: table-row !important;
+
+        .gm-table-x-th-first-level {
+          // 第一级表头样式
+          display: table-cell !important;
+          border: 1px solid #d8dee7 !important;
+          border-bottom: 2px solid #d8dee7 !important;
+          vertical-align: middle;
+          text-align: center;
+          padding: 8px;
+          flex: none !important;
+          // 确保固定列有背景色，这样边框才能正确显示
+          background: @gm-table-x-header-bg !important;
+          // 固定列样式：和普通表格保持一致
+          &.gm-table-x-fixed-left {
+            background: @gm-table-x-header-bg !important;
+            border-right: 1px solid @gm-table-x-border-color !important;
+          }
+
+          &.gm-table-x-fixed-right {
+            background: @gm-table-x-header-bg !important;
+            border-left: 1px solid @gm-table-x-border-color !important;
+          }
+        }
+      }
+
+      .gm-table-x-tr-second-level {
+        display: table-row !important;
+        .gm-table-x-th-second-level {
+          // 第二级表头样式
+          display: table-cell !important;
+          border: 1px solid #d8dee7 !important;
+          border-top: none !important;
+          vertical-align: middle;
+          text-align: center;
+          padding: 8px;
+          flex: none !important;
+          flex-grow: unset !important;
+          flex-shrink: unset !important;
+          flex-basis: unset !important;
+          box-sizing: border-box;
+          // 确保固定列有背景色，这样边框才能正确显示
+          background: @gm-table-x-header-bg !important;
+          // 固定列样式：和普通表格保持一致
+          &.gm-table-x-fixed-left {
+            background: @gm-table-x-header-bg !important;
+            border-right: 1px solid @gm-table-x-border-color !important;
+          }
+          &.gm-table-x-fixed-right {
+            background: @gm-table-x-header-bg !important;
+            border-left: 1px solid @gm-table-x-border-color !important;
+          }
+        }
       }
     }
 
@@ -432,7 +523,7 @@
     }
   }
 
-  .gm-react-table-x-diy-modal-content{
+  .gm-react-table-x-diy-modal-content {
     border-top: 1px solid @gm-table-x-border-color;
     border-bottom: 1px solid @gm-table-x-border-color;
   }

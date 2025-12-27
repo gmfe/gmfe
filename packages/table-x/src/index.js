@@ -7,6 +7,8 @@ import sortableTableXHOC from './hoc/sortable_table_x'
 import subTableXHOC from './hoc/sub_table_x'
 import editTableXHOC from './hoc/edit_table_x'
 import diyTableXHOC from './hoc/diy_table_x'
+import twoLevelHeaderTableXHOC from './hoc/two_level_header_table_x'
+import TwoLevelTableX from './hoc/two_level_header_table_x/table_x'
 
 import {
   TABLE_X,
@@ -42,6 +44,8 @@ const TableXUtil = {
 export {
   TableXUtil,
   TableX,
+  TwoLevelTableX,
+  twoLevelHeaderTableXHOC,
   TableXVirtualized,
   selectTableXHOC,
   expandTableXHOC,
