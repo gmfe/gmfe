@@ -59,7 +59,7 @@ const Mask = ({ style, children }) => {
         bottom: 0,
         left: 0,
         right: 0,
-        marginTop: '46px',
+        marginTop: 'var(--gm-table-x-header-height, 46px)',
         ...style
       }}
     >
@@ -72,9 +72,9 @@ Mask.propTypes = {
   style: PropTypes.object
 }
 
-const Empty = () => {
+const Empty = props => {
   return (
-    <Mask>
+    <Mask {...props}>
       <div style={{ padding: '10px' }}>
         <SVGEmpty style={{ width: '70px', height: '70px' }} />
         <div className='gm-text-desc'>{getLocale('没有数据了')}</div>
@@ -83,12 +83,14 @@ const Empty = () => {
   )
 }
 
-const Loading = () => {
+const Loading = ({ style, ...rest }) => {
   return (
     <Mask
       style={{
-        backgroundColor: 'rgba(255,255,255,0.8)'
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        ...style
       }}
+      {...rest}
     >
       {getLocale('加载数据中...')}
     </Mask>

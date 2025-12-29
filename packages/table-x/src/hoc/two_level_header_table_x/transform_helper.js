@@ -13,12 +13,15 @@ function validateSubColumnsFixed(column) {
   }
 
   const subColumns = column.subColumns
+  // 重要：二级分类的 fixed 应该与一级分类保持一致
+  // 所以验证时，所有子列应该使用一级表头的 fixed（column.fixed）
+  const expectedFixed = column.fixed !== undefined ? column.fixed : undefined
   const fixedStates = subColumns.map(subCol => {
-    return subCol.fixed !== undefined ? subCol.fixed : column.fixed
+    // 子列的 fixed 应该与一级表头一致，如果有不一致的，记录实际的 fixed 用于检查
+    return subCol.fixed !== undefined ? subCol.fixed : expectedFixed
   })
 
-  const firstFixed = fixedStates[0]
-  const allSame = fixedStates.every(fixed => fixed === firstFixed)
+  const allSame = fixedStates.every(fixed => fixed === expectedFixed)
 
   if (!allSame) {
     return {
@@ -46,19 +49,20 @@ export function transformColumnsForTwoLevel(columns) {
     TABLE_X_EXPAND_ID
   ]
 
-  columns.forEach((column, index) => {
-    // 特殊列（由其他 HOC 添加）直接添加，不进行转换
-    if (specialColumnIds.includes(column.id)) {
-      transformedColumns.push(column)
-      firstLevelHeaders.push({
-        ...column,
-        hasSubColumns: false,
-        subColumnCount: 1,
-        isSpecialColumn: true
-      })
-      return
-    }
+  // 分离普通列和特殊列（特殊列需要单独处理）
+  const normalColumns = []
+  const specialColumns = []
 
+  columns.forEach(column => {
+    if (specialColumnIds.includes(column.id)) {
+      specialColumns.push(column)
+    } else {
+      normalColumns.push(column)
+    }
+  })
+
+  // 处理普通列（保持原始顺序）
+  normalColumns.forEach((column, index) => {
     if (column.subColumns && column.subColumns.length > 0) {
       // 过滤可见的子列
       const visibleSubCols = column.subColumns.filter(
@@ -91,23 +95,23 @@ export function transformColumnsForTwoLevel(columns) {
         subColumnCount: visibleSubCols.length // 使用可见子列的数量
       })
 
-      // 确定统一的 fixed 状态（使用可见的子列）
-      const unifiedFixed =
-        visibleSubCols[0]?.fixed !== undefined
-          ? visibleSubCols[0].fixed
-          : column.fixed !== undefined
-          ? column.fixed
-          : undefined
+      // 确定统一的 fixed 状态
+      // 重要：只使用一级表头的 fixed 属性，二级分类的 fixed 应该与一级分类保持一致
+      const unifiedFixed = column.fixed !== undefined ? column.fixed : undefined
 
       // 转换为 react-table 的嵌套结构（只使用可见的子列）
       transformedColumns.push({
         Header: column.Header,
         id: column.id || `group_${transformedColumns.length}`,
         fixed: unifiedFixed,
-        columns: visibleSubCols.map(subCol => ({
-          ...subCol,
-          fixed: subCol.fixed !== undefined ? subCol.fixed : unifiedFixed
-        }))
+        columns: visibleSubCols.map(subCol => {
+          // 移除子列自己的 fixed 属性，强制使用一级表头的 fixed
+          const { fixed: _subColFixed, ...subColWithoutFixed } = subCol
+          return {
+            ...subColWithoutFixed,
+            fixed: unifiedFixed // 二级分类的 fixed 与一级分类保持一致
+          }
+        })
       })
     } else {
       // 没有 subColumns，直接添加（会占两行）
@@ -119,6 +123,47 @@ export function transformColumnsForTwoLevel(columns) {
 
       transformedColumns.push(column)
     }
+  })
+
+  // 处理特殊列（select、diy、expand）
+  // 特殊列需要根据它们的 fixed 属性来决定位置
+  // fixed: 'left' 的特殊列（如 diy）需要放在最前面
+  // 其他特殊列放在最后
+  const leftFixedSpecialColumns = specialColumns.filter(
+    col => col.fixed === 'left'
+  )
+  const otherSpecialColumns = specialColumns.filter(col => col.fixed !== 'left')
+
+  // 处理 fixed: 'left' 的特殊列，放在最前面（使用倒序遍历 + unshift 保持顺序）
+  for (let i = leftFixedSpecialColumns.length - 1; i >= 0; i--) {
+    const column = leftFixedSpecialColumns[i]
+    transformedColumns.unshift(column)
+    firstLevelHeaders.unshift({
+      ...column,
+      hasSubColumns: false,
+      subColumnCount: 1,
+      isSpecialColumn: true
+    })
+  }
+
+  // 处理其他特殊列，放在最后
+  // 注意：移除特殊列的 fixed: 'left' 属性，让它们按数组顺序显示在最后（不固定）
+  // 如果用户需要特殊列固定在右边，可以手动设置 fixed: 'right'
+  otherSpecialColumns.forEach(column => {
+    const { fixed, ...columnWithoutFixed } = column
+    const adjustedColumn = {
+      ...columnWithoutFixed,
+      // 特殊列应该在最后，移除 fixed: 'left'，让它们按数组顺序显示
+      // 如果需要固定在右边，可以改为 fixed: 'right'
+      fixed: fixed === 'left' ? undefined : fixed
+    }
+    transformedColumns.push(adjustedColumn)
+    firstLevelHeaders.push({
+      ...adjustedColumn,
+      hasSubColumns: false,
+      subColumnCount: 1,
+      isSpecialColumn: true
+    })
   })
 
   return { transformedColumns, firstLevelHeaders }

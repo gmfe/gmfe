@@ -21,28 +21,63 @@
 
     // 当有两级表头时，表格需要使用表格布局来支持 rowspan
     &.gm-table-x-table-two-level {
-      display: table !important; // 使用表格布局以支持 rowspan
-      // 固定列的宽度保护
-      .gm-table-x-th,
-      .gm-table-x-td {
-        &.gm-table-x-fixed-left,
-        &.gm-table-x-fixed-right {
-          box-sizing: border-box;
-        }
-      }
-
+      display: table !important;
       .gm-table-x-tbody {
         display: table-row-group !important;
         .gm-table-x-tr {
           display: table-row !important;
+          height: 60px;
           .gm-table-x-td {
             display: table-cell !important;
-            // 移除 flex 相关样式
             flex: none !important;
             flex-grow: unset !important;
             flex-shrink: unset !important;
             flex-basis: unset !important;
             box-sizing: border-box;
+            padding: 8px;
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: break-all;
+            vertical-align: middle;
+            text-align: center;
+            &:first-child {
+              padding-left: 20px;
+            }
+            &:last-child {
+              padding-right: 20px;
+            }
+            &.gm-table-x-icon-column {
+              padding-right: 5px;
+              padding-left: 5px;
+              .gm-table-x-icon.gm-popover-active {
+                color: @brand-primary;
+              }
+            }
+            img {
+              max-width: 100%;
+              max-height: 60px;
+              object-fit: contain;
+              vertical-align: middle;
+              display: block;
+              margin: 0 auto;
+            }
+
+            // 保持与原版 TableX 一致的 expand 样式
+            .gm-table-x-expand {
+              font-size: 14px;
+              padding-top: 2px;
+            }
+
+            // 二级表头的固定列边框处理（使用 inset box-shadow 创建边框，确保滚动时边框始终可见）
+            &.gm-table-x-fixed-left {
+              border-right: none !important;
+              box-shadow: inset -1px 0 0 0 @gm-table-x-border-color;
+            }
+
+            &.gm-table-x-fixed-right {
+              border-left: none !important;
+              box-shadow: inset 1px 0 0 0 @gm-table-x-border-color;
+            }
           }
         }
       }
@@ -120,23 +155,27 @@
         .gm-table-x-th-first-level {
           // 第一级表头样式
           display: table-cell !important;
-          border: 1px solid #d8dee7 !important;
-          border-bottom: 2px solid #d8dee7 !important;
+          border: none !important;
           vertical-align: middle;
           text-align: center;
           padding: 8px;
           flex: none !important;
           // 确保固定列有背景色，这样边框才能正确显示
           background: @gm-table-x-header-bg !important;
-          // 固定列样式：和普通表格保持一致
-          &.gm-table-x-fixed-left {
-            background: @gm-table-x-header-bg !important;
-            border-right: 1px solid @gm-table-x-border-color !important;
-          }
+          position: relative;
 
-          &.gm-table-x-fixed-right {
-            background: @gm-table-x-header-bg !important;
-            border-left: 1px solid @gm-table-x-border-color !important;
+          // 使用伪元素创建所有边框
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid #d8dee7;
+            border-bottom-width: 2px;
+            pointer-events: none;
+            z-index: 1;
           }
         }
       }
@@ -146,8 +185,7 @@
         .gm-table-x-th-second-level {
           // 第二级表头样式
           display: table-cell !important;
-          border: 1px solid #d8dee7 !important;
-          border-top: none !important;
+          border: none !important;
           vertical-align: middle;
           text-align: center;
           padding: 8px;
@@ -158,14 +196,20 @@
           box-sizing: border-box;
           // 确保固定列有背景色，这样边框才能正确显示
           background: @gm-table-x-header-bg !important;
-          // 固定列样式：和普通表格保持一致
-          &.gm-table-x-fixed-left {
-            background: @gm-table-x-header-bg !important;
-            border-right: 1px solid @gm-table-x-border-color !important;
-          }
-          &.gm-table-x-fixed-right {
-            background: @gm-table-x-header-bg !important;
-            border-left: 1px solid @gm-table-x-border-color !important;
+          position: relative;
+
+          // 使用伪元素创建所有边框（除了顶部，因为顶部由一级表头的底部边框覆盖）
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid #d8dee7;
+            border-top: none;
+            pointer-events: none;
+            z-index: 1;
           }
         }
       }
@@ -302,19 +346,41 @@
         position: sticky !important;
         z-index: 1;
       }
+    }
 
+    // 表头固定列需要更高的 z-index
+    .gm-table-x-th {
+      &.gm-table-x-fixed-left,
+      &.gm-table-x-fixed-right {
+        z-index: 11 !important;
+      }
+    }
+
+    // tbody 单元格固定列使用 inset box-shadow
+    .gm-table-x-td {
       &.gm-table-x-fixed-left {
-        border-right: 1px solid @gm-table-x-border-color !important;
+        border-right: none !important;
+        // 使用 box-shadow 创建边框，确保在滚动时边框始终可见
+        // inset box-shadow 会创建内部阴影，不会随内容滚动
+        box-shadow: inset -1px 0 0 0 @gm-table-x-border-color !important;
       }
 
       &.gm-table-x-fixed-right {
-        border-left: 1px solid @gm-table-x-border-color !important;
+        border-left: none !important;
+        // 使用 box-shadow 创建边框，确保在滚动时边框始终可见
+        // inset box-shadow 会创建内部阴影，不会随内容滚动
+        box-shadow: inset 1px 0 0 0 @gm-table-x-border-color !important;
       }
     }
   }
 
   &.gm-table-x-empty {
     min-height: 166px;
+
+    // 两级表头的空状态需要更大的最小高度（表头高度 92px + 内容区域）
+    &.gm-table-x-two-level {
+      min-height: 212px;
+    }
   }
 
   &.gm-table-x-tiled {

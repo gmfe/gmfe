@@ -5,25 +5,16 @@ import { Empty, Loading, afterScroll, __DEFAULT_COLUMN } from '../../util'
 import classNames from 'classnames'
 import _ from 'lodash'
 import TwoLevelTHead from './thead'
-import Tr from '../../base/tr'
-import { rebuildNestedColumnsFromFlat } from './rebuild_helper'
+import Tr from './tr'
 import { transformColumnsForTwoLevel } from './transform_helper'
 
 const defaultColumn = __DEFAULT_COLUMN
 
 /**
  * 支持两级表头的 TableX 组件
- *
- * 接收：
- *   - columns: 处理后的扁平 columns（经过 select、diy HOC 处理，每个 subColumn 都带有 parentKey、parentHeader、parentFixed 属性）
- *
- * 功能：
- *   1. 根据 parentKey 重建嵌套结构
- *   2. 转换为 react-table 格式
- *   3. 使用 TwoLevelTHead 渲染两级表头
  */
 const TwoLevelTableX = ({
-  columns, // 处理后的扁平 columns
+  columns,
   data,
   loading,
   SubComponent,
@@ -35,22 +26,14 @@ const TwoLevelTableX = ({
   isTrHighlight = () => false,
   ...rest
 }) => {
-  // 步骤1: 根据扁平化的 columns 重建嵌套结构
-  const rebuiltColumns = useMemo(() => {
-    return rebuildNestedColumnsFromFlat(columns)
+  const { transformedColumns, firstLevelHeaders } = useMemo(() => {
+    return transformColumnsForTwoLevel(columns)
   }, [columns])
 
-  // 步骤2: 转换为 react-table 格式
-  const { transformedColumns, firstLevelHeaders } = useMemo(() => {
-    return transformColumnsForTwoLevel(rebuiltColumns)
-  }, [rebuiltColumns])
-
-  // 步骤3: 过滤隐藏的列（与原 TableX 逻辑一致）
   const visibleColumns = useMemo(() => {
     return transformedColumns.filter(c => c.show !== false)
   }, [transformedColumns])
 
-  // 步骤4: 使用 react-table 处理列和数据（与原 TableX 逻辑一致）
   const {
     getTableProps,
     headerGroups,
@@ -63,7 +46,6 @@ const TwoLevelTableX = ({
     defaultColumn
   })
 
-  // 步骤5: 计算总宽度（与原 TableX 逻辑完全一致）
   let totalWidth = 0
   if (rows[0] && rows[0].cells.length > 0) {
     prepareRow(rows[0])
@@ -71,8 +53,6 @@ const TwoLevelTableX = ({
     totalWidth = last.totalLeft + last.totalWidth
   }
 
-  // 步骤6: 准备 table props
-  // 注意：对于 display: table，minWidth 可能不会自动扩展，需要同时设置 width: 100% 来撑满容器
   const gtp = getTableProps()
   const tableStyle =
     totalWidth > 0
@@ -123,6 +103,7 @@ const TwoLevelTableX = ({
       {...rest}
       className={classNames(
         'gm-table-x',
+        'gm-table-x-two-level',
         {
           'gm-table-x-empty': data.length === 0,
           'gm-table-x-tiled': tiled
@@ -130,6 +111,11 @@ const TwoLevelTableX = ({
         className
       )}
       onScroll={handleScroll}
+      style={{
+        // 设置 CSS 变量，用于 Mask 组件
+        '--gm-table-x-header-height': '92px',
+        ...rest.style
+      }}
     >
       <table {...tableProps}>
         <TwoLevelTHead
