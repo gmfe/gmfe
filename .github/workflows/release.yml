@@ -1,0 +1,47 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/**'
+      - 'lerna.json'
+      - 'package.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 # 更新到 v4
+        with:
+          fetch-depth: 0
+
+      - name: Set node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+
+      - name: Install
+        run: |
+          node -v
+          yarn config set python python3
+          yarn install --frozen-lockfile --ignore-engines
+        env:
+          PYTHON: python3
+
+      - name: Release
+        run: |
+          # 确保在发布前代码状态是干净的
+          git checkout .
+          # 使用 lerna 发布
+          yarn lerna publish from-package --force-publish --no-git-tag-version --no-push --yes --registry https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PYTHON: python3

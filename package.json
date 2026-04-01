@@ -1,6 +1,7 @@
 {
   "name": "@gmfe/root",
   "version": "2.14.24",
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
@@ -81,5 +82,8 @@
     "stylelint-config-standard": "^20.0.0",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.6"
+  },
+  "devDependencies": {
+    "lerna": "9.0.7"
   }
 }
