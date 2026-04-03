@@ -120,6 +120,165 @@ function App() {
 | className | 自定义类名 | `string` | - | 否 |
 | style | 自定义样式 | `object` | - | 否 |
 
+## 示例
+
+### 完整后台布局
+
+```jsx
+import React from 'react'
+import { Framework, RightTop, Breadcrumb, Info, CopyRight, FullTabV2 } from '@gmfe/frame'
+import { Nav } from '@gmfe/react'
+
+const menuData = [
+  {
+    name: '商品管理',
+    link: '/merchandise',
+    sub: [
+      { name: '商品列表', link: '/merchandise/list' },
+      { name: '分类管理', link: '/merchandise/category' }
+    ]
+  },
+  { name: '订单管理', link: '/order' }
+]
+
+const navConfig = [
+  {
+    link: '/merchandise',
+    name: '商品管理',
+    sub: [
+      { name: '商品列表', link: '/merchandise/list', sub: [] },
+      { name: '分类管理', link: '/merchandise/category', sub: [] }
+    ]
+  },
+  { link: '/order', name: '订单管理', sub: [] }
+]
+
+function App() {
+  return (
+    <Framework
+      menu={<Nav data={menuData} />}
+      leftWidth="220px"
+    >
+      <RightTop
+        breadcrumb={
+          <Breadcrumb
+            breadcrumbs={[]}
+            pathname={location.pathname}
+            navConfig={navConfig}
+            onSelect={(item) => console.log(item)}
+          />
+        }
+        info={
+          <Info
+            more={[
+              { text: '个人设置', onClick: () => {} },
+              { text: '退出登录', onClick: () => {} }
+            ]}
+          >
+            <span>管理员</span>
+          </Info>
+        }
+      />
+      <FullTabV2
+        tabs={[
+          { name: '全部', key: 'all', content: <div>全部订单</div> },
+          { name: '待付款', key: 'pending', content: <div>待付款订单</div> },
+          { name: '已完成', key: 'done', content: <div>已完成订单</div> }
+        ]}
+        defaultActiveKey="all"
+        onChange={(key) => console.log('切换到', key)}
+      />
+      <CopyRight />
+    </Framework>
+  )
+}
+```
+
+### 全屏模式（无左侧菜单）
+
+```jsx
+import { Framework, FullTabV2 } from '@gmfe/frame'
+
+function FullScreenPage() {
+  return (
+    <Framework isFullScreen>
+      <FullTabV2
+        tabs={[
+          { name: '概览', key: 'overview', content: <div>数据概览</div> },
+          { name: '详情', key: 'detail', content: <div>详细数据</div> }
+        ]}
+        defaultActiveKey="overview"
+      />
+    </Framework>
+  )
+}
+```
+
+### 移动端适配
+
+```jsx
+import React, { useState } from 'react'
+import { Framework, Left, RightTop, Breadcrumb, Info, FullTabV2 } from '@gmfe/frame'
+import { Nav, Mask } from '@gmfe/react'
+
+function MobileApp() {
+  const [showMenu, setShowMenu] = useState(false)
+
+  return (
+    <>
+      <Framework
+        showMobileMenu
+        leftWidth="220px"
+      >
+        <RightTop
+          onMenuBtnClick={() => setShowMenu(true)}
+          breadcrumb={<Breadcrumb breadcrumbs={[]} pathname={location.pathname} navConfig={[]} onSelect={() => {}} />}
+          info={<Info><span>管理员</span></Info>}
+        />
+        <div>页面内容</div>
+      </Framework>
+
+      {showMenu && (
+        <Mask onMaskClick={() => setShowMenu(false)}>
+          <div style={{ width: '220px', height: '100vh', background: '#fff' }}>
+            <Nav data={menuData} />
+          </div>
+        </Mask>
+      )}
+    </>
+  )
+}
+```
+
+### FullTab 受控模式
+
+```jsx
+import { useState } from 'react'
+import { FullTabV2 } from '@gmfe/frame'
+
+function ControlledTabs() {
+  const [activeKey, setActiveKey] = useState('tab1')
+
+  const handleSwitchToDetail = () => {
+    setActiveKey('tab2')
+  }
+
+  return (
+    <div>
+      <button onClick={handleSwitchToDetail}>跳转到详情标签</button>
+      <FullTabV2
+        tabs={[
+          { name: '列表', key: 'tab1', content: <div>列表内容</div> },
+          { name: '详情', key: 'tab2', content: <div>详情内容</div> }
+        ]}
+        activeKey={activeKey}
+        onChange={setActiveKey}
+      />
+    </div>
+  )
+}
+```
+
 ## 注意事项
 
 - `Breadcrumb` 在移动端会自动隐藏。
