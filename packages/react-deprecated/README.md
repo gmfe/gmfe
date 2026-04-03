@@ -126,6 +126,142 @@ import { SearchSelect, TreeSelect, QuickPanel, QuickTab, QuickFilter, Pagination
 | process | 流程步骤数组，每项包含 `name` 和 `value` | `array` | - | 是 |
 | unit | 单位文字 | `string` | - | 是 |
 
+## 示例
+
+### SearchSelect 搜索选择
+
+```jsx
+import { SearchSelect } from '@gmfe/react-deprecated'
+
+function App() {
+  const [selected, setSelected] = useState(null)
+
+  return (
+    <SearchSelect
+      list={searchResults}
+      onSearch={async (query) => {
+        const res = await api.search(query)
+        return res.list
+      }}
+      onSelect={(item) => setSelected(item)}
+      selected={selected}
+      placeholder="请搜索商品"
+    />
+  )
+}
+```
+
+### SearchSelect 多选模式
+
+```jsx
+import { SearchSelect } from '@gmfe/react-deprecated'
+
+function App() {
+  const [selected, setSelected] = useState([])
+
+  return (
+    <SearchSelect
+      list={searchResults}
+      onSearch={async (query) => await api.search(query)}
+      onSelect={(item) => setSelected(item)}
+      selected={selected}
+      multiple
+      renderListCell={(item) => `${item.name}（${item.code}）`}
+    />
+  )
+}
+```
+
+### TreeSelect 树形选择
+
+```jsx
+import { TreeSelect } from '@gmfe/react-deprecated'
+
+function App() {
+  const treeData = [
+    {
+      name: '华东区域',
+      id: 1,
+      sub: [
+        { name: '上海', id: 11, sub: [{ name: '浦东新区', id: 111 }] },
+        { name: '浙江', id: 12 }
+      ]
+    }
+  ]
+
+  const [selected, setSelected] = useState([])
+
+  return (
+    <TreeSelect
+      list={treeData}
+      selected={selected}
+      onSelect={(ids) => setSelected(ids)}
+    />
+  )
+}
+```
+
+### QuickPanel + QuickTab 组合使用
+
+```jsx
+import { QuickPanel, QuickTab } from '@gmfe/react-deprecated'
+
+function App() {
+  const [activeTab, setActiveTab] = useState(0)
+
+  return (
+    <QuickPanel title="数据概览">
+      <QuickTab
+        tabs={['按订单查看', '按商品查看', '按司机查看']}
+        active={activeTab}
+        onChange={setActiveTab}
+      />
+      {activeTab === 0 && <div>订单数据</div>}
+      {activeTab === 1 && <div>商品数据</div>}
+      {activeTab === 2 && <div>司机数据</div>}
+    </QuickPanel>
+  )
+}
+```
+
+### 废弃组件迁移指南
+
+以下示例展示如何将废弃组件迁移到推荐替代方案：
+
+```jsx
+// ❌ 废弃用法 - SearchSelect
+import { SearchSelect } from '@gmfe/react-deprecated'
+<SearchSelect list={list} onSearch={fn} onSelect={fn} />
+
+// ✅ 推荐替代 - MoreSelect
+import { MoreSelect } from '@gmfe/react'
+<MoreSelect list={list} onChange={fn} />
+
+// ❌ 废弃用法 - TreeSelect
+import { TreeSelect } from '@gmfe/react-deprecated'
+<TreeSelect list={treeData} onSelect={fn} />
+
+// ✅ 推荐替代 - TreeV2
+import { TreeV2 } from '@gmfe/react'
+<TreeV2 data={treeData} onSelect={fn} />
+
+// ❌ 废弃用法 - QuickPanel
+import { QuickPanel } from '@gmfe/react-deprecated'
+<QuickPanel title="标题">内容</QuickPanel>
+
+// ✅ 推荐替代 - Collapse
+import { Collapse } from '@gmfe/react'
+<Collapse in title="标题">内容</Collapse>
+
+// ❌ 废弃用法 - QuickTab
+import { QuickTab } from '@gmfe/react-deprecated'
+<QuickTab tabs={['A', 'B']} active={0} onChange={fn} />
+
+// ✅ 推荐替代 - Tabs
+import { Tabs } from '@gmfe/react'
+<Tabs tabs={['A', 'B']} active={0} onChange={fn} />
+```
+
 ## 注意事项
 
 - 此包中的组件已废弃，新项目建议使用 `@gmfe/react` 中的对应组件替代。

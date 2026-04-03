@@ -24,7 +24,123 @@ function App() {
 }
 ```
 
-## 组件列表
+## 示例
+
+### 表单提交
+
+```jsx
+import { Form, FormItem, FormButton, Button } from '@gmfe/react'
+
+function App() {
+  return (
+    <Form
+      labelWidth="100px"
+      onSubmit={(values) => console.log('提交数据', values)}
+    >
+      <FormItem label="名称" required>
+        <input name="name" placeholder="请输入名称" />
+      </FormItem>
+      <FormItem label="数量">
+        <input name="quantity" type="number" />
+      </FormItem>
+      <FormButton>
+        <Button type="primary" htmlType="submit">提交</Button>
+        <Button htmlType="reset">重置</Button>
+      </FormButton>
+    </Form>
+  )
+}
+```
+
+### 多栏表单布局
+
+```jsx
+import { Form, FormItem, FormButton, FormBlock, Button, Select } from '@gmfe/react'
+
+function App() {
+  return (
+    <Form labelWidth="100px">
+      <FormBlock col={2}>
+        <FormItem label="名称" required>
+          <input name="name" />
+        </FormItem>
+        <FormItem label="地区">
+          <Select data={areaList} />
+        </FormItem>
+      </FormBlock>
+      <FormButton>
+        <Button type="primary" htmlType="submit">提交</Button>
+      </FormButton>
+    </Form>
+  )
+}
+```
+
+### 弹窗交互
+
+```jsx
+import { Button, Dialog, Drawer } from '@gmfe/react'
+
+function App() {
+  return (
+    <div>
+      <Button onClick={() => Dialog.alert('操作成功')}>提示</Button>
+
+      <Button onClick={() => {
+        Dialog.confirm({
+          title: '确认删除',
+          children: '删除后不可恢复，是否继续？',
+          onOK: async () => {
+            await deleteApi()
+          }
+        })
+      }}>确认对话框</Button>
+
+      <Button onClick={() => {
+        Drawer.open({
+          title: '详情',
+          children: <div>抽屉内容</div>
+        })
+      }}>打开抽屉</Button>
+    </div>
+  )
+}
+```
+
+### Sheet 底部弹出表格
+
+```jsx
+import { Sheet, SheetColumn, SheetSelect, SheetAction, Button } from '@gmfe/react'
+
+function App() {
+  const [data, setData] = useState(listData)
+  const [selected, setSelected] = useState([])
+
+  return (
+    <Sheet list={data}>
+      <SheetColumn field="id" name="ID" />
+      <SheetColumn field="name" name="名称" />
+      <SheetColumn field="name" name="描述">
+        {(name, index, record) => `商品：${name}，编号：${record.id}`}
+      </SheetColumn>
+      <SheetSelect
+        onSelect={(checked, index) => {
+          const next = data.slice()
+          next[index]._gm_select = checked
+          setData(next)
+        }}
+      />
+      <SheetAction>
+        {(checkedList) => (
+          <Button onClick={() => console.log('已选', checkedList)}>批量操作</Button>
+        )}
+      </SheetAction>
+    </Sheet>
+  )
+}
+```
+
+### 组件列表
 
 ### 表单组件
 
