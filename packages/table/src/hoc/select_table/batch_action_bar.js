@@ -83,14 +83,14 @@ const BatchActionBar = props => {
       {extra}
       {!!batchActions.length && <div className='gm-margin-left-20'>|</div>}
       {batchActions.map(
-        o =>
+        (o, index) =>
           o.show !== false && (
             <div
               data-id={o.dataId}
               onClick={o.onClick} // eslint-disable-line
               className='gm-text-hover-primary gm-cursor gm-text-bold'
               style={{ marginLeft: '30px' }}
-              key={o.name}
+              key={typeof o.name === 'string' ? o.name : index}
             >
               {ICON_MAP[o.type] && <Icon>{ICON_MAP[o.type]}</Icon>}
               {o.name}
