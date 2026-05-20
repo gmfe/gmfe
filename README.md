@@ -41,38 +41,20 @@ yarn start
 
 本项目使用 [Lerna](https://lerna.js.org/) 管理多包版本，采用 **固定版本模式**（所有包版本保持一致），通过 GitHub Actions 自动发布到 npm。
 
-### 1. 升级版本号
+### 一键发版
 
 ```bash
-# 升级所有包到指定版本
-npx lerna version <版本号> --no-git-tag-version --no-push --yes
+yarn release
 ```
 
-例如发布 `2.14.31`：
-
-```bash
-npx lerna version 2.14.31 --no-git-tag-version --no-push --yes
-```
-
-该命令会自动更新 `lerna.json` 和所有 `packages/*/package.json` 中的版本号。
-
-### 2. 提交并推送到 master
-
-```bash
-git add lerna.json packages/*/package.json
-git commit -m "chore: v<版本号>"
-git push
-```
-
-### 3. 自动发布
+该命令会自动完成以下步骤：
+1. 读取 `lerna.json` 当前版本号并自动 +1
+2. 使用 `lerna version` 统一更新所有包版本
+3. 提交并推送到 master
 
 推送后 GitHub Actions 会自动触发发布流程（`.github/workflows/release.yml`），将所有包发布到 npm。
 
-发布条件：
-- 分支必须为 `master`
-- `packages/**`、`lerna.json` 或 `package.json` 有变更
-
-### 4. 验证发布结果
+### 验证发布结果
 
 ```bash
 npm view @gmfe/react version
