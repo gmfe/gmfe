@@ -2,17 +2,30 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import _ from 'lodash'
-import { Storage, Flex } from '@gmfe/react'
+import { Storage, Flex, PaginationConfigContext } from '@gmfe/react'
 import Transform from './transform'
 import { warn } from '@gm-common/tool'
 
 class ManagePaginationV2 extends React.Component {
-  constructor(props) {
-    super(props)
+  static contextType = PaginationConfigContext
 
+  constructor(props, context) {
+    super(props, context)
+
+    const preferredLimit =
+      props.preferredLimit != null
+        ? props.preferredLimit
+        : context && context.preferredLimit != null
+        ? context.preferredLimit
+        : null
+    // 选中条数优先级：props > Provider > Storage(id) > defaultLimit
+    const storedLimit = props.id
+      ? Storage.get('manage_pagination_v2_' + props.id)
+      : null
     const limit =
-      (props.id && Storage.get('manage_pagination_v2_' + props.id)) ||
-      props.defaultLimit
+      preferredLimit != null
+        ? preferredLimit
+        : storedLimit || props.defaultLimit
 
     this.state = {
       // 给后台
@@ -146,6 +159,10 @@ class ManagePaginationV2 extends React.Component {
       Storage.set('manage_pagination_v2_' + this.props.id, limit)
     }
 
+    if (limit !== this.state.limit && this.props.onLimitChange) {
+      this.props.onLimitChange(limit)
+    }
+
     this.handleRequest(this.getParams(currentIndex), {
       currentIndex,
       limit
@@ -158,12 +175,22 @@ class ManagePaginationV2 extends React.Component {
       onRequest,
       children,
       defaultLimit,
+      preferredLimit,
+      limitData,
+      onLimitChange,
       disablePage,
       className,
       ...rest
     } = this.props
 
     const { limit, loading, resPagination, currentIndex } = this.state
+    const config = this.context
+    const resolvedLimitData =
+      limitData != null
+        ? limitData
+        : config && Array.isArray(config.limitData) && config.limitData.length
+        ? config.limitData
+        : undefined
 
     return (
       <div {...rest} className={classNames('gm-manage-pagination', className)}>
@@ -178,6 +205,7 @@ class ManagePaginationV2 extends React.Component {
             peek={resPagination && resPagination.peek}
             more={resPagination && resPagination.more}
             onChange={this.handleChange}
+            limitData={resolvedLimitData}
           />
         </Flex>
       </div>
@@ -197,6 +225,15 @@ ManagePaginationV2.propTypes = {
 
   /** 默认 10，想要改变则传此参数 */
   defaultLimit: PropTypes.number,
+  /** 当前每页条数（优先于 Provider / Storage） */
+  preferredLimit: PropTypes.number,
+  /**
+   * 每页条数选项 [{ value, text }, ...]
+   * 不传则由 PaginationBase 读 Provider / 默认值
+   */
+  limitData: PropTypes.array,
+  /** 用户切换每页条数时的页面级回调 */
+  onLimitChange: PropTypes.func,
   disablePage: PropTypes.bool,
 
   className: PropTypes.string,

@@ -6,6 +6,11 @@ import PaginationBase from './component/pagination/base'
 import Pagination from './component/pagination/pagination'
 import PaginationText from './component/pagination/pagination_text'
 import PaginationV2 from './component/pagination/pagination_v2'
+import { defaultLimitData } from './component/pagination/left'
+import {
+  PaginationConfigContext,
+  PaginationConfigProvider
+} from './component/pagination/config_context'
 import Dropper from './component/dropper/index'
 import {
   Form,
@@ -142,6 +147,9 @@ export {
   PaginationText,
   Pagination,
   PaginationV2,
+  defaultLimitData,
+  PaginationConfigContext,
+  PaginationConfigProvider,
   Form,
   FormItem,
   FormButton,

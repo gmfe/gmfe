@@ -2,7 +2,15 @@ import { PaginationBase } from '@gmfe/react'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const Transform = ({ count, limit, currentIndex, peek, more, onChange }) => {
+const Transform = ({
+  count,
+  limit,
+  currentIndex,
+  peek,
+  more,
+  onChange,
+  limitData
+}) => {
   const handleChange = ({ offset, limit }) => {
     onChange({
       limit,
@@ -36,6 +44,7 @@ const Transform = ({ count, limit, currentIndex, peek, more, onChange }) => {
       _peekInfo={_peekInfo}
       onChange={handleChange}
       showCount={!(count === undefined || count === null)}
+      limitData={limitData}
     />
   )
 }
@@ -46,7 +55,8 @@ Transform.propTypes = {
   count: PropTypes.number,
   peek: PropTypes.number,
   more: PropTypes.bool,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  limitData: PropTypes.array
 }
 
 export default Transform
