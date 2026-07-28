@@ -21,7 +21,8 @@ function generateDiyColumns(initColumns, mixColumns) {
   const [notDiyCols, diyCols] = splitColumns(initColumns)
   const mixColumnsMap = {}
   _.forEach(mixColumns, (item, index) => {
-    item.sortNumber = item.diySortNumber !== undefined ? item.diySortNumber : index
+    item.sortNumber =
+      item.diySortNumber !== undefined ? item.diySortNumber : index
     mixColumnsMap[item.key] = item
   })
   let diyColumns = _.map(diyCols, column => {
@@ -163,7 +164,10 @@ function diyTableHOC(Component) {
     }
 
     handleColumnsSave = newColumns => {
-      this.setState({ columns: newColumns, dialogKey: this.state.dialogKey + 1 })
+      this.setState({
+        columns: newColumns,
+        dialogKey: this.state.dialogKey + 1
+      })
       Storage.set(this.props.id, getStorageColumns(newColumns))
     }
 
@@ -234,17 +238,22 @@ function diyTableHOC(Component) {
       // 弹窗左侧"可选字段"需保持定义顺序不变，而 state.columns 已按 diySortNumber 排序，
       // 因此用 props.columns 的定义顺序重建弹窗用的 columns 数组
       const stateColumnMap = _.keyBy(columns, col => getColumnKey(col))
-      const dialogColumns = _.compact(_.map(this.props.columns, propCol => {
-        const key = getColumnKey(propCol)
-        if (!key) return null
-        return stateColumnMap[key] || null
-      }))
+      const dialogColumns = _.compact(
+        _.map(this.props.columns, propCol => {
+          const key = getColumnKey(propCol)
+          if (!key) return null
+          return stateColumnMap[key] || null
+        })
+      )
 
       return (
         <Component
           key={this.state.tableKey}
           {...passProps}
-          className={classNames(passProps.className, showColumnBorder && 'gm-react-table-show-column-border')}
+          className={classNames(
+            passProps.className,
+            showColumnBorder && 'gm-react-table-show-column-border'
+          )}
           columns={[
             {
               Header: () => (
@@ -294,7 +303,7 @@ function diyTableHOC(Component) {
 
   DiyTable.propTypes = {
     id: PropTypes.string.isRequired,
-    /** 是否持久化列宽到 localStorage，默认关闭 */
+    /** 是否持久化列宽到 localStorage，默认开启 */
     enableColumnWidthPersist: PropTypes.bool,
     /** 是否显示列表边框 */
     showColumnBorder: PropTypes.bool,
@@ -305,7 +314,7 @@ function diyTableHOC(Component) {
 
   DiyTable.defaultProps = {
     showColumnBorder: true,
-    enableColumnWidthPersist: false
+    enableColumnWidthPersist: true
   }
 
   return DiyTable

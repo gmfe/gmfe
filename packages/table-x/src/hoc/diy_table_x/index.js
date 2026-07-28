@@ -45,7 +45,8 @@ function generateDiyColumns(initColumns, mixColumns) {
   const [notDiyCols, diyCols] = splitColumns(initColumns)
   const mixColumnsMap = {}
   _.forEach(mixColumns, (item, index) => {
-    item.sortNumber = item.diySortNumber !== undefined ? item.diySortNumber : index
+    item.sortNumber =
+      item.diySortNumber !== undefined ? item.diySortNumber : index
     mixColumnsMap[item.key] = item
   })
   let diyColumns = _.map(diyCols, column => {
@@ -97,7 +98,14 @@ function getStorageColumns(columns) {
 const COL_WIDTH_SUFFIX = '_col_width'
 
 function diyTableXHOC(Component) {
-  const DiyTableX = ({ id, columns, diyGroupSorting, showColumnBorder, enableColumnWidthPersist = false, ...rest }) => {
+  const DiyTableX = ({
+    id,
+    columns,
+    diyGroupSorting,
+    showColumnBorder,
+    enableColumnWidthPersist = true,
+    ...rest
+  }) => {
     // 没id强制报错
     devWarn(() => {
       if (id === undefined) {
@@ -179,17 +187,22 @@ function diyTableXHOC(Component) {
       // 弹窗左侧"可选字段"需保持定义顺序不变，而 cols 已按 sortNumber 排序
       // 用 props.columns 的定义顺序重建弹窗用的 columns 数组，数据来自 cols
       const colsMap = _.keyBy(cols, col => getColumnKey(col))
-      const dialogColumns = _.compact(_.map(columns, propCol => {
-        const key = getColumnKey(propCol)
-        if (!key) return null
-        return colsMap[key] || null
-      }))
+      const dialogColumns = _.compact(
+        _.map(columns, propCol => {
+          const key = getColumnKey(propCol)
+          if (!key) return null
+          return colsMap[key] || null
+        })
+      )
 
       // 注入列宽和 _onResize 回调
       const colsWithResize = _.map(cols, col => {
         const key = getColumnKey(col)
         if (!key) return col
-        const patched = { ...col, _onResize: (...args) => resizeRef.current(...args) }
+        const patched = {
+          ...col,
+          _onResize: (...args) => resizeRef.current(...args)
+        }
         if (resized[key] !== undefined) {
           patched.width = resized[key]
         }
@@ -242,7 +255,10 @@ function diyTableXHOC(Component) {
         {...rest}
         id={id}
         columns={_columns}
-        className={classNames(rest.className, showColumnBorder && 'gm-table-x-show-column-border')}
+        className={classNames(
+          rest.className,
+          showColumnBorder && 'gm-table-x-show-column-border'
+        )}
       />
     )
   }
@@ -251,7 +267,7 @@ function diyTableXHOC(Component) {
     ...TableX.propTypes,
 
     id: PropTypes.string.isRequired,
-    /** 是否持久化列宽到 localStorage，默认关闭 */
+    /** 是否持久化列宽到 localStorage，默认开启 */
     enableColumnWidthPersist: PropTypes.bool,
     /** 是否显示列表边框 */
     showColumnBorder: PropTypes.bool,
