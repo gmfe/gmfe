@@ -11,6 +11,15 @@ on:
       - 'packages/**'
       - 'lerna.json'
       - 'package.json'
+  workflow_dispatch:
+    inputs:
+      dist-tag:
+        description: 'npm dist-tag(beta=预发布版,latest=正式版)'
+        type: choice
+        options:
+          - beta
+          - latest
+        default: beta
 
 jobs:
   build:
@@ -40,8 +49,21 @@ jobs:
         run: |
           # 确保在发布前代码状态是干净的
           git checkout .
-          # 使用 lerna 发布
-          yarn lerna publish from-package --force-publish --no-git-tag-version --no-push --yes --registry https://registry.npmjs.org
+          DIST_TAG="${{ inputs.dist-tag }}"
+          if [ "$DIST_TAG" = "beta" ]; then
+            # 预发布版:基于 lerna.json 当前版本 + run_number 生成唯一 beta 号
+            # run_number 单调递增,保证每次唯一、且永不与正式版(无 -beta 后缀)冲突
+            BASE=$(node -p "const v=require('./lerna.json').version; v.replace(/-.*$/,'')")
+            BETA_VERSION="$BASE-beta.${{ github.run_number }}"
+            echo "Publishing beta version: $BETA_VERSION"
+            # 1) 本地 bump 所有包到 beta 版本(--no-git-tag-version 不提交、不打 tag)
+            yarn lerna version "$BETA_VERSION" --no-git-tag-version --no-push --yes
+            # 2) from-package 把所有未发布的版本发到 npm 的 beta tag
+            yarn lerna publish from-package --dist-tag beta --no-git-tag-version --no-push --yes --registry https://registry.npmjs.org
+          else
+            # 正式版:按各 package.json 已有版本号发布(master push 自动走这里,或手动选 latest)
+            yarn lerna publish from-package --force-publish --no-git-tag-version --no-push --yes --registry https://registry.npmjs.org
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           PYTHON: python3
