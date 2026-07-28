@@ -131,14 +131,20 @@ const getFirstDefined = (a, b) => {
 // maxWidth 300  =>👉  max-width: 300px;
 // minWidth 200  =>👉  flex: 200 0 auto; width: 200px;
 // minWidth 50 width 100  =>👉  flex: 100 0 auto; width: 100px; max-width: 100px;
+// 未显式设置时使用 0 basis，避免同一列因单元格内容宽度不同而错位
 const getColumnStyle = ({ width, minWidth, maxWidth }) => {
   const _width = getFirstDefined(width, minWidth)
   const _maxWidth = getFirstDefined(width, maxWidth)
-  return {
-    flex: `${_width} 0 auto`,
-    width: asPx(_width),
-    maxWidth: asPx(_maxWidth)
+  const style = {
+    flex: _width !== undefined ? `${_width} 0 auto` : '1 0 0'
   }
+  if (_width !== undefined) {
+    style.width = asPx(_width)
+  }
+  if (_maxWidth !== undefined) {
+    style.maxWidth = asPx(_maxWidth)
+  }
+  return style
 }
 
 const afterScroll = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Flex, Button } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './selector'
@@ -6,7 +6,7 @@ import SortList from './sort_list'
 import PropTypes from 'prop-types'
 import { getLocale } from '@gmfe/locales'
 
-const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
+const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel, onResetDefault }) => {
   const [diyCols, setDiyCols] = useState(columns)
   const [showCols, setShowCols] = useState(
     _.sortBy(
@@ -14,6 +14,11 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
       'diySortNumber'
     )
   )
+
+  useEffect(() => {
+    setDiyCols(columns)
+    setShowCols(_.sortBy(columns.filter(o => o.show), 'diySortNumber'))
+  }, [columns])
 
   const onColsChange = (key, curShow) => {
     const index = _.findIndex(diyCols, o => o.key === key)
@@ -63,9 +68,8 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
       const diySortNumber = _.findIndex(showCols, v => v.key === col.key)
       return {
         ...col,
-        show: diySortNumber > -1 // 大于-1才会显示
-        // TODO 排序先去掉,后面再做!
-        // diySortNumber: (diySortNumber + 1) * 100 // 从100开始,100, 200, 300, ...如此类推
+        show: diySortNumber > -1, // 大于-1才会显示
+        diySortNumber: diySortNumber > -1 ? diySortNumber : col.diySortNumber
       }
     })
 
@@ -74,25 +78,21 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
   }
 
   const handleColsSort = (beforeKey, afterKey) => {
-    //移动到前面，移动到后面
-    let beforeIndex, afterIndex;
-    _.forEach(diyCols, (item, index)=>{
-      if(beforeKey === item.key){
-        beforeIndex = index
-      }
-      if(afterKey === item.key){
-        afterIndex = index
-      }
-    })
-    diyCols.splice(afterIndex + 1, 0, diyCols[beforeIndex]);
-    if(afterIndex > beforeIndex){
-      diyCols.splice(beforeIndex, 1);
-    }
-    if(afterIndex < beforeIndex){
-      diyCols.splice(beforeIndex + 1, 1);
-    }
-    setDiyCols(diyCols)
-    setShowCols(columns.filter(o => o.show))
+    const _showCols = showCols.slice()
+    const beforeIndex = _.findIndex(_showCols, o => o.key === beforeKey)
+    const afterIndex = _.findIndex(_showCols, o => o.key === afterKey)
+
+    if (beforeIndex === -1 || afterIndex === -1) return
+
+    const [moved] = _showCols.splice(beforeIndex, 1)
+    _showCols.splice(afterIndex, 0, moved)
+
+    setShowCols(_showCols)
+  }
+
+  const handleResetDefault = () => {
+    onResetDefault()
+    onCancel()
   }
 
   return (
@@ -135,16 +135,15 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
           />
         </div>
       </Flex>
-      <Flex justifyEnd className='gm-padding-10'>
-        <Button onClick={onCancel}>取消</Button>
-        <div className='gm-gap-10' />
-        <Button
-          type='primary'
-          onClick={handleSave}
-          className='gm-margin-right-10'
-        >
-          保存
-        </Button>
+      <Flex justifyBetween className='gm-padding-10'>
+        <Button onClick={handleResetDefault}>{getLocale('恢复默认')}</Button>
+        <Flex>
+          <Button onClick={onCancel}>{getLocale('取消')}</Button>
+          <div className='gm-gap-10' />
+          <Button type='primary' onClick={handleSave} className='gm-margin-right-10'>
+            {getLocale('保存')}
+          </Button>
+        </Flex>
       </Flex>
     </div>
   )
@@ -154,7 +153,8 @@ DiyTableModal.propTypes = {
   columns: PropTypes.array.isRequired,
   diyGroupSorting: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired
+  onCancel: PropTypes.func.isRequired,
+  onResetDefault: PropTypes.func.isRequired
 }
 
 export default DiyTableModal

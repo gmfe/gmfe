@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Flex, Button } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './modal_selector'
@@ -6,9 +6,21 @@ import List from './modal_list'
 import PropTypes from 'prop-types'
 import { getLocale } from '@gmfe/locales'
 
-const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
+const DiyTableModal = ({
+  columns,
+  onSave,
+  diyGroupSorting,
+  onCancel,
+  onResetDefault
+}) => {
   const [diyCols, setDiyCols] = useState(columns)
   const [showCols, setShowCols] = useState(columns.filter(o => o.show))
+
+  useEffect(() => {
+    setDiyCols(columns)
+    // 右侧"当前选定的字段"需按用户保存的排序显示，而非定义顺序
+    setShowCols(_.sortBy(columns.filter(o => o.show), o => o.sortNumber))
+  }, [columns])
 
   const handleColsChange = (key, curShow) => {
     const index = _.findIndex(diyCols, o => o.key === key)
@@ -42,32 +54,33 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
   }
 
   const handleColsSort = (beforeKey, afterKey) => {
-    //移动到前面，移动到后面
-    let beforeIndex, afterIndex;
-    _.forEach(diyCols, (item, index)=>{
-      if(beforeKey === item.key){
-        beforeIndex = index
-      }
-      if(afterKey === item.key){
-        afterIndex = index
-      }
-    })
-    diyCols.splice(afterIndex + 1, 0, diyCols[beforeIndex]);
-    if(afterIndex > beforeIndex){
-      diyCols.splice(beforeIndex, 1);
-    }
-    if(afterIndex < beforeIndex){
-      diyCols.splice(beforeIndex + 1, 1);
-    }
-    setDiyCols(diyCols)
-    setShowCols(columns.filter(o => o.show))
+    const _showCols = showCols.slice()
+    const beforeIndex = _.findIndex(_showCols, o => o.key === beforeKey)
+    const afterIndex = _.findIndex(_showCols, o => o.key === afterKey)
+
+    if (beforeIndex === -1 || afterIndex === -1) return
+
+    const [moved] = _showCols.splice(beforeIndex, 1)
+    // 删除后目标索引可能左移：beforeIndex < afterIndex 时目标已左移1位，此时 afterIndex 即为目标之后
+    // beforeIndex > afterIndex 时目标未移动，需 afterIndex + 1 才能放到目标之后
+    const insertIndex = beforeIndex < afterIndex ? afterIndex : afterIndex + 1
+    _showCols.splice(insertIndex, 0, moved)
+
+    setShowCols(_showCols)
+  }
+
+  const handleResetDefault = () => {
+    onResetDefault()
+    onCancel()
   }
 
   const handleSave = () => {
     const columns = diyCols.map(col => {
+      const sortIndex = _.findIndex(showCols, v => v.key === col.key)
       return {
         ...col,
-        show: _.findIndex(showCols, v => v.key === col.key) > -1 // 大于-1才会显示
+        show: sortIndex > -1, // 大于-1才会显示
+        diySortNumber: sortIndex > -1 ? sortIndex : col.diySortNumber
       }
     })
 
@@ -110,16 +123,15 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel }) => {
           <List cols={showCols} onColsRemove={handleColsRemove} onColsSort={handleColsSort}/>
         </div>
       </Flex>
-      <Flex justifyEnd className='gm-padding-10'>
-        <Button onClick={onCancel}>取消</Button>
-        <div className='gm-gap-10' />
-        <Button
-          type='primary'
-          onClick={handleSave}
-          className='gm-margin-right-10'
-        >
-          保存
-        </Button>
+      <Flex justifyBetween className='gm-padding-10'>
+        <Button onClick={handleResetDefault}>{getLocale('恢复默认')}</Button>
+        <Flex>
+          <Button onClick={onCancel}>{getLocale('取消')}</Button>
+          <div className='gm-gap-10' />
+          <Button type='primary' onClick={handleSave} className='gm-margin-right-10'>
+            {getLocale('保存')}
+          </Button>
+        </Flex>
       </Flex>
     </div>
   )
@@ -129,7 +141,8 @@ DiyTableModal.propTypes = {
   columns: PropTypes.array.isRequired,
   diyGroupSorting: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired
+  onCancel: PropTypes.func.isRequired,
+  onResetDefault: PropTypes.func.isRequired
 }
 
 export default DiyTableModal
