@@ -113,37 +113,43 @@ const asPx = value => {
   return Number.isNaN(value) ? null : `${value}px`
 }
 
-const getFirstDefined = (a, b) => {
-  // 如果取的是默认值
-  if (
-    a === __DEFAULT_COLUMN.width &&
-    (b === __DEFAULT_COLUMN.minWidth || b === __DEFAULT_COLUMN.maxWidth)
-  ) {
-    return undefined
-  } else if (a !== __DEFAULT_COLUMN.width) {
-    return a
-  } else {
-    return b
-  }
-}
+// 兜底最小宽度：未显式声明 width/minWidth 的列，以此为 basis 起点，避免塌陷
+const FALLBACK_MIN_BASIS = 60
 
-// width 200  =>👉  flex: 200 0 auto; width: 200px; max-width: 200px;
-// maxWidth 300  =>👉  max-width: 300px;
-// minWidth 200  =>👉  flex: 200 0 auto; width: 200px;
-// minWidth 50 width 100  =>👉  flex: 100 0 auto; width: 100px; max-width: 100px;
-// 未显式设置时使用 0 basis，避免同一列因单元格内容宽度不同而错位
+// 设计原则：
+// - 显式设置 width  → 固定列宽（flex-grow:0），列拖拽也通过设置 width 实现，保持一致
+// - 仅设 minWidth  → 以此为起点参与剩余空间分配（flex-grow:1）
+// - 都没设        → 以 FALLBACK_MIN_BASIS 为起点参与分配（flex-grow:1）
+// fixed 列的偏移依赖 react-table 的 totalLeft/totalWidth，不受此处 CSS 影响。
+//
+// width 200                  =>👉  flex: 0 0 200px;
+// minWidth 150（无 width）   =>👉  flex: 1 0 150px;
+// 都没设                      =>👉  flex: 1 0 60px;
+// maxWidth 300（用户显式传）  =>👉  max-width: 300px;
+// 拖拽后 width=210           =>👉  flex: 0 0 210px;  ← 固定，不再叠加 grow
 const getColumnStyle = ({ width, minWidth, maxWidth }) => {
-  const _width = getFirstDefined(width, minWidth)
-  const _maxWidth = getFirstDefined(width, maxWidth)
-  const style = {
-    flex: _width !== undefined ? `${_width} 0 auto` : '1 0 0'
+  const hasUserWidth = width !== undefined && width !== __DEFAULT_COLUMN.width
+  const hasUserMinWidth =
+    minWidth !== undefined && minWidth !== __DEFAULT_COLUMN.minWidth
+
+  const style = {}
+
+  if (hasUserWidth) {
+    // 显式 width（含拖拽后的 width）：固定列宽，不参与 grow
+    style.flex = `0 0 ${asPx(width)}`
+  } else if (hasUserMinWidth) {
+    // 仅设 minWidth：以此为起点，参与剩余空间均分
+    style.flex = `1 0 ${asPx(minWidth)}`
+  } else {
+    // 都没设：固定 60px basis 起点（不依赖内容，避免 header/body 内容差异导致列错位）
+    style.flex = `1 0 ${asPx(FALLBACK_MIN_BASIS)}`
   }
-  if (_width !== undefined) {
-    style.width = asPx(_width)
+
+  // 仅当用户显式传 maxWidth 时才设 max-width
+  if (maxWidth !== undefined && maxWidth !== __DEFAULT_COLUMN.maxWidth) {
+    style.maxWidth = asPx(maxWidth)
   }
-  if (_maxWidth !== undefined) {
-    style.maxWidth = asPx(_maxWidth)
-  }
+
   return style
 }
 
