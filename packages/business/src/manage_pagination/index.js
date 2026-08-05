@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import _ from 'lodash'
 import { Flex, Pagination, Storage, PaginationConfigContext } from '@gmfe/react'
 
@@ -117,6 +118,7 @@ class ManagePagination extends React.Component {
       limitData,
       onLimitChange,
       children,
+      className,
       ...rest
     } = this.props
     const { limit, offset, count, nextDisabled, loading } = this.state
@@ -129,9 +131,14 @@ class ManagePagination extends React.Component {
         : undefined
 
     return (
-      <div {...rest}>
-        <div>{_.isFunction(children) ? children({ loading }) : children}</div>
-        <Flex justifyEnd className='gm-padding-20'>
+      <div {...rest} className={classNames('gm-manage-pagination', className)}>
+        <div className='gm-manage-pagination-list'>
+          {_.isFunction(children) ? children({ loading }) : children}
+        </div>
+        <Flex
+          justifyEnd
+          className='gm-padding-20 gm-manage-pagination-bar'
+        >
           <Pagination
             data={{
               limit,
@@ -169,7 +176,9 @@ ManagePagination.propTypes = {
    */
   limitData: PropTypes.array,
   /** 用户切换每页条数时的页面级回调 */
-  onLimitChange: PropTypes.func
+  onLimitChange: PropTypes.func,
+  className: PropTypes.string,
+  style: PropTypes.object
 }
 
 ManagePagination.defaultProps = {

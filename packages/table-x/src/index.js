@@ -1,5 +1,6 @@
-import TableX from './base'
-import TableXVirtualized from './base/virtualized'
+import BaseTableX from './base'
+import BaseTableXVirtualized from './base/virtualized'
+import withTableSticky from './hoc/with_table_sticky'
 import selectTableXHOC from './hoc/select_table_x'
 import expandTableXHOC from './hoc/expand_table_x'
 import fixedColumnsTableXHOC from './hoc/fixed_columns_table_x'
@@ -22,6 +23,14 @@ import {
   EditOperation,
   SortHeader
 } from './util'
+
+const TableX = withTableSticky(BaseTableX, {
+  stickyClassName: 'gm-table-x-header-sticky'
+})
+
+const TableXVirtualized = withTableSticky(BaseTableXVirtualized, {
+  stickyClassName: 'gm-table-x-header-sticky'
+})
 
 const TableXUtil = {
   TABLE_X,

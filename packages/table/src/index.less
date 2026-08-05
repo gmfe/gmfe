@@ -345,11 +345,58 @@
   }
 }
 
+.gm-react-table-header-sticky {
+  // thead 被移到 .gm-react-table-sticky-thead-wrap，独立横向滚动 + 相对页面 sticky
+  > .gm-react-table-sticky-thead-wrap {
+    position: sticky;
+    top: calc(
+      var(--gm-table-header-sticky-top, 0px) +
+        var(--gm-table-action-sticky-height, 0px)
+    );
+    z-index: 100;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: #e8eaf0;
+    // 隐藏滚动条，只保留表体的横向滚动条
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .rt-thead {
+      background: #e8eaf0;
+    }
+
+    .rt-thead .rt-tr {
+      transform: none;
+    }
+  }
+
+  .rt-table {
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .rt-tbody {
+    overflow: visible;
+    flex: 1 0 auto;
+  }
+}
+
 .gm-react-table-sticky {
+  // 固定列模式：横向仍由 rt-table 滚动，但纵向放行让 thead 相对页面 sticky
   .rt-thead {
     position: sticky;
-    top: 0;
-    z-index: 3;
+    top: calc(
+      var(--gm-table-header-sticky-top, 0px) +
+        var(--gm-table-action-sticky-height, 0px)
+    );
+    z-index: 100;
+    background: #e8eaf0;
+  }
+
+  .rt-thead .rt-tr {
+    transform: none;
   }
 
   .rt-tbody {

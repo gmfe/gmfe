@@ -70,9 +70,6 @@
     }
 
     .gm-table-x-thead {
-      position: sticky;
-      top: 0;
-      z-index: 10;
       display: block; // 覆盖thead 默认display
 
       .gm-table-x-tr {
@@ -257,6 +254,76 @@
     .gm-table-x-edit-button {
       visibility: visible;
     }
+  }
+
+  // 表头固定（是否固定 / 一键固定）
+  // 拆成 affix-header + body-scroll 两个横向滚动容器并同步 scrollLeft：
+  // - 外层 overflow:visible → 表头可相对页面纵向 sticky
+  // - 内层 overflow-x:auto → 左右固定列 sticky left/right 继续生效
+  &.gm-table-x-header-sticky {
+    overflow: visible;
+
+    .gm-table-x-affix-header {
+      position: sticky;
+      // 顶栏/Tab 偏移 + BoxTable 操作栏高度（有操作栏时由外层 CSS 变量注入）
+      top: calc(
+        var(--gm-table-header-sticky-top, 0px) +
+          var(--gm-table-action-sticky-height, 0px)
+      );
+      z-index: 100;
+      overflow-x: auto;
+      overflow-y: hidden;
+      background: @gm-table-x-header-bg;
+      // 滚动条只留在表体，避免双滚动条
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .gm-table-x-table {
+        // 表头区域不做 translateZ，避免干扰 sticky
+        transform: none;
+      }
+
+      .gm-table-x-thead {
+        background: @gm-table-x-header-bg;
+      }
+
+      .gm-table-x-th {
+        background: @gm-table-x-header-bg;
+
+        &.gm-table-x-fixed-left,
+        &.gm-table-x-fixed-right {
+          z-index: 2;
+        }
+      }
+    }
+
+    .gm-table-x-body-scroll {
+      overflow-x: auto;
+      // 与默认 .gm-table-x 一致，保留横向滚动与固定列
+
+      .gm-table-x-td {
+        &.gm-table-x-fixed-left,
+        &.gm-table-x-fixed-right {
+          z-index: 1;
+        }
+      }
+    }
+  }
+}
+
+// BoxTable 操作栏（info/action）随表头一起吸顶（TableX + 旧 Table）
+.gm-box-table:has(.gm-table-x-header-sticky),
+.gm-box-table:has(.gm-react-table-header-sticky),
+.gm-box-table-with-sticky-table {
+  --gm-table-action-sticky-height: 50px;
+
+  .gm-box-table-header {
+    position: sticky;
+    top: var(--gm-table-header-sticky-top, 0px);
+    z-index: 101;
+    background-color: @gm-back-body-bg;
   }
 }
 

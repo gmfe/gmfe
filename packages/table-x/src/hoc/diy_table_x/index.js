@@ -2,7 +2,14 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Storage, Popover } from '@gmfe/react'
+import {
+  Storage,
+  Popover,
+  getLatestConfig,
+  clearAllLocalHeaderSticky,
+  STORAGE_PREFIX,
+  // bump 从 sync 再导出不方便，走 getLatestConfig().bumpStickyLocalVersion
+} from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import {
   TABLE_X,
@@ -92,6 +99,68 @@ function getStorageColumns(columns) {
   })
 }
 
+function buildStickyControlProps(hookProps, config) {
+  const {
+    stickyId,
+    id,
+    defaultSticky = false,
+    onStickyChange,
+    showLocalSticky = true,
+    showGlobalSticky = true,
+    localStickyText,
+    globalStickyText
+  } = hookProps
+
+  const resolvedStickyId = stickyId || id
+  const globalCfg = (config && (config.tableXConfig || config.tableConfig)) || null
+  const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
+  const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange
+  const bump = config && config.bumpStickyLocalVersion
+
+  let hasLocalOverride = false
+  let localSticky = !!defaultSticky
+  if (resolvedStickyId) {
+    const cached = Storage.get(STORAGE_PREFIX + resolvedStickyId)
+    if (cached === true || cached === false) {
+      hasLocalOverride = true
+      localSticky = cached
+    }
+  }
+
+  const localChecked = hasLocalOverride ? localSticky : globalSticky
+  // 当前弹层展示用：取消是否固定时同步取消勾选一键固定（不改全局）
+  const globalChecked = globalSticky && localChecked
+
+  return {
+    localChecked,
+    globalSticky,
+    globalChecked,
+    canShowLocal: showLocalSticky !== false && !!resolvedStickyId,
+    canShowGlobal:
+      showGlobalSticky !== false &&
+      typeof onGlobalChangeRaw === 'function' &&
+      !!resolvedStickyId,
+    texts: {
+      local: localStickyText != null ? localStickyText : getLocale('是否固定'),
+      global: globalStickyText != null ? globalStickyText : getLocale('一键固定')
+    },
+    setLocalSticky: checked => {
+      const next = !!checked
+      if (resolvedStickyId) {
+        Storage.set(STORAGE_PREFIX + resolvedStickyId, next)
+      }
+      bump && bump()
+      onStickyChange && onStickyChange(next)
+    },
+    onGlobalChange: checked => {
+      const next = !!checked
+      clearAllLocalHeaderSticky()
+      bump && bump()
+      onGlobalChangeRaw && onGlobalChangeRaw(next)
+    }
+  }
+}
+
 function diyTableXHOC(Component) {
   const DiyTableX = ({ id, columns, diyGroupSorting, ...rest }) => {
     // 没id强制报错
@@ -111,6 +180,19 @@ function diyTableXHOC(Component) {
     }, [columns])
 
     const popoverRef = useRef()
+
+    // 用 ref 持有最新 props；popup() 打开时通过 getLatestConfig 读取，避免 useContext 订阅
+    const stickyHookPropsRef = useRef(null)
+    stickyHookPropsRef.current = {
+      id,
+      stickyId: rest.stickyId,
+      defaultSticky: rest.defaultSticky,
+      onStickyChange: rest.onStickyChange,
+      showLocalSticky: rest.showLocalSticky,
+      showGlobalSticky: rest.showGlobalSticky,
+      localStickyText: rest.localStickyText,
+      globalStickyText: rest.globalStickyText
+    }
 
     const handleDiyColumnsSave = cols => {
       setDiyCols(cols)
@@ -138,14 +220,18 @@ function diyTableXHOC(Component) {
               ref={popoverRef}
               showArrow
               offset={-10}
-              popup={
+              popup={() => (
                 <DiyTableXModal
                   diyGroupSorting={diyGroupSorting}
                   columns={cols}
                   onSave={handleDiyColumnsSave}
                   onCancel={handleCancel}
+                  stickyControlProps={buildStickyControlProps(
+                    stickyHookPropsRef.current,
+                    getLatestConfig()
+                  )}
                 />
-              }
+              )}
             >
               <div className='gm-table-x-icon'>
                 <OperationIconTip tip={getLocale('表头设置')}>
@@ -160,7 +246,7 @@ function diyTableXHOC(Component) {
         ...notDiyCols,
         ...cols
       ]
-    }, [columns, diyCols])
+    }, [columns, diyCols, diyGroupSorting])
 
     return <Component {...rest} id={id} columns={_columns} />
   }
