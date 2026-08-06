@@ -258,7 +258,7 @@ function diyTableXHOC(Component) {
         ...notDiyCols,
         ...cols
       ]
-    }, [columns, diyCols, diyGroupSorting])
+    }, [columns, diyCols])
 
     return <Component {...rest} id={id} columns={_columns} />
   }
