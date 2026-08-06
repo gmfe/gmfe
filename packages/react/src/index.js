@@ -7,10 +7,20 @@ import Pagination from './component/pagination/pagination'
 import PaginationText from './component/pagination/pagination_text'
 import PaginationV2 from './component/pagination/pagination_v2'
 import { defaultLimitData } from './component/pagination/left'
+import { PaginationConfigContext } from './component/pagination/config_context'
 import {
-  PaginationConfigContext,
-  PaginationConfigProvider
-} from './component/pagination/config_context'
+  ConfigProvider,
+  ConfigContext,
+  getLatestConfig
+} from './component/config_provider'
+import {
+  useTableHeaderSticky,
+  TableStickyControls,
+  TableStickyToolbar,
+  tableStickyPropTypes,
+  clearAllLocalHeaderSticky,
+  STORAGE_PREFIX
+} from './component/table_sticky'
 import Dropper from './component/dropper/index'
 import {
   Form,
@@ -149,7 +159,15 @@ export {
   PaginationV2,
   defaultLimitData,
   PaginationConfigContext,
-  PaginationConfigProvider,
+  ConfigProvider,
+  ConfigContext,
+  getLatestConfig,
+  useTableHeaderSticky,
+  TableStickyControls,
+  TableStickyToolbar,
+  tableStickyPropTypes,
+  clearAllLocalHeaderSticky,
+  STORAGE_PREFIX,
   Form,
   FormItem,
   FormButton,

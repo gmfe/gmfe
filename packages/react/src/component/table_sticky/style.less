@@ -1,0 +1,23 @@
+.gm-table-sticky-controls {
+  .gm-checkbox {
+    margin-bottom: 0;
+    font-weight: normal;
+    color: inherit;
+  }
+}
+
+/**
+ * 表格开启吸顶（是否固定 / 一键固定）时，同层 ManagePagination 分页条吸底。
+ * 通过 :has(表头 sticky class) 联动，业务无需额外传参。
+ */
+.gm-manage-pagination:has(.gm-table-x-header-sticky),
+.gm-manage-pagination:has(.gm-react-table-header-sticky),
+.gm-manage-pagination:has(.gm-react-table-sticky) {
+  .gm-manage-pagination-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 99;
+    background: #fff;
+    border-top: 1px solid rgba(216, 222, 231, 0.5);
+  }
+}

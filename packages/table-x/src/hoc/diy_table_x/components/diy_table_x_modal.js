@@ -1,17 +1,81 @@
 import React, { useState, useEffect } from 'react'
-import { Flex, Button } from '@gmfe/react'
+import { Flex, Button, TableStickyControls } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './modal_selector'
 import List from './modal_list'
 import PropTypes from 'prop-types'
 import { getLocale } from '@gmfe/locales'
 
+/**
+ * 弹层内维护 Checkbox 展示态，避免 sticky 变更触发外层 columns 重建导致 Popover 关闭。
+ * 真正的持久化 / 表头 class 仍走 stickyControlProps 回调。
+ */
+function StickyControlsInModal({ stickyControlProps }) {
+  const [localChecked, setLocalChecked] = useState(
+    () => !!(stickyControlProps && stickyControlProps.localChecked)
+  )
+  // 当前弹层内「一键固定」展示（可与真实全局不一致）
+  const [globalChecked, setGlobalChecked] = useState(() =>
+    stickyControlProps && stickyControlProps.globalChecked !== undefined
+      ? !!stickyControlProps.globalChecked
+      : !!(
+          stickyControlProps &&
+          stickyControlProps.globalSticky &&
+          stickyControlProps.localChecked
+        )
+  )
+  // 记住真实全局，取消是否固定时只改展示，不改这个值
+  const [realGlobalSticky, setRealGlobalSticky] = useState(
+    () => !!(stickyControlProps && stickyControlProps.globalSticky)
+  )
+
+  if (
+    !stickyControlProps ||
+    (!stickyControlProps.canShowLocal && !stickyControlProps.canShowGlobal)
+  ) {
+    return null
+  }
+
+  return (
+    <TableStickyControls
+      localChecked={localChecked}
+      globalSticky={realGlobalSticky}
+      globalChecked={globalChecked}
+      canShowLocal={stickyControlProps.canShowLocal}
+      canShowGlobal={stickyControlProps.canShowGlobal}
+      texts={stickyControlProps.texts}
+      setLocalSticky={checked => {
+        const next = !!checked
+        setLocalChecked(next)
+        // 取消是否固定 → 本弹层一键固定展示取消；勾选则恢复为真实全局
+        setGlobalChecked(next && realGlobalSticky)
+        stickyControlProps.setLocalSticky &&
+          stickyControlProps.setLocalSticky(next)
+      }}
+      onGlobalChange={checked => {
+        const next = !!checked
+        setRealGlobalSticky(next)
+        setGlobalChecked(next)
+        // 开启/关闭一键固定都会清本地：UI 上是否固定跟随勾选/取消
+        setLocalChecked(next)
+        stickyControlProps.onGlobalChange &&
+          stickyControlProps.onGlobalChange(next)
+      }}
+    />
+  )
+}
+
+StickyControlsInModal.propTypes = {
+  stickyControlProps: PropTypes.object
+}
+
 const DiyTableModal = ({
   columns,
   onSave,
   diyGroupSorting,
   onCancel,
-  onResetDefault
+  onResetDefault,
+  stickyControlProps
 }) => {
   const [diyCols, setDiyCols] = useState(columns)
   const [showCols, setShowCols] = useState(columns.filter(o => o.show))
@@ -107,9 +171,14 @@ const DiyTableModal = ({
       </Flex>
       <Flex className='gm-react-table-x-diy-modal-content'>
         <div className='gm-react-table-x-diy-modal-selector'>
-          <div className='gm-react-table-x-diy-modal-title'>
-            可选字段
-          </div>
+          <Flex
+            alignCenter
+            justifyBetween
+            className='gm-react-table-x-diy-modal-title'
+          >
+            <span>可选字段</span>
+            <StickyControlsInModal stickyControlProps={stickyControlProps} />
+          </Flex>
           <Selector
             diyGroupSorting={diyGroupSorting}
             cols={diyCols}
@@ -120,7 +189,11 @@ const DiyTableModal = ({
           <div className='gm-react-table-x-diy-modal-title'>
             当前选定的字段
           </div>
-          <List cols={showCols} onColsRemove={handleColsRemove} onColsSort={handleColsSort}/>
+          <List
+            cols={showCols}
+            onColsRemove={handleColsRemove}
+            onColsSort={handleColsSort}
+          />
         </div>
       </Flex>
       <Flex justifyBetween className='gm-padding-10'>
@@ -142,7 +215,11 @@ DiyTableModal.propTypes = {
   diyGroupSorting: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  onResetDefault: PropTypes.func.isRequired
+  onResetDefault: PropTypes.func.isRequired,
+  /**
+   * 由 DiyTableX 在 ConfigProvider 内计算后传入（Popover 挂到 LayerRoot 会丢失 Context）
+   */
+  stickyControlProps: PropTypes.object
 }
 
 export default DiyTableModal

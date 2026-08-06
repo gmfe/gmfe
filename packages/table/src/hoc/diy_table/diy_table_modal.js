@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Flex, Button } from '@gmfe/react'
+import { Flex, Button, TableStickyControls } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './selector'
 import SortList from './sort_list'
 import PropTypes from 'prop-types'
 import { getLocale } from '@gmfe/locales'
 
-const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel, onResetDefault }) => {
+const DiyTableModal = ({
+  columns,
+  onSave,
+  diyGroupSorting,
+  onCancel,
+  onResetDefault,
+  stickyControlProps
+}) => {
   const [diyCols, setDiyCols] = useState(columns)
   const [showCols, setShowCols] = useState(
     _.sortBy(
@@ -114,9 +121,18 @@ const DiyTableModal = ({ columns, onSave, diyGroupSorting, onCancel, onResetDefa
       </Flex>
       <Flex className='gm-react-table-diy-modal-content'>
         <div className='gm-react-table-diy-modal-selector'>
-          <div className='gm-react-table-diy-modal-title'>
-            可选字段
-          </div>
+          <Flex
+            alignCenter
+            justifyBetween
+            className='gm-react-table-diy-modal-title'
+          >
+            <span>可选字段</span>
+            {stickyControlProps &&
+            (stickyControlProps.canShowLocal ||
+              stickyControlProps.canShowGlobal) ? (
+              <TableStickyControls {...stickyControlProps} />
+            ) : null}
+          </Flex>
           <Selector
             diyGroupSorting={diyGroupSorting}
             cols={diyCols}
@@ -154,7 +170,8 @@ DiyTableModal.propTypes = {
   diyGroupSorting: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  onResetDefault: PropTypes.func.isRequired
+  onResetDefault: PropTypes.func.isRequired,
+  stickyControlProps: PropTypes.object
 }
 
 export default DiyTableModal
