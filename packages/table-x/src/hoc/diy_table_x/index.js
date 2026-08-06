@@ -345,7 +345,7 @@ function diyTableXHOC(Component) {
         ...notDiyCols,
         ...colsWithResize
       ]
-    }, [columns, diyCols, resized, diyGroupSorting])
+    }, [columns, diyCols, resized])
 
     return (
       <Component
