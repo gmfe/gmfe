@@ -76,8 +76,6 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
     sticky,
     defaultSticky = false,
     onStickyChange,
-    showLocalSticky = true,
-    showGlobalSticky = true,
     localStickyText,
     globalStickyText,
     stickyTop
@@ -89,6 +87,20 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
   const config = useContext(ConfigContext)
   const globalCfg =
     (config && (config[configKey] || config.tableConfig)) || null
+
+  // 控件展示开关：props 优先，否则回退 ConfigProvider.tableConfig
+  const showLocalSticky =
+    props.showLocalSticky !== undefined
+      ? props.showLocalSticky
+      : globalCfg && globalCfg.showLocalSticky !== undefined
+        ? globalCfg.showLocalSticky
+        : true
+  const showGlobalSticky =
+    props.showGlobalSticky !== undefined
+      ? props.showGlobalSticky
+      : globalCfg && globalCfg.showGlobalSticky !== undefined
+        ? globalCfg.showGlobalSticky
+        : true
 
   const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
   const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange

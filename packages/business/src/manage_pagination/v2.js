@@ -12,20 +12,23 @@ class ManagePaginationV2 extends React.Component {
   constructor(props, context) {
     super(props, context)
 
+    const storedLimit = props.id
+      ? Storage.get('manage_pagination_v2_' + props.id)
+      : null
     const preferredLimit =
       props.preferredLimit != null
         ? props.preferredLimit
         : context && context.preferredLimit != null
         ? context.preferredLimit
         : null
-    // 选中条数优先级：props > Provider > Storage(id) > defaultLimit
-    const storedLimit = props.id
-      ? Storage.get('manage_pagination_v2_' + props.id)
-      : null
+    // 选中条数优先级：Storage(id) > props > Provider > defaultLimit
+    // 页面本地选择优先，全局默认仅作兜底，避免改一处全站统一
     const limit =
-      preferredLimit != null
+      storedLimit != null
+        ? storedLimit
+        : preferredLimit != null
         ? preferredLimit
-        : storedLimit || props.defaultLimit
+        : props.defaultLimit
 
     this.state = {
       // 给后台

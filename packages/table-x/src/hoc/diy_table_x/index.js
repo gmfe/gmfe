@@ -105,8 +105,6 @@ function buildStickyControlProps(hookProps, config) {
     id,
     defaultSticky = false,
     onStickyChange,
-    showLocalSticky = true,
-    showGlobalSticky = true,
     localStickyText,
     globalStickyText
   } = hookProps
@@ -116,6 +114,20 @@ function buildStickyControlProps(hookProps, config) {
   const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
   const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange
   const bump = config && config.bumpStickyLocalVersion
+
+  // 控件展示开关：props 优先，否则回退 ConfigProvider
+  const showLocalSticky =
+    hookProps.showLocalSticky !== undefined
+      ? hookProps.showLocalSticky
+      : globalCfg && globalCfg.showLocalSticky !== undefined
+        ? globalCfg.showLocalSticky
+        : true
+  const showGlobalSticky =
+    hookProps.showGlobalSticky !== undefined
+      ? hookProps.showGlobalSticky
+      : globalCfg && globalCfg.showGlobalSticky !== undefined
+        ? globalCfg.showGlobalSticky
+        : true
 
   let hasLocalOverride = false
   let localSticky = !!defaultSticky

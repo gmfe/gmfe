@@ -66,13 +66,19 @@ ConfigProvider.propTypes = {
     stickyHeader: PropTypes.bool,
     onStickyHeaderChange: PropTypes.func,
     /** 表头吸顶 top 偏移（px） */
-    stickyTop: PropTypes.number
+    stickyTop: PropTypes.number,
+    /** 是否展示「是否固定」控件（DIY 弹层内），默认 true */
+    showLocalSticky: PropTypes.bool,
+    /** 是否展示「一键固定」控件（DIY 弹层内），默认 true */
+    showGlobalSticky: PropTypes.bool
   }),
   /** 可选；仅 TableX 需与 Table 不同配置时传入，否则回退 tableConfig */
   tableXConfig: PropTypes.shape({
     stickyHeader: PropTypes.bool,
     onStickyHeaderChange: PropTypes.func,
-    stickyTop: PropTypes.number
+    stickyTop: PropTypes.number,
+    showLocalSticky: PropTypes.bool,
+    showGlobalSticky: PropTypes.bool
   }),
   children: PropTypes.node
 }
