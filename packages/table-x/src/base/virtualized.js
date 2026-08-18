@@ -14,7 +14,7 @@ import { VariableSizeList, areEqual } from 'react-window'
 
 const RenderRow = React.memo(({ data, index, style }) => {
   if (index === 0) {
-    return <div style={style} />
+    return <div style={{ ...style, pointerEvents: 'none' }} />
   }
 
   index = index - 1
