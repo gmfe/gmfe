@@ -8,6 +8,8 @@ import {
   getLatestConfig,
   clearAllLocalHeaderSticky,
   STORAGE_PREFIX,
+  resolveTableStickyStorageId,
+  readTableStickyLocal
   // bump 从 sync 再导出不方便，走 getLatestConfig().bumpStickyLocalVersion
 } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
@@ -109,7 +111,8 @@ function buildStickyControlProps(hookProps, config) {
     globalStickyText
   } = hookProps
 
-  const resolvedStickyId = stickyId || id
+  const resolvedStickyId = resolveTableStickyStorageId(stickyId, id)
+  const legacyStickyId = stickyId ? null : id
   const globalCfg = (config && (config.tableXConfig || config.tableConfig)) || null
   const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
   const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange
@@ -132,10 +135,10 @@ function buildStickyControlProps(hookProps, config) {
   let hasLocalOverride = false
   let localSticky = !!defaultSticky
   if (resolvedStickyId) {
-    const cached = Storage.get(STORAGE_PREFIX + resolvedStickyId)
-    if (cached === true || cached === false) {
+    const cached = readTableStickyLocal(resolvedStickyId, legacyStickyId)
+    if (cached.hasOverride) {
       hasLocalOverride = true
-      localSticky = cached
+      localSticky = cached.value
     }
   }
 

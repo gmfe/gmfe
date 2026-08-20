@@ -2,6 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import BaseTable from './table/base'
+import withTableSticky from './hoc/with_table_sticky'
 import { ReactTableDefaults } from 'react-table-v6'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
@@ -217,4 +218,8 @@ DndTable.defaultProps = {
   getTrGroupProps: () => ({})
 }
 
-export default DndTable
+// 与 Table 一致：注入表头吸顶能力（DIY「是否固定」依赖此 HOC 真正挂 class）
+export default withTableSticky(DndTable, {
+  configKey: 'tableConfig',
+  stickyClassName: 'gm-react-table-header-sticky'
+})

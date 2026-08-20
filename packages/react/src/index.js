@@ -19,6 +19,9 @@ import {
   TableStickyToolbar,
   tableStickyPropTypes,
   clearAllLocalHeaderSticky,
+  normalizeTableStickyId,
+  resolveTableStickyStorageId,
+  readTableStickyLocal,
   STORAGE_PREFIX
 } from './component/table_sticky'
 import Dropper from './component/dropper/index'
@@ -167,6 +170,9 @@ export {
   TableStickyToolbar,
   tableStickyPropTypes,
   clearAllLocalHeaderSticky,
+  normalizeTableStickyId,
+  resolveTableStickyStorageId,
+  readTableStickyLocal,
   STORAGE_PREFIX,
   Form,
   FormItem,
