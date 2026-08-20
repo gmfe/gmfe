@@ -268,7 +268,8 @@
       // 顶栏/Tab 偏移 + BoxTable 操作栏高度（有操作栏时由外层 CSS 变量注入）
       top: calc(
         var(--gm-table-header-sticky-top, 0px) +
-          var(--gm-table-action-sticky-height, 0px)
+          var(--gm-table-action-sticky-height, 0px) +
+          var(--gm-table-batch-action-sticky-height, 0px)
       );
       z-index: 100;
       overflow-x: auto;
@@ -330,6 +331,8 @@
 /* hoc 相关 */
 .gm-table-x-select-batch-action-bar-container {
   position: relative;
+  // 高于吸顶表头(100) / BoxTable 操作栏(101)，避免「一键固定」后遮挡批量操作条
+  z-index: 110;
 
   .gm-table-x-select-batch-action-bar {
     position: absolute;
@@ -340,6 +343,31 @@
     padding-left: 20px;
     background: @gm-back-body-bg;
     height: @gm-table-x-select-action-bar-height;
+  }
+}
+
+// 一键固定 / 是否固定：批量操作条随 BoxTable 操作栏一起吸顶，并给表头预留高度
+.gm-table-x-select-container:has(.gm-table-x-header-sticky),
+.gm-table-x-select-container:has(.gm-react-table-header-sticky) {
+  &:has(> .gm-table-x-select-batch-action-bar-container) {
+    --gm-table-batch-action-sticky-height: @gm-table-x-select-action-bar-height;
+  }
+
+  > .gm-table-x-select-batch-action-bar-container {
+    position: sticky;
+    top: calc(
+      var(--gm-table-header-sticky-top, 0px) +
+        var(--gm-table-action-sticky-height, 0px)
+    );
+    z-index: 110;
+    height: @gm-table-x-select-action-bar-height;
+  }
+
+  > .gm-table-x-select-batch-action-bar-container .gm-table-x-select-batch-action-bar {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    height: 100%;
   }
 }
 
