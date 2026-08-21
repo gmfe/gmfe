@@ -253,18 +253,9 @@
     background: @react-table-tip-bg;
   }
 
-  // 一键固定 / 是否固定：批量操作条随顶栏一起吸顶，并给表头预留高度
-  &:has(.gm-react-table-header-sticky):has(.gm-react-table-select-batch-action-bar) {
-    --gm-table-batch-action-sticky-height: @react-table-tip-height;
-
-    .gm-react-table-select-batch-action-bar {
-      position: sticky;
-      top: calc(
-        var(--gm-table-header-sticky-top, 0px) +
-          var(--gm-table-action-sticky-height, 0px)
-      );
-    }
-  }
+  // 注意：batchActionBar 渲染在表格 DOM 之后，靠 absolute top 负值上浮到表头上方。
+  // 不能像 TableX 那样给表头预留 --gm-table-batch-action-sticky-height，
+  // 否则 thead sticky top 会多出 50px，出现「表头悬空、上方露出数据行」。
 }
 
 .gm-react-table-diy-modal {
@@ -366,7 +357,8 @@
     top: calc(
       var(--gm-table-header-sticky-top, 0px) +
         var(--gm-table-action-sticky-height, 0px) +
-        var(--gm-table-batch-action-sticky-height, 0px)
+        var(--gm-table-batch-action-sticky-height, 0px) +
+        var(--gm-table-nested-parent-header-height, 0px)
     );
     z-index: 100;
     overflow-x: auto;
@@ -387,7 +379,10 @@
     }
   }
 
-  .rt-table {
+  // 将表体（含嵌套子表）放入更低的层叠上下文，避免子表头上滑盖住父表头
+  > .rt-table {
+    position: relative;
+    z-index: 0;
     overflow-x: auto;
     overflow-y: visible;
   }
@@ -398,6 +393,31 @@
   }
 }
 
+// 子表吸顶层级低于父表头
+.gm-react-sub-table.gm-react-table-header-sticky {
+  > .gm-react-table-sticky-thead-wrap {
+    z-index: 99;
+  }
+
+  &.gm-react-table-sticky .rt-thead {
+    z-index: 99;
+  }
+}
+
+// 嵌套子表吸顶：必须解除父表 rt-table / rt-tbody 的 overflow，
+// 否则 sticky 被限制在父滚动容器内，无法相对视口固定，还会挤出异常上间距。
+// 注意：不要只设 overflow-x:auto —— 会连带算出 overflow-y:auto，再次卡住 sticky。
+.rt-table:has(.gm-react-table-header-sticky),
+.rt-tbody:has(.gm-react-table-header-sticky) {
+  overflow: visible !important;
+}
+
+// 父表自身吸顶或含子表吸顶时，ReactTable 根也必须 visible（react-table 默认可能带 overflow）
+.ReactTable.gm-react-table-header-sticky,
+.ReactTable:has(.gm-react-sub-table.gm-react-table-header-sticky) {
+  overflow: visible !important;
+}
+
 .gm-react-table-sticky {
   // 固定列模式：横向仍由 rt-table 滚动，但纵向放行让 thead 相对页面 sticky
   .rt-thead {
@@ -405,7 +425,8 @@
     top: calc(
       var(--gm-table-header-sticky-top, 0px) +
         var(--gm-table-action-sticky-height, 0px) +
-        var(--gm-table-batch-action-sticky-height, 0px)
+        var(--gm-table-batch-action-sticky-height, 0px) +
+        var(--gm-table-nested-parent-header-height, 0px)
     );
     z-index: 100;
     background: #e8eaf0;

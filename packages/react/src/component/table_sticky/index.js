@@ -16,6 +16,15 @@ import { getLocale } from '@gmfe/locales'
 import { bumpStickyLocalVersion, subscribeStickyLocalVersion } from './sync'
 
 const STORAGE_PREFIX = 'table_header_sticky_'
+/** 「一键固定」开启时挂在 body 上，驱动全站分页吸底 */
+const GLOBAL_STICKY_BODY_CLASS = 'gm-global-table-header-sticky'
+/** 本表显式关闭「是否固定」时挂在表格上，优先退出分页吸底 */
+const STICKY_OPT_OUT_CLASS = 'gm-table-sticky-opt-out'
+
+function syncGlobalStickyBodyClass(enabled) {
+  if (typeof document === 'undefined' || !document.body) return
+  document.body.classList.toggle(GLOBAL_STICKY_BODY_CLASS, !!enabled)
+}
 
 /**
  * 同一业务页的查看/编辑表常有不同 diy id（*view / *edit / *_detail / *_edit），
@@ -340,12 +349,12 @@ const TableStickyControls = ({
             popup={
               <div
                 className='gm-popover-is-in-popup'
-                style={{ maxWidth: '220px', padding: '8px 4px' }}
+                style={{ maxWidth: '280px', padding: '8px 4px' }}
                 onClick={stop}
                 onMouseDown={stop}
               >
                 {getLocale(
-                  '开启后，当前列表的表头在纵向滚动时固定置顶，仅对当前列表生效。'
+                  '开启后，当前列表的表头在纵向滚动时固定置顶、分页筛选固定于底部，仅对当前列表生效，且本选项优先于「一键固定」操作。'
                 )}
               </div>
             }
@@ -367,12 +376,12 @@ const TableStickyControls = ({
             popup={
               <div
                 className='gm-popover-is-in-popup'
-                style={{ maxWidth: '220px', padding: '8px 4px' }}
+                style={{ maxWidth: '280px', padding: '8px 4px' }}
                 onClick={stop}
                 onMouseDown={stop}
               >
                 {getLocale(
-                  '开启后，所有列表的表头都会固定置顶；关闭则会取消所有列表的表头固定。'
+                  '开启后，所有开启分组的表头都会固定置顶；所有分页筛选固定于底部；关闭则会取消所有列表的表头、分页固定。'
                 )}
               </div>
             }
@@ -432,5 +441,8 @@ export {
   normalizeTableStickyId,
   resolveTableStickyStorageId,
   readTableStickyLocal,
+  syncGlobalStickyBodyClass,
+  GLOBAL_STICKY_BODY_CLASS,
+  STICKY_OPT_OUT_CLASS,
   STORAGE_PREFIX
 }

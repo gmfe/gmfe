@@ -111,7 +111,12 @@ function withTableSticky(Component, options) {
         {...tableProps}
         style={stickyStyle}
         className={classNames(className, {
-          [stickyClassName]: stickyState.headerSticky
+          [stickyClassName]: stickyState.headerSticky,
+          // 一键固定开启但本表显式关闭「是否固定」时，退出分页吸底
+          'gm-table-sticky-opt-out':
+            stickyState.globalSticky &&
+            !stickyState.headerSticky &&
+            stickyState.hasLocalOverride
         })}
       />
     )

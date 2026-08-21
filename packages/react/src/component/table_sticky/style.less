@@ -7,20 +7,42 @@
 }
 
 /**
- * 表格开启吸顶（是否固定 / 一键固定）时，同层 ManagePagination 分页条吸底。
- * 通过 :has(表头 sticky class) 联动，业务无需额外传参。
+ * 分页吸底：
+ * 1) 本表「是否固定」开启 → :has(表头 sticky class)
+ * 2) 「一键固定」开启 → body.gm-global-table-header-sticky 下所有分页
+ * 3) 本表显式关闭「是否固定」→ .gm-table-sticky-opt-out，优先于一键固定
  *
  * 注意：不要用 .gm-react-table-sticky —— 那是 fixedColumnsTableHOC 常驻 class
  *（固定列），未开表头固定时也会命中，导致分页误吸底。
  */
+.gm-manage-pagination-bar-sticky() {
+  position: sticky;
+  bottom: 0;
+  z-index: 99;
+  background: #fff;
+  border-top: 1px solid rgba(216, 222, 231, 0.5);
+}
+
 .gm-manage-pagination:has(.gm-table-x-header-sticky),
 .gm-manage-pagination:has(.gm-react-table-header-sticky) {
   .gm-manage-pagination-bar {
-    position: sticky;
-    bottom: 0;
-    z-index: 99;
-    background: #fff;
-    border-top: 1px solid rgba(216, 222, 231, 0.5);
+    .gm-manage-pagination-bar-sticky();
+  }
+}
+
+body.gm-global-table-header-sticky {
+  .gm-manage-pagination-bar {
+    .gm-manage-pagination-bar-sticky();
+  }
+
+  // 「是否固定」显式关闭时，本表分页不跟随一键固定
+  .gm-manage-pagination:has(.gm-table-sticky-opt-out) {
+    .gm-manage-pagination-bar {
+      position: static;
+      z-index: auto;
+      background: transparent;
+      border-top: none;
+    }
   }
 }
 

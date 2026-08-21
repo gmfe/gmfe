@@ -24,13 +24,9 @@ import {
   SortHeader
 } from './util'
 
-const TableX = withTableSticky(BaseTableX, {
-  stickyClassName: 'gm-table-x-header-sticky'
-})
-
-const TableXVirtualized = withTableSticky(BaseTableXVirtualized, {
-  stickyClassName: 'gm-table-x-header-sticky'
-})
+// 吸顶仅由 diyTableXHOC（分组表格）开启，普通 TableX 不响应「一键固定」
+const TableX = BaseTableX
+const TableXVirtualized = BaseTableXVirtualized
 
 const TableXUtil = {
   TABLE_X,

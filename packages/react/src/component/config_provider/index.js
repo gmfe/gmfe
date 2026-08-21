@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { PaginationConfigContext } from '../pagination/config_context'
 import { bumpStickyLocalVersion } from '../table_sticky/sync'
+import { syncGlobalStickyBodyClass } from '../table_sticky'
 
 /**
  * 全局组件配置。
@@ -35,6 +36,13 @@ const ConfigProvider = ({
   )
 
   latestConfigValue = configValue
+
+  // 「一键固定」→ body class，全站分页吸底（与是否挂载 DIY 表无关）
+  const stickyHeader = !!(tableConfig && tableConfig.stickyHeader)
+  useEffect(() => {
+    syncGlobalStickyBodyClass(stickyHeader)
+    return () => syncGlobalStickyBodyClass(false)
+  }, [stickyHeader])
 
   const paginationValue = useMemo(() => {
     if (!paginationConfig) return null

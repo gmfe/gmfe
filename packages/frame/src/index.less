@@ -29,7 +29,9 @@
           top: 0;
           left: 0;
           right: 0;
-          z-index: 101;
+          // 高于页面内 sticky 内容（表头100 / Panel101 / 批量条110 / 单据操作栏120），
+          // 低于左侧菜单(990)与浮层(1000)
+          z-index: 200;
           background: white;
           border-bottom: 1px solid fadeout(@gm-frame-border-color, 50%);
           height: @gm-framework-top-right-default-height;
@@ -112,7 +114,8 @@
         background: white;
         position: fixed;
         right: 0;
-        z-index: 101;
+        // 与 right-top 同级：框架顶栏区域，高于页面 sticky 内容
+        z-index: 200;
 
         .gm-framework-full-tabs-list-inner {
           padding: 10px 20px 0;
