@@ -6,6 +6,7 @@ import { Storage, Popover, useTableHeaderSticky } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import { getColumnKey, referOfWidth } from '../../util'
 import Table from '../../table'
+import withTableSticky from '../with_table_sticky'
 import { devWarn } from '@gm-common/tool'
 import DiyTableModal from './diy_table_modal'
 import OperationIconTip from '../../operation_icon_tip'
@@ -135,6 +136,12 @@ function splitColumns(columns) {
 }
 
 function diyTableHOC(Component) {
+  // 分组表格才有表头吸顶（是否固定/一键固定）；普通 Table 不响应
+  const StickyComponent = withTableSticky(Component, {
+    configKey: 'tableConfig',
+    stickyClassName: 'gm-react-table-header-sticky'
+  })
+
   class DiyTable extends React.Component {
     popoverRef = createRef()
     constructor(props) {
@@ -192,7 +199,7 @@ function diyTableHOC(Component) {
       const { columns } = this.state
 
       return (
-        <Component
+        <StickyComponent
           {...this.props}
           columns={[
             {

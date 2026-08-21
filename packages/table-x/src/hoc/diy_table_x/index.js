@@ -22,6 +22,7 @@ import {
   OperationIconTip
 } from '../../util'
 import TableX from '../../base'
+import withTableSticky from '../with_table_sticky'
 import { devWarn } from '@gm-common/tool'
 import DiyTableXModal from './components/diy_table_x_modal'
 
@@ -176,7 +177,17 @@ function buildStickyControlProps(hookProps, config) {
   }
 }
 
+// 分组表格才有表头吸顶（是否固定/一键固定）；普通 TableX 不响应
+const StickyTableX = withTableSticky(TableX, {
+  stickyClassName: 'gm-table-x-header-sticky'
+})
+
 function diyTableXHOC(Component) {
+  const StickyComponent =
+    Component === TableX ? StickyTableX : withTableSticky(Component, {
+      stickyClassName: 'gm-table-x-header-sticky'
+    })
+
   const DiyTableX = ({ id, columns, diyGroupSorting, ...rest }) => {
     // 没id强制报错
     devWarn(() => {
@@ -263,7 +274,7 @@ function diyTableXHOC(Component) {
       ]
     }, [columns, diyCols])
 
-    return <Component {...rest} id={id} columns={_columns} />
+    return <StickyComponent {...rest} id={id} columns={_columns} />
   }
 
   DiyTableX.propTypes = {
