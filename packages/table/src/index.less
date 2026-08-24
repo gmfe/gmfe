@@ -253,9 +253,21 @@
     background: @react-table-tip-bg;
   }
 
-  // 注意：batchActionBar 渲染在表格 DOM 之后，靠 absolute top 负值上浮到表头上方。
-  // 不能像 TableX 那样给表头预留 --gm-table-batch-action-sticky-height，
-  // 否则 thead sticky top 会多出 50px，出现「表头悬空、上方露出数据行」。
+  // 表头吸顶时：批量条随 BoxTable 操作栏一起吸顶，并给 thead 预留高度。
+  // 批量条须在表格 DOM 之前（见 select_table HOC），sticky 才生效。
+  &:has(.gm-react-table-header-sticky):has(.gm-react-table-select-batch-action-bar) {
+    --gm-table-batch-action-sticky-height: @react-table-tip-height;
+
+    > .gm-react-table-select-batch-action-bar {
+      position: sticky;
+      top: calc(
+        var(--gm-table-header-sticky-top, 0px) +
+          var(--gm-table-action-sticky-height, 0px)
+      );
+      // 取消 absolute 的负 top，改为占位在表格上方
+      margin-top: 0;
+    }
+  }
 }
 
 .gm-react-table-diy-modal {
