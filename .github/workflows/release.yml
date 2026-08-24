@@ -58,7 +58,12 @@ jobs:
             echo "Publishing beta version: $BETA_VERSION"
             # 1) 本地 bump 所有包到 beta 版本(--no-git-tag-version 不提交、不打 tag)
             yarn lerna version "$BETA_VERSION" --no-git-tag-version --no-push --yes
-            # 2) from-package 把所有未发布的版本发到 npm 的 beta tag
+            # 2) lerna publish 要求工作区干净；临时 commit 仅留在 CI runner，不 push，不影响仓库版本
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git config user.name "github-actions[bot]"
+            git add lerna.json packages/*/package.json
+            git commit -m "chore: temp $BETA_VERSION" --no-verify
+            # 3) from-package 把所有未发布的版本发到 npm 的 beta tag
             yarn lerna publish from-package --dist-tag beta --no-git-tag-version --no-push --yes --registry https://registry.npmjs.org
           else
             # 正式版:按各 package.json 已有版本号发布(master push 自动走这里,或手动选 latest)
