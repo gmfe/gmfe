@@ -49,21 +49,21 @@ function UserList() {
 
 | 属性 | 说明 | 类型 | 默认值 | 必填 |
 |------|------|------|--------|------|
-| id | 唯一标识，用于记住每页条数 | `string` | - | 否 |
+| id | 唯一标识，用于记住每页条数（`persistLimit !== false` 时） | `string` | - | 否 |
 | onRequest | 分页请求函数，接收 `{ offset, limit }` 参数，返回 `Promise<{ data: array, count: number }>` | `function` | - | 是 |
 | children | 子内容，可以是元素或函数（接收 `{ data, loading }` 参数） | `ReactElement \| function` | - | 是 |
 | defaultLimit | 默认每页条数 | `number` | `10` | 否 |
+| preferredLimit | 当前每页条数（优先于 Provider；低于 Storage） | `number` | - | 否 |
+| limitData | 每页条数选项 `[{ value, text }, ...]` | `array` | - | 否 |
+| onLimitChange | 切换每页条数回调 | `function` | - | 否 |
+| persistLimit | 是否用 localStorage 记忆条数；也可由 `ConfigProvider.paginationConfig.persistLimit` 注入 | `boolean` | `true` | 否 |
 
 ### ManagePaginationV2
 
-分页管理组件 V2，支持禁用分页和自定义样式。
+分页管理组件 V2，支持禁用分页和自定义样式。属性同 ManagePagination，额外：
 
 | 属性 | 说明 | 类型 | 默认值 | 必填 |
 |------|------|------|--------|------|
-| id | 唯一标识，用于记住每页条数 | `string` | - | 否 |
-| onRequest | 分页请求函数，接收 `{ offset, limit }` 参数，返回 `Promise<{ data: array, count: number }>` | `function` | - | 是 |
-| children | 子内容，可以是元素或函数（接收 `{ data, loading }` 参数） | `ReactElement \| function` | - | 是 |
-| defaultLimit | 默认每页条数 | `number` | `10` | 否 |
 | disablePage | 是否禁用分页控制 | `boolean` | `false` | 否 |
 | className | 自定义类名 | `string` | - | 否 |
 | style | 自定义样式 | `object` | - | 否 |

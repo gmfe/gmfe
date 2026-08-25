@@ -4,15 +4,24 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import { Flex, Pagination, Storage, PaginationConfigContext } from '@gmfe/react'
 
+/** props > Provider；默认 true（兼容旧行为） */
+const resolvePersistLimit = (props, context) => {
+  if (props.persistLimit != null) return !!props.persistLimit
+  if (context && context.persistLimit != null) return !!context.persistLimit
+  return true
+}
+
 class ManagePagination extends React.Component {
   static contextType = PaginationConfigContext
 
   constructor(props, context) {
     super(props, context)
 
-    const storedLimit = props.id
-      ? Storage.get('manage_pagination_' + props.id)
-      : null
+    const persistLimit = resolvePersistLimit(props, context)
+    const storedLimit =
+      persistLimit && props.id
+        ? Storage.get('manage_pagination_' + props.id)
+        : null
     const preferredLimit =
       props.preferredLimit != null
         ? props.preferredLimit
@@ -20,7 +29,7 @@ class ManagePagination extends React.Component {
         ? context.preferredLimit
         : null
     // 选中条数优先级：Storage(id) > props > Provider > defaultLimit
-    // 页面本地选择优先，全局默认仅作兜底，避免改一处全站统一
+    // persistLimit === false 时跳过 Storage，避免习惯记忆
     const limit =
       storedLimit != null
         ? storedLimit
@@ -100,7 +109,8 @@ class ManagePagination extends React.Component {
   }
 
   handlePage = data => {
-    if (this.props.id) {
+    const persistLimit = resolvePersistLimit(this.props, this.context)
+    if (persistLimit && this.props.id) {
       Storage.set('manage_pagination_' + this.props.id, data.limit)
     }
 
@@ -120,6 +130,7 @@ class ManagePagination extends React.Component {
       preferredLimit,
       limitData,
       onLimitChange,
+      persistLimit,
       children,
       className,
       ...rest
@@ -180,6 +191,8 @@ ManagePagination.propTypes = {
   limitData: PropTypes.array,
   /** 用户切换每页条数时的页面级回调 */
   onLimitChange: PropTypes.func,
+  /** 是否用 localStorage 记忆每页条数；默认 true。也可由 Provider.paginationConfig.persistLimit 注入 */
+  persistLimit: PropTypes.bool,
   className: PropTypes.string,
   style: PropTypes.object
 }

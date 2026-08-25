@@ -6,15 +6,24 @@ import { Storage, Flex, PaginationConfigContext } from '@gmfe/react'
 import Transform from './transform'
 import { warn } from '@gm-common/tool'
 
+/** props > Provider；默认 true（兼容旧行为） */
+const resolvePersistLimit = (props, context) => {
+  if (props.persistLimit != null) return !!props.persistLimit
+  if (context && context.persistLimit != null) return !!context.persistLimit
+  return true
+}
+
 class ManagePaginationV2 extends React.Component {
   static contextType = PaginationConfigContext
 
   constructor(props, context) {
     super(props, context)
 
-    const storedLimit = props.id
-      ? Storage.get('manage_pagination_v2_' + props.id)
-      : null
+    const persistLimit = resolvePersistLimit(props, context)
+    const storedLimit =
+      persistLimit && props.id
+        ? Storage.get('manage_pagination_v2_' + props.id)
+        : null
     const preferredLimit =
       props.preferredLimit != null
         ? props.preferredLimit
@@ -22,7 +31,7 @@ class ManagePaginationV2 extends React.Component {
         ? context.preferredLimit
         : null
     // 选中条数优先级：Storage(id) > props > Provider > defaultLimit
-    // 页面本地选择优先，全局默认仅作兜底，避免改一处全站统一
+    // persistLimit === false 时跳过 Storage，避免习惯记忆
     const limit =
       storedLimit != null
         ? storedLimit
@@ -158,7 +167,8 @@ class ManagePaginationV2 extends React.Component {
   }
 
   handleChange = ({ currentIndex, limit }) => {
-    if (this.props.id) {
+    const persistLimit = resolvePersistLimit(this.props, this.context)
+    if (persistLimit && this.props.id) {
       Storage.set('manage_pagination_v2_' + this.props.id, limit)
     }
 
@@ -181,6 +191,7 @@ class ManagePaginationV2 extends React.Component {
       preferredLimit,
       limitData,
       onLimitChange,
+      persistLimit,
       disablePage,
       className,
       ...rest
@@ -237,6 +248,8 @@ ManagePaginationV2.propTypes = {
   limitData: PropTypes.array,
   /** 用户切换每页条数时的页面级回调 */
   onLimitChange: PropTypes.func,
+  /** 是否用 localStorage 记忆每页条数；默认 true。也可由 Provider.paginationConfig.persistLimit 注入 */
+  persistLimit: PropTypes.bool,
   disablePage: PropTypes.bool,
 
   className: PropTypes.string,
