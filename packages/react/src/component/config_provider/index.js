@@ -49,7 +49,12 @@ const ConfigProvider = ({
     return {
       preferredLimit: paginationConfig.preferredLimit,
       limitData: paginationConfig.limitData,
-      onLimitChange: paginationConfig.onLimitChange
+      onLimitChange: paginationConfig.onLimitChange,
+      /** 是否用 localStorage 记忆每页条数；默认 true。false 时不读不写 Storage */
+      persistLimit:
+        paginationConfig.persistLimit == null
+          ? true
+          : !!paginationConfig.persistLimit
     }
   }, [paginationConfig])
 
@@ -63,11 +68,13 @@ const ConfigProvider = ({
 }
 
 ConfigProvider.propTypes = {
-  /** 分页：preferredLimit / limitData / onLimitChange */
+  /** 分页：preferredLimit / limitData / onLimitChange / persistLimit */
   paginationConfig: PropTypes.shape({
     preferredLimit: PropTypes.number,
     limitData: PropTypes.array,
-    onLimitChange: PropTypes.func
+    onLimitChange: PropTypes.func,
+    /** 是否记忆每页条数到 localStorage，默认 true */
+    persistLimit: PropTypes.bool
   }),
   /** Table / TableX / TableXVirtualized 共用；表头固定等 */
   tableConfig: PropTypes.shape({
