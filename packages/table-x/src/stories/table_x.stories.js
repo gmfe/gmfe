@@ -268,6 +268,40 @@ const sortColumnsBackEnd = [
   }
 ]
 
+// 验证混合列宽：覆盖 width / minWidth / 都没设 三种场景
+const mixedWidthColumns = [
+  // 1. 宽 width 列
+  {
+    Header: 'width=200',
+    accessor: 'supplier_name',
+    width: 200
+  },
+  // 2. 仅 minWidth 列
+  {
+    Header: 'minWidth=100',
+    accessor: 'submit_time',
+    minWidth: 100
+  },
+  // 3. 都没设：按内容撑开 + 60 兜底
+  {
+    Header: '都没设(短内容)',
+    accessor: 'status',
+    Cell: ({ row }) => <span>{row.original.status}</span>
+  },
+  // 4. 都没设 + 较长内容
+  {
+    Header: '都没设(长内容)',
+    accessor: 'id'
+  },
+  // 5. minWidth + maxWidth 封顶
+  {
+    Header: 'minWidth=80 maxWidth=120',
+    accessor: 'total_money',
+    minWidth: 80,
+    maxWidth: 120
+  }
+]
+
 storiesOf('TableX|TableX', module)
   .add('说明', () => <div />, {
     info: {
@@ -321,4 +355,7 @@ Table 切 TableX 关注点：
       isTrDisable={(item, index) => index % 2 === 0}
       isTrHighlight={(item, index) => index === 0}
     />
+  ))
+  .add('混合列宽', () => (
+    <TableX data={store.data} columns={mixedWidthColumns} />
   ))

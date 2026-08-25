@@ -63,17 +63,26 @@ function selectTableXHOC(Component) {
 
     const canSelectData = data.filter(row => !isSelectorDisable(row))
 
-    let isSelectAll = false
-    if (selected.length > 0) {
-      isSelectAll = selected.length === canSelectData.length
-    }
+    // 支持跨页累积勾选：判断当前页每一行是否都在 selected 中，而非依赖 length 比较
+    const selectedSet = new Set(selected)
+    const isSelectAll =
+      canSelectData.length > 0 &&
+      canSelectData.every(row => selectedSet.has(row[keyField]))
 
     const handleSelect = selected => {
       onSelect(selected)
     }
 
     const handleSelectAll = () => {
-      onSelect(!isSelectAll ? _.map(canSelectData, v => v[keyField]) : [])
+      // 支持跨页累积勾选：全选 = 合并当前页；取消全选 = 从 selected 移除当前页
+      const currentPageKeys = _.map(canSelectData, v => v[keyField])
+      const selectedSet = new Set(selected)
+      if (!isSelectAll) {
+        currentPageKeys.forEach(key => selectedSet.add(key))
+      } else {
+        currentPageKeys.forEach(key => selectedSet.delete(key))
+      }
+      onSelect(Array.from(selectedSet))
     }
 
     // columns 即可，其他都是死的。 isSelectorDisable 呢？

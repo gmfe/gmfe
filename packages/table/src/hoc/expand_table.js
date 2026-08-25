@@ -171,8 +171,8 @@ function expandTableHOC(Component) {
           {...rest}
           data={data}
           keyField={keyField}
-          columns={[
-            {
+          columns={(() => {
+            const expanderCol = {
               id: '__expander', // 不要随便更改
               expander: true,
               Header: this.renderHeader,
@@ -180,9 +180,14 @@ function expandTableHOC(Component) {
               width: referOfWidth.noCell,
               className: 'icon-column',
               headerClassName: 'icon-column'
-            },
-            ...columns
-          ]}
+            }
+            // __setting 列需置顶为最左侧列，expander 排在它之后
+            const firstCol = columns[0]
+            if (firstCol && firstCol.id === '__setting') {
+              return [firstCol, expanderCol, ...columns.slice(1)]
+            }
+            return [expanderCol, ...columns]
+          })()}
           expanded={rtExpanded}
           onExpandedChange={this.handleExpandedChange}
         />
