@@ -1,3 +1,4 @@
+/* global localStorage */
 import React, {
   useContext,
   useState,

@@ -30,6 +30,7 @@
         justify-content: center;
         color: @gm-color-first;
         font-weight: bold;
+        position: relative;
       }
 
       .gm-table-x-td {
@@ -184,6 +185,7 @@
       top: 0;
       bottom: 0;
       z-index: 1;
+      cursor: col-resize;
     }
 
     // 最后一个需要去掉
@@ -209,13 +211,19 @@
         z-index: 1;
       }
 
-      &.gm-table-x-fixed-left {
+      &.gm-table-x-fixed-left:not(.gm-table-x-icon-column) {
         border-right: 1px solid @gm-table-x-border-color !important;
       }
 
-      &.gm-table-x-fixed-right {
+      &.gm-table-x-fixed-right:not(.gm-table-x-icon-column) {
         border-left: 1px solid @gm-table-x-border-color !important;
       }
+    }
+  }
+
+  &.gm-table-x-show-column-border {
+    .gm-table-x-th {
+      border-right: 1px solid @gm-table-x-border-color;
     }
   }
 
@@ -546,7 +554,7 @@
         .gm-react-table-x-diy-modal-list-li-remove {
           position: absolute;
           top: 10px;
-          right: 0px;
+          right: 10px;
           width: 14px;
           height: 14px;
         }

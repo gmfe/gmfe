@@ -1,3 +1,4 @@
+/* global requestAnimationFrame */
 import React, { useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useTable } from 'react-table'

@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import {
-  useTableHeaderSticky,
-  tableStickyPropTypes
-} from '@gmfe/react'
+import { useTableHeaderSticky, tableStickyPropTypes } from '@gmfe/react'
 
 const STICKY_PROP_KEYS = [
   'stickyId',
@@ -33,9 +29,7 @@ function syncBoxTableStickyVars(tableEl, stickyTopOffset) {
   box.style.setProperty('--gm-table-header-sticky-top', top)
 
   const action = box.querySelector(':scope > .gm-box-table-header')
-  const actionH = action
-    ? Math.round(action.getBoundingClientRect().height)
-    : 0
+  const actionH = action ? Math.round(action.getBoundingClientRect().height) : 0
   const actionPx = `${actionH}px`
   box.style.setProperty('--gm-table-action-sticky-height', actionPx)
   tableEl.style.setProperty('--gm-table-action-sticky-height', actionPx)
@@ -63,14 +57,13 @@ function withTableSticky(Component, options) {
     })
 
     const { className, style, ...tableProps } = rest
-    const stickyStyle =
-      stickyState.headerSticky
-        ? {
-            ...style,
-            ['--gm-table-header-sticky-top']: `${stickyState.stickyTopOffset ||
-              0}px`
-          }
-        : style
+    const stickyStyle = stickyState.headerSticky
+      ? {
+          ...style,
+          '--gm-table-header-sticky-top': `${stickyState.stickyTopOffset ||
+            0}px`
+        }
+      : style
 
     useEffect(() => {
       if (!stickyState.headerSticky) return undefined
@@ -78,10 +71,7 @@ function withTableSticky(Component, options) {
       const touched = []
       const apply = () => {
         document.querySelectorAll(`.${stickyClassName}`).forEach(el => {
-          const box = syncBoxTableStickyVars(
-            el,
-            stickyState.stickyTopOffset
-          )
+          const box = syncBoxTableStickyVars(el, stickyState.stickyTopOffset)
           if (box && touched.indexOf(box) === -1) touched.push(box)
         })
       }
@@ -92,11 +82,7 @@ function withTableSticky(Component, options) {
         window.removeEventListener('resize', apply)
         touched.forEach(clearBoxTableStickyVars)
       }
-    }, [
-      stickyState.headerSticky,
-      stickyState.stickyTopOffset,
-      stickyClassName
-    ])
+    }, [stickyState.headerSticky, stickyState.stickyTopOffset, stickyClassName])
 
     return (
       <Component
