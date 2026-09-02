@@ -35,7 +35,8 @@ class ManagePaginationV2 extends React.Component {
       pageObj: null,
       limit,
       offset: 0, // 不会变
-      peek: props.disablePage ? null : 6 * limit, // 不会变 and 页面会显示5页，peek 6页，便于显示 ... 代表还有更多页码
+      // peek 随 limit 变：页面约显示 5 页，窥探 6 页便于显示 ...；须始终 peek > limit
+      peek: props.disablePage ? null : 6 * limit,
 
       // 返回的 pagination
       resPagination: null,
@@ -45,6 +46,11 @@ class ManagePaginationV2 extends React.Component {
       currentIndex: 0, // 从0开始吧
       pageObjArr: [null]
     }
+  }
+
+  /** peek = 6 × limit；disablePage 时不窥探 */
+  resolvePeek = limit => {
+    return this.props.disablePage ? null : 6 * limit
   }
 
   // 保留旧用法
@@ -61,14 +67,15 @@ class ManagePaginationV2 extends React.Component {
 
   // 暴露给外面用，首次请求或重新请求
   apiDoFirstRequest = params => {
-    const { limit, offset, peek } = this.state
+    const { limit, offset } = this.state
+    const peek = this.resolvePeek(limit)
 
     this.setState(
       {
         pageObj: null,
         limit,
         offset,
-        peek, // no this.props.limit
+        peek,
 
         resPagination: null,
 
@@ -90,7 +97,7 @@ class ManagePaginationV2 extends React.Component {
 
   handleRequest = (params, options = {}) => {
     let { currentIndex, limit } = options
-    const { loading, pageObjArr, pageObj, offset, peek } = this.state
+    const { loading, pageObjArr, pageObj, offset } = this.state
 
     if (loading) {
       return
@@ -100,6 +107,8 @@ class ManagePaginationV2 extends React.Component {
     currentIndex =
       currentIndex === undefined ? this.state.currentIndex : currentIndex
     limit = limit === undefined ? this.state.limit : limit
+    // 改每页条数后必须重算 peek，否则 limit≥旧 peek（如 10→100 仍 peek=60）会违反 peek>limit
+    const peek = this.resolvePeek(limit)
 
     this.setState({
       loading: true
@@ -130,6 +139,7 @@ class ManagePaginationV2 extends React.Component {
 
           currentIndex,
           limit,
+          peek,
           loading: false,
           pageObjArr: newPageObjArr
         })
