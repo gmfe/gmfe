@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { PaginationConfigContext } from '../pagination/config_context'
 import { bumpStickyLocalVersion } from '../table_sticky/sync'
+import { syncGlobalStickyBodyClass } from '../table_sticky'
 
 /**
  * 全局组件配置。
@@ -36,12 +37,24 @@ const ConfigProvider = ({
 
   latestConfigValue = configValue
 
+  // 「一键固定」→ body class，全站分页吸底（与是否挂载 DIY 表无关）
+  const stickyHeader = !!(tableConfig && tableConfig.stickyHeader)
+  useEffect(() => {
+    syncGlobalStickyBodyClass(stickyHeader)
+    return () => syncGlobalStickyBodyClass(false)
+  }, [stickyHeader])
+
   const paginationValue = useMemo(() => {
     if (!paginationConfig) return null
     return {
       preferredLimit: paginationConfig.preferredLimit,
       limitData: paginationConfig.limitData,
-      onLimitChange: paginationConfig.onLimitChange
+      onLimitChange: paginationConfig.onLimitChange,
+      /** 是否用 localStorage 记忆每页条数；默认 true。false 时不读不写 Storage */
+      persistLimit:
+        paginationConfig.persistLimit == null
+          ? true
+          : !!paginationConfig.persistLimit
     }
   }, [paginationConfig])
 
@@ -55,11 +68,13 @@ const ConfigProvider = ({
 }
 
 ConfigProvider.propTypes = {
-  /** 分页：preferredLimit / limitData / onLimitChange */
+  /** 分页：preferredLimit / limitData / onLimitChange / persistLimit */
   paginationConfig: PropTypes.shape({
     preferredLimit: PropTypes.number,
     limitData: PropTypes.array,
-    onLimitChange: PropTypes.func
+    onLimitChange: PropTypes.func,
+    /** 是否记忆每页条数到 localStorage，默认 true */
+    persistLimit: PropTypes.bool
   }),
   /** Table / TableX / TableXVirtualized 共用；表头固定等 */
   tableConfig: PropTypes.shape({

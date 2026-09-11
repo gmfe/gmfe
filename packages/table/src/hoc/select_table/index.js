@@ -21,13 +21,14 @@ function selectTableV2HOC(Component) {
 
       return (
         <div className='gm-react-table-select'>
+          {/* 批量条放表格前，才能在吸顶时 sticky；未吸顶仍靠 absolute 上浮 */}
+          {batchActionBar}
           <SelectComponent
             {...rest}
             selectType={selectType}
             onSelect={this.handleSelect}
             onSelectAll={this.handleSelectAll}
           />
-          {batchActionBar}
         </div>
       )
     }

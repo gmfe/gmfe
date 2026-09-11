@@ -17,6 +17,61 @@ import { getLocale } from '@gmfe/locales'
 import { bumpStickyLocalVersion, subscribeStickyLocalVersion } from './sync'
 
 const STORAGE_PREFIX = 'table_header_sticky_'
+/** 「一键固定」开启时挂在 body 上，驱动全站分页吸底 */
+const GLOBAL_STICKY_BODY_CLASS = 'gm-global-table-header-sticky'
+/** 本表显式关闭「是否固定」时挂在表格上，优先退出分页吸底 */
+const STICKY_OPT_OUT_CLASS = 'gm-table-sticky-opt-out'
+
+function syncGlobalStickyBodyClass(enabled) {
+  if (typeof document === 'undefined' || !document.body) return
+  document.body.classList.toggle(GLOBAL_STICKY_BODY_CLASS, !!enabled)
+}
+
+/**
+ * 同一业务页的查看/编辑表常有不同 diy id（*view / *edit / *_detail / *_edit），
+ * 未显式传 stickyId 时去掉这些后缀，使吸顶偏好共用。
+ */
+function normalizeTableStickyId(id) {
+  if (!id || typeof id !== 'string') return id
+  return id.replace(/(_?(view|edit|detail))+$/i, '')
+}
+
+/** stickyId 优先；否则对 diy id 做归一化 */
+function resolveTableStickyStorageId(stickyId, id) {
+  if (stickyId) return stickyId
+  const normalized = normalizeTableStickyId(id)
+  return normalized || id
+}
+
+/**
+ * 读取本地「是否固定」。先读归一化 key，再回退历史完整 diy id / 常见后缀并迁移。
+ * @returns {{ value: boolean|undefined, hasOverride: boolean }}
+ */
+function readTableStickyLocal(storageId, legacyId) {
+  if (!storageId) return { value: undefined, hasOverride: false }
+
+  const candidates = []
+  const push = key => {
+    if (key && candidates.indexOf(key) === -1) candidates.push(key)
+  }
+  push(storageId)
+  push(legacyId)
+  ;['view', 'edit', 'detail', 'editedit'].forEach(suf => {
+    push(storageId + suf)
+    push(storageId + '_' + suf)
+  })
+
+  for (let i = 0; i < candidates.length; i++) {
+    const cached = Storage.get(STORAGE_PREFIX + candidates[i])
+    if (cached === true || cached === false) {
+      if (candidates[i] !== storageId) {
+        Storage.set(STORAGE_PREFIX + storageId, cached)
+      }
+      return { value: cached, hasOverride: true }
+    }
+  }
+  return { value: undefined, hasOverride: false }
+}
 
 /**
  * 测算页面顶部固定/吸顶元素遮挡表头的高度。
@@ -27,6 +82,7 @@ function measureStickyTopOffset() {
   if (typeof document === 'undefined') return 0
 
   const vh = window.innerHeight || document.documentElement.clientHeight
+  const vw = window.innerWidth || document.documentElement.clientWidth
   let maxBottom = 0
 
   const consider = el => {
@@ -35,6 +91,8 @@ function measureStickyTopOffset() {
     if (cs.display === 'none' || cs.visibility === 'hidden') return
     const rect = el.getBoundingClientRect()
     if (rect.height < 1) return
+    // 排除左侧菜单等窄栏，只认接近全宽的顶栏
+    if (vw > 0 && rect.width < vw * 0.4) return
     // 只关心贴近视口顶端的栏（避免把页面中部的 sticky 元素算进来）
     if (rect.top > Math.min(160, vh * 0.3)) return
     if (rect.bottom > maxBottom) maxBottom = rect.bottom
@@ -48,6 +106,8 @@ function measureStickyTopOffset() {
       '.gm-framework-right-top-default-inner, .gm-framework-right-top, .gm-framework-full-tabs-list'
     )
     .forEach(consider)
+  // 3) 业务侧用 gm-position-fixed 挂的顶栏（如单据详情 HeaderActionFixed）
+  document.querySelectorAll('.gm-position-fixed').forEach(consider)
 
   return Math.max(0, Math.round(maxBottom))
 }
@@ -82,8 +142,9 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
     stickyTop
   } = props
 
-  // diy 的 id 可复用为 stickyId
-  const resolvedStickyId = stickyId || id
+  // diy 的 id 可复用；未传 stickyId 时归一化 view/edit/detail 后缀以便同页共用
+  const resolvedStickyId = resolveTableStickyStorageId(stickyId, id)
+  const legacyStickyId = stickyId ? null : id
 
   const config = useContext(ConfigContext)
   const globalCfg =
@@ -119,12 +180,18 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
     if (!resolvedStickyId) {
       return { value: !!defaultSticky, hasOverride: false }
     }
-    const cached = Storage.get(STORAGE_PREFIX + resolvedStickyId)
-    if (cached === true || cached === false) {
-      return { value: cached, hasOverride: true }
+    const cached = readTableStickyLocal(resolvedStickyId, legacyStickyId)
+    if (cached.hasOverride) {
+      return { value: cached.value, hasOverride: true }
     }
     return { value: !!defaultSticky, hasOverride: false }
-  }, [isLocalControlled, sticky, resolvedStickyId, defaultSticky])
+  }, [
+    isLocalControlled,
+    sticky,
+    resolvedStickyId,
+    legacyStickyId,
+    defaultSticky
+  ])
 
   const [localState, setLocalState] = useState(readLocal)
   const [measuredTop, setMeasuredTop] = useState(0)
@@ -283,12 +350,12 @@ const TableStickyControls = ({
             popup={
               <div
                 className='gm-popover-is-in-popup'
-                style={{ maxWidth: '220px', padding: '8px 4px' }}
+                style={{ maxWidth: '280px', padding: '8px 4px' }}
                 onClick={stop}
                 onMouseDown={stop}
               >
                 {getLocale(
-                  '开启后，当前列表的表头在纵向滚动时固定置顶，仅对当前列表生效。'
+                  '开启后，当前列表的表头在纵向滚动时固定置顶、分页筛选固定于底部，仅对当前列表生效，且本选项优先于「一键固定」操作。'
                 )}
               </div>
             }
@@ -310,12 +377,12 @@ const TableStickyControls = ({
             popup={
               <div
                 className='gm-popover-is-in-popup'
-                style={{ maxWidth: '220px', padding: '8px 4px' }}
+                style={{ maxWidth: '280px', padding: '8px 4px' }}
                 onClick={stop}
                 onMouseDown={stop}
               >
                 {getLocale(
-                  '开启后，所有列表的表头都会固定置顶；关闭则会取消所有列表的表头固定。'
+                  '开启后，所有开启分组的表头都会固定置顶；所有分页筛选固定于底部；关闭则会取消所有列表的表头、分页固定。'
                 )}
               </div>
             }
@@ -372,5 +439,11 @@ export {
   tableStickyPropTypes,
   clearAllLocalHeaderSticky,
   measureStickyTopOffset,
+  normalizeTableStickyId,
+  resolveTableStickyStorageId,
+  readTableStickyLocal,
+  syncGlobalStickyBodyClass,
+  GLOBAL_STICKY_BODY_CLASS,
+  STICKY_OPT_OUT_CLASS,
   STORAGE_PREFIX
 }

@@ -217,4 +217,5 @@ DndTable.defaultProps = {
   getTrGroupProps: () => ({})
 }
 
+// 吸顶仅由 diyTableHOC（分组表格）开启，DndTable 不再默认响应「一键固定」
 export default DndTable
