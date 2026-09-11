@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useTable } from 'react-table'
 import { Empty, Loading, afterScroll, __DEFAULT_COLUMN } from '../util'
@@ -45,6 +45,10 @@ const TableX = ({
     prepareRow(rows[0])
     const last = rows[0].cells[rows[0].cells.length - 1].column
     totalWidth = last.totalLeft + last.totalWidth
+  } else if (headerGroups[0] && headerGroups[0].headers.length > 0) {
+    const last =
+      headerGroups[0].headers[headerGroups[0].headers.length - 1]
+    totalWidth = (last.totalLeft || 0) + (last.totalWidth || 0)
   }
 
   const gtp = getTableProps()
@@ -60,9 +64,39 @@ const TableX = ({
     className: 'gm-table-x-tbody'
   }
 
+  const headerSticky = classNames(className).includes(
+    'gm-table-x-header-sticky'
+  )
+
+  const headerScrollRef = useRef(null)
+  const bodyScrollRef = useRef(null)
+  const syncingScroll = useRef(false)
+
+  const syncScroll = useCallback((source, target) => {
+    if (!target || syncingScroll.current) return
+    if (target.scrollLeft === source.scrollLeft) return
+    syncingScroll.current = true
+    target.scrollLeft = source.scrollLeft
+    // 下一帧解除，避免滚动事件回环
+    requestAnimationFrame(() => {
+      syncingScroll.current = false
+    })
+  }, [])
+
   const handleScroll = e => {
     onScroll && onScroll(e)
     afterScroll()
+  }
+
+  const handleBodyScroll = e => {
+    if (headerSticky) {
+      syncScroll(e.currentTarget, headerScrollRef.current)
+    }
+    handleScroll(e)
+  }
+
+  const handleHeaderScroll = e => {
+    syncScroll(e.currentTarget, bodyScrollRef.current)
   }
 
   // eslint-disable-next-line
@@ -84,29 +118,56 @@ const TableX = ({
     )
   }
 
+  const tbodyRows = _.map(rows, row =>
+    RenderRow({
+      index: row.index,
+      style: {}
+    })
+  )
+
+  const rootClassName = classNames(
+    'gm-table-x',
+    {
+      'gm-table-x-empty': data.length === 0,
+      'gm-table-x-tiled': tiled
+    },
+    className
+  )
+
+  // 吸顶模式：表头/表体拆成两个横向滚动容器并同步 scrollLeft，
+  // 这样纵向可相对页面 sticky，横向仍能用 sticky left/right 固定列
+  if (headerSticky) {
+    return (
+      <div {...rest} className={rootClassName}>
+        <div
+          ref={headerScrollRef}
+          className='gm-table-x-affix-header'
+          onScroll={handleHeaderScroll}
+        >
+          <table {...tableProps}>
+            <THead headerGroups={headerGroups} totalWidth={totalWidth} />
+          </table>
+        </div>
+        <div
+          ref={bodyScrollRef}
+          className='gm-table-x-body-scroll'
+          onScroll={handleBodyScroll}
+        >
+          <table {...tableProps}>
+            <tbody {...tableBodyProps}>{tbodyRows}</tbody>
+          </table>
+        </div>
+        {loading && <Loading />}
+        {!loading && data.length === 0 && <Empty />}
+      </div>
+    )
+  }
+
   return (
-    <div
-      {...rest}
-      className={classNames(
-        'gm-table-x',
-        {
-          'gm-table-x-empty': data.length === 0,
-          'gm-table-x-tiled': tiled
-        },
-        className
-      )}
-      onScroll={handleScroll}
-    >
+    <div {...rest} className={rootClassName} onScroll={handleScroll}>
       <table {...tableProps}>
         <THead headerGroups={headerGroups} totalWidth={totalWidth} />
-        <tbody {...tableBodyProps}>
-          {_.map(rows, row =>
-            RenderRow({
-              index: row.index,
-              style: {}
-            })
-          )}
-        </tbody>
+        <tbody {...tableBodyProps}>{tbodyRows}</tbody>
       </table>
       {loading && <Loading />}
       {!loading && data.length === 0 && <Empty />}

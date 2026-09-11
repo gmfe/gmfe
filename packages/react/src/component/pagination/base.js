@@ -6,8 +6,10 @@ import Left from './left'
 import Page from './page'
 import Right from './right'
 import PagePeek from './page_peek'
+import { PaginationConfigContext } from './config_context'
+import { defaultLimitData } from './left'
 
-const PaginationBase = props => {
+const PaginationBaseInner = props => {
   const {
     data,
     onChange,
@@ -40,28 +42,68 @@ const PaginationBase = props => {
   )
 }
 
-PaginationBase.propTypes = {
-  /** 非传统意义上的 分页信息。 仅此组件需要的数据而已。count 仅当前有多少条数据，非传统意义上的一共多少条数据，注意是当前。 */
+PaginationBaseInner.propTypes = {
   data: PropTypes.shape({
     count: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
     limit: PropTypes.number.isRequired
   }),
-  /** 提供 {offset, limit} */
   onChange: PropTypes.func.isRequired,
-  /** 此 count 非 data.count。此只是用来控制不显示总数 */
   showCount: PropTypes.bool,
   className: PropTypes.string,
   style: PropTypes.object,
-  /** 私有 */
   _peekInfo: PropTypes.shape({
     more: PropTypes.bool,
     peek: PropTypes.number
   }),
-  /**
-   *自定义分页，默认
-   */
   limitData: PropTypes.array
 }
+
+/**
+ * 在 Base 层消费 Provider，保证 Pagination / PaginationV2 / ManagePagination
+ * 都能拿到 page_size_options，避免 Left 单独 useContext 时出现双 Context 实例读不到配置。
+ */
+const PaginationBase = props => {
+  return (
+    <PaginationConfigContext.Consumer>
+      {config => {
+        let limitData = props.limitData
+        if (
+          limitData == null &&
+          config &&
+          Array.isArray(config.limitData) &&
+          config.limitData.length
+        ) {
+          limitData = config.limitData
+        }
+        if (limitData == null) {
+          limitData = defaultLimitData
+        }
+
+        const handleChange = next => {
+          if (
+            next &&
+            next.limit !== props.data.limit &&
+            config &&
+            config.onLimitChange
+          ) {
+            config.onLimitChange(next.limit)
+          }
+          props.onChange(next)
+        }
+
+        return (
+          <PaginationBaseInner
+            {...props}
+            limitData={limitData}
+            onChange={handleChange}
+          />
+        )
+      }}
+    </PaginationConfigContext.Consumer>
+  )
+}
+
+PaginationBase.propTypes = PaginationBaseInner.propTypes
 
 export default PaginationBase

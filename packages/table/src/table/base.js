@@ -22,6 +22,60 @@ class BaseTable extends React.Component {
     window.dispatchEvent(new window.CustomEvent(EVENT_TYPE.TABLE_SCROLL))
   }, 500)
 
+  // 吸顶模式下把 thead 从 rt-table 内移到 ReactTable 直接子级，否则 rt-table 的 overflow 会把 thead sticky 限制在横向滚动区内。
+  // 移出后同步 rt-table 的横向滚动给 thead。
+  syncTheadScroll = () => {
+    const dom = findDOMNode(this.refTable.current)
+    if (!dom) return
+    const rtTable = dom.getElementsByClassName('rt-table')[0]
+    const theadWrapper = dom.querySelector(':scope > .gm-react-table-sticky-thead-wrap')
+    if (rtTable && theadWrapper) {
+      theadWrapper.scrollLeft = rtTable.scrollLeft
+    }
+  }
+
+  setupStickyThead = () => {
+    const dom = findDOMNode(this.refTable.current)
+    if (!dom) return
+    if (!dom.classList.contains('gm-react-table-header-sticky')) return
+
+    // 已处理过
+    if (dom.querySelector(':scope > .gm-react-table-sticky-thead-wrap')) return
+
+    const rtTable = dom.getElementsByClassName('rt-table')[0]
+    if (!rtTable) return
+    const thead = rtTable.getElementsByClassName('rt-thead')[0]
+    if (!thead) return
+
+    // 用一个横向滚动容器包住 thead，宽度与 rt-table 一致
+    const wrap = document.createElement('div')
+    wrap.className = 'gm-react-table-sticky-thead-wrap'
+    // 把 thead 从 rt-table 移出
+    rtTable.removeChild(thead)
+    wrap.appendChild(thead)
+    dom.insertBefore(wrap, rtTable)
+
+    // 同步横向滚动
+    rtTable.addEventListener('scroll', this.syncTheadScroll)
+    // 初始对齐
+    this.syncTheadScroll()
+  }
+
+  teardownStickyThead = () => {
+    const dom = findDOMNode(this.refTable.current)
+    if (!dom) return
+    const wrap = dom.querySelector(':scope > .gm-react-table-sticky-thead-wrap')
+    if (!wrap) return
+    const rtTable = dom.getElementsByClassName('rt-table')[0]
+    const thead = wrap.getElementsByClassName('rt-thead')[0]
+    rtTable.removeEventListener('scroll', this.syncTheadScroll)
+    // 还原 thead 到 rt-table 开头
+    if (rtTable && thead) {
+      rtTable.insertBefore(thead, rtTable.firstChild)
+    }
+    dom.removeChild(wrap)
+  }
+
   componentDidMount() {
     const dom = findDOMNode(this.refTable.current)
     dom
@@ -31,6 +85,13 @@ class BaseTable extends React.Component {
     dom
       .getElementsByClassName('rt-tbody')[0]
       .addEventListener('scroll', this.doScroll)
+
+    this.setupStickyThead()
+  }
+
+  componentDidUpdate() {
+    // 吸顶 class 可能后续切换；重新校准
+    this.setupStickyThead()
   }
 
   componentWillUnmount() {
@@ -42,6 +103,8 @@ class BaseTable extends React.Component {
     dom
       .getElementsByClassName('rt-tbody')[0]
       .removeEventListener('scroll', this.doScroll)
+
+    this.teardownStickyThead()
   }
 
   processItem = item => {

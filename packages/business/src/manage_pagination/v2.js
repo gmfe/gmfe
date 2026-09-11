@@ -2,17 +2,42 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import _ from 'lodash'
-import { Storage, Flex } from '@gmfe/react'
+import { Storage, Flex, PaginationConfigContext } from '@gmfe/react'
 import Transform from './transform'
 import { warn } from '@gm-common/tool'
 
-class ManagePaginationV2 extends React.Component {
-  constructor(props) {
-    super(props)
+/** props > Provider；默认 true（兼容旧行为） */
+const resolvePersistLimit = (props, context) => {
+  if (props.persistLimit != null) return !!props.persistLimit
+  if (context && context.persistLimit != null) return !!context.persistLimit
+  return true
+}
 
+class ManagePaginationV2 extends React.Component {
+  static contextType = PaginationConfigContext
+
+  constructor(props, context) {
+    super(props, context)
+
+    const persistLimit = resolvePersistLimit(props, context)
+    const storedLimit =
+      persistLimit && props.id
+        ? Storage.get('manage_pagination_v2_' + props.id)
+        : null
+    const preferredLimit =
+      props.preferredLimit != null
+        ? props.preferredLimit
+        : context && context.preferredLimit != null
+        ? context.preferredLimit
+        : null
+    // 选中条数优先级：Storage(id) > props > Provider > defaultLimit
+    // persistLimit === false 时跳过 Storage，避免习惯记忆
     const limit =
-      (props.id && Storage.get('manage_pagination_v2_' + props.id)) ||
-      props.defaultLimit
+      storedLimit != null
+        ? storedLimit
+        : preferredLimit != null
+        ? preferredLimit
+        : props.defaultLimit
 
     this.state = {
       // 给后台
@@ -142,8 +167,13 @@ class ManagePaginationV2 extends React.Component {
   }
 
   handleChange = ({ currentIndex, limit }) => {
-    if (this.props.id) {
+    const persistLimit = resolvePersistLimit(this.props, this.context)
+    if (persistLimit && this.props.id) {
       Storage.set('manage_pagination_v2_' + this.props.id, limit)
+    }
+
+    if (limit !== this.state.limit && this.props.onLimitChange) {
+      this.props.onLimitChange(limit)
     }
 
     this.handleRequest(this.getParams(currentIndex), {
@@ -158,19 +188,30 @@ class ManagePaginationV2 extends React.Component {
       onRequest,
       children,
       defaultLimit,
+      preferredLimit,
+      limitData,
+      onLimitChange,
+      persistLimit,
       disablePage,
       className,
       ...rest
     } = this.props
 
     const { limit, loading, resPagination, currentIndex } = this.state
+    const config = this.context
+    const resolvedLimitData =
+      limitData != null
+        ? limitData
+        : config && Array.isArray(config.limitData) && config.limitData.length
+        ? config.limitData
+        : undefined
 
     return (
       <div {...rest} className={classNames('gm-manage-pagination', className)}>
         <div className='gm-manage-pagination-list'>
           {_.isFunction(children) ? children({ loading }) : children}
         </div>
-        <Flex justifyEnd className='gm-padding-20'>
+        <Flex justifyEnd className='gm-padding-20 gm-manage-pagination-bar'>
           <Transform
             count={resPagination && resPagination.count}
             limit={limit}
@@ -178,6 +219,7 @@ class ManagePaginationV2 extends React.Component {
             peek={resPagination && resPagination.peek}
             more={resPagination && resPagination.more}
             onChange={this.handleChange}
+            limitData={resolvedLimitData}
           />
         </Flex>
       </div>
@@ -197,6 +239,17 @@ ManagePaginationV2.propTypes = {
 
   /** 默认 10，想要改变则传此参数 */
   defaultLimit: PropTypes.number,
+  /** 当前每页条数（优先于 Provider / Storage） */
+  preferredLimit: PropTypes.number,
+  /**
+   * 每页条数选项 [{ value, text }, ...]
+   * 不传则由 PaginationBase 读 Provider / 默认值
+   */
+  limitData: PropTypes.array,
+  /** 用户切换每页条数时的页面级回调 */
+  onLimitChange: PropTypes.func,
+  /** 是否用 localStorage 记忆每页条数；默认 true。也可由 Provider.paginationConfig.persistLimit 注入 */
+  persistLimit: PropTypes.bool,
   disablePage: PropTypes.bool,
 
   className: PropTypes.string,

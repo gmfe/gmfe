@@ -2,7 +2,16 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Storage, Popover } from '@gmfe/react'
+import {
+  Storage,
+  Popover,
+  getLatestConfig,
+  clearAllLocalHeaderSticky,
+  STORAGE_PREFIX,
+  resolveTableStickyStorageId,
+  readTableStickyLocal
+  // bump 从 sync 再导出不方便，走 getLatestConfig().bumpStickyLocalVersion
+} from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import {
   TABLE_X,
@@ -13,6 +22,7 @@ import {
   OperationIconTip
 } from '../../util'
 import TableX from '../../base'
+import withTableSticky from '../with_table_sticky'
 import { devWarn } from '@gm-common/tool'
 import DiyTableXModal from './components/diy_table_x_modal'
 
@@ -92,7 +102,92 @@ function getStorageColumns(columns) {
   })
 }
 
+function buildStickyControlProps(hookProps, config) {
+  const {
+    stickyId,
+    id,
+    defaultSticky = false,
+    onStickyChange,
+    localStickyText,
+    globalStickyText
+  } = hookProps
+
+  const resolvedStickyId = resolveTableStickyStorageId(stickyId, id)
+  const legacyStickyId = stickyId ? null : id
+  const globalCfg = (config && (config.tableXConfig || config.tableConfig)) || null
+  const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
+  const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange
+  const bump = config && config.bumpStickyLocalVersion
+
+  // 控件展示开关：props 优先，否则回退 ConfigProvider
+  const showLocalSticky =
+    hookProps.showLocalSticky !== undefined
+      ? hookProps.showLocalSticky
+      : globalCfg && globalCfg.showLocalSticky !== undefined
+        ? globalCfg.showLocalSticky
+        : true
+  const showGlobalSticky =
+    hookProps.showGlobalSticky !== undefined
+      ? hookProps.showGlobalSticky
+      : globalCfg && globalCfg.showGlobalSticky !== undefined
+        ? globalCfg.showGlobalSticky
+        : true
+
+  let hasLocalOverride = false
+  let localSticky = !!defaultSticky
+  if (resolvedStickyId) {
+    const cached = readTableStickyLocal(resolvedStickyId, legacyStickyId)
+    if (cached.hasOverride) {
+      hasLocalOverride = true
+      localSticky = cached.value
+    }
+  }
+
+  const localChecked = hasLocalOverride ? localSticky : globalSticky
+  // 当前弹层展示用：取消是否固定时同步取消勾选一键固定（不改全局）
+  const globalChecked = globalSticky && localChecked
+
+  return {
+    localChecked,
+    globalSticky,
+    globalChecked,
+    canShowLocal: showLocalSticky !== false && !!resolvedStickyId,
+    canShowGlobal:
+      showGlobalSticky !== false &&
+      typeof onGlobalChangeRaw === 'function' &&
+      !!resolvedStickyId,
+    texts: {
+      local: localStickyText != null ? localStickyText : getLocale('是否固定'),
+      global: globalStickyText != null ? globalStickyText : getLocale('一键固定')
+    },
+    setLocalSticky: checked => {
+      const next = !!checked
+      if (resolvedStickyId) {
+        Storage.set(STORAGE_PREFIX + resolvedStickyId, next)
+      }
+      bump && bump()
+      onStickyChange && onStickyChange(next)
+    },
+    onGlobalChange: checked => {
+      const next = !!checked
+      clearAllLocalHeaderSticky()
+      bump && bump()
+      onGlobalChangeRaw && onGlobalChangeRaw(next)
+    }
+  }
+}
+
+// 分组表格才有表头吸顶（是否固定/一键固定）；普通 TableX 不响应
+const StickyTableX = withTableSticky(TableX, {
+  stickyClassName: 'gm-table-x-header-sticky'
+})
+
 function diyTableXHOC(Component) {
+  const StickyComponent =
+    Component === TableX ? StickyTableX : withTableSticky(Component, {
+      stickyClassName: 'gm-table-x-header-sticky'
+    })
+
   const DiyTableX = ({ id, columns, diyGroupSorting, ...rest }) => {
     // 没id强制报错
     devWarn(() => {
@@ -111,6 +206,19 @@ function diyTableXHOC(Component) {
     }, [columns])
 
     const popoverRef = useRef()
+
+    // 用 ref 持有最新 props；popup() 打开时通过 getLatestConfig 读取，避免 useContext 订阅
+    const stickyHookPropsRef = useRef(null)
+    stickyHookPropsRef.current = {
+      id,
+      stickyId: rest.stickyId,
+      defaultSticky: rest.defaultSticky,
+      onStickyChange: rest.onStickyChange,
+      showLocalSticky: rest.showLocalSticky,
+      showGlobalSticky: rest.showGlobalSticky,
+      localStickyText: rest.localStickyText,
+      globalStickyText: rest.globalStickyText
+    }
 
     const handleDiyColumnsSave = cols => {
       setDiyCols(cols)
@@ -138,14 +246,18 @@ function diyTableXHOC(Component) {
               ref={popoverRef}
               showArrow
               offset={-10}
-              popup={
+              popup={() => (
                 <DiyTableXModal
                   diyGroupSorting={diyGroupSorting}
                   columns={cols}
                   onSave={handleDiyColumnsSave}
                   onCancel={handleCancel}
+                  stickyControlProps={buildStickyControlProps(
+                    stickyHookPropsRef.current,
+                    getLatestConfig()
+                  )}
                 />
-              }
+              )}
             >
               <div className='gm-table-x-icon'>
                 <OperationIconTip tip={getLocale('表头设置')}>
@@ -162,7 +274,7 @@ function diyTableXHOC(Component) {
       ]
     }, [columns, diyCols])
 
-    return <Component {...rest} id={id} columns={_columns} />
+    return <StickyComponent {...rest} id={id} columns={_columns} />
   }
 
   DiyTableX.propTypes = {

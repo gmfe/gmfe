@@ -1,14 +1,72 @@
-import React, { createRef } from 'react'
+import React, { createRef, useRef } from 'react'
 import { getLocale } from '@gmfe/locales'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
-import { Storage, Popover } from '@gmfe/react'
+import { Storage, Popover, useTableHeaderSticky } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
 import { getColumnKey, referOfWidth } from '../../util'
 import Table from '../../table'
+import withTableSticky from '../with_table_sticky'
 import { devWarn } from '@gm-common/tool'
 import DiyTableModal from './diy_table_modal'
 import OperationIconTip from '../../operation_icon_tip'
+
+/** Header 内计算 sticky（在 ConfigProvider 内）；弹层通过 props 传入避免 LayerRoot 丢 Context */
+function DiySettingHeader({
+  popoverRef,
+  diyGroupSorting,
+  columns,
+  onSave,
+  onCancel,
+  stickyHookProps
+}) {
+  const stickyState = useTableHeaderSticky(stickyHookProps, 'tableConfig')
+  const stickyControlPropsRef = useRef(null)
+  stickyControlPropsRef.current = {
+    localChecked: stickyState.localChecked,
+    globalSticky: stickyState.globalSticky,
+    globalChecked: stickyState.globalChecked,
+    setLocalSticky: stickyState.setLocalSticky,
+    onGlobalChange: stickyState.onGlobalChange,
+    canShowLocal: stickyState.canShowLocal,
+    canShowGlobal: stickyState.canShowGlobal,
+    texts: stickyState.texts
+  }
+
+  return (
+    <Popover
+      ref={popoverRef}
+      showArrow
+      offset={-10}
+      popup={() => (
+        <DiyTableModal
+          diyGroupSorting={diyGroupSorting}
+          columns={columns}
+          onSave={onSave}
+          onCancel={onCancel}
+          stickyControlProps={stickyControlPropsRef.current}
+        />
+      )}
+    >
+      <div className='table-icon'>
+        <OperationIconTip tip={getLocale('表头设置')}>
+          <div>
+            <SVGSetting className='gm-cursor gm-text-hover-primary' />
+          </div>
+        </OperationIconTip>
+      </div>
+    </Popover>
+  )
+}
+
+DiySettingHeader.propTypes = {
+  popoverRef: PropTypes.any,
+  diyGroupSorting: PropTypes.array,
+  columns: PropTypes.array,
+  onSave: PropTypes.func,
+  onCancel: PropTypes.func,
+  stickyHookProps: PropTypes.object
+}
 
 /**
  * 生成新的columns
@@ -78,6 +136,12 @@ function splitColumns(columns) {
 }
 
 function diyTableHOC(Component) {
+  // 分组表格才有表头吸顶（是否固定/一键固定）；普通 Table 不响应
+  const StickyComponent = withTableSticky(Component, {
+    configKey: 'tableConfig',
+    stickyClassName: 'gm-react-table-header-sticky'
+  })
+
   class DiyTable extends React.Component {
     popoverRef = createRef()
     constructor(props) {
@@ -135,32 +199,29 @@ function diyTableHOC(Component) {
       const { columns } = this.state
 
       return (
-        <Component
+        <StickyComponent
           {...this.props}
           columns={[
             {
               Header: () => (
-                <Popover
-                  ref={this.popoverRef}
-                  showArrow
-                  offset={-10}
-                  popup={
-                    <DiyTableModal
-                      diyGroupSorting={this.props.diyGroupSorting}
-                      columns={this.state.columns}
-                      onSave={this.handleColumnsSave}
-                      onCancel={this.handleCancel}
-                    />
-                  }
-                >
-                  <div className='table-icon'>
-                    <OperationIconTip tip={getLocale('表头设置')}>
-                      <div>
-                        <SVGSetting className='gm-cursor gm-text-hover-primary' />
-                      </div>
-                    </OperationIconTip>
-                  </div>
-                </Popover>
+                <DiySettingHeader
+                  popoverRef={this.popoverRef}
+                  diyGroupSorting={this.props.diyGroupSorting}
+                  columns={this.state.columns}
+                  onSave={this.handleColumnsSave}
+                  onCancel={this.handleCancel}
+                  stickyHookProps={{
+                    id: this.props.id,
+                    stickyId: this.props.stickyId,
+                    sticky: this.props.sticky,
+                    defaultSticky: this.props.defaultSticky,
+                    onStickyChange: this.props.onStickyChange,
+                    showLocalSticky: this.props.showLocalSticky,
+                    showGlobalSticky: this.props.showGlobalSticky,
+                    localStickyText: this.props.localStickyText,
+                    globalStickyText: this.props.globalStickyText
+                  }}
+                />
               ),
               className: 'icon-column',
               headerClassName: 'icon-column',
