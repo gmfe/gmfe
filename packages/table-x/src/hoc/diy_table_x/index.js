@@ -7,7 +7,6 @@ import {
   Storage,
   Popover,
   getLatestConfig,
-  clearAllLocalHeaderSticky,
   STORAGE_PREFIX,
   resolveTableStickyStorageId,
   readTableStickyLocal
@@ -104,22 +103,21 @@ function getStorageColumns(columns) {
   })
 }
 
+// 列宽持久化 storage 后缀，与字段配置 ${id} 隔离
+const COL_WIDTH_SUFFIX = '_col_width'
+
 function buildStickyControlProps(hookProps, config) {
   const {
     stickyId,
     id,
     defaultSticky = false,
     onStickyChange,
-    localStickyText,
-    globalStickyText
+    localStickyText
   } = hookProps
 
   const resolvedStickyId = resolveTableStickyStorageId(stickyId, id)
   const legacyStickyId = stickyId ? null : id
-  const globalCfg =
-    (config && (config.tableXConfig || config.tableConfig)) || null
-  const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
-  const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange
+  const globalCfg = (config && (config.tableXConfig || config.tableConfig)) || null
   const bump = config && config.bumpStickyLocalVersion
 
   // 控件展示开关：props 优先，否则回退 ConfigProvider
@@ -127,42 +125,23 @@ function buildStickyControlProps(hookProps, config) {
     hookProps.showLocalSticky !== undefined
       ? hookProps.showLocalSticky
       : globalCfg && globalCfg.showLocalSticky !== undefined
-      ? globalCfg.showLocalSticky
-      : true
-  const showGlobalSticky =
-    hookProps.showGlobalSticky !== undefined
-      ? hookProps.showGlobalSticky
-      : globalCfg && globalCfg.showGlobalSticky !== undefined
-      ? globalCfg.showGlobalSticky
-      : true
+        ? globalCfg.showLocalSticky
+        : true
 
-  let hasLocalOverride = false
   let localSticky = !!defaultSticky
   if (resolvedStickyId) {
     const cached = readTableStickyLocal(resolvedStickyId, legacyStickyId)
     if (cached.hasOverride) {
-      hasLocalOverride = true
       localSticky = cached.value
     }
   }
 
-  const localChecked = hasLocalOverride ? localSticky : globalSticky
-  // 当前弹层展示用：取消是否固定时同步取消勾选一键固定（不改全局）
-  const globalChecked = globalSticky && localChecked
-
   return {
-    localChecked,
-    globalSticky,
-    globalChecked,
+    localChecked: !!localSticky,
     canShowLocal: showLocalSticky !== false && !!resolvedStickyId,
-    canShowGlobal:
-      showGlobalSticky !== false &&
-      typeof onGlobalChangeRaw === 'function' &&
-      !!resolvedStickyId,
+    canShowGlobal: false,
     texts: {
-      local: localStickyText != null ? localStickyText : getLocale('是否固定'),
-      global:
-        globalStickyText != null ? globalStickyText : getLocale('一键固定')
+      local: localStickyText != null ? localStickyText : getLocale('是否固定')
     },
     setLocalSticky: checked => {
       const next = !!checked
@@ -171,31 +150,20 @@ function buildStickyControlProps(hookProps, config) {
       }
       bump && bump()
       onStickyChange && onStickyChange(next)
-    },
-    onGlobalChange: checked => {
-      const next = !!checked
-      clearAllLocalHeaderSticky()
-      bump && bump()
-      onGlobalChangeRaw && onGlobalChangeRaw(next)
     }
   }
 }
 
-// 分组表格才有表头吸顶（是否固定/一键固定）；普通 TableX 不响应
+// 分组表格才有表头吸顶（「是否固定」）；普通 TableX 不响应
 const StickyTableX = withTableSticky(TableX, {
   stickyClassName: 'gm-table-x-header-sticky'
 })
 
-// 列宽持久化 storage 后缀，与字段配置 ${id} 隔离
-const COL_WIDTH_SUFFIX = '_col_width'
-
 function diyTableXHOC(Component) {
   const StickyComponent =
-    Component === TableX
-      ? StickyTableX
-      : withTableSticky(Component, {
-          stickyClassName: 'gm-table-x-header-sticky'
-        })
+    Component === TableX ? StickyTableX : withTableSticky(Component, {
+      stickyClassName: 'gm-table-x-header-sticky'
+    })
 
   const DiyTableX = ({
     id,
@@ -235,19 +203,6 @@ function diyTableXHOC(Component) {
 
     const popoverRef = useRef()
 
-    // 用 ref 持有最新 props；popup() 打开时通过 getLatestConfig 读取，避免 useContext 订阅
-    const stickyHookPropsRef = useRef(null)
-    stickyHookPropsRef.current = {
-      id,
-      stickyId: rest.stickyId,
-      defaultSticky: rest.defaultSticky,
-      onStickyChange: rest.onStickyChange,
-      showLocalSticky: rest.showLocalSticky,
-      showGlobalSticky: rest.showGlobalSticky,
-      localStickyText: rest.localStickyText,
-      globalStickyText: rest.globalStickyText
-    }
-
     // 稳定的列宽变更回调引用，避免 useMemo 因闭包变化频繁重建 columns
     const resizeRef = useRef()
     resizeRef.current = (columnKey, newWidth) => {
@@ -268,6 +223,19 @@ function diyTableXHOC(Component) {
         console.warn('[diyTableXHOC] persist column width failed', e)
       }
     }, 300)
+
+    // 用 ref 持有最新 props；popup() 打开时通过 getLatestConfig 读取，避免 useContext 订阅
+    const stickyHookPropsRef = useRef(null)
+    stickyHookPropsRef.current = {
+      id,
+      stickyId: rest.stickyId,
+      defaultSticky: rest.defaultSticky,
+      onStickyChange: rest.onStickyChange,
+      showLocalSticky: rest.showLocalSticky,
+      showGlobalSticky: rest.showGlobalSticky,
+      localStickyText: rest.localStickyText,
+      globalStickyText: rest.globalStickyText
+    }
 
     const handleDiyColumnsSave = cols => {
       setDiyCols(cols)

@@ -26,12 +26,9 @@ function DiySettingHeader({
   const stickyControlPropsRef = useRef(null)
   stickyControlPropsRef.current = {
     localChecked: stickyState.localChecked,
-    globalSticky: stickyState.globalSticky,
-    globalChecked: stickyState.globalChecked,
     setLocalSticky: stickyState.setLocalSticky,
-    onGlobalChange: stickyState.onGlobalChange,
     canShowLocal: stickyState.canShowLocal,
-    canShowGlobal: stickyState.canShowGlobal,
+    canShowGlobal: false,
     texts: stickyState.texts
   }
 
@@ -163,7 +160,7 @@ function splitColumns(columns) {
 }
 
 function diyTableHOC(Component) {
-  // 分组表格才有表头吸顶（是否固定/一键固定）；普通 Table 不响应
+  // 分组表格才有表头吸顶（「是否固定」）；普通 Table 不响应
   const StickyComponent = withTableSticky(Component, {
     configKey: 'tableConfig',
     stickyClassName: 'gm-react-table-header-sticky'

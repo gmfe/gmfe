@@ -77,10 +77,12 @@ class ManagePagination extends React.Component {
       loading: true
     })
 
+    // 搜索/doFirstRequest 常会带上业务里的 { limit: 10 }，不能覆盖用户已选条数
+    const requestOffset = data.offset !== undefined ? data.offset : offset
     const result = this.props.onRequest({
+      ...data,
       limit,
-      offset,
-      ...data
+      offset: requestOffset
     })
 
     result
@@ -91,8 +93,8 @@ class ManagePagination extends React.Component {
         }
 
         this.setState({
-          offset: data.offset === undefined ? offset : data.offset,
-          limit: data.limit === undefined ? limit : data.limit,
+          offset: requestOffset,
+          limit,
           count: json.pagination && json.pagination.count,
           nextDisabled,
           loading: false
@@ -154,6 +156,8 @@ class ManagePagination extends React.Component {
           className='gm-padding-20 gm-manage-pagination-bar'
         >
           <Pagination
+            id={this.props.id}
+            persistLimit={persistLimit}
             data={{
               limit,
               offset,
