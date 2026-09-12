@@ -9,57 +9,27 @@ import { getLocale } from '@gmfe/locales'
 /**
  * 弹层内维护 Checkbox 展示态，避免 sticky 变更触发外层 columns 重建导致 Popover 关闭。
  * 真正的持久化 / 表头 class 仍走 stickyControlProps 回调。
+ * 仅「是否固定」；「一键固定」已下线。
  */
 function StickyControlsInModal({ stickyControlProps }) {
   const [localChecked, setLocalChecked] = useState(
     () => !!(stickyControlProps && stickyControlProps.localChecked)
   )
-  // 当前弹层内「一键固定」展示（可与真实全局不一致）
-  const [globalChecked, setGlobalChecked] = useState(() =>
-    stickyControlProps && stickyControlProps.globalChecked !== undefined
-      ? !!stickyControlProps.globalChecked
-      : !!(
-          stickyControlProps &&
-          stickyControlProps.globalSticky &&
-          stickyControlProps.localChecked
-        )
-  )
-  // 记住真实全局，取消是否固定时只改展示，不改这个值
-  const [realGlobalSticky, setRealGlobalSticky] = useState(
-    () => !!(stickyControlProps && stickyControlProps.globalSticky)
-  )
 
-  if (
-    !stickyControlProps ||
-    (!stickyControlProps.canShowLocal && !stickyControlProps.canShowGlobal)
-  ) {
+  if (!stickyControlProps || !stickyControlProps.canShowLocal) {
     return null
   }
 
   return (
     <TableStickyControls
       localChecked={localChecked}
-      globalSticky={realGlobalSticky}
-      globalChecked={globalChecked}
       canShowLocal={stickyControlProps.canShowLocal}
-      canShowGlobal={stickyControlProps.canShowGlobal}
       texts={stickyControlProps.texts}
       setLocalSticky={checked => {
         const next = !!checked
         setLocalChecked(next)
-        // 取消是否固定 → 本弹层一键固定展示取消；勾选则恢复为真实全局
-        setGlobalChecked(next && realGlobalSticky)
         stickyControlProps.setLocalSticky &&
           stickyControlProps.setLocalSticky(next)
-      }}
-      onGlobalChange={checked => {
-        const next = !!checked
-        setRealGlobalSticky(next)
-        setGlobalChecked(next)
-        // 开启/关闭一键固定都会清本地：UI 上是否固定跟随勾选/取消
-        setLocalChecked(next)
-        stickyControlProps.onGlobalChange &&
-          stickyControlProps.onGlobalChange(next)
       }}
     />
   )

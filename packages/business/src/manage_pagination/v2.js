@@ -131,7 +131,11 @@ class ManagePaginationV2 extends React.Component {
           peek,
           page_obj: pageObj
         },
-        params
+        params,
+        {
+          // 搜索 params 里的 limit 不能覆盖用户已选条数；翻页改条数走 options.limit
+          limit: options.limit !== undefined ? options.limit : this.state.limit
+        }
       )
     )
 

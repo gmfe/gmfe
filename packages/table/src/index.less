@@ -259,19 +259,15 @@
     background: @react-table-tip-bg;
   }
 
-  // 表头吸顶时：批量条随 BoxTable 操作栏一起吸顶，并给 thead 预留高度。
+  // 表头吸顶时：批量条与非吸顶一致盖住 BoxTable 操作栏（不另占一行）。
   // 批量条须在表格 DOM 之前（见 select_table HOC），sticky 才生效。
   &:has(.gm-react-table-header-sticky):has(.gm-react-table-select-batch-action-bar) {
-    --gm-table-batch-action-sticky-height: @react-table-tip-height;
-
     > .gm-react-table-select-batch-action-bar {
       position: sticky;
-      top: calc(
-        var(--gm-table-header-sticky-top, 0px) +
-          var(--gm-table-action-sticky-height, 0px)
-      );
-      // 取消 absolute 的负 top，改为占位在表格上方
-      margin-top: 0;
+      top: var(--gm-table-header-sticky-top, 0px);
+      // 抵消占位，视觉上浮盖操作栏（对齐 absolute 的 top:-50）
+      margin-top: -@react-table-tip-height;
+      z-index: 110;
     }
   }
 }

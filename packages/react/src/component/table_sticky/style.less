@@ -7,13 +7,12 @@
 }
 
 /**
- * 分页吸底：
- * 1) 本表「是否固定」开启 → :has(表头 sticky class)
- * 2) 「一键固定」开启 → body.gm-global-table-header-sticky 下所有分页
- * 3) 本表显式关闭「是否固定」→ .gm-table-sticky-opt-out，优先于一键固定
+ * 分页吸底：本表「是否固定」开启 → :has(表头 sticky class)
  *
  * 注意：不要用 .gm-react-table-sticky —— 那是 fixedColumnsTableHOC 常驻 class
  *（固定列），未开表头固定时也会命中，导致分页误吸底。
+ *
+ * 「一键固定」/ body.gm-global-table-header-sticky 已下线，不再驱动全站分页吸底。
  */
 .gm-manage-pagination-bar-sticky() {
   position: sticky;
@@ -30,19 +29,13 @@
   }
 }
 
-body.gm-global-table-header-sticky {
+/**
+ * 兜底：表格与 ManagePagination 为 BoxTable 内兄弟节点时（分页无 children / 表格未包进 ManagePagination），
+ * :has(表头) 无法命中，改由 withTableSticky 挂上的 BoxTable class 驱动吸底。
+ */
+.gm-box-table-with-sticky-table {
   .gm-manage-pagination-bar {
     .gm-manage-pagination-bar-sticky();
-  }
-
-  // 「是否固定」显式关闭时，本表分页不跟随一键固定
-  .gm-manage-pagination:has(.gm-table-sticky-opt-out) {
-    .gm-manage-pagination-bar {
-      position: static;
-      z-index: auto;
-      background: transparent;
-      border-top: none;
-    }
   }
 }
 
