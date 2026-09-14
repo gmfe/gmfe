@@ -374,19 +374,30 @@
     height: 100%;
   }
 
-  // 仅勾选提示（无可见 batchActions）：仍与操作栏同一行（负 margin 盖左），
-  // 缩宽留出右侧「新建/更多」，避免 z-index:110 整行盖住按钮。
-  > .gm-table-x-select-batch-action-bar-container:has(
-      .gm-react-table-select-batch-action-bar-selection-only
-    ) {
-    width: auto;
-    max-width: calc(100% - 240px);
-    right: auto;
+  // 仅勾选提示：保持整行遮罩盖左侧 info；右侧 action 见下方 BoxTable 抬层规则。
+  // （勿 fit-content / max-width 缩宽）
+}
 
-    .gm-table-x-select-batch-action-bar {
-      width: auto;
-      max-width: 100%;
-      padding-right: 16px;
+// 吸顶 + 仅勾选：批量条 z-index:110 会整行压过 header(101)。
+// 抬高 header，藏左侧 info，透出下方「已选择」遮罩；右侧 action 自带底色压在遮罩上可点。
+.gm-box-table-with-sticky-table:has(.gm-react-table-select-batch-action-bar-selection-only) {
+  > .gm-box-table-header {
+    z-index: 111;
+    background-color: transparent;
+    // 左侧透出遮罩并可点；右侧 action 单独恢复 pointer-events
+    pointer-events: none;
+
+    > .gm-box-table-header-info,
+    > .gm-flex:first-child {
+      visibility: hidden;
+    }
+
+    > .gm-box-table-header-action,
+    > .gm-flex:last-child {
+      position: relative;
+      align-self: stretch;
+      pointer-events: auto;
+      background-color: @gm-back-body-bg;
     }
   }
 }

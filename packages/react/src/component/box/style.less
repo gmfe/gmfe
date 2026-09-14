@@ -11,6 +11,53 @@
       height: 50px;
       background-color: @gm-back-body-bg;
     }
+
+    // headerScrollable：左侧汇总可横滑（隐藏滚动条），右侧操作钉住不收缩。
+    // 默认关闭；业务页按需传 headerScrollable。
+    .gm-box-table-header-scrollable {
+      min-width: 0;
+
+      .gm-box-table-header-info {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+          height: 0;
+          width: 0;
+        }
+
+        .gm-box-table-info,
+        .gm-flex {
+          flex-shrink: 0;
+        }
+      }
+
+      .gm-box-table-header-spacer {
+        flex: 0 0 8px !important;
+        min-width: 8px;
+        max-width: 8px;
+      }
+
+      .gm-box-table-header-action {
+        position: relative;
+        // 非吸顶批量条 z-index:1/10 时，保证右侧按钮仍可点
+        z-index: 11;
+        flex: 0 0 auto;
+        white-space: nowrap;
+
+        > div {
+          display: inline-flex;
+          flex-wrap: nowrap;
+          align-items: center;
+        }
+      }
+    }
   }
 
   &.gm-box-form {
