@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - master
+      - dev
     paths:
       - 'packages/**'
       - 'lerna.json'
@@ -23,6 +24,11 @@ on:
 
 jobs:
   build:
+    # dev 分支仅在版本号提交(chore: v*)时打包;master push 与手动触发保持原有行为
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.ref_name == 'master' ||
+      startsWith(github.event.head_commit.message, 'chore: v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,6 +70,10 @@ jobs:
             git add lerna.json packages/*/package.json
             git commit -m "chore: temp $BETA_VERSION" --no-verify
             # 3) from-package 把所有未发布的版本发到 npm 的 beta tag
+            yarn lerna publish from-package --dist-tag beta --no-git-tag-version --no-push --yes --registry https://registry.npmjs.org
+          elif [ "$DIST_TAG" = "" ] && [ "${{ github.ref_name }}" = "dev" ]; then
+            # dev 版本号提交(chore: v*): 按提交中的版本号原样发 beta,所见即所得
+            # 版本号已由本地 lerna version 写入各 package.json,无需再 bump
             yarn lerna publish from-package --dist-tag beta --no-git-tag-version --no-push --yes --registry https://registry.npmjs.org
           else
             # 正式版:按各 package.json 已有版本号发布(master push 自动走这里,或手动选 latest)

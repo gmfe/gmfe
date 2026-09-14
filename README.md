@@ -79,6 +79,23 @@ npm install @gmfe/react@2.14.34-beta.42
 
 > 正式版（`latest`）一般走 master push 自动触发；手动触发时虽然也能选 `latest`，但非必要别用，避免从 feature 分支误发正式版。
 
+### dev 版本号提交自动发 beta（日常迭代常用）
+
+在 **dev** 分支上推送版本号提交（commit message 以 `chore: v` 开头，版本号由 `lerna version` 写入 `lerna.json` 与各 `package.json`），会自动触发打包并发布到 npm 的 **beta** tag。版本号所见即所得——提交里写什么号，npm 上就是什么号：
+
+```bash
+# 示例：发布 2.14.43-beta.50
+yarn lerna version 2.14.43-beta.50 --no-git-tag-version --no-push --yes
+git add lerna.json packages/*/package.json
+git commit -m 'chore: v2.14.43-beta.50'
+git push origin dev
+# 推送后 Actions 自动发布 @gmfe/react@2.14.43-beta.50（beta tag）
+```
+
+注意：
+- 只有 `chore: v` 开头的提交才会触发，dev 上的普通 feat/fix 提交不会触发打包
+- 该流程永远发 **beta** tag，不会碰 `latest`（正式版仍走 master push）
+
 ### 验证发布结果
 
 ```bash
