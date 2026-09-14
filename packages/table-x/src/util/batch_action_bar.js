@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import classNames from 'classnames'
 import { Flex, Popover, Button } from '@gmfe/react'
 import styled from 'styled-components'
 import { getLocale } from '@gmfe/locales'
@@ -52,8 +53,16 @@ const BatchActionBar = props => {
     )
   }
 
+  // 无可见批量操作时仅勾选提示；吸顶时不应盖住 BoxTable 右侧按钮（见 selection-only CSS）
+  const hasVisibleBatchActions = _.some(batchActions, o => o.show !== false)
+
   return (
-    <Flex className='gm-react-table-select-batch-action-bar' alignCenter>
+    <Flex
+      className={classNames('gm-react-table-select-batch-action-bar', {
+        'gm-react-table-select-batch-action-bar-selection-only': !hasVisibleBatchActions
+      })}
+      alignCenter
+    >
       <Popover
         type='hover'
         popup={<div className='gm-padding-5'>{getLocale('取消批量勾选')}</div>}
