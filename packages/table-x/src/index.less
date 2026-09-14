@@ -339,8 +339,8 @@
 /* hoc 相关 */
 .gm-table-x-select-batch-action-bar-container {
   position: relative;
-  // 高于吸顶表头(100) / BoxTable 操作栏(101)，避免「一键固定」后遮挡批量操作条
-  z-index: 110;
+  // 非吸顶保持历史层级(条 z-index:10)，避免盖住 BoxTable 右侧「新建/更多」等按钮。
+  // 吸顶时再抬到 110，见下方 :has(.header-sticky) 规则。
 
   .gm-table-x-select-batch-action-bar {
     position: absolute;
@@ -356,6 +356,7 @@
 
 // 是否固定：批量条与非吸顶一致——盖住 BoxTable 操作栏，不在下方再占一行。
 // （非吸顶用 absolute 上浮；吸顶用 sticky + 负 margin 抵消占位，thead 不再加 batch 高度）
+// z-index:110 仅吸顶需要：压过吸顶表头(100)/BoxTable 操作栏(101)。
 .gm-table-x-select-container:has(.gm-table-x-header-sticky),
 .gm-table-x-select-container:has(.gm-react-table-header-sticky) {
   > .gm-table-x-select-batch-action-bar-container {
@@ -371,6 +372,22 @@
     top: auto;
     bottom: auto;
     height: 100%;
+  }
+
+  // 仅勾选提示（无可见 batchActions）：仍与操作栏同一行（负 margin 盖左），
+  // 缩宽留出右侧「新建/更多」，避免 z-index:110 整行盖住按钮。
+  > .gm-table-x-select-batch-action-bar-container:has(
+      .gm-react-table-select-batch-action-bar-selection-only
+    ) {
+    width: auto;
+    max-width: calc(100% - 240px);
+    right: auto;
+
+    .gm-table-x-select-batch-action-bar {
+      width: auto;
+      max-width: 100%;
+      padding-right: 16px;
+    }
   }
 }
 

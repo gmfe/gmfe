@@ -253,14 +253,15 @@
     top: -@react-table-tip-height;
     left: 0;
     width: 100%;
-    // 高于吸顶表头，避免「一键固定」后遮挡批量操作条
-    z-index: 110;
+    // 非吸顶保持历史 z-index:1，避免盖住 BoxTable 右侧操作按钮；吸顶见下方抬到 110
+    z-index: 1;
     padding-left: 20px;
     background: @react-table-tip-bg;
   }
 
   // 表头吸顶时：批量条与非吸顶一致盖住 BoxTable 操作栏（不另占一行）。
   // 批量条须在表格 DOM 之前（见 select_table HOC），sticky 才生效。
+  // z-index:110 仅吸顶需要：压过吸顶表头 / BoxTable 操作栏。
   &:has(.gm-react-table-header-sticky):has(.gm-react-table-select-batch-action-bar) {
     > .gm-react-table-select-batch-action-bar {
       position: sticky;
@@ -268,6 +269,15 @@
       // 抵消占位，视觉上浮盖操作栏（对齐 absolute 的 top:-50）
       margin-top: -@react-table-tip-height;
       z-index: 110;
+    }
+
+    // 仅勾选提示（无可见 batchActions）：仍与操作栏同一行（负 margin 盖左），
+    // 但不要 100% 宽，留出右侧「新建/更多」给 BoxTable 操作栏（z-index 101）露出来。
+    // （非吸顶靠 z-index:1 vs 按钮更高实现同排；吸顶条为 110 会整行盖住，故缩宽）
+    > .gm-react-table-select-batch-action-bar-selection-only {
+      width: auto;
+      max-width: calc(100% - 240px);
+      padding-right: 16px;
     }
   }
 }
