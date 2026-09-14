@@ -42,10 +42,10 @@ jobs:
           cd gmfe
           yarn install --ignore-engines
           npm run build
-        env:
-          NODE_OPTIONS: --openssl-legacy-provider
           rm -rf .github && rm -rf .storybook && rm -rf packages
           git add --all
           git commit -m 'build docs'
           ls
           git push 'https://liyatang%40qq.com:${{secrets.PASSWORD}}@github.com/gmfe/gmfe-docs.git' master:master -f
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
