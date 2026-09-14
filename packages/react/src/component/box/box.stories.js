@@ -24,6 +24,29 @@ storiesOf('Box', module)
       >
         <div>真正的内容</div>
       </BoxTable>
+      <div style={{ marginTop: 16, maxWidth: 480, border: '1px dashed #ccc' }}>
+        <BoxTable
+          headerScrollable
+          info={
+            <BoxTable.Info>
+              订单总数：10｜下单金额：¥100｜出库金额：¥90｜销售额(含运、税)：¥110｜历史数据
+            </BoxTable.Info>
+          }
+          action={
+            <div>
+              <Button type='primary' className='gm-margin-right-10'>
+                新建订单
+              </Button>
+              <Button type='success' className='gm-margin-right-10'>
+                AI录单
+              </Button>
+              <Button>更多功能</Button>
+            </div>
+          }
+        >
+          <div>headerScrollable：缩窄容器后左侧可横滑，右侧按钮钉住</div>
+        </BoxTable>
+      </div>
     </div>
   ))
   .add(
