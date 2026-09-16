@@ -540,9 +540,15 @@
 }
 
 .gm-react-table-x-diy-modal {
+  // 与 table DIY 弹层一致：Popover 非整页 Dialog，需扣顶部偏移，内容区滚动、底栏常显
   width: 900px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 200px);
 
   .gm-react-table-x-diy-modal-header {
+    flex-shrink: 0;
+
     .gm-react-table-x-diy-modal-header-title {
       font-size: 14px;
       border-left: 3px solid @brand-primary;
@@ -558,7 +564,10 @@
     }
   }
 
-  .gm-react-table-x-diy-modal-content{
+  .gm-react-table-x-diy-modal-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
     border-top: 1px solid @gm-table-x-border-color;
     border-bottom: 1px solid @gm-table-x-border-color;
   }
@@ -574,6 +583,8 @@
     }
 
     width: 80%;
+    min-height: 0;
+    overflow-y: auto;
     border-right: 1px solid @gm-table-x-border-color;
   }
 
@@ -583,12 +594,18 @@
     }
 
     width: 20%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
 
     .gm-react-table-x-diy-modal-list-ul {
       list-style-type: none;
       padding: 0;
-      margin: 30px 0;
-      max-height: 400px;
+      margin: 10px 0;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: none;
       overflow: auto;
 
       .gm-react-table-x-diy-modal-list-li {
@@ -619,6 +636,10 @@
         background: #d7e8fc;
       }
     }
+  }
+
+  .gm-react-table-x-diy-modal-btn {
+    flex-shrink: 0;
   }
 }
 
