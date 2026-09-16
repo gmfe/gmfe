@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Flex, Button, TableStickyControls } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './selector'
@@ -14,6 +14,7 @@ const DiyTableModal = ({
   stickyControlProps,
   onResetDefault
 }) => {
+  const rootRef = useRef(null)
   const [diyCols, setDiyCols] = useState(columns)
   const [showCols, setShowCols] = useState(
     _.sortBy(
@@ -31,6 +32,22 @@ const DiyTableModal = ({
       )
     )
   }, [columns])
+
+  // Popover 锚定在齿轮下方，固定 calc(100vh-N) 无法覆盖不同 top；按实际 top 扣边距限高，保证底栏常显
+  useLayoutEffect(() => {
+    const el = rootRef.current
+    if (!el) return undefined
+
+    const updateMaxHeight = () => {
+      const top = el.getBoundingClientRect().top
+      const next = Math.max(240, window.innerHeight - top - 8)
+      el.style.maxHeight = `${next}px`
+    }
+
+    updateMaxHeight()
+    window.addEventListener('resize', updateMaxHeight)
+    return () => window.removeEventListener('resize', updateMaxHeight)
+  }, [])
 
   const onColsChange = (key, curShow) => {
     const index = _.findIndex(diyCols, o => o.key === key)
@@ -108,7 +125,7 @@ const DiyTableModal = ({
   }
 
   return (
-    <div className='gm-react-table-diy-modal'>
+    <div className='gm-react-table-diy-modal' ref={rootRef}>
       <Flex
         className='gm-react-table-diy-modal-header gm-padding-tb-5'
         justifyBetween
@@ -154,7 +171,7 @@ const DiyTableModal = ({
           />
         </div>
       </Flex>
-      <Flex justifyBetween className='gm-padding-10'>
+      <Flex justifyBetween className='gm-react-table-diy-modal-btn gm-padding-10'>
         <Button onClick={handleResetDefault}>{getLocale('恢复默认')}</Button>
         <Flex>
           <Button onClick={onCancel}>{getLocale('取消')}</Button>

@@ -12,6 +12,18 @@
       background-color: @gm-back-body-bg;
     }
 
+    // 仅勾选提示（无真实 batchActions）：非吸顶批量条 z-index 1/10 会整行盖住 header。
+    // 抬右侧 action（历史 view_order last-child z-index:11），露出「新建/更多」。
+    // 有真实 batchActions 不加 selection-only，整行盖栏（STICKY-03）不变。
+    // 吸顶场景由 table(-x) `.gm-box-table-with-sticky-table:has(.selection-only)` 再抬到 111。
+    &:has(.gm-react-table-select-batch-action-bar-selection-only) {
+      > .gm-box-table-header > .gm-box-table-header-action,
+      > .gm-box-table-header > .gm-flex:last-child {
+        position: relative;
+        z-index: 11;
+      }
+    }
+
     // headerScrollable：左侧汇总可横滑（隐藏滚动条），右侧操作钉住不收缩。
     // 默认关闭；业务页按需传 headerScrollable。
     .gm-box-table-header-scrollable {
