@@ -1,3 +1,4 @@
+// PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
 .gm-box {
   background: white;
 
@@ -5,7 +6,9 @@
     border-top: 1px solid fadeout(@gm-frame-border-color, 50%);
   }
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   &.gm-box-table {
+    // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
     .gm-box-table-header {
       padding: 10px 20px;
       height: 50px;
@@ -44,7 +47,11 @@
           width: 0;
         }
 
-        .gm-box-table-info,
+        // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
+        .gm-box-table-info {
+          flex-shrink: 0;
+        }
+
         .gm-flex {
           flex-shrink: 0;
         }
@@ -79,6 +86,7 @@
   &.gm-box-panel {
     padding: 20px 0 0 0;
 
+    // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
     .gm-box-panel-header {
       margin: 0 0 15px;
       padding: 0 20px;

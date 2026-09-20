@@ -20,21 +20,28 @@ const SUB_TABLE_CLASS = 'gm-react-sub-table'
 const SELECT_CONTAINER_CLASS = 'gm-react-table-select'
 const NESTED_PARENT_HEADER_VAR = '--gm-table-nested-parent-header-height'
 
-/** 把吸顶 CSS 变量同步到上层 BoxTable / select 容器（批量条为兄弟节点需祖先继承） */
+/** 把吸顶 CSS 变量同步到表格自身、select 容器和 BoxTable。返回所有写过变量的节点，关掉时要全部清掉。 */
 function syncBoxTableStickyVars(tableEl, stickyTopOffset) {
-  if (!tableEl) return null
+  if (!tableEl) return []
+  const touched = []
+  const mark = el => {
+    if (el && touched.indexOf(el) === -1) touched.push(el)
+  }
   const top = `${stickyTopOffset || 0}px`
   tableEl.style.setProperty('--gm-table-header-sticky-top', top)
+  mark(tableEl)
 
   const select = tableEl.closest(`.${SELECT_CONTAINER_CLASS}`)
   if (select) {
     select.style.setProperty('--gm-table-header-sticky-top', top)
+    mark(select)
   }
 
   const box = tableEl.closest('.gm-box-table')
-  if (!box) return select || null
+  if (!box) return touched
 
   box.classList.add(BOX_STICKY_CLASS)
+  mark(box)
   box.style.setProperty('--gm-table-header-sticky-top', top)
 
   const action = box.querySelector(':scope > .gm-box-table-header')
@@ -45,7 +52,7 @@ function syncBoxTableStickyVars(tableEl, stickyTopOffset) {
   if (select) {
     select.style.setProperty('--gm-table-action-sticky-height', actionPx)
   }
-  return box
+  return touched
 }
 
 function clearBoxTableStickyVars(box) {
@@ -142,8 +149,11 @@ function withTableSticky(Component, options) {
 
       const apply = () => {
         document.querySelectorAll(`.${stickyClassName}`).forEach(el => {
-          const box = syncBoxTableStickyVars(el, stickyState.stickyTopOffset)
-          if (box && touched.indexOf(box) === -1) touched.push(box)
+          syncBoxTableStickyVars(el, stickyState.stickyTopOffset).forEach(
+            node => {
+              if (touched.indexOf(node) === -1) touched.push(node)
+            }
+          )
         })
         syncNestedParentHeaderHeights()
       }

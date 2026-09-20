@@ -22,43 +22,71 @@ class BaseTable extends React.Component {
     window.dispatchEvent(new window.CustomEvent(EVENT_TYPE.TABLE_SCROLL))
   }, 500)
 
-  // 吸顶模式下把 thead 从 rt-table 内移到 ReactTable 直接子级，否则 rt-table 的 overflow 会把 thead sticky 限制在横向滚动区内。
-  // 移出后同步 rt-table 的横向滚动给 thead。
-  syncTheadScroll = () => {
-    const dom = findDOMNode(this.refTable.current)
-    if (!dom) return
-    const rtTable = dom.getElementsByClassName('rt-table')[0]
-    const theadWrapper = dom.querySelector(':scope > .gm-react-table-sticky-thead-wrap')
-    if (rtTable && theadWrapper) {
-      theadWrapper.scrollLeft = rtTable.scrollLeft
+  // 吸顶时 thead 移出 rt-table，表头、表体各有一个横向滚动容器。两边都要同步，
+  // 否则在表头上横滑时表体不会跟着走（原先只监听了表体）。
+  syncHorizontalScroll = source => {
+    if (this._syncingScroll) return
+    const from = source === 'header' ? this._boundWrap : this._boundRt
+    const to = source === 'header' ? this._boundRt : this._boundWrap
+    if (!from || !to || to.scrollLeft === from.scrollLeft) return
+    this._syncingScroll = true
+    to.scrollLeft = from.scrollLeft
+    requestAnimationFrame(() => {
+      this._syncingScroll = false
+    })
+  }
+
+  onBodyScroll = () => this.syncHorizontalScroll('body')
+
+  onHeaderScroll = () => this.syncHorizontalScroll('header')
+
+  bindStickyScroll = (rtTable, wrap) => {
+    if (this._boundRt === rtTable && this._boundWrap === wrap) return
+    this.unbindStickyScroll()
+    this._boundRt = rtTable
+    this._boundWrap = wrap
+    rtTable.addEventListener('scroll', this.onBodyScroll)
+    wrap.addEventListener('scroll', this.onHeaderScroll)
+  }
+
+  unbindStickyScroll = () => {
+    if (this._boundRt) {
+      this._boundRt.removeEventListener('scroll', this.onBodyScroll)
     }
+    if (this._boundWrap) {
+      this._boundWrap.removeEventListener('scroll', this.onHeaderScroll)
+    }
+    this._boundRt = null
+    this._boundWrap = null
   }
 
   setupStickyThead = () => {
     const dom = findDOMNode(this.refTable.current)
     if (!dom) return
-    if (!dom.classList.contains('gm-react-table-header-sticky')) return
+    if (!dom.classList.contains('gm-react-table-header-sticky')) {
+      this.teardownStickyThead()
+      return
+    }
 
-    // 已处理过
-    if (dom.querySelector(':scope > .gm-react-table-sticky-thead-wrap')) return
-
-    const rtTable = dom.getElementsByClassName('rt-table')[0]
+    const rtTable = dom.querySelector(':scope > .rt-table')
     if (!rtTable) return
-    const thead = rtTable.getElementsByClassName('rt-thead')[0]
-    if (!thead) return
 
-    // 用一个横向滚动容器包住 thead，宽度与 rt-table 一致
-    const wrap = document.createElement('div')
-    wrap.className = 'gm-react-table-sticky-thead-wrap'
-    // 把 thead 从 rt-table 移出
-    rtTable.removeChild(thead)
-    wrap.appendChild(thead)
-    dom.insertBefore(wrap, rtTable)
+    let wrap = dom.querySelector(':scope > .gm-react-table-sticky-thead-wrap')
+    if (!wrap) {
+      // 只用本表直接子级 thead，避免把嵌套子表的表头搬出来
+      const thead = rtTable.querySelector(':scope > .rt-thead')
+      if (!thead) return
+      wrap = document.createElement('div')
+      wrap.className = 'gm-react-table-sticky-thead-wrap'
+      rtTable.removeChild(thead)
+      wrap.appendChild(thead)
+      dom.insertBefore(wrap, rtTable)
+    }
 
-    // 同步横向滚动
-    rtTable.addEventListener('scroll', this.syncTheadScroll)
-    // 初始对齐
-    this.syncTheadScroll()
+    // 表体节点可能被 React 换掉，每次更新都重新绑到当前节点。只在新绑定时对齐一次，避免刷新把用户正在滑的位置拽回去
+    const needsBind = this._boundRt !== rtTable || this._boundWrap !== wrap
+    this.bindStickyScroll(rtTable, wrap)
+    if (needsBind) this.syncHorizontalScroll('body')
   }
 
   teardownStickyThead = () => {
@@ -66,10 +94,9 @@ class BaseTable extends React.Component {
     if (!dom) return
     const wrap = dom.querySelector(':scope > .gm-react-table-sticky-thead-wrap')
     if (!wrap) return
-    const rtTable = dom.getElementsByClassName('rt-table')[0]
-    const thead = wrap.getElementsByClassName('rt-thead')[0]
-    rtTable.removeEventListener('scroll', this.syncTheadScroll)
-    // 还原 thead 到 rt-table 开头
+    const rtTable = dom.querySelector(':scope > .rt-table')
+    const thead = wrap.querySelector(':scope > .rt-thead, .rt-thead')
+    this.unbindStickyScroll()
     if (rtTable && thead) {
       rtTable.insertBefore(thead, rtTable.firstChild)
     }

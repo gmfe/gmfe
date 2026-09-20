@@ -36,6 +36,7 @@
           border-bottom: 1px solid fadeout(@gm-frame-border-color, 50%);
           height: @gm-framework-top-right-default-height;
 
+          // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
           .gm-framework-right-top-default-mobile-nav {
             display: none;
           }
@@ -101,10 +102,12 @@
   }
 
   // 暴露给外面用
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-framework-content-full {
     height: ~'calc(100vh - 50px)';
   }
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-framework-full-tabs {
     .gm-framework-full-tabs-list-box {
       height: 40px;
