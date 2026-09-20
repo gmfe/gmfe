@@ -33,6 +33,7 @@
  * 兜底：表格与 ManagePagination 为 BoxTable 内兄弟节点时（分页无 children / 表格未包进 ManagePagination），
  * :has(表头) 无法命中，改由 withTableSticky 挂上的 BoxTable class 驱动吸底。
  */
+// PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
 .gm-box-table-with-sticky-table {
   .gm-manage-pagination-bar {
     .gm-manage-pagination-bar-sticky();
@@ -46,6 +47,7 @@
 .gm-box-panel:has(.gm-table-x-header-sticky),
 .gm-box-panel:has(.gm-react-table-header-sticky),
 .gm-box-panel-with-sticky-table {
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   > .gm-box-panel-header {
     position: sticky;
     top: var(--gm-table-header-sticky-top, 0px);

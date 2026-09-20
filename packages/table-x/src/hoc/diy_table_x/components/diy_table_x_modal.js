@@ -64,8 +64,9 @@ const DiyTableModal = ({
 
     const updateMaxHeight = () => {
       const top = el.getBoundingClientRect().top
-      const next = Math.max(240, window.innerHeight - top - 8)
-      el.style.maxHeight = `${next}px`
+      // 设计上限 600；窗口更矮时按齿轮下方剩余高度再收，不用最小高度垫高，避免保存行被顶出视口
+      const room = Math.max(0, window.innerHeight - top - 8)
+      el.style.maxHeight = `${Math.min(600, room)}px`
     }
 
     updateMaxHeight()
@@ -140,7 +141,7 @@ const DiyTableModal = ({
   }
 
   return (
-    <div className='gm-react-table-x-diy-modal' ref={rootRef}>
+    <div className='gm-react-table-x-diy-modal gm-react-table-x-diy-modal-fit' ref={rootRef}>
       <Flex
         className='gm-react-table-x-diy-modal-header gm-padding-tb-5'
         justifyBetween

@@ -13,12 +13,14 @@
   overflow: auto;
   position: relative;
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-table-x-table {
     // 性能考虑
     z-index: 1;
     transform: translateZ(0);
     display: block; // 覆盖table 默认display
 
+    // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
     .gm-table-x-tr {
       display: flex;
       min-height: 60px;
@@ -78,6 +80,7 @@
       }
     }
 
+    // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
     .gm-table-x-tbody {
       display: block; // 覆盖tbody 默认display
 
@@ -325,9 +328,11 @@
 // BoxTable 操作栏（info/action）随表头一起吸顶（TableX + 旧 Table）
 .gm-box-table:has(.gm-table-x-header-sticky),
 .gm-box-table:has(.gm-react-table-header-sticky),
+// PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
 .gm-box-table-with-sticky-table {
   --gm-table-action-sticky-height: 50px;
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-box-table-header {
     position: sticky;
     top: var(--gm-table-header-sticky-top, 0px);
@@ -427,6 +432,7 @@
 
 .gm-table-x-edit-table {
   // action
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-table-x-edit-action-add {
     display: inline-block;
     margin-right: 18px;
@@ -444,6 +450,7 @@
     }
   }
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-table-x-edit-action-delete {
     display: inline-block;
     color: @brand-danger;
@@ -471,12 +478,14 @@
     }
 
     .gm-more-select {
+      // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
       .gm-more-select-selected {
         .gm-table-x-edit-table-common-input();
 
         padding-top: 0;
         padding-bottom: 0;
 
+        // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
         .gm-more-select-clear-btn {
           padding: 0;
           right: 5px;
@@ -512,6 +521,7 @@
     }
   }
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   // action
   .gm-react-edit-table-action-add {
     width: 20px;
@@ -526,6 +536,7 @@
     }
   }
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-react-edit-table-action-delete {
     width: 20px;
     height: 20px;
@@ -540,14 +551,12 @@
 }
 
 .gm-react-table-x-diy-modal {
-  // 与 table DIY 弹层一致：Popover 非整页 Dialog，需扣顶部偏移，内容区滚动、底栏常显
+  // PUBLIC: 业务工程直接复用此类名（导出设置 diy_tab_modal 等），不是表头 Popover 私有样式。
+  // 禁止顺手改高度、overflow、display 或类名；改动前必须经过人为审核。
+  // 表头 Popover 的限高只写在 .gm-react-table-x-diy-modal-fit，不要落到这个基类上。
   width: 900px;
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 200px);
 
   .gm-react-table-x-diy-modal-header {
-    flex-shrink: 0;
 
     .gm-react-table-x-diy-modal-header-title {
       font-size: 14px;
@@ -565,9 +574,6 @@
   }
 
   .gm-react-table-x-diy-modal-content {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
     border-top: 1px solid @gm-table-x-border-color;
     border-bottom: 1px solid @gm-table-x-border-color;
   }
@@ -583,8 +589,6 @@
     }
 
     width: 80%;
-    min-height: 0;
-    overflow-y: auto;
     border-right: 1px solid @gm-table-x-border-color;
   }
 
@@ -593,19 +597,28 @@
       padding: 10px;
     }
 
+    // 导出弹窗：右侧跟左侧一样高。列表脱离文档流，避免条目把整行撑过左侧；顶边用标题的 padding + 行高推开，不写死像素
+    position: relative;
+    align-self: stretch;
     width: 20%;
-    display: flex;
-    flex-direction: column;
     min-height: 0;
     overflow: hidden;
+
+    > .gm-react-table-x-diy-modal-title {
+      position: relative;
+      z-index: 1;
+    }
 
     .gm-react-table-x-diy-modal-list-ul {
       list-style-type: none;
       padding: 0;
-      margin: 10px 0;
-      flex: 1 1 auto;
-      min-height: 0;
-      max-height: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: 0;
+      margin-top: calc(20px + 1lh + 1px);
       overflow: auto;
 
       .gm-react-table-x-diy-modal-list-li {
@@ -641,6 +654,51 @@
   .gm-react-table-x-diy-modal-btn {
     flex-shrink: 0;
   }
+
+  // 仅表头设置 Popover。导出设置等同名结构没有 -content，不能套这套限高
+  &.gm-react-table-x-diy-modal-fit {
+    display: flex;
+    flex-direction: column;
+    max-height: min(600px, calc(100vh - 200px));
+
+    .gm-react-table-x-diy-modal-header {
+      flex-shrink: 0;
+    }
+
+    .gm-react-table-x-diy-modal-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .gm-react-table-x-diy-modal-selector {
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .gm-react-table-x-diy-modal-list {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+
+      .gm-react-table-x-diy-modal-list-ul {
+        position: static;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+        height: auto;
+        transform: none;
+        margin: 0;
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: none;
+        overflow: auto;
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -654,6 +712,7 @@
 // stylelint-disable-next-line
 .gm-table-x {
   // select 样式
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-table-x-select:not(.disabled) {
     input:not(:checked) + span {
       border-color: @gm-table-x-select-color;

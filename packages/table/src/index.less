@@ -244,6 +244,7 @@
   }
 }
 
+// PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
 .gm-react-table-select {
   position: relative;
 
@@ -279,7 +280,9 @@
 // 吸顶 + 仅勾选：批量条 z-index:110 会整行压过 header(101)。
 // 抬高 header，藏左侧 info，透出下方「已选择」遮罩；右侧 action 自带底色压在遮罩上可点。
 // 有真实 batchActions 时不加 selection-only → 仍整行盖住（STICKY-03）。
+// PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
 .gm-box-table-with-sticky-table:has(.gm-react-table-select-batch-action-bar-selection-only) {
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   > .gm-box-table-header {
     z-index: 111;
     background-color: transparent;
@@ -302,14 +305,12 @@
 }
 
 .gm-react-table-diy-modal {
-  // Popover 锚定在表头齿轮下方（约 top≈190），不能用 100vh 整页高度，否则底栏仍会溢出视口
+  // PUBLIC: 业务工程直接复用此类名（如 column_setting）。不是表头 Popover 私有样式。
+  // 禁止顺手改高度、overflow、display 或类名；改动前必须经过人为审核。
+  // 表头 Popover 的限高只写在 .gm-react-table-diy-modal-fit。
   width: 900px;
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 200px);
 
   .gm-react-table-diy-modal-header {
-    flex-shrink: 0;
 
     .gm-react-table-diy-modal-header-title {
       font-size: 14px;
@@ -327,9 +328,6 @@
   }
 
   .gm-react-table-diy-modal-content {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
     border-top: 1px solid @react-table-sub-item-border;
     border-bottom: 1px solid @react-table-sub-item-border;
   }
@@ -345,8 +343,6 @@
     }
 
     width: 80%;
-    min-height: 0;
-    overflow-y: auto;
     border-right: 1px solid @react-table-sub-item-border;
   }
 
@@ -356,18 +352,12 @@
     }
 
     width: 20%;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow: hidden;
 
     .gm-react-table-diy-modal-sort-list-ul {
       list-style-type: none;
       padding: 0;
-      margin: 10px 0;
-      flex: 1 1 auto;
-      min-height: 0;
-      max-height: none;
+      margin: 30px 0;
+      max-height: 400px;
       overflow: auto;
 
       .gm-react-table-diy-modal-sort-list-li {
@@ -402,6 +392,41 @@
 
   .gm-react-table-diy-modal-btn {
     flex-shrink: 0;
+  }
+
+  &.gm-react-table-diy-modal-fit {
+    display: flex;
+    flex-direction: column;
+    max-height: min(600px, calc(100vh - 200px));
+
+    .gm-react-table-diy-modal-header {
+      flex-shrink: 0;
+    }
+
+    .gm-react-table-diy-modal-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .gm-react-table-diy-modal-selector {
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .gm-react-table-diy-modal-sort-list {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+
+      .gm-react-table-diy-modal-sort-list-ul {
+        margin: 10px 0;
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: none;
+      }
+    }
   }
 }
 
@@ -455,6 +480,7 @@
 }
 
 // 子表吸顶层级低于父表头
+// PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
 .gm-react-sub-table.gm-react-table-header-sticky {
   > .gm-react-table-sticky-thead-wrap {
     z-index: 99;
@@ -572,12 +598,14 @@
         }
 
         .gm-more-select {
+          // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
           .gm-more-select-selected {
             .gm-react-edit-table-common-input();
 
             padding-top: 0;
             padding-bottom: 0;
 
+            // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
             .gm-more-select-clear-btn {
               padding: 0;
               right: 5px;
@@ -615,6 +643,7 @@
     }
   }
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   // action
   .gm-react-edit-table-action-add {
     display: inline-block;
@@ -633,6 +662,7 @@
     }
   }
 
+  // PUBLIC: 公共组件名，组件库其他地方有使用到，如果需要修改此类名，需慎重，必须经过人为审核
   .gm-react-edit-table-action-delete {
     display: inline-block;
     color: @brand-danger;
