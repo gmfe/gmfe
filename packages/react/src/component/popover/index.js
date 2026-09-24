@@ -149,6 +149,14 @@ class Popover extends React.Component {
     this.doRenderPopup(this.state.active)
   }
 
+  /** popup 静态判断：非函数且 falsy 视为空。
+   *  注意：不执行函数式 popup（render 高频路径，避免无谓调用与副作用），
+   *  函数结果为空的情况在 doRenderPopup 渲染时兜底 */
+  isEmptyPopup = () => {
+    const { popup } = this.props
+    return !_.isFunction(popup) && !popup
+  }
+
   doRenderPopup(active) {
     const {
       style,
@@ -167,6 +175,17 @@ class Popover extends React.Component {
     } = this.props
 
     const disabled = this.getDisabled()
+
+    // 求值一次 popup 内容：函数式在此刻执行（原本也要执行），供渲染与空判断共用
+    const popupContent = _.isFunction(popup) ? popup() : popup
+
+    // 激活期间 popup 内容为空（如条件由真变假，含函数式返回空）时立即卸载弹层，
+    // 避免残留空壳。注意：disabled prop / children disabled 维持旧行为（不主动收起）
+    if (active && !popupContent) {
+      LayoutRoot._removeComponentPopup(this.id)
+      this.setActive(false)
+      return
+    }
 
     if (active) {
       LayoutRoot._setComponentPopup(
@@ -197,7 +216,7 @@ class Popover extends React.Component {
           )}
           style={style}
         >
-          {_.isFunction(popup) ? popup() : popup}
+          {popupContent}
         </Popup>
       )
     } else {
@@ -299,6 +318,11 @@ class Popover extends React.Component {
 
   getDisabled = () => {
     const { disabled, children } = this.props
+    // popup 内容为空（false/null/undefined，或函数执行结果为空）时视为禁用，
+    // 避免渲染无内容的空弹层
+    if (!disabled && this.isEmptyPopup()) {
+      return true
+    }
     return disabled || children.props.disabled
   }
 
