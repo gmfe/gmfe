@@ -1,15 +1,13 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import PropTypes from 'prop-types'
 import TableX from '../../base'
 import { TABLE_X, TABLE_X_SELECT_ID } from '../../util'
 import { Flex } from '@gmfe/react'
 import { devWarn } from '@gm-common/tool'
-import { SelectContext } from './util'
+import { SelectedSetContext, SelectOperationContext } from './util'
 import SelectHeader from './header'
 import SelectCell from './cell'
 import _ from 'lodash'
-
-// 利用 Context 做到按需更新
 
 function getNewColumns(
   columns,
@@ -61,12 +59,26 @@ function selectTableXHOC(Component) {
       }
     })
 
-    const canSelectData = data.filter(row => !isSelectorDisable(row))
+    const canSelectData = useMemo(
+      () => data.filter(row => !isSelectorDisable(row)),
+      [data, isSelectorDisable]
+    )
+
+    // 勾选集合 Set：引用仅在内容变化时更新（由 useMemo(selected) 保证），
+    // 配合 SelectCell 的 memo，勾选任意行时其余行的勾选单元格全部跳过重渲染
+    const selectedSet = useMemo(() => new Set(selected), [selected])
 
     // 支持跨页累积勾选：判断当前页每一行是否都在 selected 中，而非依赖 length 比较
-    const selectedSet = new Set(selected)
     const isSelectAll =
-      canSelectData.length > 0 && canSelectData.every(row => selectedSet.has(row[keyField]))
+      canSelectData.length > 0 &&
+      canSelectData.every(row => selectedSet.has(row[keyField]))
+
+    // 稳定引用的快照：供「引用不变的回调闭包」在调用时读取最新值，
+    // 避免 context value memo 化后消费者持有过期闭包（isSelectAll/canSelectData 过期会导致全选反转）
+    const latestRef = useRef({})
+    latestRef.current.selectedSet = selectedSet
+    latestRef.current.canSelectData = canSelectData
+    latestRef.current.isSelectAll = isSelectAll
 
     const handleSelect = selected => {
       onSelect(selected)
@@ -74,15 +86,22 @@ function selectTableXHOC(Component) {
 
     const handleSelectAll = () => {
       // 支持跨页累积勾选：全选 = 合并当前页；取消全选 = 从 selected 移除当前页
+      // 读取调用时刻的最新快照，而非闭包捕获的渲染期值
+      const { canSelectData, isSelectAll } = latestRef.current
       const currentPageKeys = _.map(canSelectData, v => v[keyField])
-      const selectedSet = new Set(selected)
+      const nextSet = new Set(latestRef.current.selectedSet)
       if (!isSelectAll) {
-        currentPageKeys.forEach(key => selectedSet.add(key))
+        currentPageKeys.forEach(key => nextSet.add(key))
       } else {
-        currentPageKeys.forEach(key => selectedSet.delete(key))
+        currentPageKeys.forEach(key => nextSet.delete(key))
       }
-      onSelect(Array.from(selectedSet))
+      onSelect(Array.from(nextSet))
     }
+
+    // 操作回调保持引用稳定：SelectOperationContext 的 value 不因勾选而更新
+    const operationValue = useRef({ onSelect: handleSelect, onSelectAll: handleSelectAll })
+    operationValue.current.onSelect = handleSelect
+    operationValue.current.onSelectAll = handleSelectAll
 
     // columns 即可，其他都是死的。 isSelectorDisable 呢？
     const newColumns = useMemo(() => {
@@ -95,30 +114,33 @@ function selectTableXHOC(Component) {
       )
     }, [columns])
 
+    // 选中集合 context value：memo 化，避免 SelectTableX 任意重渲染
+    // （如页面其他 state 变化）把 context 传播给全部 SelectCell。
+    // 注意：value 引用仅在 selectedSet/isSelectAll 变化时更新。
+    const selectedSetValue = useMemo(
+      () => ({ selectedSet, isSelectAll }),
+      [selectedSet, isSelectAll]
+    )
+
     return (
-      <SelectContext.Provider
-        value={{
-          selected,
-          onSelect: handleSelect,
-          isSelectAll,
-          onSelectAll: handleSelectAll
-        }}
-      >
-        <div className='gm-table-x-select-container'>
-          {batchActionBar && (
-            <div className='gm-table-x-select-batch-action-bar-container'>
-              <Flex
-                column
-                justifyCenter
-                className='gm-table-x-select-batch-action-bar'
-              >
-                {batchActionBar}
-              </Flex>
-            </div>
-          )}
-          <Component {...rest} columns={newColumns} data={data} />
-        </div>
-      </SelectContext.Provider>
+      <SelectOperationContext.Provider value={operationValue.current}>
+        <SelectedSetContext.Provider value={selectedSetValue}>
+          <div className='gm-table-x-select-container'>
+            {batchActionBar && (
+              <div className='gm-table-x-select-batch-action-bar-container'>
+                <Flex
+                  column
+                  justifyCenter
+                  className='gm-table-x-select-batch-action-bar'
+                >
+                  {batchActionBar}
+                </Flex>
+              </div>
+            )}
+            <Component {...rest} columns={newColumns} data={data} />
+          </div>
+        </SelectedSetContext.Provider>
+      </SelectOperationContext.Provider>
     )
   }
 
