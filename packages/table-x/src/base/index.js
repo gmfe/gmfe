@@ -119,12 +119,86 @@ const TableX = ({
     )
   }
 
-  const tbodyRows = _.map(rows, row =>
-    RenderRow({
-      index: row.index,
-      style: {}
-    })
-  )
+  // 行渲染结果缓存：rows/渲染参数引用不变时直接复用上一次的 tbodyRows，
+  // 避免「与行无关的重渲染（如勾选）」重复执行 prepareRow + 全量行元素构建。
+  // prepareRow 每次都会重建 cell 对象，导致 React.memo(Td) 失效，因此必须在
+  // 「构建」这一层做缓存，而不是依赖行内 memo。
+  // 注意 1：缓存对象整体替换（不用 ref.current 扩展属性，React 会冻结 current，不可追加键）
+  // 注意 2（使用约束）：本缓存以 data 引用为失效键。调用方更新数据必须「整组替换」
+  // （新数组引用）；若保持数组引用不变、原地修改行字段（如 store.data[i].status = 2），
+  // 普通（非 mobx observer）Cell 将显示旧值。开发态下方 devWarn 会采样检测并提示。
+  // 注意 3（使用约束）：isTrDisable/isTrHighlight 回调应仅依赖 row 数据本身派生；
+  // 若读取 data 之外的可变状态（页面 state/store），缓存命中期间行禁用/高亮态不会刷新。
+  const tbodyRowsCacheRef = useRef(null)
+  const cache = tbodyRowsCacheRef.current
+  let tbodyRows =
+    cache &&
+    cache.rows === rows &&
+    cache.SubComponent === SubComponent &&
+    cache.totalWidth === totalWidth &&
+    cache.keyField === keyField &&
+    cache.isTrDisable === isTrDisable &&
+    cache.isTrHighlight === isTrHighlight
+      ? cache.tbodyRows
+      : null
+
+  // 开发态防线：缓存命中（rows 未重建）但 data 是新引用时——
+  // 说明调用方在 data 变化后本组件重渲染，但 react-table 因列/行模型依赖
+  // 未变而没有重建 rows。采样快照对比，检测「同引用行上的字段变化」并告警。
+  if (
+    process.env.NODE_ENV === 'development' &&
+    cache &&
+    tbodyRows &&
+    cache.data !== data &&
+    data.length > 0
+  ) {
+    const sampleIndex = [0, Math.floor(data.length / 2), data.length - 1]
+    for (const i of sampleIndex) {
+      const cachedRow = cache.data && cache.data[i]
+      const currentRow = data[i]
+      // 行引用相同但渲染缓存未失效 → 该行的字段若被原地修改将不会反映到界面
+      if (
+        cachedRow === currentRow &&
+        !_.isEmpty(currentRow) &&
+        _.some(currentRow, (v, k) => cache.rowSnapshots && cache.rowSnapshots[i] && cache.rowSnapshots[i][k] !== v)
+      ) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[gm-table-x] 检测到第 ${i} 行数据被原地修改但 data 数组引用未变，行渲染缓存不会刷新，` +
+            `请改为整组替换 data（如 this.data = [...this.data]）。位置索引：${i}`
+        )
+        break
+      }
+    }
+  }
+
+  if (!tbodyRows) {
+    tbodyRows = _.map(rows, row =>
+      RenderRow({
+        index: row.index,
+        style: {}
+      })
+    )
+    // 开发态快照：记录采样行的字段值，供下次缓存命中时做原地变更检测
+    let rowSnapshots = null
+    if (process.env.NODE_ENV === 'development' && data.length > 0) {
+      rowSnapshots = {}
+      ;[0, Math.floor(data.length / 2), data.length - 1].forEach(i => {
+        rowSnapshots[i] = { ...data[i] }
+      })
+    }
+    tbodyRowsCacheRef.current = {
+      tbodyRows,
+      rows,
+      SubComponent,
+      totalWidth,
+      keyField,
+      isTrDisable,
+      isTrHighlight,
+      data,
+      rowSnapshots
+    }
+  }
 
   const rootClassName = classNames(
     'gm-table-x',

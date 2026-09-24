@@ -1,5 +1,5 @@
 import React from 'react'
-import { SelectContext } from './util'
+import { SelectedSetContext, SelectOperationContext } from './util'
 import { Checkbox } from '@gmfe/react'
 import PropTypes from 'prop-types'
 
@@ -9,15 +9,19 @@ const SelectHeader = React.memo(({ selectType }) => {
   }
 
   return (
-    <SelectContext.Consumer>
-      {({ isSelectAll, onSelectAll }) => (
-        <Checkbox
-          className='gm-table-x-select'
-          checked={isSelectAll}
-          onChange={onSelectAll}
-        />
+    <SelectedSetContext.Consumer>
+      {({ isSelectAll }) => (
+        <SelectOperationContext.Consumer>
+          {({ onSelectAll }) => (
+            <Checkbox
+              className='gm-table-x-select'
+              checked={isSelectAll}
+              onChange={onSelectAll}
+            />
+          )}
+        </SelectOperationContext.Consumer>
       )}
-    </SelectContext.Consumer>
+    </SelectedSetContext.Consumer>
   )
 })
 
