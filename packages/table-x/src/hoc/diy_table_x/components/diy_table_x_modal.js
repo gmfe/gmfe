@@ -13,7 +13,7 @@ import { getLocale } from '@gmfe/locales'
  */
 function StickyControlsInModal({ stickyControlProps }) {
   const [localChecked, setLocalChecked] = useState(
-    () => !!(stickyControlProps && stickyControlProps.localChecked)
+    () => !!(stickyControlProps && stickyControlProps.localChecked),
   )
 
   if (!stickyControlProps || !stickyControlProps.canShowLocal) {
@@ -25,7 +25,7 @@ function StickyControlsInModal({ stickyControlProps }) {
       localChecked={localChecked}
       canShowLocal={stickyControlProps.canShowLocal}
       texts={stickyControlProps.texts}
-      setLocalSticky={checked => {
+      setLocalSticky={(checked) => {
         const next = !!checked
         setLocalChecked(next)
         stickyControlProps.setLocalSticky &&
@@ -36,7 +36,7 @@ function StickyControlsInModal({ stickyControlProps }) {
 }
 
 StickyControlsInModal.propTypes = {
-  stickyControlProps: PropTypes.object
+  stickyControlProps: PropTypes.object,
 }
 
 const DiyTableModal = ({
@@ -45,16 +45,21 @@ const DiyTableModal = ({
   diyGroupSorting,
   onCancel,
   onResetDefault,
-  stickyControlProps
+  stickyControlProps,
 }) => {
   const rootRef = useRef(null)
   const [diyCols, setDiyCols] = useState(columns)
-  const [showCols, setShowCols] = useState(columns.filter(o => o.show))
+  const [showCols, setShowCols] = useState(columns.filter((o) => o.show))
 
   useEffect(() => {
     setDiyCols(columns)
     // 右侧"当前选定的字段"需按用户保存的排序显示，而非定义顺序
-    setShowCols(_.sortBy(columns.filter(o => o.show), o => o.sortNumber))
+    setShowCols(
+      _.sortBy(
+        columns.filter((o) => o.show),
+        (o) => o.sortNumber,
+      ),
+    )
   }, [columns])
 
   // Popover 锚定在齿轮下方，固定 calc(100vh-N) 无法覆盖不同 top；按实际 top 扣边距限高，保证底栏常显
@@ -75,7 +80,7 @@ const DiyTableModal = ({
   }, [])
 
   const handleColsChange = (key, curShow) => {
-    const index = _.findIndex(diyCols, o => o.key === key)
+    const index = _.findIndex(diyCols, (o) => o.key === key)
     const _diyCols = diyCols.slice()
 
     const curItem = _diyCols[index]
@@ -85,21 +90,21 @@ const DiyTableModal = ({
 
     if (curItem.show) {
       // 把当前项增加到排序列表中
-      setShowCols(_diyCols.filter(o => o.show))
+      setShowCols(_diyCols.filter((o) => o.show))
     } else {
       // 把当前项从排序列表去掉
       const _showCols = showCols.slice()
-      _.remove(_showCols, item => item.key === key)
+      _.remove(_showCols, (item) => item.key === key)
       setShowCols(_showCols)
     }
   }
 
-  const handleColsRemove = key => {
+  const handleColsRemove = (key) => {
     const _showCols = showCols.slice()
-    _.remove(_showCols, o => o.key === key)
+    _.remove(_showCols, (o) => o.key === key)
     setShowCols(_showCols)
 
-    const index = _.findIndex(diyCols, o => o.key === key)
+    const index = _.findIndex(diyCols, (o) => o.key === key)
     const _diyCols = diyCols.slice()
     _diyCols[index].show = false
     setDiyCols(_diyCols)
@@ -107,8 +112,8 @@ const DiyTableModal = ({
 
   const handleColsSort = (beforeKey, afterKey) => {
     const _showCols = showCols.slice()
-    const beforeIndex = _.findIndex(_showCols, o => o.key === beforeKey)
-    const afterIndex = _.findIndex(_showCols, o => o.key === afterKey)
+    const beforeIndex = _.findIndex(_showCols, (o) => o.key === beforeKey)
+    const afterIndex = _.findIndex(_showCols, (o) => o.key === afterKey)
 
     if (beforeIndex === -1 || afterIndex === -1) return
 
@@ -127,12 +132,19 @@ const DiyTableModal = ({
   }
 
   const handleSave = () => {
-    const columns = diyCols.map(col => {
-      const sortIndex = _.findIndex(showCols, v => v.key === col.key)
+    // fixed 列的 sticky 偏移依赖其处于表格边缘，用户拖拽可能把它挪到中间，
+    // 保存前校正：fixed: 'left' 固定排最前、fixed: 'right' 固定排最后（与渲染层兜底规则一致）
+    const orderedShowCols = [
+      ...showCols.filter((o) => o.fixed === 'left'),
+      ...showCols.filter((o) => o.fixed !== 'left' && o.fixed !== 'right'),
+      ...showCols.filter((o) => o.fixed === 'right'),
+    ]
+    const columns = diyCols.map((col) => {
+      const sortIndex = _.findIndex(orderedShowCols, (v) => v.key === col.key)
       return {
         ...col,
         show: sortIndex > -1, // 大于-1才会显示
-        diySortNumber: sortIndex > -1 ? sortIndex : col.diySortNumber
+        diySortNumber: sortIndex > -1 ? sortIndex : col.diySortNumber,
       }
     })
 
@@ -141,7 +153,10 @@ const DiyTableModal = ({
   }
 
   return (
-    <div className='gm-react-table-x-diy-modal gm-react-table-x-diy-modal-fit' ref={rootRef}>
+    <div
+      className='gm-react-table-x-diy-modal gm-react-table-x-diy-modal-fit'
+      ref={rootRef}
+    >
       <Flex
         className='gm-react-table-x-diy-modal-header gm-padding-tb-5'
         justifyBetween
@@ -174,9 +189,7 @@ const DiyTableModal = ({
           />
         </div>
         <div className='gm-react-table-x-diy-modal-list'>
-          <div className='gm-react-table-x-diy-modal-title'>
-            当前选定的字段
-          </div>
+          <div className='gm-react-table-x-diy-modal-title'>当前选定的字段</div>
           <List
             cols={showCols}
             onColsRemove={handleColsRemove}
@@ -184,12 +197,19 @@ const DiyTableModal = ({
           />
         </div>
       </Flex>
-      <Flex justifyBetween className='gm-react-table-x-diy-modal-btn gm-padding-10'>
+      <Flex
+        justifyBetween
+        className='gm-react-table-x-diy-modal-btn gm-padding-10'
+      >
         <Button onClick={handleResetDefault}>{getLocale('恢复默认')}</Button>
         <Flex>
           <Button onClick={onCancel}>{getLocale('取消')}</Button>
           <div className='gm-gap-10' />
-          <Button type='primary' onClick={handleSave} className='gm-margin-right-10'>
+          <Button
+            type='primary'
+            onClick={handleSave}
+            className='gm-margin-right-10'
+          >
             {getLocale('保存')}
           </Button>
         </Flex>
@@ -207,7 +227,7 @@ DiyTableModal.propTypes = {
   /**
    * 由 DiyTableX 在 ConfigProvider 内计算后传入（Popover 挂到 LayerRoot 会丢失 Context）
    */
-  stickyControlProps: PropTypes.object
+  stickyControlProps: PropTypes.object,
 }
 
 export default DiyTableModal
