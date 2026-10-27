@@ -7,8 +7,9 @@ import {
   Storage,
   Popover,
   getLatestConfig,
-  clearAllLocalHeaderSticky,
   STORAGE_PREFIX,
+  resolveTableStickyStorageId,
+  readTableStickyLocal,
   // bump 从 sync 再导出不方便，走 getLatestConfig().bumpStickyLocalVersion
 } from '@gmfe/react'
 import SVGSetting from '../../../svg/setting.svg'
@@ -18,9 +19,10 @@ import {
   TABLE_X_EXPAND_ID,
   TABLE_X_DIY_ID,
   getColumnKey,
-  OperationIconTip
+  OperationIconTip,
 } from '../../util'
 import TableX from '../../base'
+import withTableSticky from '../with_table_sticky'
 import { devWarn } from '@gm-common/tool'
 import DiyTableXModal from './components/diy_table_x_modal'
 
@@ -56,7 +58,7 @@ function generateDiyColumns(initColumns, mixColumns) {
       item.diySortNumber !== undefined ? item.diySortNumber : index
     mixColumnsMap[item.key] = item
   })
-  let diyColumns = _.map(diyCols, column => {
+  let diyColumns = _.map(diyCols, (column) => {
     const key = getColumnKey(column)
     // 能获取 key 才可能使用 diy
     if (key === null) {
@@ -69,7 +71,7 @@ function generateDiyColumns(initColumns, mixColumns) {
       ...column,
       key, // 把key记录下来,作为这个列的唯一标识
       show,
-      diyEnable
+      diyEnable,
     }
 
     // localstorage中储存的列
@@ -82,9 +84,17 @@ function generateDiyColumns(initColumns, mixColumns) {
     return newColumn
   })
 
-  diyColumns = _.sortBy(diyColumns, function(o) {
+  diyColumns = _.sortBy(diyColumns, function (o) {
     return o.sortNumber
   })
+
+  // fixed 列的 sticky 偏移按「列在表格边缘」计算（left 靠 totalLeft 累加、right 靠表格总宽反推），
+  // 若被 diy 排序挪到中间位置，偏移会失配导致该列被推出可视区（表现为列白屏）。
+  // 无论 localStorage 中存了何种排序（含历史脏数据），渲染前强制把 fixed 列移回边缘：
+  // fixed: 'left' 的列放最前，fixed: 'right' 的列放最后，其余列保持用户排序。
+  const fixedLeft = _.remove(diyColumns, (o) => o.fixed === 'left')
+  const fixedRight = _.remove(diyColumns, (o) => o.fixed === 'right')
+  diyColumns = [...fixedLeft, ...diyColumns, ...fixedRight]
 
   return [notDiyCols, diyColumns]
 }
@@ -95,7 +105,7 @@ function generateDiyColumns(initColumns, mixColumns) {
  * @returns {Array}
  */
 function getStorageColumns(columns) {
-  return _.map(columns, col => {
+  return _.map(columns, (col) => {
     const { key, show, diyEnable, diySortNumber } = col
     return { key, show, diyEnable, diySortNumber }
   })
@@ -111,13 +121,12 @@ function buildStickyControlProps(hookProps, config) {
     defaultSticky = false,
     onStickyChange,
     localStickyText,
-    globalStickyText
   } = hookProps
 
-  const resolvedStickyId = stickyId || id
-  const globalCfg = (config && (config.tableXConfig || config.tableConfig)) || null
-  const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
-  const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange
+  const resolvedStickyId = resolveTableStickyStorageId(stickyId, id)
+  const legacyStickyId = stickyId ? null : id
+  const globalCfg =
+    (config && (config.tableXConfig || config.tableConfig)) || null
   const bump = config && config.bumpStickyLocalVersion
 
   // 控件展示开关：props 优先，否则回退 ConfigProvider
@@ -127,41 +136,23 @@ function buildStickyControlProps(hookProps, config) {
       : globalCfg && globalCfg.showLocalSticky !== undefined
         ? globalCfg.showLocalSticky
         : true
-  const showGlobalSticky =
-    hookProps.showGlobalSticky !== undefined
-      ? hookProps.showGlobalSticky
-      : globalCfg && globalCfg.showGlobalSticky !== undefined
-        ? globalCfg.showGlobalSticky
-        : true
 
-  let hasLocalOverride = false
   let localSticky = !!defaultSticky
   if (resolvedStickyId) {
-    const cached = Storage.get(STORAGE_PREFIX + resolvedStickyId)
-    if (cached === true || cached === false) {
-      hasLocalOverride = true
-      localSticky = cached
+    const cached = readTableStickyLocal(resolvedStickyId, legacyStickyId)
+    if (cached.hasOverride) {
+      localSticky = cached.value
     }
   }
 
-  const localChecked = hasLocalOverride ? localSticky : globalSticky
-  // 当前弹层展示用：取消是否固定时同步取消勾选一键固定（不改全局）
-  const globalChecked = globalSticky && localChecked
-
   return {
-    localChecked,
-    globalSticky,
-    globalChecked,
+    localChecked: !!localSticky,
     canShowLocal: showLocalSticky !== false && !!resolvedStickyId,
-    canShowGlobal:
-      showGlobalSticky !== false &&
-      typeof onGlobalChangeRaw === 'function' &&
-      !!resolvedStickyId,
+    canShowGlobal: false,
     texts: {
       local: localStickyText != null ? localStickyText : getLocale('是否固定'),
-      global: globalStickyText != null ? globalStickyText : getLocale('一键固定')
     },
-    setLocalSticky: checked => {
+    setLocalSticky: (checked) => {
       const next = !!checked
       if (resolvedStickyId) {
         Storage.set(STORAGE_PREFIX + resolvedStickyId, next)
@@ -169,16 +160,22 @@ function buildStickyControlProps(hookProps, config) {
       bump && bump()
       onStickyChange && onStickyChange(next)
     },
-    onGlobalChange: checked => {
-      const next = !!checked
-      clearAllLocalHeaderSticky()
-      bump && bump()
-      onGlobalChangeRaw && onGlobalChangeRaw(next)
-    }
   }
 }
 
+// 分组表格才有表头吸顶（「是否固定」）；普通 TableX 不响应
+const StickyTableX = withTableSticky(TableX, {
+  stickyClassName: 'gm-table-x-header-sticky',
+})
+
 function diyTableXHOC(Component) {
+  const StickyComponent =
+    Component === TableX
+      ? StickyTableX
+      : withTableSticky(Component, {
+          stickyClassName: 'gm-table-x-header-sticky',
+        })
+
   const DiyTableX = ({
     id,
     columns,
@@ -196,7 +193,7 @@ function diyTableXHOC(Component) {
 
     // 只需要执行第一遍就可以了，使用函数
     const [diyCols, setDiyCols] = useState(
-      () => generateDiyColumns(columns, Storage.get(id) || [])[1]
+      () => generateDiyColumns(columns, Storage.get(id) || [])[1],
     )
     const [dialogKey, setDialogKey] = useState(0)
     const [tableKey, setTableKey] = useState(0)
@@ -220,7 +217,7 @@ function diyTableXHOC(Component) {
     // 稳定的列宽变更回调引用，避免 useMemo 因闭包变化频繁重建 columns
     const resizeRef = useRef()
     resizeRef.current = (columnKey, newWidth) => {
-      setResized(prev => {
+      setResized((prev) => {
         const next = { ...prev, [columnKey]: newWidth }
         persistRef.current(next)
         return next
@@ -229,7 +226,7 @@ function diyTableXHOC(Component) {
 
     // 防抖持久化列宽
     const persistRef = useRef()
-    persistRef.current = _.debounce(widthMap => {
+    persistRef.current = _.debounce((widthMap) => {
       if (!enableColumnWidthPersist) return
       try {
         Storage.set(id + COL_WIDTH_SUFFIX, widthMap)
@@ -248,10 +245,10 @@ function diyTableXHOC(Component) {
       showLocalSticky: rest.showLocalSticky,
       showGlobalSticky: rest.showGlobalSticky,
       localStickyText: rest.localStickyText,
-      globalStickyText: rest.globalStickyText
+      globalStickyText: rest.globalStickyText,
     }
 
-    const handleDiyColumnsSave = cols => {
+    const handleDiyColumnsSave = (cols) => {
       setDiyCols(cols)
       Storage.set(id, getStorageColumns(cols))
     }
@@ -267,8 +264,8 @@ function diyTableXHOC(Component) {
       const [, defaultCols] = generateDiyColumns(columns, [])
       setDiyCols(defaultCols)
       setResized({})
-      setDialogKey(prev => prev + 1)
-      setTableKey(prev => prev + 1)
+      setDialogKey((prev) => prev + 1)
+      setTableKey((prev) => prev + 1)
     }
 
     const handleCancel = () => {
@@ -280,22 +277,22 @@ function diyTableXHOC(Component) {
 
       // 弹窗左侧"可选字段"需保持定义顺序不变，而 cols 已按 sortNumber 排序
       // 用 props.columns 的定义顺序重建弹窗用的 columns 数组，数据来自 cols
-      const colsMap = _.keyBy(cols, col => getColumnKey(col))
+      const colsMap = _.keyBy(cols, (col) => getColumnKey(col))
       const dialogColumns = _.compact(
-        _.map(columns, propCol => {
+        _.map(columns, (propCol) => {
           const key = getColumnKey(propCol)
           if (!key) return null
           return colsMap[key] || null
-        })
+        }),
       )
 
       // 注入列宽和 _onResize 回调
-      const colsWithResize = _.map(cols, col => {
+      const colsWithResize = _.map(cols, (col) => {
         const key = getColumnKey(col)
         if (!key) return col
         const patched = {
           ...col,
-          _onResize: (...args) => resizeRef.current(...args)
+          _onResize: (...args) => resizeRef.current(...args),
         }
         if (resized[key] !== undefined) {
           patched.width = resized[key]
@@ -327,7 +324,7 @@ function diyTableXHOC(Component) {
                   onResetDefault={handleResetDefault}
                   stickyControlProps={buildStickyControlProps(
                     stickyHookPropsRef.current,
-                    getLatestConfig()
+                    getLatestConfig(),
                   )}
                 />
               )}
@@ -340,22 +337,22 @@ function diyTableXHOC(Component) {
                 </OperationIconTip>
               </div>
             </Popover>
-          )
+          ),
         },
         ...notDiyCols,
-        ...colsWithResize
+        ...colsWithResize,
       ]
     }, [columns, diyCols, resized])
 
     return (
-      <Component
+      <StickyComponent
         key={tableKey}
         {...rest}
         id={id}
         columns={_columns}
         className={classNames(
           rest.className,
-          showColumnBorder && 'gm-table-x-show-column-border'
+          showColumnBorder && 'gm-table-x-show-column-border',
         )}
       />
     )
@@ -372,8 +369,8 @@ function diyTableXHOC(Component) {
     /** 分组排序 */
     diyGroupSorting: PropTypes.array.isRequired,
     /** column 需要有 diyGroupName 字段 和 （Header | diyItemText） */
-    columns: props => {
-      _.each(props.columns, column => {
+    columns: (props) => {
+      _.each(props.columns, (column) => {
         const key = getColumnKey(column)
         if (
           key &&
@@ -387,11 +384,11 @@ function diyTableXHOC(Component) {
           }
         }
       })
-    }
+    },
   }
 
   DiyTableX.defaultProps = {
-    showColumnBorder: true
+    showColumnBorder: true,
   }
 
   return DiyTableX

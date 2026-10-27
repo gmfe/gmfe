@@ -54,6 +54,7 @@ import { Box, BoxForm, BoxTable, BoxPanel } from '@gmfe/react'
 | className | 自定义类名 | `string` | - | 否 |
 | style | 自定义样式 | `object` | - | 否 |
 | headerProps | 头部区域的自定义属性 | `object` | `{}` | 否 |
+| headerScrollable | 窄屏友好头栏：左侧 info 可横滑（隐藏滚动条），右侧 action 钉住不收缩 | `bool` | `false` | 否 |
 
 ### BoxTable.Info
 | 属性 | 说明 | 类型 | 必填 |

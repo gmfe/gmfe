@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Flex, Button, TableStickyControls } from '@gmfe/react'
 import _ from 'lodash'
 import Selector from './modal_selector'
@@ -9,64 +9,34 @@ import { getLocale } from '@gmfe/locales'
 /**
  * 弹层内维护 Checkbox 展示态，避免 sticky 变更触发外层 columns 重建导致 Popover 关闭。
  * 真正的持久化 / 表头 class 仍走 stickyControlProps 回调。
+ * 仅「是否固定」；「一键固定」已下线。
  */
 function StickyControlsInModal({ stickyControlProps }) {
   const [localChecked, setLocalChecked] = useState(
-    () => !!(stickyControlProps && stickyControlProps.localChecked)
-  )
-  // 当前弹层内「一键固定」展示（可与真实全局不一致）
-  const [globalChecked, setGlobalChecked] = useState(() =>
-    stickyControlProps && stickyControlProps.globalChecked !== undefined
-      ? !!stickyControlProps.globalChecked
-      : !!(
-          stickyControlProps &&
-          stickyControlProps.globalSticky &&
-          stickyControlProps.localChecked
-        )
-  )
-  // 记住真实全局，取消是否固定时只改展示，不改这个值
-  const [realGlobalSticky, setRealGlobalSticky] = useState(
-    () => !!(stickyControlProps && stickyControlProps.globalSticky)
+    () => !!(stickyControlProps && stickyControlProps.localChecked),
   )
 
-  if (
-    !stickyControlProps ||
-    (!stickyControlProps.canShowLocal && !stickyControlProps.canShowGlobal)
-  ) {
+  if (!stickyControlProps || !stickyControlProps.canShowLocal) {
     return null
   }
 
   return (
     <TableStickyControls
       localChecked={localChecked}
-      globalSticky={realGlobalSticky}
-      globalChecked={globalChecked}
       canShowLocal={stickyControlProps.canShowLocal}
-      canShowGlobal={stickyControlProps.canShowGlobal}
       texts={stickyControlProps.texts}
-      setLocalSticky={checked => {
+      setLocalSticky={(checked) => {
         const next = !!checked
         setLocalChecked(next)
-        // 取消是否固定 → 本弹层一键固定展示取消；勾选则恢复为真实全局
-        setGlobalChecked(next && realGlobalSticky)
         stickyControlProps.setLocalSticky &&
           stickyControlProps.setLocalSticky(next)
-      }}
-      onGlobalChange={checked => {
-        const next = !!checked
-        setRealGlobalSticky(next)
-        setGlobalChecked(next)
-        // 开启/关闭一键固定都会清本地：UI 上是否固定跟随勾选/取消
-        setLocalChecked(next)
-        stickyControlProps.onGlobalChange &&
-          stickyControlProps.onGlobalChange(next)
       }}
     />
   )
 }
 
 StickyControlsInModal.propTypes = {
-  stickyControlProps: PropTypes.object
+  stickyControlProps: PropTypes.object,
 }
 
 const DiyTableModal = ({
@@ -75,19 +45,42 @@ const DiyTableModal = ({
   diyGroupSorting,
   onCancel,
   onResetDefault,
-  stickyControlProps
+  stickyControlProps,
 }) => {
+  const rootRef = useRef(null)
   const [diyCols, setDiyCols] = useState(columns)
-  const [showCols, setShowCols] = useState(columns.filter(o => o.show))
+  const [showCols, setShowCols] = useState(columns.filter((o) => o.show))
 
   useEffect(() => {
     setDiyCols(columns)
     // 右侧"当前选定的字段"需按用户保存的排序显示，而非定义顺序
-    setShowCols(_.sortBy(columns.filter(o => o.show), o => o.sortNumber))
+    setShowCols(
+      _.sortBy(
+        columns.filter((o) => o.show),
+        (o) => o.sortNumber,
+      ),
+    )
   }, [columns])
 
+  // Popover 锚定在齿轮下方，固定 calc(100vh-N) 无法覆盖不同 top；按实际 top 扣边距限高，保证底栏常显
+  useLayoutEffect(() => {
+    const el = rootRef.current
+    if (!el) return undefined
+
+    const updateMaxHeight = () => {
+      const top = el.getBoundingClientRect().top
+      // 设计上限 600；窗口更矮时按齿轮下方剩余高度再收，不用最小高度垫高，避免保存行被顶出视口
+      const room = Math.max(0, window.innerHeight - top - 8)
+      el.style.maxHeight = `${Math.min(600, room)}px`
+    }
+
+    updateMaxHeight()
+    window.addEventListener('resize', updateMaxHeight)
+    return () => window.removeEventListener('resize', updateMaxHeight)
+  }, [])
+
   const handleColsChange = (key, curShow) => {
-    const index = _.findIndex(diyCols, o => o.key === key)
+    const index = _.findIndex(diyCols, (o) => o.key === key)
     const _diyCols = diyCols.slice()
 
     const curItem = _diyCols[index]
@@ -97,21 +90,21 @@ const DiyTableModal = ({
 
     if (curItem.show) {
       // 把当前项增加到排序列表中
-      setShowCols(_diyCols.filter(o => o.show))
+      setShowCols(_diyCols.filter((o) => o.show))
     } else {
       // 把当前项从排序列表去掉
       const _showCols = showCols.slice()
-      _.remove(_showCols, item => item.key === key)
+      _.remove(_showCols, (item) => item.key === key)
       setShowCols(_showCols)
     }
   }
 
-  const handleColsRemove = key => {
+  const handleColsRemove = (key) => {
     const _showCols = showCols.slice()
-    _.remove(_showCols, o => o.key === key)
+    _.remove(_showCols, (o) => o.key === key)
     setShowCols(_showCols)
 
-    const index = _.findIndex(diyCols, o => o.key === key)
+    const index = _.findIndex(diyCols, (o) => o.key === key)
     const _diyCols = diyCols.slice()
     _diyCols[index].show = false
     setDiyCols(_diyCols)
@@ -119,8 +112,8 @@ const DiyTableModal = ({
 
   const handleColsSort = (beforeKey, afterKey) => {
     const _showCols = showCols.slice()
-    const beforeIndex = _.findIndex(_showCols, o => o.key === beforeKey)
-    const afterIndex = _.findIndex(_showCols, o => o.key === afterKey)
+    const beforeIndex = _.findIndex(_showCols, (o) => o.key === beforeKey)
+    const afterIndex = _.findIndex(_showCols, (o) => o.key === afterKey)
 
     if (beforeIndex === -1 || afterIndex === -1) return
 
@@ -139,12 +132,19 @@ const DiyTableModal = ({
   }
 
   const handleSave = () => {
-    const columns = diyCols.map(col => {
-      const sortIndex = _.findIndex(showCols, v => v.key === col.key)
+    // fixed 列的 sticky 偏移依赖其处于表格边缘，用户拖拽可能把它挪到中间，
+    // 保存前校正：fixed: 'left' 固定排最前、fixed: 'right' 固定排最后（与渲染层兜底规则一致）
+    const orderedShowCols = [
+      ...showCols.filter((o) => o.fixed === 'left'),
+      ...showCols.filter((o) => o.fixed !== 'left' && o.fixed !== 'right'),
+      ...showCols.filter((o) => o.fixed === 'right'),
+    ]
+    const columns = diyCols.map((col) => {
+      const sortIndex = _.findIndex(orderedShowCols, (v) => v.key === col.key)
       return {
         ...col,
         show: sortIndex > -1, // 大于-1才会显示
-        diySortNumber: sortIndex > -1 ? sortIndex : col.diySortNumber
+        diySortNumber: sortIndex > -1 ? sortIndex : col.diySortNumber,
       }
     })
 
@@ -153,7 +153,10 @@ const DiyTableModal = ({
   }
 
   return (
-    <div className='gm-react-table-x-diy-modal'>
+    <div
+      className='gm-react-table-x-diy-modal gm-react-table-x-diy-modal-fit'
+      ref={rootRef}
+    >
       <Flex
         className='gm-react-table-x-diy-modal-header gm-padding-tb-5'
         justifyBetween
@@ -186,9 +189,7 @@ const DiyTableModal = ({
           />
         </div>
         <div className='gm-react-table-x-diy-modal-list'>
-          <div className='gm-react-table-x-diy-modal-title'>
-            当前选定的字段
-          </div>
+          <div className='gm-react-table-x-diy-modal-title'>当前选定的字段</div>
           <List
             cols={showCols}
             onColsRemove={handleColsRemove}
@@ -196,12 +197,19 @@ const DiyTableModal = ({
           />
         </div>
       </Flex>
-      <Flex justifyBetween className='gm-padding-10'>
+      <Flex
+        justifyBetween
+        className='gm-react-table-x-diy-modal-btn gm-padding-10'
+      >
         <Button onClick={handleResetDefault}>{getLocale('恢复默认')}</Button>
         <Flex>
           <Button onClick={onCancel}>{getLocale('取消')}</Button>
           <div className='gm-gap-10' />
-          <Button type='primary' onClick={handleSave} className='gm-margin-right-10'>
+          <Button
+            type='primary'
+            onClick={handleSave}
+            className='gm-margin-right-10'
+          >
             {getLocale('保存')}
           </Button>
         </Flex>
@@ -219,7 +227,7 @@ DiyTableModal.propTypes = {
   /**
    * 由 DiyTableX 在 ConfigProvider 内计算后传入（Popover 挂到 LayerRoot 会丢失 Context）
    */
-  stickyControlProps: PropTypes.object
+  stickyControlProps: PropTypes.object,
 }
 
 export default DiyTableModal

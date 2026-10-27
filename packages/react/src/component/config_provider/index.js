@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { PaginationConfigContext } from '../pagination/config_context'
 import { bumpStickyLocalVersion } from '../table_sticky/sync'
+import { syncGlobalStickyBodyClass } from '../table_sticky'
 
 /**
  * 全局组件配置。
@@ -36,12 +37,27 @@ const ConfigProvider = ({
 
   latestConfigValue = configValue
 
+  // 「一键固定」已下线：挂载时清掉历史 body class，避免残留全站分页吸底
+  useEffect(() => {
+    syncGlobalStickyBodyClass(false)
+  }, [])
+
   const paginationValue = useMemo(() => {
     if (!paginationConfig) return null
     return {
       preferredLimit: paginationConfig.preferredLimit,
       limitData: paginationConfig.limitData,
-      onLimitChange: paginationConfig.onLimitChange
+      onLimitChange: paginationConfig.onLimitChange,
+      /** 是否用 localStorage 记忆每页条数；默认 true。false 时不读不写 Storage */
+      persistLimit:
+        paginationConfig.persistLimit == null
+          ? true
+          : !!paginationConfig.persistLimit,
+      /**
+       * 受控 Pagination 无 id 时的 Storage 作用域（如路由 pathname）。
+       * key：manage_pagination_scope_<limitScope>
+       */
+      limitScope: paginationConfig.limitScope
     }
   }, [paginationConfig])
 
@@ -55,21 +71,27 @@ const ConfigProvider = ({
 }
 
 ConfigProvider.propTypes = {
-  /** 分页：preferredLimit / limitData / onLimitChange */
+  /** 分页：preferredLimit / limitData / onLimitChange / persistLimit / limitScope */
   paginationConfig: PropTypes.shape({
     preferredLimit: PropTypes.number,
     limitData: PropTypes.array,
-    onLimitChange: PropTypes.func
+    onLimitChange: PropTypes.func,
+    /** 是否记忆每页条数到 localStorage，默认 true */
+    persistLimit: PropTypes.bool,
+    /** 受控 Pagination 无 id 时的 Storage 作用域（如 pathname） */
+    limitScope: PropTypes.string
   }),
   /** Table / TableX / TableXVirtualized 共用；表头固定等 */
   tableConfig: PropTypes.shape({
+    /** @deprecated 「一键固定」已下线，传入无效 */
     stickyHeader: PropTypes.bool,
+    /** @deprecated 「一键固定」已下线，传入无效 */
     onStickyHeaderChange: PropTypes.func,
     /** 表头吸顶 top 偏移（px） */
     stickyTop: PropTypes.number,
     /** 是否展示「是否固定」控件（DIY 弹层内），默认 true */
     showLocalSticky: PropTypes.bool,
-    /** 是否展示「一键固定」控件（DIY 弹层内），默认 true */
+    /** @deprecated 「一键固定」已下线，传入无效 */
     showGlobalSticky: PropTypes.bool
   }),
   /** 可选；仅 TableX 需与 Table 不同配置时传入，否则回退 tableConfig */
