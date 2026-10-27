@@ -15,35 +15,77 @@ const STICKY_PROP_KEYS = [
 ]
 
 const BOX_STICKY_CLASS = 'gm-box-table-with-sticky-table'
+const SELECT_CONTAINER_CLASS = 'gm-table-x-select-container'
+const BATCH_BAR_CONTAINER = 'gm-table-x-select-batch-action-bar-container'
+const BATCH_STICKY_HEIGHT = '50px'
 
 /**
- * 把吸顶 CSS 变量同步到上层 BoxTable，使操作栏也能 sticky
- * （CSS 变量只向下继承，需写到共同祖先）
+ * 把吸顶 CSS 变量同步到共同祖先：
+ * - BoxTable：操作栏 sticky；批量条盖住操作栏，表头只加 action 高度
+ * - 无 BoxTable 时（如分单页自定义工具栏）：批量条变量写到 select 容器，
+ *   并设置 batch 高度给表头，避免与批量条叠在同一 top
  */
-function syncBoxTableStickyVars(tableEl, stickyTopOffset) {
-  if (!tableEl) return null
-  const box = tableEl.closest('.gm-box-table')
+function syncStickyAncestorVars(tableEl, stickyTopOffset) {
+  if (!tableEl) return { box: null, select: null }
   const top = `${stickyTopOffset || 0}px`
   tableEl.style.setProperty('--gm-table-header-sticky-top', top)
 
-  if (!box) return null
+  const select = tableEl.closest(`.${SELECT_CONTAINER_CLASS}`)
+  if (select) {
+    select.style.setProperty('--gm-table-header-sticky-top', top)
+  }
 
-  box.classList.add(BOX_STICKY_CLASS)
-  box.style.setProperty('--gm-table-header-sticky-top', top)
+  const box = tableEl.closest('.gm-box-table')
+  let actionH = 0
+  if (box) {
+    box.classList.add(BOX_STICKY_CLASS)
+    box.style.setProperty('--gm-table-header-sticky-top', top)
 
-  const action = box.querySelector(':scope > .gm-box-table-header')
-  const actionH = action ? Math.round(action.getBoundingClientRect().height) : 0
-  const actionPx = `${actionH}px`
-  box.style.setProperty('--gm-table-action-sticky-height', actionPx)
-  tableEl.style.setProperty('--gm-table-action-sticky-height', actionPx)
-  return box
+    const action = box.querySelector(':scope > .gm-box-table-header')
+    actionH = action ? Math.round(action.getBoundingClientRect().height) : 0
+    const actionPx = `${actionH}px`
+    box.style.setProperty('--gm-table-action-sticky-height', actionPx)
+    tableEl.style.setProperty('--gm-table-action-sticky-height', actionPx)
+    if (select) {
+      select.style.setProperty('--gm-table-action-sticky-height', actionPx)
+    }
+  }
+
+  // 有 BoxTable 操作栏时，批量条盖住操作栏，表头不再加 batch 高度。
+  // 无操作栏时（自定义工具栏），批量条本身占吸顶槽，需给表头预留 batch 高度。
+  const hasBatch =
+    select &&
+    select.querySelector(`:scope > .${BATCH_BAR_CONTAINER}`)
+  if (hasBatch && actionH === 0) {
+    tableEl.style.setProperty(
+      '--gm-table-batch-action-sticky-height',
+      BATCH_STICKY_HEIGHT
+    )
+    select.style.setProperty(
+      '--gm-table-batch-action-sticky-height',
+      BATCH_STICKY_HEIGHT
+    )
+  } else {
+    tableEl.style.removeProperty('--gm-table-batch-action-sticky-height')
+    if (select) {
+      select.style.removeProperty('--gm-table-batch-action-sticky-height')
+    }
+  }
+
+  return { box, select }
 }
 
-function clearBoxTableStickyVars(box) {
-  if (!box) return
-  box.classList.remove(BOX_STICKY_CLASS)
-  box.style.removeProperty('--gm-table-header-sticky-top')
-  box.style.removeProperty('--gm-table-action-sticky-height')
+function clearStickyAncestorVars(box, select) {
+  if (box) {
+    box.classList.remove(BOX_STICKY_CLASS)
+    box.style.removeProperty('--gm-table-header-sticky-top')
+    box.style.removeProperty('--gm-table-action-sticky-height')
+  }
+  if (select) {
+    select.style.removeProperty('--gm-table-header-sticky-top')
+    select.style.removeProperty('--gm-table-action-sticky-height')
+    select.style.removeProperty('--gm-table-batch-action-sticky-height')
+  }
 }
 
 /**
@@ -72,19 +114,47 @@ function withTableSticky(Component, options) {
     useEffect(() => {
       if (!stickyState.headerSticky) return undefined
 
-      const touched = []
+      const touchedBoxes = []
+      const touchedSelects = []
+      let observer = null
+      let timer = null
+
       const apply = () => {
         document.querySelectorAll(`.${stickyClassName}`).forEach(el => {
-          const box = syncBoxTableStickyVars(el, stickyState.stickyTopOffset)
-          if (box && touched.indexOf(box) === -1) touched.push(box)
+          const { box, select } = syncStickyAncestorVars(
+            el,
+            stickyState.stickyTopOffset
+          )
+          if (box && touchedBoxes.indexOf(box) === -1) touchedBoxes.push(box)
+          if (select && touchedSelects.indexOf(select) === -1) {
+            touchedSelects.push(select)
+          }
         })
+      }
+
+      const scheduleApply = () => {
+        if (timer) return
+        timer = setTimeout(() => {
+          timer = null
+          apply()
+        }, 50)
       }
 
       apply()
       window.addEventListener('resize', apply)
+
+      // 勾选后批量条才挂载，需观察 DOM 以补算 batch 高度
+      if (typeof MutationObserver !== 'undefined') {
+        observer = new MutationObserver(scheduleApply)
+        observer.observe(document.body, { childList: true, subtree: true })
+      }
+
       return () => {
         window.removeEventListener('resize', apply)
-        touched.forEach(clearBoxTableStickyVars)
+        if (observer) observer.disconnect()
+        if (timer) clearTimeout(timer)
+        touchedBoxes.forEach(box => clearStickyAncestorVars(box, null))
+        touchedSelects.forEach(select => clearStickyAncestorVars(null, select))
       }
     }, [stickyState.headerSticky, stickyState.stickyTopOffset, stickyClassName])
 

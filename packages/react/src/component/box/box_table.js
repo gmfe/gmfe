@@ -18,20 +18,43 @@ Info.propTypes = {
   style: PropTypes.object
 }
 
+/**
+ * @param {boolean} [headerScrollable=false]
+ * 窄屏友好头栏：左侧 info 可横滑（隐藏滚动条），右侧 action 不收缩钉住。
+ * 默认关闭，避免影响未适配的列表。
+ */
 const BoxTable = props => {
-  const { info, action, children, className, headerProps = {}, ...rest } = props
+  const {
+    info,
+    action,
+    children,
+    className,
+    headerProps = {},
+    headerScrollable = false,
+    ...rest
+  } = props
   const { className: headerClassName } = headerProps
 
   return (
     <div {...rest} className={classNames('gm-box gm-box-table', className)}>
       <Flex
         {...headerProps}
-        className={classNames('gm-box-table-header', headerClassName)}
+        className={classNames(
+          'gm-box-table-header',
+          {
+            'gm-box-table-header-scrollable': headerScrollable
+          },
+          headerClassName
+        )}
         alignCenter
       >
-        <Flex>{info}</Flex>
-        <Flex flex />
-        <Flex>{action}</Flex>
+        <Flex className='gm-box-table-header-info'>{info}</Flex>
+        {/* scrollable 时 spacer 不再 flex:1，由 CSS 收成小间距 */}
+        <Flex
+          flex={!headerScrollable}
+          className='gm-box-table-header-spacer'
+        />
+        <Flex className='gm-box-table-header-action'>{action}</Flex>
       </Flex>
       <div>{children}</div>
     </div>
@@ -45,7 +68,13 @@ BoxTable.propTypes = {
   action: PropTypes.element,
   className: PropTypes.string,
   style: PropTypes.object,
-  headerProps: PropTypes.object
+  headerProps: PropTypes.object,
+  /** 窄屏：info 可横滑（隐藏滚动条），action 钉住不收缩 */
+  headerScrollable: PropTypes.bool
+}
+
+BoxTable.defaultProps = {
+  headerScrollable: false
 }
 
 export default BoxTable

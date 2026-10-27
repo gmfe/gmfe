@@ -2,6 +2,12 @@ import { PaginationBase } from '@gmfe/react'
 import PropTypes from 'prop-types'
 import React from 'react'
 
+/**
+ * ManagePaginationV2 的 UI 适配层。
+ * 条数记忆由 V2 自己写 manage_pagination_v2_<id>；
+ * 这里对 PaginationBase 固定 persistLimit=false，避免再写 manage_pagination_<id>
+ *（或落到 Provider.limitScope）造成双轨 / 首屏纠偏请求。
+ */
 const Transform = ({
   count,
   limit,
@@ -36,6 +42,7 @@ const Transform = ({
 
   return (
     <PaginationBase
+      persistLimit={false}
       data={{
         count: newCount,
         offset: currentIndex * limit,

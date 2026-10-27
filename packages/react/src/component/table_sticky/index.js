@@ -17,6 +17,65 @@ import { getLocale } from '@gmfe/locales'
 import { bumpStickyLocalVersion, subscribeStickyLocalVersion } from './sync'
 
 const STORAGE_PREFIX = 'table_header_sticky_'
+/**
+ * 历史「一键固定」挂在 body 上的 class。功能已下线，仅保留常量便于清理残留。
+ * @deprecated
+ */
+const GLOBAL_STICKY_BODY_CLASS = 'gm-global-table-header-sticky'
+/** 本表显式关闭「是否固定」时挂在表格上（历史兼容，分页吸底现仅看表头 sticky class） */
+const STICKY_OPT_OUT_CLASS = 'gm-table-sticky-opt-out'
+
+/** 清除 body 上历史「一键固定」class（功能已下线） */
+function syncGlobalStickyBodyClass(enabled) {
+  if (typeof document === 'undefined' || !document.body) return
+  document.body.classList.toggle(GLOBAL_STICKY_BODY_CLASS, !!enabled)
+}
+
+/**
+ * 同一业务页的查看/编辑表常有不同 diy id（*view / *edit / *_detail / *_edit），
+ * 未显式传 stickyId 时去掉这些后缀，使吸顶偏好共用。
+ */
+function normalizeTableStickyId(id) {
+  if (!id || typeof id !== 'string') return id
+  return id.replace(/(_?(view|edit|detail))+$/i, '')
+}
+
+/** stickyId 优先；否则对 diy id 做归一化 */
+function resolveTableStickyStorageId(stickyId, id) {
+  if (stickyId) return stickyId
+  const normalized = normalizeTableStickyId(id)
+  return normalized || id
+}
+
+/**
+ * 读取本地「是否固定」。先读归一化 key，再回退历史完整 diy id / 常见后缀并迁移。
+ * @returns {{ value: boolean|undefined, hasOverride: boolean }}
+ */
+function readTableStickyLocal(storageId, legacyId) {
+  if (!storageId) return { value: undefined, hasOverride: false }
+
+  const candidates = []
+  const push = key => {
+    if (key && candidates.indexOf(key) === -1) candidates.push(key)
+  }
+  push(storageId)
+  push(legacyId)
+  ;['view', 'edit', 'detail', 'editedit'].forEach(suf => {
+    push(storageId + suf)
+    push(storageId + '_' + suf)
+  })
+
+  for (let i = 0; i < candidates.length; i++) {
+    const cached = Storage.get(STORAGE_PREFIX + candidates[i])
+    if (cached === true || cached === false) {
+      if (candidates[i] !== storageId) {
+        Storage.set(STORAGE_PREFIX + storageId, cached)
+      }
+      return { value: cached, hasOverride: true }
+    }
+  }
+  return { value: undefined, hasOverride: false }
+}
 
 /**
  * 测算页面顶部固定/吸顶元素遮挡表头的高度。
@@ -27,6 +86,7 @@ function measureStickyTopOffset() {
   if (typeof document === 'undefined') return 0
 
   const vh = window.innerHeight || document.documentElement.clientHeight
+  const vw = window.innerWidth || document.documentElement.clientWidth
   let maxBottom = 0
 
   const consider = el => {
@@ -35,6 +95,8 @@ function measureStickyTopOffset() {
     if (cs.display === 'none' || cs.visibility === 'hidden') return
     const rect = el.getBoundingClientRect()
     if (rect.height < 1) return
+    // 排除左侧菜单等窄栏，只认接近全宽的顶栏
+    if (vw > 0 && rect.width < vw * 0.4) return
     // 只关心贴近视口顶端的栏（避免把页面中部的 sticky 元素算进来）
     if (rect.top > Math.min(160, vh * 0.3)) return
     if (rect.bottom > maxBottom) maxBottom = rect.bottom
@@ -48,26 +110,19 @@ function measureStickyTopOffset() {
       '.gm-framework-right-top-default-inner, .gm-framework-right-top, .gm-framework-full-tabs-list'
     )
     .forEach(consider)
+  // 3) 业务侧用 gm-position-fixed 挂的顶栏（如单据详情 HeaderActionFixed）
+  document.querySelectorAll('.gm-position-fixed').forEach(consider)
 
   return Math.max(0, Math.round(maxBottom))
 }
 
-/** 清理所有「是否固定」本地缓存（一键固定开启时调用） */
-function clearAllLocalHeaderSticky() {
-  const fullPrefix = '_react-gm_' + STORAGE_PREFIX
-  const toRemove = []
-  for (let i = 0; i < localStorage.length; i++) {
-    const fullKey = localStorage.key(i)
-    if (fullKey && fullKey.startsWith(fullPrefix)) {
-      toRemove.push(fullKey)
-    }
-  }
-  toRemove.forEach(k => localStorage.removeItem(k))
-}
+/**
+ * @deprecated 「一键固定」已下线；保留空实现以免外部引用报错。
+ */
+function clearAllLocalHeaderSticky() {}
 
 /**
- * 解析表格级「是否固定」与全局「一键固定」。
- * 优先级：本地显式设置 > 全局一键固定。
+ * 解析表格级「是否固定」（仅本表 localStorage，不再跟随全局一键固定）。
  * @param {'tableConfig'|'tableXConfig'} configKey
  */
 function useTableHeaderSticky(props, configKey = 'tableConfig') {
@@ -78,12 +133,12 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
     defaultSticky = false,
     onStickyChange,
     localStickyText,
-    globalStickyText,
     stickyTop
   } = props
 
-  // diy 的 id 可复用为 stickyId
-  const resolvedStickyId = stickyId || id
+  // diy 的 id 可复用；未传 stickyId 时归一化 view/edit/detail 后缀以便同页共用
+  const resolvedStickyId = resolveTableStickyStorageId(stickyId, id)
+  const legacyStickyId = stickyId ? null : id
 
   const config = useContext(ConfigContext)
   const globalCfg =
@@ -96,15 +151,7 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
       : globalCfg && globalCfg.showLocalSticky !== undefined
         ? globalCfg.showLocalSticky
         : true
-  const showGlobalSticky =
-    props.showGlobalSticky !== undefined
-      ? props.showGlobalSticky
-      : globalCfg && globalCfg.showGlobalSticky !== undefined
-        ? globalCfg.showGlobalSticky
-        : true
 
-  const globalSticky = !!(globalCfg && globalCfg.stickyHeader)
-  const onGlobalChangeRaw = globalCfg && globalCfg.onStickyHeaderChange
   const configStickyTop =
     stickyTop != null
       ? stickyTop
@@ -119,17 +166,23 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
     if (!resolvedStickyId) {
       return { value: !!defaultSticky, hasOverride: false }
     }
-    const cached = Storage.get(STORAGE_PREFIX + resolvedStickyId)
-    if (cached === true || cached === false) {
-      return { value: cached, hasOverride: true }
+    const cached = readTableStickyLocal(resolvedStickyId, legacyStickyId)
+    if (cached.hasOverride) {
+      return { value: cached.value, hasOverride: true }
     }
     return { value: !!defaultSticky, hasOverride: false }
-  }, [isLocalControlled, sticky, resolvedStickyId, defaultSticky])
+  }, [
+    isLocalControlled,
+    sticky,
+    resolvedStickyId,
+    legacyStickyId,
+    defaultSticky
+  ])
 
   const [localState, setLocalState] = useState(readLocal)
   const [measuredTop, setMeasuredTop] = useState(0)
 
-  // 其它实例改写 / 一键固定清缓存后同步
+  // 其它实例改写本地缓存后同步
   useEffect(() => {
     return subscribeStickyLocalVersion(() => {
       setLocalState(readLocal())
@@ -138,12 +191,8 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
 
   const localSticky = localState.value
   const hasLocalOverride = localState.hasOverride
-
-  /**
-   * 本地显式值优先；无本地覆盖时跟随全局。
-   * 这样「一键固定」清缓存后全表跟随全局，同时允许单表再改本地且不影响全局。
-   */
-  const headerSticky = hasLocalOverride ? localSticky : globalSticky
+  /** 仅本表「是否固定」，不再跟随全局 stickyHeader */
+  const headerSticky = !!localSticky
 
   // 吸顶偏移：优先 props/config，否则自动测量顶部 fixed 栏
   useEffect(() => {
@@ -176,42 +225,19 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
     [isLocalControlled, resolvedStickyId, onStickyChange]
   )
 
-  /**
-   * Checkbox 展示：有本地覆盖用本地值，否则镜像全局（一键固定后呈现全选）
-   */
-  const localChecked = hasLocalOverride ? localSticky : globalSticky
-
-  /**
-   * 当前组件 DIY 里「一键固定」的勾选展示（不改全局偏好）：
-   * 取消「是否固定」时，本弹层内的「一键固定」同步显示为未勾选；
-   * 其它表仍按真实 globalSticky 展示。
-   */
-  const globalChecked = globalSticky && localChecked
-
-  const handleGlobalChange = useCallback(
-    next => {
-      const checked = !!next
-      // 开启/关闭一键固定都清本地：开启后全表跟随勾选，关闭后全表取消勾选
-      clearAllLocalHeaderSticky()
-      bumpStickyLocalVersion()
-      onGlobalChangeRaw && onGlobalChangeRaw(checked)
-    },
-    [onGlobalChangeRaw]
-  )
+  const localChecked = !!localSticky
 
   const canShowLocal = showLocalSticky !== false && !!resolvedStickyId
-  const canShowGlobal =
-    showGlobalSticky !== false &&
-    typeof onGlobalChangeRaw === 'function' &&
-    !!resolvedStickyId
-  const showControls = canShowLocal || canShowGlobal
+  /** 「一键固定」已下线 */
+  const canShowGlobal = false
+  const showControls = canShowLocal
 
   const texts = useMemo(
     () => ({
       local: localStickyText != null ? localStickyText : getLocale('是否固定'),
-      global: globalStickyText != null ? globalStickyText : getLocale('一键固定')
+      global: getLocale('一键固定')
     }),
-    [localStickyText, globalStickyText]
+    [localStickyText]
   )
 
   return {
@@ -219,11 +245,14 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
     headerSticky,
     localSticky,
     localChecked,
-    globalSticky,
-    globalChecked,
+    /** @deprecated 恒为 false */
+    globalSticky: false,
+    /** @deprecated 恒为 false */
+    globalChecked: false,
     hasLocalOverride,
     setLocalSticky,
-    onGlobalChange: handleGlobalChange,
+    /** @deprecated no-op */
+    onGlobalChange: () => {},
     canShowLocal,
     canShowGlobal,
     showControls,
@@ -234,30 +263,22 @@ function useTableHeaderSticky(props, configKey = 'tableConfig') {
 }
 
 /**
- * 表头固定 Checkbox 控件（放在 DIY「可选字段」旁）
+ * 表头固定 Checkbox 控件（放在 DIY「可选字段」旁）——仅「是否固定」
  */
 const TableStickyControls = ({
   localChecked,
-  globalSticky,
-  globalChecked,
   setLocalSticky,
-  onGlobalChange,
   canShowLocal,
-  canShowGlobal,
   texts,
   className,
   style
 }) => {
-  if (!canShowLocal && !canShowGlobal) return null
+  if (!canShowLocal) return null
 
   // 阻止冒泡，避免 DIY Popover 被 body click / 冒泡逻辑关闭
   const stop = e => {
     e.stopPropagation()
   }
-
-  // 优先用组件级展示值；未传时回退真实全局（兼容旧调用）
-  const globalShown =
-    globalChecked !== undefined ? globalChecked : globalSticky
 
   return (
     <Flex
@@ -267,77 +288,46 @@ const TableStickyControls = ({
       onClick={stop}
       onMouseDown={stop}
     >
-      {canShowLocal && (
-        <Checkbox
-          inline
-          checked={!!localChecked}
-          onClick={stop}
-          onChange={e => {
-            stop(e)
-            setLocalSticky(!!e.target.checked)
-          }}
-          className='gm-margin-right-10'
-        >
-          {texts.local}
-          <ToolTip
-            popup={
-              <div
-                className='gm-popover-is-in-popup'
-                style={{ maxWidth: '220px', padding: '8px 4px' }}
-                onClick={stop}
-                onMouseDown={stop}
-              >
-                {getLocale(
-                  '开启后，当前列表的表头在纵向滚动时固定置顶，仅对当前列表生效。'
-                )}
-              </div>
-            }
-          />
-        </Checkbox>
-      )}
-      {canShowGlobal && (
-        <Checkbox
-          inline
-          checked={!!globalShown}
-          onClick={stop}
-          onChange={e => {
-            stop(e)
-            onGlobalChange && onGlobalChange(!!e.target.checked)
-          }}
-        >
-          {texts.global}
-          <ToolTip
-            popup={
-              <div
-                className='gm-popover-is-in-popup'
-                style={{ maxWidth: '220px', padding: '8px 4px' }}
-                onClick={stop}
-                onMouseDown={stop}
-              >
-                {getLocale(
-                  '开启后，所有列表的表头都会固定置顶；关闭则会取消所有列表的表头固定。'
-                )}
-              </div>
-            }
-          />
-        </Checkbox>
-      )}
+      <Checkbox
+        inline
+        checked={!!localChecked}
+        onClick={stop}
+        onChange={e => {
+          stop(e)
+          setLocalSticky(!!e.target.checked)
+        }}
+      >
+        {texts.local}
+        <ToolTip
+          popup={
+            <div
+              className='gm-popover-is-in-popup'
+              style={{ maxWidth: '280px', padding: '8px 4px' }}
+              onClick={stop}
+              onMouseDown={stop}
+            >
+              {getLocale(
+                '开启后，当前列表的表头在纵向滚动时固定置顶、分页筛选固定于底部，仅对当前列表生效。'
+              )}
+            </div>
+          }
+        />
+      </Checkbox>
     </Flex>
   )
 }
 
 TableStickyControls.propTypes = {
   localChecked: PropTypes.bool,
-  /** 真实全局一键固定状态 */
+  /** @deprecated 忽略 */
   globalSticky: PropTypes.bool,
-  /**
-   * 当前组件弹层内「一键固定」展示勾选（可与全局不一致）。
-   * 取消是否固定时为 false，但不写回全局偏好。
-   */
+  /** @deprecated 忽略 */
   globalChecked: PropTypes.bool,
   setLocalSticky: PropTypes.func,
+  /** @deprecated 忽略 */
   onGlobalChange: PropTypes.func,
   canShowLocal: PropTypes.bool,
+  /** @deprecated 忽略 */
   canShowGlobal: PropTypes.bool,
   texts: PropTypes.object,
   className: PropTypes.string,
@@ -357,9 +347,10 @@ const tableStickyPropTypes = {
   onStickyChange: PropTypes.func,
   /** 是否展示「是否固定」，默认 true */
   showLocalSticky: PropTypes.bool,
-  /** 是否展示「一键固定」，默认 true（仍需 ConfigProvider 回调） */
+  /** @deprecated 「一键固定」已下线，传入无效 */
   showGlobalSticky: PropTypes.bool,
   localStickyText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  /** @deprecated 「一键固定」已下线，传入无效 */
   globalStickyText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   /** 吸顶 top 偏移（px）；不传则自动测量顶部 fixed 栏 */
   stickyTop: PropTypes.number
@@ -372,5 +363,11 @@ export {
   tableStickyPropTypes,
   clearAllLocalHeaderSticky,
   measureStickyTopOffset,
+  normalizeTableStickyId,
+  resolveTableStickyStorageId,
+  readTableStickyLocal,
+  syncGlobalStickyBodyClass,
+  GLOBAL_STICKY_BODY_CLASS,
+  STICKY_OPT_OUT_CLASS,
   STORAGE_PREFIX
 }
